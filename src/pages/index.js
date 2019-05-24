@@ -1,6 +1,7 @@
+import "../styles/default.scss";
+
 function Home() {
-    return <div>Welcome to Next.js!</div>;
-  }
+    return <div className={`is-desktop is-vcentered`}>Join the SDD.team!</div>;
+}
   
-  export default Home;
-  
+export default Home;
