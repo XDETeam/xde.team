@@ -1,6 +1,8 @@
 {
 	"name": "sdd-team",
 	"version": "0.0.1",
+	"author": "Stanislav S. Yarmonov",
+	"license": "MIT",
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
