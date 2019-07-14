@@ -1,5 +1,6 @@
 {
     "private": true,
+	"version": "0.0.1",
     "name": "@sde/docs",
     "dependencies": {
         "vuepress": "^1.0.3"
