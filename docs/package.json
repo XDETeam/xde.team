@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "name": "@sde/docs",
+    "dependencies": {
+        "vuepress": "^1.0.3"
+    },
+    "scripts": {
+        "docs:dev": "vuepress dev",
+        "docs:build": "vuepress build"
+    }
+}
