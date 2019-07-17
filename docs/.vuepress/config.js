@@ -12,7 +12,7 @@ module.exports = {
         },
         "/ru/": {
             lang: "ru-RU",
-            title: "VuePress",
+            title: "SDE",
             description: "Success-driven Engineering"
         }
     },
