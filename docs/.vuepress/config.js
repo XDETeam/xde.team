@@ -1,6 +1,8 @@
 // TODO:
 module.exports = {
-    ga: "UA-127258636-2",
+    plugins: [
+        [ "@vuepress/google-analytics", { ga: "UA-127258636-2" } ]
+    ],
 
     locales: {
         "/": {
