@@ -1,5 +1,7 @@
 // TODO:
 module.exports = {
+    ga: "UA-127258636-2",
+
     locales: {
         "/": {
             lang: "en-US",
