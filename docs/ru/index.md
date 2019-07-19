@@ -7,3 +7,4 @@ TODO:Temporary content map
 * [Инженер](/ru/vision/engineer) [[en]](/vision/engineer)
 * [Инженеры](/ru/vision/engineers) [[en]](/vision/engineers)
 * [Области применения](/ru/vision/domains) [[en]](/vision/domains)
+* [Спецификация](/ru/vision/specification) [[en]](/vision/specification)
