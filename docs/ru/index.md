@@ -11,3 +11,4 @@ TODO:Temporary content map
 
 ## Services
 * [Аудит](/ru/services/audit) [[en]](/services/audit)
+* [Поиск талантов](/ru/services/talent-hunt) [[en]](/services/talent-hunt)
