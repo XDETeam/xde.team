@@ -9,6 +9,9 @@ TODO:Temporary content map
 * [Области применения](/ru/vision/domains) [[en]](/vision/domains)
 * [Спецификация](/ru/vision/specification) [[en]](/vision/specification)
 
-## Services
+## Услуги
 * [Аудит](/ru/services/audit) [[en]](/services/audit)
 * [Поиск талантов](/ru/services/talent-hunt) [[en]](/services/talent-hunt)
+
+## Лаборатория
+* [Олимпийские игры](/ru/labs/olympic-games) [[en]](/labs/olympic-games)

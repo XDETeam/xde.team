@@ -12,3 +12,6 @@ TODO:Temporary content map
 ## Services
 * [Audit](/services/audit) [[ru]](/ru/services/audit)
 * [Talent hunt](/services/talent-hunt) [[ru]](/ru/services/talent-hunt)
+
+## Labs
+* [Olympic games](/labs/olympic-games) [[ru]](/ru/labs/olympic-games)
