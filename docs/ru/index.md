@@ -17,3 +17,4 @@ TODO:Temporary content map
 * [Олимпийские игры](/ru/labs/olympic-games) [[en]](/labs/olympic-games)
 * [Jaws](/ru/labs/jaws) [[en]](/labs/jaws)
 * [EOS](/ru/labs/eos) [[en]](/labs/eos)
+* [IDE.run](/ru/labs/ide) [[en]](/labs/ide)
