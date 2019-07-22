@@ -16,3 +16,4 @@ TODO:Temporary content map
 ## Labs
 * [Olympic games](/labs/olympic-games) [[ru]](/ru/labs/olympic-games)
 * [Jaws](/labs/jaws) [[ru]](/ru/labs/jaws)
+* [EOS](/labs/eos) [[ru]](/ru/labs/eos)
