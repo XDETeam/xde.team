@@ -1,7 +1,8 @@
 // TODO:
 module.exports = {
     plugins: [
-        [ "@vuepress/google-analytics", { ga: "UA-127258636-2" } ]
+        [ "@vuepress/google-analytics", { ga: "UA-127258636-2" } ],
+        [ "sitemap", { hostname: "https://sde.team" } ]
     ],
 
     locales: {
