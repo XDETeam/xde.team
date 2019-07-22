@@ -15,3 +15,4 @@ TODO:Temporary content map
 
 ## Лаборатория
 * [Олимпийские игры](/ru/labs/olympic-games) [[en]](/labs/olympic-games)
+* [Jaws](/ru/labs/jaws) [[en]](/labs/jaws)
