@@ -11,6 +11,7 @@ TODO:Temporary content map
 
 ## Specs
 * [Specification](/specs) [[ru]](/ru/specs)
+* [Language](/specs/language) [[ru]](/ru/specs/language)
 
 ## Services
 * [Audit](/services/audit) [[ru]](/ru/services/audit)
