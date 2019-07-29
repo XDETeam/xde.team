@@ -9,6 +9,9 @@ TODO:Temporary content map
 * [Domains](/vision/domains) [[ru]](/ru/vision/domains)
 * [Specification](/vision/specification) [[ru]](/ru/vision/specification)
 
+## Specs
+* [Specification](/specs) [[ru]](/ru/specs)
+
 ## Services
 * [Audit](/services/audit) [[ru]](/ru/services/audit)
 * [Talent hunt](/services/talent-hunt) [[ru]](/ru/services/talent-hunt)
