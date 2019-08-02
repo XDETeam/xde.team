@@ -17,8 +17,11 @@ TODO:Temporary content map
 * [Аудит](/ru/services/audit) [[en]](/services/audit)
 * [Поиск талантов](/ru/services/talent-hunt) [[en]](/services/talent-hunt)
 
-## Лаборатория
-* [Олимпийские игры](/ru/labs/olympic-games) [[en]](/labs/olympic-games)
-* [Jaws](/ru/labs/jaws) [[en]](/labs/jaws)
-* [EOS](/ru/labs/eos) [[en]](/labs/eos)
-* [IDE.run](/ru/labs/ide) [[en]](/labs/ide)
+## Вклад
+* [Олимпийские игры](/ru/contribute/olympic-games) [[en]](/contribute/olympic-games)
+* [Jaws](/ru/contribute/jaws) [[en]](/contribute/jaws)
+* [EOS](/ru/contribute/eos) [[en]](/contribute/eos)
+* [IDE.run](/ru/contribute/ide) [[en]](/contribute/ide)
+
+## Лаборатории
+* [Путь Gherkin](/ru/labs/gherkin-way) [[en]](/labs/gherkin-way)
