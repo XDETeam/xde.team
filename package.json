@@ -3,5 +3,8 @@
 	"version": "0.0.1",
 	"workspaces": [
 		"docs"
-	]
+	],
+	"scripts": {
+		"docs:publish": "yarn --cwd docs/ run publish"
+	}
 }
