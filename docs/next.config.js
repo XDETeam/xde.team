@@ -1,8 +1,6 @@
 const withPlugins = require('next-compose-plugins');
 
 const css = require("@zeit/next-css")
-const sass = require("@zeit/next-sass")
-
 const images = require("remark-images")
 const emoji = require("remark-emoji")
 const math = require("remark-math")
@@ -27,8 +25,6 @@ module.exports = withPlugins([
 			url: false
 		}
 	}],
-
-	sass,
 
 	[ mdx, {
 		pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"]

@@ -1,7 +1,7 @@
 import React from 'react'
 import App from 'next/app'
 import "katex/dist/katex.css"
-import "../components/body.scss"
+import "../styles/index.css"
 
 export default class MyApp extends App {
   render () {
