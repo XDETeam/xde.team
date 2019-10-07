@@ -23,5 +23,8 @@ TODO:Temporary content map
 * [EOS](/contribute/eos) [[ru]](/ru/contribute/eos)
 * [IDE.run](/contribute/ide) [[ru]](/ru/contribute/ide)
 
+## Guides
+* [TypeScript](/guide/typescript) [[ru]](/ru/guide/typescript)
+
 ## Labs
 * [Gherkin way](/labs/gherkin-way) [[ru]](/ru/labs/gherkin-way)
