@@ -1,4 +1,4 @@
-import DraftAlert from "../../../components/alerts/Draft"
+import DraftAlert from "$alerts/Draft"
 
 <DraftAlert />
 

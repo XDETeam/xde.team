@@ -1,4 +1,6 @@
-const withPlugins = require('next-compose-plugins');
+const path = require("path")
+
+const withPlugins = require('next-compose-plugins')
 
 const css = require("@zeit/next-css")
 const images = require("remark-images")
@@ -14,7 +16,15 @@ const mdx = require("@next/mdx")({
 })
 
 const nextConfig = {
-	distDir: ".build"
+	distDir: ".build",
+	
+	webpack (config) {
+		config.resolve.alias["$components"] = path.join(__dirname, "components");
+		config.resolve.alias["$icons"] = path.join(__dirname, "components/icons");
+		config.resolve.alias["$alerts"] = path.join(__dirname, "components/alerts");
+
+		return config;
+	}
 };
 
 module.exports = withPlugins([
