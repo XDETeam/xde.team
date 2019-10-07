@@ -7,12 +7,12 @@
 body {
     @apply font-sans text-lg leading-relaxed;
 
-    font-family: 'Roboto';
+    font-family: "Roboto";
 }
 
 h1,
 h2 {
-    @apply font-black mt-5 mb-1 subpixel-antialiased;
+    @apply font-black mt-5 mb-5 subpixel-antialiased;
 }
 
 h1 {
@@ -26,6 +26,10 @@ h2 {
 main {
     a {
         @apply text-green-600;
+    }
+
+    p {
+        @apply mb-3;
     }
 }
 

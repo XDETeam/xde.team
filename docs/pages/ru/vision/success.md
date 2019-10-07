@@ -1,3 +1,7 @@
+import DraftAlert from "../../../components/alerts/Draft"
+
+<DraftAlert />
+
 # Успех
 
 TODO:Тезисы в обоснование концепции Success (Success-driven Engineering):
