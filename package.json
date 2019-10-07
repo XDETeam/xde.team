@@ -5,6 +5,7 @@
 		"docs"
 	],
 	"scripts": {
+		"docs:dev": "yarn --cwd docs/ run dev",
 		"docs:publish": "yarn --cwd docs/ run publish"
 	}
 }
