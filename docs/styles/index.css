@@ -32,8 +32,18 @@ main {
         @apply mb-3;
     }
 
+    ol, ul {
+        @apply m-6;
+    }
+
     ol {
         @apply list-decimal;
+    }
+
+    ul {
+        @apply list-disc;
+
+        list-style-type: square;
     }
 }
 

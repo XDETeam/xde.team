@@ -1,4 +1,4 @@
-import DraftAlert from "$alerts/Draft"
+import { DraftAlert } from "$alerts"
 
 <DraftAlert />
 
