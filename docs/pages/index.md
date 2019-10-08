@@ -23,6 +23,9 @@ TODO:Temporary content map
 * [EOS](/contribute/eos) [[ru]](/ru/contribute/eos)
 * [IDE.run](/contribute/ide) [[ru]](/ru/contribute/ide)
 
+## Applications
+* [SDE Team Server](/apps/team-server) [[ru]](/ru/apps/team-server)
+
 ## Guides
 * [TypeScript](/guide/typescript) [[ru]](/ru/guide/typescript)
 
