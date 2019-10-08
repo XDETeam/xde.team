@@ -31,6 +31,10 @@ main {
     p {
         @apply mb-3;
     }
+
+    ol {
+        @apply list-decimal;
+    }
 }
 
 footer {
