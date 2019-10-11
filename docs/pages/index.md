@@ -1,8 +1,11 @@
+import { ToDoAlert } from "$alerts";
+
 # Welcome to SDE
 
-TODO:Temporary content map
+<ToDoAlert>Temporary content map</ToDoAlert>
 
 ## Vision
+* [Index](/vision) [[ru]](/ru/vision)
 * [Success](/vision/success) [[ru]](/ru/vision/success)
 * [Engineer](/vision/engineer) [[ru]](/ru/vision/engineer)
 * [Engineers](/vision/engineers) [[ru]](/ru/vision/engineers)
