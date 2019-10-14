@@ -4,7 +4,7 @@ import { DraftAlert } from "$alerts"
 
 # SDE TypeScript Development Guide
 
-TODO: [Russian version](/ru/guide/typescript).
+TODO: [Russian version](/ru/guide).
 
 We will use a development of the SDE Team Server (collaboration tool) as a
 sample of the application being development through this guide. So let's design

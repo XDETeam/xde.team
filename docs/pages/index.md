@@ -30,8 +30,8 @@ import { ToDoAlert } from "$alerts";
 ## Applications
 * [SDE Team Server](/apps/team-server) [[ru]](/ru/apps/team-server)
 
-## Guides
-* [TypeScript](/guide/typescript) [[ru]](/ru/guide/typescript)
+## Guide
+* [Index](/guide) [[ru]](/ru/guide)
 
 ## Labs
 * [Gherkin way](/labs/gherkin-way) [[ru]](/ru/labs/gherkin-way)
