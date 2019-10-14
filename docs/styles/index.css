@@ -10,17 +10,20 @@ body {
     font-family: "Roboto";
 }
 
-h1,
-h2 {
-    @apply font-black mt-10 mb-2 subpixel-antialiased;
+h1, h2, h3 {
+    @apply font-black subpixel-antialiased;
 }
 
 h1 {
-    @apply text-5xl;
+    @apply text-5xl mt-10 mb-2;
 }
 
 h2 {
-    @apply text-3xl;
+    @apply text-3xl mt-10 mb-2;
+}
+
+h3 {
+    @apply text-2xl;
 }
 
 main {
@@ -50,5 +53,27 @@ main {
 footer {
     a {
         @apply text-white;
+    }
+}
+
+nav.tabs {
+    @apply my-10;
+
+    .header {
+        @apply flex border-b;
+    }
+
+    .tab {
+        @apply mr-1;
+
+        button {
+            @apply bg-white inline-block py-2 px-4 text-gray-700 font-semibold outline-none -mb-px;;
+        }
+    }
+
+    .tab.active {
+        button {
+            @apply bg-gray-800 text-white rounded-t border-t;
+        }
     }
 }
