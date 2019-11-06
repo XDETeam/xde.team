@@ -20,7 +20,7 @@ const Tabs: FC<ITabsProps> = ({ children }) => {
         <nav className="tabs">
             <div className="header">
                 {children.map((tab, i) => (
-                    <div className={`tab${index === i ? " active" : ""}`}>
+                    <div className={`tab${index === i ? " active" : ""}`} key={i}>
                         <button onClick={() => setIndex(i)}>{tab.props.caption}</button>
                     </div>
                 ))}
