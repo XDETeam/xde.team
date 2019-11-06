@@ -19,17 +19,15 @@ const Tabs: FC<ITabsProps> = ({ children }) => {
     return (
         <nav className="tabs">
             <div className="header">
-                { children.map((tab, i) => (
-                    <div className={ `tab${index === i ? ' active' : ''}` }>
-                        <button onClick={ () => setIndex(i) }>{ tab.props.caption }</button>
+                {children.map((tab, i) => (
+                    <div className={`tab${index === i ? " active" : ""}`}>
+                        <button onClick={() => setIndex(i)}>{tab.props.caption}</button>
                     </div>
                 ))}
             </div>
-            <div className="p-4 bg-gray-800 text-white">
-                { children[index].props.children }
-            </div>
+            <div className="p-4 bg-gray-800 text-white">{children[index].props.children}</div>
         </nav>
     );
-}
+};
 
 export { Tabs };

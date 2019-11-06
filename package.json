@@ -1,11 +1,11 @@
 {
-	"private": true,
-	"version": "0.0.1",
-	"workspaces": [
-		"docs"
-	],
-	"scripts": {
-		"docs:dev": "yarn --cwd docs/ run dev",
-		"docs:publish": "yarn --cwd docs/ run publish"
-	}
+    "private": true,
+    "version": "0.0.1",
+    "workspaces": [
+        "docs"
+    ],
+    "scripts": {
+        "docs:dev": "yarn --cwd docs/ run dev",
+        "docs:publish": "yarn --cwd docs/ run publish"
+    }
 }

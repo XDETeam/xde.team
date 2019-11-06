@@ -1,6 +1,6 @@
-import { DraftAlert, ToDoAlert } from "$alerts"
-import { Tabs } from "$components/Tabs"
-import GwtTests from "./GwtTests"
+import { DraftAlert, ToDoAlert } from "$alerts";
+import { Tabs } from "$components/Tabs";
+import GwtTests from "./GwtTests";
 
 <DraftAlert />
 
@@ -23,7 +23,7 @@ import GwtTests from "./GwtTests"
 <Tabs>
     <Tab caption="Typescript">
         <pre>
-    {`const alice = {
+            {`const alice = {
     firstName: "Alice",
     role: "developer"
 }\n
@@ -45,7 +45,8 @@ const teamServer = {
 <ToDoAlert>Привести пример из фильма "Тренер Картер"</ToDoAlert>
 
 ### Высказывания
-Ожидания от системы формулируются в виде высказываний, которые являются суть предложениями. Как в большинстве предложений в них есть подлежащее - то, о чём говориться в высказывании и сказуемое - информация о подлежащем (предикат). В качестве предмета высказываний мы можем использовать описанные выше примеры. 
+
+Ожидания от системы формулируются в виде высказываний, которые являются суть предложениями. Как в большинстве предложений в них есть подлежащее - то, о чём говориться в высказывании и сказуемое - информация о подлежащем (предикат). В качестве предмета высказываний мы можем использовать описанные выше примеры.
 
 <ToDoAlert>Примеры высказываний, совокупность высказываний, feauture, GWT</ToDoAlert>
 

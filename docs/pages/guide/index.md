@@ -1,4 +1,4 @@
-import { DraftAlert } from "$alerts"
+import { DraftAlert } from "$alerts";
 
 <DraftAlert />
 
@@ -11,6 +11,7 @@ sample of the application being development through this guide. So let's design
 it from the scratch.
 
 ## Changes
+
 TODO:Agility, Volatility (I dislike flexibility and scalability).
 
 The only thing that stays unchanged in the development process is that everything
@@ -27,6 +28,7 @@ to the most useful ones. This is how it evolves.
 ## Specification
 
 ### Specification language
+
 This is a primary language we will use to write applications. It is crafted for
 the particular project and thus it is the best choice for it.
 
@@ -44,6 +46,7 @@ Specification language is close to ubiquitous language in DDD and domain-specifi
 languages (DSLs).
 
 ### Sample
+
 Sample is one of the basic implementations of nouns in the language and is what
 we usually start with. Before information from stakeholders will be analysed and
 inductively formalized by experts is exists in this simple form and we can get a
@@ -58,16 +61,16 @@ To move the application on let's introduce some basic samples.
 const alice = {
     firstName: "Alice",
     role: "developer"
-}
+};
 
 const bob = {
     firstName: "Bob",
     role: "stakeholder"
-}
+};
 
 const teamServer = {
     name: "SDE Team Server"
-}
+};
 ```
 
 ### Predicate
@@ -75,6 +78,7 @@ const teamServer = {
 TODO: Subject act(ion) object. Action = predicate.
 
 ### Sentence
+
 Specification is a set of "sentences" in the specification language and briefly
 consists of noun and verbs.
 
@@ -82,6 +86,7 @@ TODO:Sentence = case
 TODO:Set of sentences (GWT) = Feature/Chapter.
 
 TODO:
+
 ```
 when<SignIn>(intruder);
 then<Error>(permissionDenied);
