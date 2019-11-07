@@ -39,9 +39,9 @@ import { ToDoAlert } from "$alerts";
 
 -   [Index](/guide) [[ru]](/ru/guide)
 
-## Ecosystem
+## Wiki
 
--   [Typescript](/eco/typescript) [[ru]](/ru/eco/typescript)
+-   [Typescript](/wiki/typescript) [[ru]](/ru/wiki/typescript)
 
 ## Labs
 
