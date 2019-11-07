@@ -1,7 +1,17 @@
-interface IEntity {}
+export interface IEntity {}
 
-interface IPredicate<T> {
-    (item: T): void;
+export interface ICommand<TRequest, TResponse> {
+    execute(request: TRequest): TResponse;
+}
+
+export interface IPredicate<TEntity extends IEntity> extends ICommand<TEntity, void> {}
+
+export interface IDeployCommand<TEntity extends IEntity> extends IPredicate<TEntity> {}
+
+export class DeployCommand<TEntity> implements IDeployCommand<TEntity> {
+    execute(request: TEntity): void {
+        throw new Error("Method not implemented.");
+    }
 }
 
 interface IPerson {
@@ -9,7 +19,7 @@ interface IPerson {
     lastName: String;
 }
 
-const alice = {
+const alice: IPerson = {
     firstName: "Alice",
     lastName: "Smith"
 };
@@ -18,6 +28,17 @@ alice.toString = function() {
     return `${this.firstName} ${this.lastName}`;
 };
 
+const exists = DeployCommand;
+
+function given<T extends IEntity>(
+    literals: TemplateStringsArray,
+    subject: T,
+    predicate: IPredicate<T>
+) {
+    return literals.length;
+}
+
+/*
 const exists = (item: IPerson) => {
     console.log(`Has call for ${item}`);
 };
@@ -45,9 +66,14 @@ function when<T extends IEntity>(
     subject: T,
     predicate: IPredicate<T>
 ) {}
+*/
 
 export default () => (
     <div className="p-16 bg-red-200">
-        TODO:Test {[given`${alice} ${exists}`, when`${alice} ${signIn}`]}
+        TODO:Test{" "}
+        {[
+            //given`${alice} ${exists}`
+            //given`${alice} ${signIn}`
+        ]}
     </div>
 );
