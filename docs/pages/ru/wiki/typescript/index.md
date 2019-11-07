@@ -4,4 +4,4 @@ import { ToDoAlert, DraftAlert } from "$alerts";
 
 # TypeScript
 
-<ToDoAlert>Сослаться на структурную и номинальную типизацию</ToDoAlert>
+Typescript относится к языкам программирования со [структурной типизацией](/ru/wiki/types).

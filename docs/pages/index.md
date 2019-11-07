@@ -41,6 +41,7 @@ import { ToDoAlert } from "$alerts";
 
 ## Wiki
 
+-   [Types](/wiki/types) [[ru]](/ru/wiki/types)
 -   [Typescript](/wiki/typescript) [[ru]](/ru/wiki/typescript)
 
 ## Labs
