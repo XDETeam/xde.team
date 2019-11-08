@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Audit
 
-TODO: [Russian version](/ru/services/audit).
+<TranslateAlert href="/ru/services/audit" version="Russian" />

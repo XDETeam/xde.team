@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Jaws
 
-TODO: [Russian version](/ru/contribute/jaws).
+<TranslateAlert href="/ru/contribute/jaws" version="Russian" />

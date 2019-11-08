@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Engineering "Olympic" games
 
-TODO: [Russian version](/ru/contribute/olympic-games).
+<TranslateAlert href="/ru/contribute/olympic-games" version="Russian" />

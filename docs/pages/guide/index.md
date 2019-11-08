@@ -1,10 +1,10 @@
-import { DraftAlert } from "$alerts";
+import { DraftAlert, TranslateAlert } from "$alerts";
 
 <DraftAlert />
 
 # SDE TypeScript Development Guide
 
-TODO: [Russian version](/ru/guide).
+<TranslateAlert href="/ru/guide" version="Russian" />
 
 We will use a development of the SDE Team Server (collaboration tool) as a
 sample of the application being development through this guide. So let's design

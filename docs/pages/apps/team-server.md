@@ -1,7 +1,7 @@
-import { DraftAlert } from "$alerts";
+import { DraftAlert, TranslateAlert } from "$alerts";
 
 <DraftAlert />
 
 # SDE Team Server
 
-TODO: [Russian version](/ru/apps/team-server).
+<TranslateAlert href="/ru/apps/team-server" version="Russian" />

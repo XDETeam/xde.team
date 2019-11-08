@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Typescript
 
-TODO: [Russian version](/ru/wiki/typescript).
+<TranslateAlert href="/ru/wiki/typescript" version="Russian" />

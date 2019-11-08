@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Domains
 
-TODO: [Russian version](/ru/vision/domains).
+<TranslateAlert href="/ru/vision/domains" version="Russian" />

@@ -5,8 +5,4 @@ import Link from "next/link";
 
 # Vision
 
-<ToDoAlert>
-    <Link href="ru/vision">Russian version</Link>
-</ToDoAlert>
-
-<TranslateAlert href="ru/vision" version="Russian" />
+<TranslateAlert href="/ru/vision" version="Russian" />

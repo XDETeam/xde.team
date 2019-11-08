@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Specification
 
-TODO: [Russian version](/ru/specs).
+<TranslateAlert href="/ru/specs" version="Russian" />

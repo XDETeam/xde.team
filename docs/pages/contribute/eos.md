@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # EOS
 
-TODO: [Russian version](/ru/contribute/eos).
+<TranslateAlert href="/ru/contribute/eos" version="Russian" />

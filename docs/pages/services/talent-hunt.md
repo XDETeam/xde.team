@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Talent hunt
 
-TODO: [Russian version](/ru/services/talent-hunt).
+<TranslateAlert href="/ru/services/talent-hunt" version="Russian" />

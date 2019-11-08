@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Gherkin way
 
-TODO: [Russian version](/ru/labs/gherkin-way).
+<TranslateAlert href="/ru/labs/gherkin-way" version="Russian" />

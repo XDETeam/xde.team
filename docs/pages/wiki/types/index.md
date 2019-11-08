@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # Type system
 
-TODO: [Russian version](/ru/wiki/types).
+<TranslateAlert href="/ru/wiki/types" version="Russian" />

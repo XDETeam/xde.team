@@ -1,7 +1,7 @@
-import { DraftAlert } from "$alerts";
+import { DraftAlert, TranslateAlert } from "$alerts";
 
 <DraftAlert />
 
 # Domains
 
-TODO: [Russian version](/ru/vision/changes).
+<TranslateAlert href="/ru/vision/changes" version="Russian" />

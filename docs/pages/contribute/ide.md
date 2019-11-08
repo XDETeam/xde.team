@@ -1,3 +1,5 @@
+import { TranslateAlert } from "$alerts";
+
 # IDE.run
 
-TODO: [Russian version](/ru/contribute/ide).
+<TranslateAlert href="/ru/contribute/ide" version="Russian" />
