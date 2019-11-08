@@ -1,79 +1,72 @@
+import { string } from "prop-types";
+
 export interface IEntity {}
 
 export interface ICommand<TRequest, TResponse> {
     execute(request: TRequest): TResponse;
 }
 
-export interface IPredicate<TEntity extends IEntity> extends ICommand<TEntity, void> {}
-
-export interface IDeployCommand<TEntity extends IEntity> extends IPredicate<TEntity> {}
+export interface IDeployCommand<TEntity extends IEntity> extends ICommand<TEntity, void> {}
 
 export class DeployCommand<TEntity> implements IDeployCommand<TEntity> {
     execute(request: TEntity): void {
-        throw new Error("Method not implemented.");
+        console.log("Deployed successfully");
     }
 }
 
-interface IPerson {
+interface IPerson extends IEntity {
     firstName: String;
     lastName: String;
 }
 
-const alice: IPerson = {
+const Alice = {
+    eMail: "alice@domain.com",
+    password: "!qa2Ws3eD",
     firstName: "Alice",
     lastName: "Smith"
 };
 
-alice.toString = function() {
+Alice.toString = function() {
     return `${this.firstName} ${this.lastName}`;
 };
 
-const exists = DeployCommand;
+const exists = new DeployCommand();
 
-function given<T extends IEntity>(
-    literals: TemplateStringsArray,
-    subject: T,
-    predicate: IPredicate<T>
-) {
-    return literals.length;
-}
-
-/*
-const exists = (item: IPerson) => {
-    console.log(`Has call for ${item}`);
+export type SignInRequest = {
+    eMail: string;
+    password: string;
 };
 
-const signIn = (item: IPerson) => {
-    console.log(`SignIn call for ${item}`);
+export type SignInResponse = {
+    exists: boolean;
 };
 
-function given<T extends IEntity>(
-    literals: TemplateStringsArray,
-    subject: T,
-    predicate: IPredicate<T>
-) {
-    console.log("literals", literals);
-    console.log("predicate", predicate);
-    console.log("entity", subject);
+export class SignInCommand implements ICommand<SignInRequest, SignInResponse> {
+    execute(request: SignInRequest): SignInResponse {
+        console.log("SignInCommand call");
 
-    predicate(subject);
+        return {
+            exists: true
+        };
+    }
+}
+
+const signIn = new SignInCommand();
+
+function given<TRequest, TResponse>(
+    literals: TemplateStringsArray,
+    subject: TRequest,
+    command: ICommand<Partial<TRequest>, TResponse>
+) {
+    console.log("subject", subject);
+    console.log("result", command.execute(subject));
+    console.log("command", command);
 
     return literals.length;
 }
-
-function when<T extends IEntity>(
-    literals: TemplateStringsArray,
-    subject: T,
-    predicate: IPredicate<T>
-) {}
-*/
 
 export default () => (
     <div className="p-16 bg-red-200">
-        TODO:Test{" "}
-        {[
-            //given`${alice} ${exists}`
-            //given`${alice} ${signIn}`
-        ]}
+        TODO:Test {[given`${Alice} ${exists}`, given`${Alice} ${signIn}`]}
     </div>
 );
