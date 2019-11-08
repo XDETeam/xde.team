@@ -82,5 +82,5 @@ nav.tabs {
 }
 
 pre.prism-code {
-    @apply px-8 py-4;
+    @apply px-8 py-4 mt-4 mb-12 overflow-x-scroll overflow-auto;
 }
