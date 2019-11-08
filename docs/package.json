@@ -30,6 +30,6 @@
         "remark-images": "^1.0.0",
         "remark-math": "^2.0.0",
         "tailwindcss": "^1.1.3",
-        "typescript": "^3.6.4"
+        "typescript": "^3.7.2"
     }
 }
