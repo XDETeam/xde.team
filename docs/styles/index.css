@@ -80,3 +80,7 @@ nav.tabs {
         }
     }
 }
+
+pre.prism-code {
+    @apply px-8 py-4;
+}
