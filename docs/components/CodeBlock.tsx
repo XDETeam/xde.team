@@ -9,7 +9,7 @@ export interface ICodeBlockProps {
 
 export const CodeBlock: FC<ICodeBlockProps> = ({ className, children }) => {
     // TODO: How to cast string -> type union
-    const language = className.replace("language-", "") as Language;
+    const language = className ? (className.replace("language-", "") as Language) : "markup";
 
     // TODO:Is there a way to render children into string?
     if (typeof children != "string") {
