@@ -162,3 +162,8 @@ resolve: {
 ## Отладка
 
 Флаг --traceResolution компилятора tsc может быть использован для отладки "module resolution".
+
+<ToDoAlert>
+    Не помешают инструкции по настройке дополнительных инструментов (eslint, jest), IDE (VSCode,
+    prettier, etc).
+</ToDoAlert>
