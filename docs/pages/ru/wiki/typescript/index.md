@@ -127,9 +127,15 @@ type Pals = Dude[];
     понимаю, этот недостаток уже не актуален.
 </ToDoAlert>
 
+## Symbols
+
 ## Success
 
 -   [Организация проекта](/ru/wiki/typescript/success-project)
+
+## Labs
+
+-   [Номинальная система типов](/ru/wiki/typescript/lab-nominal)
 
 <ToDoAlert>
     Расписать, как TypeScript организует resolvings и больше про project references
