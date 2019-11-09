@@ -6,6 +6,12 @@
     ],
     "scripts": {
         "docs:dev": "yarn --cwd docs/ run dev",
-        "docs:publish": "yarn --cwd docs/ run publish"
+        "docs:publish": "yarn --cwd docs/ run publish",
+		
+		"clean:es5": "rimraf packages/*/es5",
+		"clean": "run-p clean:*",
+		"build": "tsc --build ./packages",
+		"watch": "tsc --build --watch ./packages",
+		"dev": "run-s watch"
     }
 }
