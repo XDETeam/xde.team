@@ -1,34 +1,31 @@
 {
   "name": "@sde/team-cli",
-    "version": "0.0.1",
-
-    "main": "es5",
-    "types": "types",
-    "typings": "src",
-      
-    "bin": {
-        "sde-team": "./es5/bin/cli"
-    },
-    
-    "scripts": {
-      "clean:es5": "rimraf es5",
-      "clean:types": "rimraf types",
-      "clean:cache": "rimraf *.tsbuildinfo",
-      "clean": "run-p clean:*",
-    
-      "build:es5": "tsc --build",
-      "build": "run-p build:*",
-  
-      "test:jest": "jest",
-      "test": "run-s build test:jest"
-    },
-    
-    "devDependencies": {
-      "@types/jest": "^24.0.13",
-      "jest": "^24.8.0",
-      "npm-run-all": "^4.1.5",
-      "rimraf": "^2.7.1",
-      "ts-jest": "^24.0.2",
-      "typescript": "^3.7.2"
-    }
+  "version": "0.0.1",
+  "main": "es5",
+  "types": "types",
+  "typings": "src",
+  "bin": {
+    "sde-team": "./es5/bin/cli"
+  },
+  "scripts": {
+    "clean:es5": "rimraf es5",
+    "clean:types": "rimraf types",
+    "clean:cache": "rimraf *.tsbuildinfo",
+    "clean": "run-p clean:*",
+    "build:es5": "tsc --build",
+    "build": "run-p build:*",
+    "test:jest": "jest",
+    "test": "run-s build test:jest"
+  },
+  "dependencies": {
+    "@sde/types": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.7.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.7.2"
   }
+}

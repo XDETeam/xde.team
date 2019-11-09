@@ -2,16 +2,17 @@
     "private": true,
     "version": "0.0.1",
     "workspaces": [
-        "docs"
+        "docs",
+        "packages/*",
+        "../typescript/packages/*"
     ],
     "scripts": {
         "docs:dev": "yarn --cwd docs/ run dev",
         "docs:publish": "yarn --cwd docs/ run publish",
-		
-		"clean:es5": "rimraf packages/*/es5",
-		"clean": "run-p clean:*",
-		"build": "tsc --build ./packages",
-		"watch": "tsc --build --watch ./packages",
-		"dev": "run-s watch"
+        "clean:es5": "rimraf packages/*/es5",
+        "clean": "run-p clean:*",
+        "build": "tsc --build ./packages",
+        "watch": "tsc --build --watch ./packages",
+        "dev": "run-s watch"
     }
 }
