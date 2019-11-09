@@ -1,4 +1,23 @@
-.*/
-!.vscode/
+# Folders starting with a dot
+.*
 
+# https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders
 node_modules/
+
+# --- TypeScript start ---
+# commonjs outDir
+packages/*/cjs/
+
+# es5 outDir
+packages/*/es5/
+
+# es2015 outDir
+packages/*/es2015/
+
+# declarationDir
+packages/*/types/
+
+# Incremental TypeScript build cahce files
+*.tsbuildinfo
+
+# --- TypeScript end ---
