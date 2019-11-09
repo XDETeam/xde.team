@@ -59,7 +59,8 @@ NPM пакеты обоих приложений хранятся в папке 
 
 		"module": "commonjs",
 		"target": "es5",
-		"moduleResolution": "node",
+    "moduleResolution": "node",
+    "lib": [ "es5", "es6", "dom" ],
 
 		"strict": true,
 
