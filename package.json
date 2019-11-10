@@ -16,6 +16,10 @@
         "ts:build": "tsc --build",
         "ts:watch": "tsc --build --watch",
         "ts:dev": "tsc --build tsconfig.dev.json --watch",
-        "dev": "run-s clean ts:dev"
+        "dev": "run-s clean ts:dev",
+        "sde:test": "sde"
+    },
+    "dependencies": {
+        "@sde/cli": "0.0.1"
     }
 }
