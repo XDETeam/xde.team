@@ -26,15 +26,15 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
- "name": "@sde/workspace",
- "repository": "https://github.com/StanEgo/sde-team.git",
- "private": true,
- "workspaces": [
-     "packages/*"
- ],
- "dependencies": {
-     "typescript": "^3.7.0"
- }
+    "name": "@sde/workspace",
+    "repository": "https://github.com/StanEgo/sde-team.git",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "dependencies": {
+        "typescript": "^3.7.0"
+    }
 }
 ```
 
@@ -44,37 +44,44 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
- "references": [
-     { "path": "core" },
-     { "path": "cli" }
- ]
+    "composite": true,
+    "files": [],
+
+    "references": [
+        { "path": "core" },
+        { "path": "cli" }
+    ]
 }
 ```
 
+Свойство "files" является пустой коллекцией, чтобы делегировать всю работу пакетам из "references". В противном случае, будет осуществляться поиск \*.ts файлов по всем относительным папкам и их транспиляция с непредсказуемыми результатами.
+
+Свойство "composite" может быть полезно, если мы захотим включить библиотеку целиком из другого проекта с использованием тех же project references.
+
 ## Базовый tsconfig.json
 
-Базовый /package/tsconfig.base.json определяет своеобразный стандарт настроек, который мы будем использовать в пакетах. Из интересного здесь стоит отметить свойство "composite" которое является обязательным при использовании project references. А также стоит отдельно объяснить, почему выбран ES5 в качестве "target". В большинстве случаев сборка итоговых приложений будет осуществлятся бандлерами (webpack, rollup, etc). Им мы постараемся предоставить возможность работы непосредственно с TypeScript. А для всех остальных случаев, когда проект используется как есть, ES5 будет обеспечивать максимальную совместимость. Та же причина максимальной совместимости выбрана и для "module".
+Базовый /package/tsconfig.base.json определяет своеобразный стандарт настроек, который мы будем использовать в пакетах. Из интересного здесь стоит отметить свойство "composite" которое является обязательным при использовании project references. А также стоит отдельно объяснить, почему выбран ES5 в качестве "target". В большинстве случаев сборка итоговых приложений будет осуществляться бандлерами (webpack, rollup, etc). Им мы постараемся предоставить возможность работы непосредственно с TypeScript. А для всех остальных случаев, когда проект используется как есть, ES5 будет обеспечивать максимальную совместимость. Та же причина максимальной совместимости выбрана и для "module".
 
 ```tsx
 {
-"compilerOptions": {
-"composite": true,
+    "compilerOptions": {
+        "composite": true,
 
-"module": "commonjs",
-"target": "es5",
- "moduleResolution": "node",
- "lib": [ "es5", "es6", "dom" ],
+        "module": "commonjs",
+        "target": "es5",
+        "moduleResolution": "node",
+        "lib": [ "es5", "es6", "dom" ],
 
-"strict": true,
+        "strict": true,
 
-"resolveJsonModule": true,
-"declarationMap": true,
-"esModuleInterop": true
-},
+        "resolveJsonModule": true,
+        "declarationMap": true,
+        "esModuleInterop": true
+    },
 
-"exclude": [
-"**/*.spec.ts"
-]
+    "exclude": [
+        "**/*.spec.ts"
+    ]
 }
 ```
 
@@ -90,26 +97,26 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-"extends": "../tsconfig.base.json",
+    "extends": "../tsconfig.base.json",
 
-"compilerOptions": {
-"rootDir": "src",
-"outDir": "es5",
-"declarationDir": "types"
-},
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "es5",
+        "declarationDir": "types"
+    },
 
-"include": [ "src" ],
+    "include": [ "src" ],
 
- "references": [
-{ "path": "../core" }
- ]
+    "references": [
+        { "path": "../core" }
+    ]
 }
 ```
 
 Если пакет ссылается на другой в проекте, то он попадает в раздел "references".
 
 <ToDoAlert>
-    Почему нельзя вынести настройки папок в tsconfig.base.json, они во многом идентичны
+	Почему нельзя вынести настройки папок в tsconfig.base.json, они во многом идентичны
 </ToDoAlert>
 
 <ToDoAlert>Может ли в "include" быть включён package.json?</ToDoAlert>
@@ -120,34 +127,34 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-"name": "@sde/core",
-"version": "0.0.1",
+    "name": "@sde/core",
+    "version": "0.0.1",
 
-"main": "es5",
-"types": "types",
-"typings": "src",
+    "main": "es5",
+    "types": "types",
+    "typings": "src",
 
-"scripts": {
- "clean:es5": "rimraf es5",
- "clean:types": "rimraf types",
- "clean:cache": "rimraf *.tsbuildinfo",
- "clean": "run-p clean:*",
+    "scripts": {
+        "clean:es5": "rimraf es5",
+        "clean:types": "rimraf types",
+        "clean:cache": "rimraf *.tsbuildinfo",
+        "clean": "run-p clean:*",
 
- "build:es5": "tsc --build",
- "build": "run-p build:*",
+        "build:es5": "tsc --build",
+        "build": "run-p build:*",
 
- "test:jest": "jest",
- "test": "run-s build test:jest"
-},
+        "test:jest": "jest",
+        "test": "run-s build test:jest"
+    },
 
-"devDependencies": {
- "@types/jest": "^24.0.13",
- "jest": "^24.8.0",
- "npm-run-all": "^4.1.5",
- "rimraf": "^2.7.1",
- "ts-jest": "^24.0.2",
- "typescript": "^3.7.2"
-}
+    "devDependencies": {
+        "@types/jest": "^24.0.13",
+        "jest": "^24.8.0",
+        "npm-run-all": "^4.1.5",
+        "rimraf": "^2.7.1",
+        "ts-jest": "^24.0.2",
+        "typescript": "^3.7.2"
+    }
 }
 ```
 
@@ -155,7 +162,7 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 resolve: {
-    mainFields: ["typings", "main"];
+	mainFields: ["typings", "main"];
 }
 ```
 
@@ -173,12 +180,12 @@ resolve: {
 
 ```tsx
 {
- "private": true,
- "version": "0.0.1",
- "workspaces": [
-     "../library/packages/*",
-     "packages/*"
- ]
+    "private": true,
+    "version": "0.0.1",
+    "workspaces": [
+        "../library/packages/*",
+        "packages/*"
+    ]
 }
 ```
 
@@ -186,24 +193,50 @@ resolve: {
 
 После соответствующих настроек надо выполнить команду yarn в корне проекта приложения и все необходимые компоненты будут прилинкованы.
 
+Для целей разработки можно также воспользоваться возможностями TypeScript project references. Для этого в корне приложения, рядом с tsconfig.json создадим tsconfig.dev.json такого содержания:
+
+```tsx
+{
+    "extends": "./tsconfig.json",
+
+    "references": [
+        ...references from tsconfig.json...
+        {
+            "path": "../library"
+        }
+    ]
+}
+```
+
+В таком случае вызов tsc слегка изменится. Например, в package.json можно поместить такой скрипт:
+
+```tsx
+...
+    "scripts": {
+        ...
+        "dev": "tsc --build tsconfig.dev.json" --watch
+        ...
+    }
+...
+```
+
+Запустив это команду будет запущен монитор, компилирующий при любом изменении как приложение, так и библиотеку.
+
 <ToDoAlert>
-    К сожалению, не удалось найти возможность использовать абсолютные пути или, что ещё лучше,
-    использовать переменные среды в путях.
+	К сожалению, не удалось найти возможность использовать абсолютные пути или, что ещё лучше,
+	использовать переменные среды в путях.
 </ToDoAlert>
 
 <ToDoAlert>
-    В идеале надо добавить в Yarn/NPM возможность работы с монорепозиториями, как это делает Rust
-    Cargo.
+	В идеале надо добавить в Yarn/NPM возможность работы с монорепозиториями, как это делает Rust
+	Cargo.
 </ToDoAlert>
 
 ## Отладка
 
 Флаг --traceResolution компилятора tsc может быть использован для отладки "module resolution".
 
-(
-
 <ToDoAlert>
-Не помешают инструкции по настройке дополнительных инструментов (eslint, jest), IDE (VSCode,
-prettier, etc).
+	Не помешают инструкции по настройке дополнительных инструментов (eslint, jest), IDE (VSCode,
+	prettier, etc).
 </ToDoAlert>
-)``
