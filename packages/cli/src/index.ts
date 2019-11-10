@@ -1,1 +1,1 @@
-export { version } from "../package.json";
+export const project = require("../package.json");

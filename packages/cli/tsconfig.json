@@ -7,9 +7,5 @@
 		"declarationDir": "types"
 	},
 
-	"include": [ "src" ],
-
-    "references": [
-		
-    ]
+	"include": ["src"]
 }

@@ -15,10 +15,13 @@
     "build:es5": "tsc --build",
     "build": "run-p build:*",
     "test:jest": "jest",
-    "test": "run-s build test:jest"
+    "test": "run-s build test:jest",
+    "cli:run": "node ./es5/bin/cli.js",
+    "cli:test": "run-s build cli:run"
   },
   "dependencies": {
-    "@sde/types": "0.0.1"
+    "@sde/types": "0.0.1",
+    "@types/node": "^12.12.7"
   },
   "devDependencies": {
     "@types/jest": "^24.0.13",

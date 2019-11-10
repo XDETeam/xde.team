@@ -10,9 +10,12 @@
         "docs:dev": "yarn --cwd docs/ run dev",
         "docs:publish": "yarn --cwd docs/ run publish",
         "clean:es5": "rimraf packages/*/es5",
+        "clean:types": "rimraf packages/*/types",
+        "clean:tsc": "rimraf **/*.tsbuildinfo",
         "clean": "run-p clean:*",
-        "build": "tsc --build ./packages",
-        "watch": "tsc --build --watch ./packages",
-        "dev": "run-s watch"
+        "ts:build": "tsc --build",
+        "ts:watch": "tsc --build --watch",
+        "ts:dev": "tsc --build tsconfig.dev.json --watch",
+        "dev": "run-s clean ts:dev"
     }
 }
