@@ -5,7 +5,7 @@
 		"module": "commonjs",
 		"target": "es5",
 		"moduleResolution": "node",
-		"lib": [ "es5", "es6", "dom" ],
+		"lib": ["es5", "es6", "dom"],
 
 		"strict": true,
 
@@ -13,6 +13,10 @@
 		"declarationMap": true,
 		"esModuleInterop": true
 	},
+
+	"include": [
+		"package.json"
+	],
 
 	"exclude": [
 		"**/*.spec.ts"
