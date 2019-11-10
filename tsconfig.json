@@ -6,6 +6,10 @@
   "files": [],
 
   "references": [{
-    "path": "packages/cli"
-  }]
+      "path": "packages/specs"
+    },
+    {
+      "path": "packages/cli"
+    }
+  ]
 }
