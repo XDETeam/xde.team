@@ -1,5 +1,8 @@
 import { ToDoAlert, DraftAlert } from "$alerts";
 import { CodeBlock } from "$components/CodeBlock";
+import { TestConst } from "@sde/types";
+
+<div>{TestConst}</div>
 
 <DraftAlert />
 
@@ -23,28 +26,28 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-    "name": "@sde/workspace",
-    "repository": "https://github.com/StanEgo/sde-team.git",
-    "private": true,
-    "workspaces": [
-        "packages/*"
-    ],
-    "dependencies": {
-        "typescript": "^3.7.0"
-    }
+ "name": "@sde/workspace",
+ "repository": "https://github.com/StanEgo/sde-team.git",
+ "private": true,
+ "workspaces": [
+     "packages/*"
+ ],
+ "dependencies": {
+     "typescript": "^3.7.0"
+ }
 }
 ```
 
 ## Корневой tsconfig.json
 
-Для организации пакетов на уровне TypeScript воспользуемся возможностью, появившейся с версии 3.0 - Project References и создадим файл /packages/tsconfig.json, который перечислит все включённые пакеты (в примере это /packages/cli и packages/core).
+Для организации пакетов на уровне TypeScript воспользуемся возможностью, появившейся с версии 3.0 - Project References и создадим файл /tsconfig.json, который перечислит все включённые пакеты (в примере это /packages/cli и packages/core).
 
 ```tsx
 {
-    "references": [
-        { "path": "core" },
-        { "path": "cli" }
-    ]
+ "references": [
+     { "path": "core" },
+     { "path": "cli" }
+ ]
 }
 ```
 
@@ -54,24 +57,24 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-	"compilerOptions": {
-		"composite": true,
+"compilerOptions": {
+"composite": true,
 
-		"module": "commonjs",
-		"target": "es5",
-    "moduleResolution": "node",
-    "lib": [ "es5", "es6", "dom" ],
+"module": "commonjs",
+"target": "es5",
+ "moduleResolution": "node",
+ "lib": [ "es5", "es6", "dom" ],
 
-		"strict": true,
+"strict": true,
 
-		"resolveJsonModule": true,
-		"declarationMap": true,
-		"esModuleInterop": true
-	},
+"resolveJsonModule": true,
+"declarationMap": true,
+"esModuleInterop": true
+},
 
-	"exclude": [
-		"**/*.spec.ts"
-	]
+"exclude": [
+"**/*.spec.ts"
+]
 }
 ```
 
@@ -87,19 +90,19 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-	"extends": "../tsconfig.base.json",
+"extends": "../tsconfig.base.json",
 
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "es5",
-		"declarationDir": "types"
-	},
+"compilerOptions": {
+"rootDir": "src",
+"outDir": "es5",
+"declarationDir": "types"
+},
 
-	"include": [ "src" ],
+"include": [ "src" ],
 
-    "references": [
-		{ "path": "../core" }
-    ]
+ "references": [
+{ "path": "../core" }
+ ]
 }
 ```
 
@@ -117,34 +120,34 @@ NPM пакеты обоих приложений хранятся в папке 
 
 ```tsx
 {
-  "name": "@sde/core",
-  "version": "0.0.1",
+"name": "@sde/core",
+"version": "0.0.1",
 
-  "main": "es5",
-  "types": "types",
-  "typings": "src",
+"main": "es5",
+"types": "types",
+"typings": "src",
 
-  "scripts": {
-    "clean:es5": "rimraf es5",
-    "clean:types": "rimraf types",
-    "clean:cache": "rimraf *.tsbuildinfo",
-    "clean": "run-p clean:*",
+"scripts": {
+ "clean:es5": "rimraf es5",
+ "clean:types": "rimraf types",
+ "clean:cache": "rimraf *.tsbuildinfo",
+ "clean": "run-p clean:*",
 
-    "build:es5": "tsc --build",
-    "build": "run-p build:*",
+ "build:es5": "tsc --build",
+ "build": "run-p build:*",
 
-    "test:jest": "jest",
-    "test": "run-s build test:jest"
-  },
+ "test:jest": "jest",
+ "test": "run-s build test:jest"
+},
 
-  "devDependencies": {
-    "@types/jest": "^24.0.13",
-    "jest": "^24.8.0",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^2.7.1",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.7.2"
-  }
+"devDependencies": {
+ "@types/jest": "^24.0.13",
+ "jest": "^24.8.0",
+ "npm-run-all": "^4.1.5",
+ "rimraf": "^2.7.1",
+ "ts-jest": "^24.0.2",
+ "typescript": "^3.7.2"
+}
 }
 ```
 
@@ -170,12 +173,12 @@ resolve: {
 
 ```tsx
 {
-    "private": true,
-    "version": "0.0.1",
-    "workspaces": [
-        "../library/packages/*",
-        "packages/*"
-    ]
+ "private": true,
+ "version": "0.0.1",
+ "workspaces": [
+     "../library/packages/*",
+     "packages/*"
+ ]
 }
 ```
 
@@ -197,7 +200,10 @@ resolve: {
 
 Флаг --traceResolution компилятора tsc может быть использован для отладки "module resolution".
 
+(
+
 <ToDoAlert>
-    Не помешают инструкции по настройке дополнительных инструментов (eslint, jest), IDE (VSCode,
-    prettier, etc).
+Не помешают инструкции по настройке дополнительных инструментов (eslint, jest), IDE (VSCode,
+prettier, etc).
 </ToDoAlert>
+)``
