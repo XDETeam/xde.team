@@ -22,15 +22,15 @@ export type NonUndefined<A> = A extends undefined ? never : A;
 ## Типы vs Интерфейсы
 
 <ToDoAlert>
-    Пока информация о типах и интерфейсах дана в виде сравнения, но это может поменяться. А может
-    наоборот, вся типология будет дана в сравнении, чтобы определиться именно с теми ситуациями,
-    когда лучше использовать тот или иной инструмент. Возможно, даже удастся определиться с тем, что
-    именно следует использовать.
+	Пока информация о типах и интерфейсах дана в виде сравнения, но это может поменяться. А может
+	наоборот, вся типология будет дана в сравнении, чтобы определиться именно с теми ситуациями,
+	когда лучше использовать тот или иной инструмент. Возможно, даже удастся определиться с тем, что
+	именно следует использовать.
 </ToDoAlert>
 
 <ToDoAlert>
-    http://www.typescriptlang.org/docs/handbook/advanced-types.html#interfaces-vs-type-aliases
-    https://microsoft.github.io/TypeScript-New-Handbook/everything/#interface-vs-alias
+	http://www.typescriptlang.org/docs/handbook/advanced-types.html#interfaces-vs-type-aliases
+	https://microsoft.github.io/TypeScript-New-Handbook/everything/#interface-vs-alias
 </ToDoAlert>
 
 Использование в качестве псевдонимов для примитивных типов.
@@ -50,8 +50,8 @@ type Tuple = [number, number];
 // Conversion of type '[number, number, number]' to type '[number, number]' may be a mistake
 
 interface ITuple {
-    0: number;
-    1: number;
+	0: number;
+	1: number;
 }
 [1, 2, 3] as ITuple;
 // Ok
@@ -74,11 +74,11 @@ type Person = { age: number };
 // SyntaxError: Identifier 'Person' has already been declared
 
 interface IPerson {
-    firstName: string;
-    lastName: string;
+	firstName: string;
+	lastName: string;
 }
 interface IPerson {
-    age: number;
+	age: number;
 }
 ```
 
@@ -122,9 +122,9 @@ type Pals = Dude[];
 ```
 
 <ToDoAlert>
-    "One difference is, that interfaces create a new name that is used everywhere. Type aliases
-    don’t create a new name — for instance, error messages won’t use the alias name." - Как я
-    понимаю, этот недостаток уже не актуален.
+	"One difference is, that interfaces create a new name that is used everywhere. Type aliases
+	don’t create a new name — for instance, error messages won’t use the alias name." - Как я
+	понимаю, этот недостаток уже не актуален.
 </ToDoAlert>
 
 ## Symbols
@@ -136,7 +136,10 @@ type Pals = Dude[];
 ## Labs
 
 -   [Номинальная система типов](/ru/wiki/typescript/lab-nominal)
+-   [Conditional compilation](/ru/wiki/typescript/conditional-compilation)
+-   [Specs location](/ru/wiki/typescript/specs-location)
+-   [Tree shaking in transformers](/ru/wiki/typescript/tree-shaking-in-transformer)
 
 <ToDoAlert>
-    Расписать, как TypeScript организует resolvings и больше про project references
+	Расписать, как TypeScript организует resolvings и больше про project references
 </ToDoAlert>
