@@ -4,7 +4,7 @@
     "workspaces": [
         "docs",
         "packages/*",
-        "../typescript/packages/*"
+        "../sde-typescript/packages/*"
     ],
     "scripts": {
         "docs:dev": "yarn --cwd docs/ run dev",

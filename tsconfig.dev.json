@@ -7,7 +7,7 @@
             "path": "packages/cli"
         },
         {
-            "path": "../typescript"
+            "path": "../sde-typescript"
         }
     ]
 }
