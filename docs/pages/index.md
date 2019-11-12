@@ -1,4 +1,4 @@
-import { ToDoAlert } from "$alerts";
+import { ToDoAlert } from "\$alerts";
 
 # Welcome to SDE
 
@@ -44,6 +44,7 @@ import { ToDoAlert } from "$alerts";
 -   [Types](/wiki/types) [[ru]](/ru/wiki/types)
 -   [Typescript](/wiki/typescript) [[ru]](/ru/wiki/typescript)
 -   [Cx](/wiki/cx) [[ru]](/ru/wiki/cx)
+-   [React](/wiki/react) [[ru]](/ru/wiki/react)
 
 ## Labs
 
