@@ -63,3 +63,7 @@ const teamServer = {
 <ToDoAlert>Примеры высказываний, совокупность высказываний, feauture, GWT</ToDoAlert>
 
 <GwtTests />
+
+## InBox
+
+-   [View-Models vs GraphQL](/ru/guide/view-models)

@@ -1,4 +1,4 @@
-import { DraftAlert, TranslateAlert } from "$alerts";
+import { DraftAlert, TranslateAlert } from "\$alerts";
 
 <DraftAlert />
 
@@ -59,17 +59,17 @@ To move the application on let's introduce some basic samples.
 
 ```typescript
 const alice = {
-    firstName: "Alice",
-    role: "developer"
+	firstName: "Alice",
+	role: "developer"
 };
 
 const bob = {
-    firstName: "Bob",
-    role: "stakeholder"
+	firstName: "Bob",
+	role: "stakeholder"
 };
 
 const teamServer = {
-    name: "SDE Team Server"
+	name: "SDE Team Server"
 };
 ```
 
