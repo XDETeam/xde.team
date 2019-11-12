@@ -128,3 +128,16 @@ interface BadState extends typeof initialState {} // ERROR: Expression expected
 	don’t create a new name — for instance, error messages won’t use the alias name." - Как я
 	понимаю, этот недостаток уже не актуален.
 </ToDoAlert>
+
+## Method declarations
+
+Бытует мнение, что лучше не использовать method declarations:
+
+```tsx
+type Counter = {
+	increment(value: number): number; // Bad
+	decrement: (value: number) => number; // Good
+};
+```
+
+В качестве аргументов речь идёт о консистентности и о том, что для method declarations не работает более строгая [проверка типов](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#strict-function-types).
