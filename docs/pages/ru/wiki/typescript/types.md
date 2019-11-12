@@ -115,6 +115,14 @@ type Pals = Dude[];
 // Type alias 'Dude' circularly references itself.
 ```
 
+Интерфейсы не могут выводить типы из значений:
+
+```tsx
+const initialState = { counter: 0 }
+type GoodState = typeof initialState; // OK
+interface BadState extends typeof initialState {} // ERROR: Expression expected
+```
+
 <ToDoAlert>
 	"One difference is, that interfaces create a new name that is used everywhere. Type aliases
 	don’t create a new name — for instance, error messages won’t use the alias name." - Как я
