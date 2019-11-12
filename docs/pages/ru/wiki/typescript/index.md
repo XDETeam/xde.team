@@ -1,4 +1,4 @@
-import { ToDoAlert, DraftAlert } from "$alerts";
+import { ToDoAlert, DraftAlert } from "\$alerts";
 
 <DraftAlert />
 
@@ -19,7 +19,7 @@ Typescript относится к языкам программирования �
 export type NonUndefined<A> = A extends undefined ? never : A;
 ```
 
-## Типы vs Интерфейсы
+## Type alias vs Interface
 
 <ToDoAlert>
 	Пока информация о типах и интерфейсах дана в виде сравнения, но это может поменяться. А может
@@ -66,7 +66,7 @@ interface IValuable extends Valuable {}
 // interface can only extend an object type or intersection of object types with statically known members.
 ```
 
-Несколько деклараций типа с одним и тем же именем вызовут ошибку. Такая же ситуация с интерфейсами объединит их декларации.
+Несколько деклараций type alias с одним и тем же именем вызовут ошибку. Такая же ситуация с интерфейсами объединит их декларации.
 
 ```tsx
 type Person = { firstName: string; lastName: string };
@@ -100,7 +100,7 @@ interface IReadonly<T> {
 // Unexpected token, expected "]"
 ```
 
-В качестве Utility types используются типы
+В качестве Utility types используются type aliases
 
 ```tsx
 type Brand<T, U> = T & { __brand: U };
