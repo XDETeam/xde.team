@@ -1,5 +1,6 @@
 # Folders starting with a dot
-.*
+.*/
+!.vscode
 
 # https://nodejs.org/api/modules.html#modules_loading_from_node_modules_folders
 node_modules/
