@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import { project } from "..";
+import { meta } from "..";
 
-console.info(`SDE CLI v${project.version}`);
+console.info(`SDE CLI v${meta.version}`);
