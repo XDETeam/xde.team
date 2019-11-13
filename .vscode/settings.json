@@ -2,5 +2,7 @@
     "editor.formatOnSave": true,
     "files.associations": {
         "*.md": "mdx"
-    }
+    },
+    "css.validate": false,
+    "stylelint.enable": true
 }

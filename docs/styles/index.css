@@ -5,82 +5,82 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap&subset=cyrillic");
 
 body {
-    @apply font-sans text-lg leading-relaxed;
+	@apply font-sans text-lg leading-relaxed;
 
-    font-family: "Roboto";
+	font-family: "Roboto", Sans-Serif;
 }
 
 h1,
 h2,
 h3 {
-    @apply font-black subpixel-antialiased;
+	@apply font-black subpixel-antialiased;
 }
 
 h1 {
-    @apply text-5xl mt-10 mb-2;
+	@apply text-5xl mt-10 mb-2;
 }
 
 h2 {
-    @apply text-3xl mt-10 mb-2;
+	@apply text-3xl mt-10 mb-2;
 }
 
 h3 {
-    @apply text-2xl;
+	@apply text-2xl mb-1;
 }
 
 main {
-    a {
-        @apply text-green-600;
-    }
+	a {
+		@apply text-green-600;
+	}
 
-    p {
-        @apply mb-3;
-    }
+	p + p {
+		@apply mb-3;
+	}
 
-    ol,
-    ul {
-        @apply m-6;
-    }
+	ol,
+	ul {
+		@apply m-6;
+	}
 
-    ol {
-        @apply list-decimal;
-    }
+	ol {
+		@apply list-decimal;
+	}
 
-    ul {
-        @apply list-disc;
+	ul {
+		@apply list-disc;
 
-        list-style-type: square;
-    }
+		list-style-type: square;
+	}
 }
 
 footer {
-    a {
-        @apply text-white;
-    }
+	a {
+		@apply text-white;
+	}
 }
 
 nav.tabs {
-    @apply my-10;
+	@apply my-10;
 
-    .header {
-        @apply flex border-b;
-    }
+	.header {
+		@apply flex border-b;
+	}
 
-    .tab {
-        @apply mr-1;
+	.tab {
+		@apply mr-1;
 
-        button {
-            @apply bg-white inline-block py-2 px-4 text-gray-700 font-semibold outline-none -mb-px;
-        }
-    }
+		button {
+			@apply bg-white inline-block py-2 px-4 text-gray-700 font-semibold outline-none -mb-px;
+		}
+	}
 
-    .tab.active {
-        button {
-            @apply bg-gray-800 text-white rounded-t border-t;
-        }
-    }
+	.tab.active {
+		button {
+			@apply bg-gray-800 text-white rounded-t border-t;
+		}
+	}
 }
 
 pre.prism-code {
-    @apply px-8 py-4 mt-4 mb-12 overflow-x-scroll overflow-auto;
+	@apply px-8 py-4 mt-4 mb-12 overflow-x-scroll overflow-auto;
 }

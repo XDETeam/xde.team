@@ -19,6 +19,7 @@ Typescript относится к языкам программирования �
 -   [Номинальная система типов](/ru/wiki/typescript/lab-nominal)
 -   [Conditional compilation](/ru/wiki/typescript/conditional-compilation)
 -   [Specs location](/ru/wiki/typescript/specs-location)
+-   [Stylelint](/ru/wiki/typescript/lab-stylelint)
 -   [Tree shaking in transformers](/ru/wiki/typescript/tree-shaking-in-transformer)
 
 <ToDoAlert>
