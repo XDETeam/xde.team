@@ -1,3 +1,4 @@
+import { FC, ReactNode } from "react";
 import { Alice } from "@sde/team-specs";
 
 export interface IEntity {}
@@ -53,6 +54,26 @@ function given<TRequest, TResponse>(
 
 export const test1 = given`${Alice} ${exists}`;
 export const test2 = given`${Alice} ${signIn}`;
+export const tests = `
+	- Я буду начинать с предиката или всё-таки нет?
+		- Против предиката говорит то
+			- По соглашениям он будет всё-таки с маленькой буквы.
+			- Предикат может быть из нескольких слов
+		- За предикат
+			- Иногда может быть один предикат, без субъекта.
+			- Вроде как предикаты впереди - это мощно
+
+	Given Exists Alice # Given Alice sample
+	When SignIn Alice
+	Then 
+
+	When Sign in Alice
+	And Favourite partner Shady
+	And List favourite partners
+	Then Partners contains:
+		| Name  |
+		| Shady |	
+`;
 
 export default () => (
 	<div className="p-16 bg-red-200">TODO:Test {JSON.stringify([test1, test2])}</div>
