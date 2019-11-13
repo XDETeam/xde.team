@@ -1,3 +1,9 @@
+## Prerequisites
+
+```shell
+cd ../ && git clone https://github.com/StanEgo/sde-typescript.git
+```
+
 ## Docs
 
 Based on [Next.js](https://nextjs.org/) (/docs folder).
