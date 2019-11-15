@@ -1,0 +1,1 @@
+export { Named } from "./Named";

@@ -7,10 +7,12 @@ type PersonMissing = {
 }
 
 export const Alice: Person & PersonMissing = {
+    firstName: "Alice",
+    lastName: "Smith",
+    name: "TODO:",
+
     eMail: "alice@domain.com",
     password: "!qa2Ws3eD",
-    firstName: "Alice",
-    lastName: "Smith"
 };
 
 Alice.toString = function () {
