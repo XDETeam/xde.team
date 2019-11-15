@@ -1,5 +1,8 @@
 import { FC, ReactNode } from "react";
-import { Alice } from "@sde/team-specs";
+import { Alice, Named } from "@sde/team-specs";
+
+// TODO: Is this of any use?
+type PersonSample = typeof Alice;
 
 export interface IEntity {}
 
