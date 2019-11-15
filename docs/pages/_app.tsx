@@ -9,20 +9,20 @@ import "katex/dist/katex.css";
 import "../styles/index.css";
 
 const components = {
-    code: CodeBlock,
-    inlineCode: InlineCodeBlock
+	code: CodeBlock,
+	inlineCode: InlineCodeBlock
 };
 
 export default class MyApp extends App {
-    render() {
-        const { Component, pageProps } = this.props;
+	render() {
+		const { Component, pageProps } = this.props;
 
-        return (
-            <MDXProvider components={components}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
-            </MDXProvider>
-        );
-    }
+		return (
+			<MDXProvider components={components}>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</MDXProvider>
+		);
+	}
 }

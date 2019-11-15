@@ -1,38 +1,36 @@
-declare module "@mdx-js/react" {
-    import {
-        Context,
-        Consumer,
-        ComponentType,
-        FunctionComponent,
-        ReactElement,
-        createElement
-    } from 'react'
-
-    interface ComponentDictionary {
-        [name: string]: ComponentType<any>
+declare module '@mdx-js/react' {
+    import * as React from 'react'
+    type ComponentType =
+        | 'p'
+        | 'h1'
+        | 'h2'
+        | 'h3'
+        | 'h4'
+        | 'h5'
+        | 'h6'
+        | 'thematicBreak'
+        | 'blockquote'
+        | 'ul'
+        | 'ol'
+        | 'li'
+        | 'table'
+        | 'tr'
+        | 'td'
+        | 'pre'
+        | 'code'
+        | 'em'
+        | 'strong'
+        | 'delete'
+        | 'inlineCode'
+        | 'hr'
+        | 'a'
+        | 'img'
+    export type Components = {
+        [key in ComponentType]?: React.ComponentType<any>
     }
-
-    interface ComponentsProp {
-        components: ComponentDictionary
+    export interface MDXProviderProps {
+        children: React.ReactNode
+        components: Components
     }
-
-    declare const MDXContext: Context<ComponentsProp>
-    declare const MDXProvider: FunctionComponent<ComponentsProp>
-    declare function useMDXComponents(
-        components: ComponentDictionary | (() => ComponentDictionary)
-    ): ComponentDictionary
-    declare function withMDXComponents(
-        child: FunctionComponent<ComponentsProp>
-    ): ReactElement | null
-    declare const mdx: typeof createElement
-
-    export {
-        ComponentDictionary,
-        ComponentsProp,
-        MDXContext,
-        MDXProvider,
-        useMDXComponents,
-        withMDXComponents,
-        mdx
-    }
+    export class MDXProvider extends React.Component<MDXProviderProps> { }
 }
