@@ -34,7 +34,7 @@ main {
 	}
 
 	p + p {
-		@apply mb-3;
+		@apply mt-3;
 	}
 
 	ol,
