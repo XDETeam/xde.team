@@ -41,10 +41,11 @@ import { ToDoAlert } from "\$alerts";
 
 ## Wiki
 
+-   [Cx](/wiki/cx) [[ru]](/ru/wiki/cx)
+-   [Node.js](/wiki/nodejs) [[ru]](/ru/wiki/nodejs)
+-   [React](/wiki/react) [[ru]](/ru/wiki/react)
 -   [Types](/wiki/types) [[ru]](/ru/wiki/types)
 -   [Typescript](/wiki/typescript) [[ru]](/ru/wiki/typescript)
--   [Cx](/wiki/cx) [[ru]](/ru/wiki/cx)
--   [React](/wiki/react) [[ru]](/ru/wiki/react)
 
 ## Labs
 
