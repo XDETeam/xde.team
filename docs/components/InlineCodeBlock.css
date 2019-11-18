@@ -1,5 +1,10 @@
+@tailwind base;
+@tailwind components;
+
 .inline-code-block {
-	border-radius: 5%;
-	border-width: 1px;
+	@apply border font-mono rounded-sm shadow text-sm whitespace-no-wrap;
+
 	padding: 0.1rem 0.3rem;
 }
+
+@tailwind utilities;
