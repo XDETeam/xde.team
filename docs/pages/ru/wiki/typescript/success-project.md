@@ -1,4 +1,4 @@
-import { ToDoAlert, DraftAlert } from "$alerts";
+import { ToDoAlert, DraftAlert, NoteAlert } from "$alerts";
 import { CodeBlock } from "$components/CodeBlock";
 import { TestConst } from "@sde/types";
 
@@ -37,6 +37,8 @@ NPM пакеты обоих приложений хранятся в папке 
     }
 }
 ```
+
+<NoteAlert>TODO: В devDependencies - то, что не нужно для работы уже прошедшему билд пакету, в dependencies дополнительно добавлять @types/_, которые нужны для _.d.ts файлов пакета</NoteAlert>
 
 ## Корневой tsconfig.json
 
