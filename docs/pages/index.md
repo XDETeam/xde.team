@@ -50,3 +50,4 @@ import { ToDoAlert } from "\$alerts";
 ## Labs
 
 -   [Gherkin way](/labs/gherkin-way) [[ru]](/ru/labs/gherkin-way)
+-   [VS Code Debugging](/labs/vscode-debug) [[ru]](/ru/labs/vscode-debug)

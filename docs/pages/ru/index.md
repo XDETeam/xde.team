@@ -34,3 +34,4 @@ TODO:Temporary content map
 ## Лаборатории
 
 -   [Путь Gherkin](/ru/labs/gherkin-way) [[en]](/labs/gherkin-way)
+-   [Отладка в VS Code](/ru/labs/vscode-debug) [[en]](/labs/vscode-debug)
