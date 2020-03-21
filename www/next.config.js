@@ -1,5 +1,3 @@
-const withPlugins = require("next-compose-plugins");
-
 const images = require("remark-images");
 const emoji = require("remark-emoji");
 const math = require("remark-math");
@@ -20,15 +18,5 @@ const nextConfig = {
     }
 };
 
-module.exports = withPlugins(
-    [
-        [
-            mdx,
-            {
-                pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"]
-            }
-        ]
-    ],
-
-    nextConfig
-);
+module.exports = [nextConfig, mdx]
+    .reduce((config, plugin) => plugin(config))
