@@ -4,7 +4,7 @@
     "workspaces": [
         "docs",
         "packages/*",
-		"www",
+        "www",
         "../sde-typescript/packages/*"
     ],
     "scripts": {
