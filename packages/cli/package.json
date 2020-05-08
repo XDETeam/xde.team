@@ -20,7 +20,6 @@
     "cli:test": "run-s build cli:run"
   },
   "dependencies": {
-    "@sde/types": "0.0.1",
     "@types/node": "^13.9.1"
   },
   "devDependencies": {
