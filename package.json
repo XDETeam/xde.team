@@ -9,7 +9,8 @@
     ],
     "scripts": {
         "docs:dev": "yarn --cwd docs/ run dev",
-        "docs:publish": "yarn --cwd docs/ run publish",
+        "docs:deploy": "yarn --cwd docs/ run deploy",
+        "www:deploy": "yarn --cwd www/ run deploy",
         "clean:es5": "rimraf packages/*/es5",
         "clean:types": "rimraf packages/*/types",
         "clean:tsc": "rimraf **/*.tsbuildinfo",
