@@ -1,3 +1,3 @@
 [build]
 publish = "www/.out/"
-command = "yarn www:deploy" 
+command = "yarn && yarn www:deploy" 
