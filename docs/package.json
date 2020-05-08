@@ -29,5 +29,8 @@
 		"stylelint-config-standard": "^20.0.0",
 		"stylelint-order": "^4.0.0",
 		"tailwindcss": "^1.2.0"
+	},
+	"devDependencies": {
+		"typescript": "^3.9.3"
 	}
 }
