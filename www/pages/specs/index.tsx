@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Page = () => (
 	<>
 		<h1>Specs</h1>
@@ -10,6 +12,12 @@ export const Page = () => (
 			Each spec (/specs/spec-name) contains some entity definition. Aspects
 			(/specs/spec-name/aspect-name) may contain some details.
 		</p>
+
+		<ul>
+			<li>
+				<Link href="specs/next-js">Next.js</Link>
+			</li>
+		</ul>
 	</>
 );
 
