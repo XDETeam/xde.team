@@ -1,3 +1,11 @@
-export const Home = () => <h1>SDE.Team: Deploying...</h1>;
+import Link from "next/link";
 
-export default Home;
+export const Page = () => (
+	<>
+		<h1>SDE.Team: Deploying...</h1>
+
+		<Link href="/specs">Specs</Link>
+	</>
+);
+
+export default Page;
