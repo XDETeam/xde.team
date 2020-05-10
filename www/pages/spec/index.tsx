@@ -17,6 +17,9 @@ export const Page = () => (
 			<li>
 				<Link href="spec/next-js">Next.js</Link>
 			</li>
+			<li>
+				<Link href="spec/tab-symbol">Tab symbol</Link>
+			</li>
 		</ul>
 	</>
 );
