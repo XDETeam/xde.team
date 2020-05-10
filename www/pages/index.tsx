@@ -6,7 +6,7 @@ export const Page = () => (
 
 		<ul>
 			<li>
-				<Link href="/specs">Specs</Link>
+				<Link href="/spec">Specs</Link>
 			</li>
 			<li>
 				<Link href="/app">Apps</Link>

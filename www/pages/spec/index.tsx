@@ -9,13 +9,13 @@ export const Page = () => (
 			in this world.
 		</p>
 		<p>
-			Each spec (/specs/spec-name) contains some entity definition. Aspects
-			(/specs/spec-name/aspect-name) may contain some details.
+			Each spec (/spec/spec-name) contains some entity definition. Aspects
+			(/spec/spec-name/aspect-name) may contain some details.
 		</p>
 
 		<ul>
 			<li>
-				<Link href="specs/next-js">Next.js</Link>
+				<Link href="spec/next-js">Next.js</Link>
 			</li>
 		</ul>
 	</>
