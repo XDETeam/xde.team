@@ -4,7 +4,14 @@ export const Page = () => (
 	<>
 		<h1>SDE.Team: Deploying...</h1>
 
-		<Link href="/specs">Specs</Link>
+		<ul>
+			<li>
+				<Link href="/specs">Specs</Link>
+			</li>
+			<li>
+				<Link href="/app">Apps</Link>
+			</li>
+		</ul>
 	</>
 );
 
