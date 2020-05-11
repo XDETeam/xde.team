@@ -18,6 +18,9 @@ export const Page = () => (
 				<Link href="spec/next-js">Next.js</Link>
 			</li>
 			<li>
+				<Link href="spec/post-css">Post CSS</Link>
+			</li>
+			<li>
 				<Link href="spec/tab-symbol">Tab symbol</Link>
 			</li>
 		</ul>
