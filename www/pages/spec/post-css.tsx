@@ -1,4 +1,8 @@
-export const Page = () => (
+import { IEntity, Entity } from "@sde/mesh";
+
+export const entity: IEntity = Entity.create("post-css");
+
+export const page = () => (
 	<>
 		<h1>Post CSS</h1>
 
@@ -14,4 +18,4 @@ export const Page = () => (
 	</>
 );
 
-export default Page;
+export default page;

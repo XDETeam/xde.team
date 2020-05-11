@@ -1,0 +1,11 @@
+{
+	"private": true,
+	"name": "@sde/mesh",
+	"version": "0.0.1",
+	"dependencies": {
+		"react": "^16.13.1"
+	},
+	"devDependencies": {
+		"@types/react": "^16.9.35"
+	}
+}
