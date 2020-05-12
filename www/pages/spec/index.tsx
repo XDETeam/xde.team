@@ -21,6 +21,12 @@ export const Page = () => (
 				<Link href="spec/post-css">Post CSS</Link>
 			</li>
 			<li>
+				<Link href="spec/pre-processor-css">CSS Pre-processor</Link>
+			</li>
+			<li>
+				<Link href="prettier-code-formatter">Prettier code formatter</Link>
+			</li>
+			<li>
 				<Link href="spec/tab-symbol">Tab symbol</Link>
 			</li>
 		</ul>
