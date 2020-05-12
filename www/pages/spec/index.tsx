@@ -1,36 +1,51 @@
 import Link from "next/link";
 
 export const Page = () => (
-	<>
-		<h1>Specs</h1>
+    <>
+        <h1>Specs</h1>
 
-		<p>
-			This is a wiki-like content organization, structuring our vision of different entities
-			in this world.
-		</p>
-		<p>
-			Each spec (/spec/spec-name) contains some entity definition. Aspects
-			(/spec/spec-name/aspect-name) may contain some details.
-		</p>
+        <p>
+            This is a wiki-like content organization, structuring our vision of
+            different entities in this world.
+        </p>
+        <p>
+            Each spec (/spec/spec-name) contains some entity definition. Aspects
+            (/spec/spec-name/aspect-name) may contain some details.
+        </p>
 
-		<ul>
-			<li>
-				<Link href="spec/next-js">Next.js</Link>
-			</li>
-			<li>
-				<Link href="spec/post-css">Post CSS</Link>
-			</li>
-			<li>
-				<Link href="spec/pre-processor-css">CSS Pre-processor</Link>
-			</li>
-			<li>
-				<Link href="prettier-code-formatter">Prettier code formatter</Link>
-			</li>
-			<li>
-				<Link href="spec/tab-symbol">Tab symbol</Link>
-			</li>
-		</ul>
-	</>
+        <ul>
+            <li>
+                <Link href="spec/next-js">
+                    <a>Next.js</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="spec/normalize-css">
+                    <a>Normalize.css</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="spec/post-css">
+                    <a>Post CSS</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="spec/pre-processor-css">
+                    <a>CSS Pre-processor</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="prettier-code-formatter">
+                    <a>Prettier code formatter</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="spec/tab-symbol">
+                    <a>Tab symbol</a>
+                </Link>
+            </li>
+        </ul>
+    </>
 );
 
 export default Page;
