@@ -1,16 +1,25 @@
 @import "~normalize.css";
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&display=swap");
 /*
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@100;400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@100;400;900&display=swap");
 */
 
 body {
-    font-family: Roboto, Arial, sans-serif;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 1rem;
     padding: 20px 20px 60px;
     max-width: 980px;
     margin: 0 auto;
     line-height: 1.5;
+}
+
+h1 {
+    font-size: 3.6rem;
+    font-feature-settings: "kern";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
