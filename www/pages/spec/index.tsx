@@ -15,32 +15,32 @@ export const Page = () => (
 
         <ul>
             <li>
-                <Link href="spec/next-js">
+                <Link href="/spec/next-js">
                     <a>Next.js</a>
                 </Link>
             </li>
             <li>
-                <Link href="spec/normalize-css">
+                <Link href="/spec/normalize-css">
                     <a>Normalize.css</a>
                 </Link>
             </li>
             <li>
-                <Link href="spec/post-css">
+                <Link href="/spec/post-css">
                     <a>Post CSS</a>
                 </Link>
             </li>
             <li>
-                <Link href="spec/pre-processor-css">
+                <Link href="/spec/pre-processor-css">
                     <a>CSS Pre-processor</a>
                 </Link>
             </li>
             <li>
-                <Link href="prettier-code-formatter">
+                <Link href="/spec/prettier-code-formatter">
                     <a>Prettier code formatter</a>
                 </Link>
             </li>
             <li>
-                <Link href="spec/tab-symbol">
+                <Link href="/spec/tab-symbol">
                     <a>Tab symbol</a>
                 </Link>
             </li>
