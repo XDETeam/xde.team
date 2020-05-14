@@ -12,7 +12,7 @@ export const Page = () => (
                 <Link href="/spec">Specs</Link>
             </li>
             <li>
-                <Link href="/app">Apps</Link>
+                <Link href="/labs">Labs</Link>
             </li>
         </ul>
     </>

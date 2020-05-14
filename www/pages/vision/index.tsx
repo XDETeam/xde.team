@@ -3,7 +3,10 @@ export const Page = () => (
         <h1>Vision</h1>
 
         <h2>Team</h2>
-        <p>SDE is a team of people who loves to create.</p>
+        <p>
+            SDE is a team of people who loves to create. Especially something
+            awesome and unusual.
+        </p>
 
         <h2>Toolkit</h2>
         <p>
