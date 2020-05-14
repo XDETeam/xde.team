@@ -10,6 +10,11 @@ export const Page = () => (
                     <a>SDE.Team</a>
                 </Link>
             </li>
+            <li>
+                <Link href="/labs/egopolis.net">
+                    <a>Egopolis.net</a>
+                </Link>
+            </li>
         </ul>
     </>
 );
