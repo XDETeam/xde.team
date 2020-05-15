@@ -1,5 +1,12 @@
+import Toolbar from "../ui/toolbar";
+
 import "../ui/styles.css";
 
-export default function MyApp({ Component, pageProps }) {
-    return <Component {...pageProps} />;
-}
+export const Page = ({ Component, pageProps }) => (
+    <>
+        <Component {...pageProps} />
+        <Toolbar />
+    </>
+);
+
+export default Page;

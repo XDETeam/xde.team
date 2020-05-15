@@ -1,0 +1,20 @@
+div.bar {
+    position: fixed;
+    background-color: #eee;
+    top: 0;
+    right: 0;
+    width: 64px;
+    height: 100%;
+}
+
+div.bar a {
+    display: block;
+    height: 48px;
+    margin: 8px;
+    font-size: 2rem;
+    font-weight: 900;
+    text-align: center;
+    background-color: #c00;
+    color: #fff;
+    text-decoration: none;
+}
