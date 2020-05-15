@@ -15,6 +15,11 @@ export const Page = () => (
 
         <ul>
             <li>
+                <Link href="/spec/id">
+                    <a>ID</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/next-js">
                     <a>Next.js</a>
                 </Link>
