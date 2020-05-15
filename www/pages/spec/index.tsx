@@ -20,26 +20,6 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
-                <Link href="/spec/next-js">
-                    <a>Next.js</a>
-                </Link>
-            </li>
-            <li>
-                <Link href="/spec/normalize-css">
-                    <a>Normalize.css</a>
-                </Link>
-            </li>
-            <li>
-                <Link href="/spec/post-css">
-                    <a>Post CSS</a>
-                </Link>
-            </li>
-            <li>
-                <Link href="/spec/pre-processor-css">
-                    <a>CSS Pre-processor</a>
-                </Link>
-            </li>
-            <li>
                 <Link href="/spec/prettier-code-formatter">
                     <a>Prettier code formatter</a>
                 </Link>
@@ -47,6 +27,11 @@ export const Page = () => (
             <li>
                 <Link href="/spec/tab-symbol">
                     <a>Tab symbol</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="/spec/web-development">
+                    <a>Web development</a>
                 </Link>
             </li>
         </ul>
