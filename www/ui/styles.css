@@ -28,3 +28,16 @@ h3 {
 h1 {
     font-size: 3.6rem;
 }
+
+p a {
+    background-color: #eee;
+    text-decoration: none;
+    color: #000;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+p a:hover {
+    background-color: royalblue;
+    color: #fff;
+}
