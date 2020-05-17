@@ -41,3 +41,8 @@ p a:hover {
     background-color: royalblue;
     color: #fff;
 }
+
+section.code {
+    background-color: #f4f4f4;
+    padding: 0.5rem 2rem;
+}
