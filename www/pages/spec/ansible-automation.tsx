@@ -1,3 +1,5 @@
+import Code from "../../ui/Code";
+
 export const Page = () => (
     <>
         <h1>Ansible</h1>
@@ -43,6 +45,9 @@ export const Page = () => (
             Ordered list of <a>tasks</a> applied for hosts from <a>inventory</a>
             .
         </p>
+
+        <h2>Ad Hoc Commands</h2>
+        <Code lang="shell">ansible all -m ping -i inventory</Code>
     </>
 );
 

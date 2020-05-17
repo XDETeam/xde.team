@@ -10,6 +10,11 @@ export const Page = () => (
                     <a>Ansible</a>
                 </Link>
             </li>
+            <li>
+                <Link href="/spec/open-ssh-connectivity">
+                    <a>OpenSSH</a>
+                </Link>
+            </li>
         </ul>
     </>
 );
