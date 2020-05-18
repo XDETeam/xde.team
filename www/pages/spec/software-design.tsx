@@ -12,6 +12,15 @@ export const Page = () => (
                 </Link>
             </li>
         </ul>
+
+        <h2>Design patterns</h2>
+        <ul>
+            <li>
+                <Link href="/spec/singleton-design-pattern">
+                    <a>Singleton</a>
+                </Link>
+            </li>
+        </ul>
     </>
 );
 
