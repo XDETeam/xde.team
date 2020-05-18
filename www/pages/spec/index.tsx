@@ -30,6 +30,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/spec/solid-software-design">
+                    <a>SOLID design principles</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/tab-symbol">
                     <a>Tab symbol</a>
                 </Link>
