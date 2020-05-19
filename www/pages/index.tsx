@@ -14,6 +14,9 @@ export const Page = () => (
             <li>
                 <Link href="/labs">Labs</Link>
             </li>
+            <li>
+                <Link href="/service">Services</Link>
+            </li>
         </ul>
     </>
 );

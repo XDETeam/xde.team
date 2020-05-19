@@ -15,11 +15,6 @@ TODO:Temporary content map
 -   [Спецификация](/ru/specs) [[en]](/specs)
 -   [Язык](/ru/specs/language) [[en]](/specs/language)
 
-## Услуги
-
--   [Аудит](/ru/services/audit) [[en]](/services/audit)
--   [Поиск талантов](/ru/services/talent-hunt) [[en]](/services/talent-hunt)
-
 ## Вклад
 
 -   [Олимпийские игры](/ru/contribute/olympic-games) [[en]](/contribute/olympic-games)

@@ -19,11 +19,6 @@ import { ToDoAlert } from "\$alerts";
 -   [Specification](/specs) [[ru]](/ru/specs)
 -   [Language](/specs/language) [[ru]](/ru/specs/language)
 
-## Services
-
--   [Audit](/services/audit) [[ru]](/ru/services/audit)
--   [Talent hunt](/services/talent-hunt) [[ru]](/ru/services/talent-hunt)
-
 ## Contribute
 
 -   [Olympic games](/contribute/olympic-games) [[ru]](/ru/contribute/olympic-games)
