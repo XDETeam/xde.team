@@ -7,7 +7,7 @@ export const Page = () => (
         <h2>Encoding</h2>
         <p>
             ID encoding is used in{" "}
-            <Link href="/labs/egopolis.net">
+            <Link href="/lab/egopolis.net">
                 <a>Egopolis.net</a>
             </Link>{" "}
             for servers identification.

@@ -6,12 +6,12 @@ export const Page = () => (
 
         <ul>
             <li>
-                <Link href="/labs/sde.team">
+                <Link href="/lab/sde.team">
                     <a>SDE.Team</a>
                 </Link>
             </li>
             <li>
-                <Link href="/labs/egopolis.net">
+                <Link href="/lab/egopolis.net">
                     <a>Egopolis.net</a>
                 </Link>
             </li>
