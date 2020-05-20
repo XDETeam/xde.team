@@ -4,6 +4,14 @@ export const Page = () => (
     <>
         <h1>OpenSSH</h1>
 
+        <h2>Key management</h2>
+        <p>
+            Key management is based on <a>ssh-keygen</a> responsible for secure
+            <a>key pair</a> generation, <a>ssh-agent</a> to host these keys and
+            act as an authentication agent, <a>ssh-add</a> to add private keys
+            to the agent.
+        </p>
+
         <h2>Create key pair (Powershell)</h2>
         <Code lang="powershell">
             {`
