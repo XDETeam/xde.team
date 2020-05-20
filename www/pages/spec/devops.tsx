@@ -15,6 +15,11 @@ export const Page = () => (
                     <a>OpenSSH</a>
                 </Link>
             </li>
+            <li>
+                <Link href="/spec/wsl-compatibility-layer">
+                    <a>Windows Subsystem for Linux (WSL)</a>
+                </Link>
+            </li>
         </ul>
     </>
 );
