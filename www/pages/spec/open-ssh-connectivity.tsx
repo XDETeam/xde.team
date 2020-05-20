@@ -9,22 +9,25 @@ export const Page = () => (
             {`
 $keyfile = "$PSScriptRoot/.vault/id_rsa"
 
-Remove-Item $keyfile -ErrorAction SilentlyContinue
+If (Test-Path $keyfile) {
+	Write-Host "Key $keyfile already exists"
+	Exit
+}
+
 Remove-Item "$keyfile.pub" -ErrorAction SilentlyContinue
 
 &ssh-keygen -t RSA -b 4096 -f $keyfile -C default -q
 
-# Remove Inheritance
-&icacls $keyfile /c /t /inheritance:d
+# Setup permissions for the owner only
+$acl = Get-Acl $keyfile
+$acl.SetAccessRuleProtection($True, $False) # Disable inheritance
+$acl.Access | %{ $acl.RemoveAccessRule($_) | Out-Null } # Revoke all permissions
 
-# Set Ownership to Owner
-&icacls $keyfile /c /t /grant %username%:F
+$identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+$rule = New-Object System.Security.AccessControl.FileSystemAccessRule($identity.Name, "FullControl", "Allow")
+$acl.SetAccessRule($rule) # Add permission for the current user
 
-# Remove All Users, except for Owner
-&cmd /c icacls $keyfile  /c /t /remove Administrator "Authenticated Users" BUILTIN\\Administrators BUILTIN Everyone System Users
-
-# Verify
-&cmd /c icacls $keyfile
+Set-Acl -Path $keyfile -AclObject $acl
         `}
         </Code>
 
