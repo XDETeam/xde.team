@@ -4,6 +4,7 @@ export const Page = () => (
     <>
         <h1>DevOps</h1>
 
+        <h2>InBox</h2>
         <ul>
             <li>
                 <Link href="/spec/ansible-automation">
@@ -13,6 +14,11 @@ export const Page = () => (
             <li>
                 <Link href="/spec/open-ssh-connectivity">
                     <a>OpenSSH</a>
+                </Link>
+            </li>
+            <li>
+                <Link href="/spec/windows-environment">
+                    <a>Windows</a>
                 </Link>
             </li>
             <li>
