@@ -9,6 +9,10 @@ export const Page = () => (
             Configuration file is a code (compared to implementations like
             package.json).
         </p>
+        <p>
+            It uses a <a>chain pattern</a> close to the one used in{" "}
+            <a>Node.js</a>, <a>OWIN</a>, etc.
+        </p>
         <h3>Plugins composition</h3>
         <p>
             Probably plugins like next-compose-plugins are redundant and we can
@@ -29,7 +33,14 @@ export const Page = () => (
             <Link href="/spec/post-css">Post CSS</Link> is included and
             automatically configured.
         </p>
-        .
+        <h2>Plugins</h2>
+        <p>
+            Next.js plugin is mostly a configurator for{" "}
+            <Link href="/spec/webpack-bundle">
+                <a>Webpack</a>
+            </Link>{" "}
+            plugin.
+        </p>
     </>
 );
 

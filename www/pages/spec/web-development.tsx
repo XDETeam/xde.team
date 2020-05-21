@@ -23,10 +23,19 @@ export const Page = () => (
             </li>
         </ul>
 
+        <h2>Bundling</h2>
+        <ul>
+            <li>
+                <Link href="/spec/webpack-bundle">
+                    <a>Webpack</a>
+                </Link>
+            </li>
+        </ul>
+
         <h2>SSR/SSG</h2>
         <ul>
             <li>
-                <Link href="/spec/next-js">
+                <Link href="/spec/next-js-application-framework">
                     <a>Next.js</a>
                 </Link>
             </li>
