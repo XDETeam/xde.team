@@ -15,7 +15,7 @@ export const Page = () => (
         <h2>Control node</h2>
         <p>Machine with Ansible installed to run commands and playbooks.</p>
         <p>
-            Conside{" "}
+            Consider{" "}
             <a href="https://github.com/cytopia/docker-ansible">Docker image</a>{" "}
             to run the control node quickly.
         </p>

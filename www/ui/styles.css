@@ -15,6 +15,7 @@ body {
     max-width: 980px;
     margin: 0 auto;
     line-height: 1.5;
+    color: #333;
 }
 
 h1,
@@ -23,6 +24,7 @@ h3 {
     font-feature-settings: "kern";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    color: #000;
 }
 
 h1 {
@@ -33,9 +35,9 @@ p a,
 blockquote a {
     background-color: #eee;
     text-decoration: none;
-    color: #000;
     padding: 2px 4px;
     border-radius: 4px;
+    color: #000;
 }
 
 p a:hover,
