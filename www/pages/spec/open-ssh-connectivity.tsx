@@ -12,6 +12,16 @@ export const Page = () => (
             to the agent.
         </p>
 
+        <p>Windows 10 setup of ssh-agent</p>
+        <Code lang="powershell">{`
+Set-Service ssh-agent -StartupType Manual
+        `}</Code>
+
+        <h2>Setup connection</h2>
+        <Code lang="powershell">{`
+ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/ansible_controller
+        `}</Code>
+
         <h2>Create key pair (Powershell)</h2>
         <Code lang="powershell">
             {`
