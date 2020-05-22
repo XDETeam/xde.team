@@ -30,3 +30,12 @@ export const Page: FunctionComponent<ISpecPageProps> = () => {
 };
 
 export default Page;
+
+export async function getStaticPaths() {
+    const paths = Object.getOwnPropertyNames(specs).map((id) => `/spec/${id}`);
+    return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }) {
+    return { props: params };
+}
