@@ -41,6 +41,12 @@ export const Page = () => (
             </Link>{" "}
             plugin.
         </p>
+
+        <h2>InBox</h2>
+        <p>
+            Dynamic routes (/spec/[id].tsx for example) is called twice. The
+            first time with empty router query and the second time its ok.
+        </p>
     </>
 );
 
