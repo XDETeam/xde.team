@@ -9,15 +9,8 @@ export interface ISpecPageProps {
 
 export const Page: FunctionComponent<ISpecPageProps> = () => {
     const router = useRouter();
-
-    console.log("Router", router);
-    console.log("Query", router.query);
-
     const { id } = (router.query as unknown) as ISpecPageProps;
-    console.log("Id", id);
-
     const Component = specs[id] ?? (() => <></>);
-    console.log("Component", Component);
 
     return (
         <>
