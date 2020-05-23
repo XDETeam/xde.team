@@ -12,6 +12,10 @@ import { FunctionComponent, ReactElement, Children, PropsWithChildren, ReactNode
 // TODO: Create FunctionComponent extension (interface)?
 export type SpecComponent = FunctionComponent & { inbox: SpecComponent[] };
 
+export interface ISpecElement extends ReactElement {
+    inbox: FunctionComponent[];
+}
+
 export const Spec: FunctionComponent = (props) => {
     if (props.children instanceof Array) {
         props.children?.forEach((child) => console.log(child));
@@ -21,19 +25,23 @@ export const Spec: FunctionComponent = (props) => {
 };
 
 //TODO:Migrate to interface?
-export const specify = (node: ReactElement): ReactElement => {
+export const specify = (node: ReactElement): ISpecElement => {
     console.log(`Specify [${(node.type as Function).name}] for ${node.key}`);
+
+    const result = { ...node, inbox: [] };
 
     // TODO:Check if exists
     specify.storage[node.key] = node;
 
     if (node.props.children instanceof Array) {
-        node.props.children?.forEach((child) =>
-            console.log(`-- ${(child.type as Function).name}`)
-        );
+        node.props.children?.forEach((child) => {
+            console.log(`-- ${(child.type as Function).name}`);
+            //TODO:if relation
+            result.inbox.push(child)
+        });
     }
 
-    return node;
+    return result;
 };
 
 specify.storage = {};
