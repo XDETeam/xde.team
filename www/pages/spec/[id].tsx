@@ -10,13 +10,15 @@ export interface ISpecPageProps {
 export const Page: FunctionComponent<ISpecPageProps> = () => {
     const router = useRouter();
     const { id } = (router.query as unknown) as ISpecPageProps;
-    const Component = specs[id] ?? (() => <></>);
+    const component = specs[id] ?? <></>;
+
+    console.log("Spec", id, component);
 
     return (
         <>
             <p>Spec: {id}</p>
             <main>
-                <Component />
+                {component}
             </main>
         </>
     );
@@ -26,6 +28,7 @@ export default Page;
 
 export async function getStaticPaths() {
     const paths = Object.getOwnPropertyNames(specs).map((id) => `/spec/${id}`);
+
     return { paths, fallback: false };
 }
 

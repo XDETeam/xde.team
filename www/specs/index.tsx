@@ -1,5 +1,15 @@
-import { FunctionComponent, ReactElement } from "react";
+import { FunctionComponent, ReactElement, Children, PropsWithChildren, ReactNode } from "react";
 
+/**
+ * TODO: Short statements about design:
+ * - Mesh nodes are simply React elements
+ * - Mesh relation are functions
+ * - To add node to specification, specify(...) function is used.
+ * 
+ * TODO: Automatically generate h1?
+ */
+
+// TODO: Create FunctionComponent extension (interface)?
 export type SpecComponent = FunctionComponent & { inbox: SpecComponent[] };
 
 export const Spec: FunctionComponent = (props) => {
@@ -7,11 +17,16 @@ export const Spec: FunctionComponent = (props) => {
         props.children?.forEach((child) => console.log(child));
     }
 
-    return <></>;
+    return <>{props.children}</>;
 };
 
+//TODO:Migrate to interface?
 export const specify = (node: ReactElement): ReactElement => {
     console.log(`Specify [${(node.type as Function).name}] for ${node.key}`);
+
+    // TODO:Check if exists
+    specify.storage[node.key] = node;
+
     if (node.props.children instanceof Array) {
         node.props.children?.forEach((child) =>
             console.log(`-- ${(child.type as Function).name}`)
@@ -21,9 +36,12 @@ export const specify = (node: ReactElement): ReactElement => {
     return node;
 };
 
-export const Translation: FunctionComponent<{ from: ReactElement }> = (
-    props
-) => <></>;
+specify.storage = {};
+
+export interface ITranslationProps extends PropsWithChildren<{ in: ReactNode }> { }
+export const Named: FunctionComponent<ITranslationProps> = (
+    { in: from, children }
+) => <div>Translated {from}: {children}</div>;
 export const Is: FunctionComponent<{ a: ReactElement }> = (props) => <></>;
 
 export const Russian = specify(<Spec key="russian-language"></Spec>);
@@ -31,14 +49,15 @@ export const English = specify(<Spec key="english-language"></Spec>);
 
 export const WorkoutExcercise = specify(
     <Spec key="workout-excercise">
-        <Translation from={Russian}>Физическое упражнение</Translation>
+        <Named in={Russian}>Физическое упражнение</Named>
     </Spec>
 );
 
 export const Squat = specify(
     <Spec key="squat">
-        <Translation from={English}>Squat</Translation>
-        <Translation from={Russian}>Приседание</Translation>
+        <h1>Squat</h1>
+        <Named in={English}>Squat</Named>
+        <Named in={Russian}>Приседание</Named>
         <Is a={WorkoutExcercise} />
     </Spec>
 );
@@ -55,47 +74,4 @@ export const dump = (element: ReactElement, level: number = 1) => {
 console.log(`Dump Squat`);
 dump(Squat);
 
-/*
-export type IRelation = FunctionComponent;
-export type IIncomingRelation = IRelation & { source: ISpec };
-export type IOutgoingRelation = IRelation & { target: ISpec };
-
-export interface ISpec {
-    id: string;
-    inbox: IIncomingRelation[];
-    outbox: IOutgoingRelation[];
-}
-
-export class Spec implements ISpec {
-    inbox: IIncomingRelation[];
-    outbox: IOutgoingRelation[];
-
-    constructor(public id: string) {}
-
-    relate = (target: FunctionComponent) => {
-        return this;
-    };
-
-    static storage: { [id: string]: ISpec } = {};
-
-    static for = (id: string) => {
-        const spec = new Spec(id);
-        //TODO:Check uniqueness
-        Spec.storage[id] = spec;
-        return spec;
-    };
-}
-
-export const WorkoutExcercise: ISpec = Spec.for("workout-excercise");
-export const Quadriceps: ISpec = Spec.for("quadriceps-femoris");
-*/
-
-export const specs: { [id: string]: FunctionComponent } = {
-    "custom-spec": () => (
-        <>
-            <h1>Custom specification</h1>
-        </>
-    ),
-};
-
-export default specs;
+export default specify.storage;
