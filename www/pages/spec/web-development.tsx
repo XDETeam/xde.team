@@ -13,6 +13,15 @@ export const Page = () => (
             </li>
         </ul>
 
+        <h2>Frameworks</h2>
+        <ul>
+            <li>
+                <Link href="/spec/react-stack">
+                    <a>React</a>
+                </Link>
+            </li>
+        </ul>
+
         <h2>CSS</h2>
         <ul>
             <li>
