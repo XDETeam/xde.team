@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactElement, Children, PropsWithChildren, ReactNode } from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 
 /**
  * TODO: Short statements about design:
@@ -9,77 +9,115 @@ import { FunctionComponent, ReactElement, Children, PropsWithChildren, ReactNode
  * TODO: Automatically generate h1?
  */
 
-// TODO: Create FunctionComponent extension (interface)?
-export type SpecComponent = FunctionComponent & { inbox: SpecComponent[] };
+/**
+ * Specified entity.
+ * 
+ * @remarks
+ * We know that something exists. But before and for its specification there is an abstraction
+ * we use to identify it. For example, we can point it by finger or give it a name.
+ */
+export type SpecEntity = string;
 
-export interface ISpecElement extends ReactElement {
-    inbox: FunctionComponent[];
+/**
+ * Something more or less atomic we can say about specified entity.
+ */
+export interface ISpecInstruction {
+
 }
 
-export const Spec: FunctionComponent = (props) => {
-    if (props.children instanceof Array) {
-        props.children?.forEach((child) => console.log(child));
-    }
+/**
+ * Complete specification of the entity.
+ * 
+ * @remarks
+ * Specification is a set of {@link ISpecInstruction | instructions} that in common constructs
+ * our understanding of the specified entity.
+ * 
+ */
+export interface ISpec {
+    /**
+     * Entity we specify.
+     */
+    id: SpecEntity;
 
-    return <>{props.children}</>;
-};
+    instructions: ISpecInstruction[];
+}
 
-//TODO:Migrate to interface?
-export const specify = (node: ReactElement): ISpecElement => {
-    console.log(`Specify [${(node.type as Function).name}] for ${node.key}`);
+export interface IDictionary<TValue> {
+    [id: string]: TValue;
+}
 
-    const result = { ...node, inbox: [] };
+export interface ISpecifyStorage {
+    get(id: SpecEntity): ISpec | undefined;
+    set(id: SpecEntity, spec: ISpec);
+    select(): IDictionary<ISpec>;
+}
+
+export class SimpleSpecifyStorage implements ISpecifyStorage {
+    private _items: IDictionary<ISpec> = {};
+
+    get = (id: string): ISpec => this._items[id];
+
+    set = (id: string, spec: ISpec) => this._items[id] = spec;
+
+    select = (): IDictionary<ISpec> => this._items;
+}
+
+export type ISpecElement = JSX.Element & ISpec;
+
+export interface ISpecify {
+    (id: SpecEntity, description?: JSX.Element): ISpecElement;
+    storage: ISpecifyStorage;
+}
+
+export const specify: ISpecify = (id, element) => {
+    const result = {
+        ...element,
+
+        id,
+        instructions: []
+    };
 
     // TODO:Check if exists
-    specify.storage[node.key] = node;
+    specify.storage.set(id, result);
 
-    if (node.props.children instanceof Array) {
-        node.props.children?.forEach((child) => {
-            console.log(`-- ${(child.type as Function).name}`);
-            //TODO:if relation
-            result.inbox.push(child)
-        });
+    //TODO:
+    if (element) {
+        if (element.props.children instanceof Array) {
+            element.props.children?.forEach((child) => {
+                console.log(`-- ${(child.type as Function).name}`);
+                //TODO:if relation
+                result.instructions.push(child)
+            });
+        }
     }
 
     return result;
-};
+}
 
-specify.storage = {};
+specify.storage = new SimpleSpecifyStorage();
 
-export interface ITranslationProps extends PropsWithChildren<{ in: ReactNode }> { }
+export interface ITranslationProps extends PropsWithChildren<{ in: ISpecElement }> { }
 export const Named: FunctionComponent<ITranslationProps> = (
     { in: from, children }
-) => <div>Translated {from}: {children}</div>;
-export const Is: FunctionComponent<{ a: ReactElement }> = (props) => <></>;
+) => <div>Translated {from.id}: {children}</div>;
+export const Is: FunctionComponent<{ a: JSX.Element }> = (props) => <></>;
 
-export const Russian = specify(<Spec key="russian-language"></Spec>);
-export const English = specify(<Spec key="english-language"></Spec>);
+export const Russian = specify("russian-language");
+export const English = specify("english-language");
 
 export const WorkoutExcercise = specify(
-    <Spec key="workout-excercise">
-        <Named in={Russian}>Физическое упражнение</Named>
-    </Spec>
+    "workout-excercise",
+    <Named in={Russian}>Физическое упражнение</Named>
 );
 
 export const Squat = specify(
-    <Spec key="squat">
+    "squat",
+    <>
         <h1>Squat</h1>
         <Named in={English}>Squat</Named>
         <Named in={Russian}>Приседание</Named>
         <Is a={WorkoutExcercise} />
-    </Spec>
+    </>
 );
 
-export const dump = (element: ReactElement, level: number = 1) => {
-    console.log(`${"--".repeat(level)} `, element.type);
-    if (element.props.children instanceof Array) {
-        element.props.children?.forEach((child) => {
-            dump(child, level + 1);
-        });
-    }
-};
-
-console.log(`Dump Squat`);
-dump(Squat);
-
-export default specify.storage;
+export default specify.storage.select();
