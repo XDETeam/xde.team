@@ -96,26 +96,27 @@ export const specify: ISpecify = (id, element) => {
 
 specify.storage = new SimpleSpecifyStorage();
 
-export interface ITranslationProps extends PropsWithChildren<{ in: ISpecElement }> { }
-export const Named: FunctionComponent<ITranslationProps> = (
-    { in: from, children }
-) => <div>Translated {from.id}: {children}</div>;
-export const Is: FunctionComponent<{ a: JSX.Element }> = (props) => <></>;
-
 export const Russian = specify("russian-language");
 export const English = specify("english-language");
 
+export interface ITermProps extends PropsWithChildren<{ in: ISpecElement }> { }
+export const Term: FunctionComponent<ITermProps> = (
+    { in: from, children }
+) => <div>Translated from [{from.id}]: {children}</div>;
+
+export const Is: FunctionComponent<{ a: ISpecElement }> = ({ a }) => <div>Is a [<dfn>{a.id}</dfn>]</div>;
+
 export const WorkoutExcercise = specify(
     "workout-excercise",
-    <Named in={Russian}>Физическое упражнение</Named>
+    <Term in={Russian}>Физическое упражнение</Term>
 );
 
 export const Squat = specify(
     "squat",
     <>
         <h1>Squat</h1>
-        <Named in={English}>Squat</Named>
-        <Named in={Russian}>Приседание</Named>
+        <Term in={English}>Squat</Term>
+        <Term in={Russian}>Приседание</Term>
         <Is a={WorkoutExcercise} />
     </>
 );
