@@ -4,6 +4,15 @@ export const Page = () => (
     <>
         <h1>Web development</h1>
 
+        <h2>Scripting</h2>
+        <ul>
+            <li>
+                <Link href="/spec/typescript-language">
+                    <a>Typescript</a>
+                </Link>
+            </li>
+        </ul>
+
         <h2>CSS</h2>
         <ul>
             <li>
