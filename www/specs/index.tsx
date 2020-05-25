@@ -1,4 +1,4 @@
-import { FunctionComponent, PropsWithChildren } from "react";
+import { FunctionComponent, PropsWithChildren, createContext, useContext } from "react";
 
 /**
  * TODO: Short statements about design:
@@ -47,38 +47,43 @@ export interface IDictionary<TValue> {
 }
 
 export interface ISpecifyStorage {
-    get(id: SpecEntity): ISpec | undefined;
-    set(id: SpecEntity, spec: ISpec);
-    select(): IDictionary<ISpec>;
+    get(id: SpecEntity): ISpecElement | undefined;
+    set(id: SpecEntity, spec: ISpecElement);
+    select(): IDictionary<ISpecElement>;
 }
 
 export class SimpleSpecifyStorage implements ISpecifyStorage {
-    private _items: IDictionary<ISpec> = {};
+    private _items: IDictionary<ISpecElement> = {};
 
-    get = (id: string): ISpec => this._items[id];
+    get = (id: string): ISpecElement => this._items[id];
 
-    set = (id: string, spec: ISpec) => this._items[id] = spec;
+    set = (id: string, spec: ISpecElement) => this._items[id] = spec;
 
-    select = (): IDictionary<ISpec> => this._items;
+    select = (): IDictionary<ISpecElement> => this._items;
 }
 
-export type ISpecElement = JSX.Element & ISpec;
+export type ISpecElement = ISpec & { element: JSX.Element };
 
 export interface ISpecify {
     (id: SpecEntity, description?: JSX.Element): ISpecElement;
     storage: ISpecifyStorage;
 }
 
-export const specify: ISpecify = (id, element) => {
-    const result = {
-        ...element,
+export const SpecContext = createContext<ISpec>({ id: "", instructions: [] });
 
+export const specify: ISpecify = (id, element) => {
+    const spec: ISpecElement = {
         id,
-        instructions: []
+        instructions: [],
+        element
     };
 
+    spec.element = <SpecContext.Provider value={spec}>
+        {element}
+    </SpecContext.Provider>
+
     // TODO:Check if exists
-    specify.storage.set(id, result);
+    specify.storage.set(id, spec);
 
     //TODO:
     if (element) {
@@ -86,12 +91,12 @@ export const specify: ISpecify = (id, element) => {
             element.props.children?.forEach((child) => {
                 console.log(`-- ${(child.type as Function).name}`);
                 //TODO:if relation
-                result.instructions.push(child)
+                spec.instructions.push(child)
             });
         }
     }
 
-    return result;
+    return spec;
 }
 
 specify.storage = new SimpleSpecifyStorage();
@@ -111,6 +116,16 @@ export const WorkoutExcercise = specify(
     <Term in={Russian}>Физическое упражнение</Term>
 );
 
+export const TestContext = () => {
+    const test = useContext<ISpec>(SpecContext);
+
+    return (
+        <div>
+            In context of {test.id} with {test.instructions.length} instructions.
+        </div>
+    )
+}
+
 export const Squat = specify(
     "squat",
     <>
@@ -118,7 +133,8 @@ export const Squat = specify(
         <Term in={English}>Squat</Term>
         <Term in={Russian}>Приседание</Term>
         <Is a={WorkoutExcercise} />
+        <TestContext />
     </>
 );
 
-export default specify.storage.select();
+export default specify.storage;
