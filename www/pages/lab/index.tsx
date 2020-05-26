@@ -11,6 +11,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/lab/sde-dotnet">
+                    <a>SDE.NET</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/lab/sde-team">
                     <a>SDE.Team</a>
                 </Link>
