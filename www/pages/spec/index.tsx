@@ -30,6 +30,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/spec/rust-language">
+                    <a>Rust</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/software-design">
                     <a>Software design</a>
                 </Link>
