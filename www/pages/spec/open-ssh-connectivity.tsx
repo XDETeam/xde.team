@@ -153,6 +153,39 @@ $ ssh-add -l
 2048 SHA256:lxDdCEQTPhgzGdbC6OH2+gsvm5jqQb2UyAWO30W8vCc Default.pem (RSA)
 4096 SHA256:OSH9zR5Qmp6D9Bwh0DJBztlhCuRIm7CZTGkfgk53exg admin@egopolis.net (RSA)
         `}</Code>
+
+        <h3>Contribution</h3>
+        <p>
+            Поскольку KeeAgent является проектом с исходнмы кодом, а Windows с
+            недавнего времени поддерживает Unix sockets (AF_UNIX), можно
+            расширить его возможности и реализовать сокет напрямую, без
+            проксирования socket -> msys soscket -> socat -> Unix socket.
+        </p>
+        <p>
+            Первые эксперименты с UnixDomainSocketEndPoint привели к тому, что
+            сокет был создан, но с эксклюзивным доступом и не получалось его
+            прокинуть в docker.
+        </p>
+        <p>
+            В качестве отправной точки можно обратить внимание на
+            <a href="https://gist.github.com/FlorinAsavoaie/8c2b6cb00f786c2caab65b1a51f4e847">
+                msysgit2unix-socket.py
+            </a>{" "}
+            и{" "}
+            <a href="https://gist.github.com/duebbert/4298b5f4eb7cc064b09e9d865dd490c9">
+                msysgit2unix-socket.py
+            </a>
+            .
+        </p>
+        <p>
+            Классы CygwinSocket/MsysSocket очень похожи. Можно провести
+            рефакторинг и вынести в базовый класс, на основе которого выстроить
+            и свою реализацию.
+        </p>
+        <p>
+            Можно провести миграцию на более современные версии .NET Framework,
+            .NET Core, .NET Standard.
+        </p>
     </>
 );
 
