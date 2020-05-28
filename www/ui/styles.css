@@ -46,8 +46,12 @@ blockquote a:hover {
     color: #fff;
 }
 
-section.code {
+code {
     background-color: #f4f4f4;
+    padding: 2px 4px;
+}
+
+section.code {
     padding: 0.5rem 2rem;
     overflow-x: auto;
 }

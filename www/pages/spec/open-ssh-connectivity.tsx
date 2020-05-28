@@ -12,7 +12,19 @@ export const Page = () => (
             to the agent.
         </p>
 
+        <h2>ssh-agent</h2>
+        <p>
+            The ssh-agent is a helper program that keeps track of user's
+            identity keys and their passphrases. The agent can then use the keys
+            to log into other servers without having the user type in a password
+            or passphrase again. This implements a form of single sign-on (SSO).
+        </p>
+
         <p>Windows 10 setup of ssh-agent</p>
+        <p>
+            Looks like it is using named pipes while Linux (WSL/Docker) is using
+            sockets. That makes it useless.
+        </p>
         <Code lang="powershell">{`
 Set-Service ssh-agent -StartupType Manual
         `}</Code>
@@ -64,6 +76,38 @@ eval $(ssh-agent -s)
 # Make ssh agent to actually use copied key
 ssh-add ~/.ssh/id_rsa
 `}</Code>
+
+        <h2>Инфраструктура KeePass/KeeAgent</h2>
+        <p>
+            Теоретически решение выглядит предельно удобным. Приложение{" "}
+            <a>KeePass</a> используется для хранение секретной информации, а его
+            расширение <a>KeeAgent</a> выполняет роль <a>SSH Agent</a>,
+            предоставляя информацию о ключах.
+        </p>
+        <p>
+            Проблемы начинаются при попытке использовать данное решение в
+            гетерогенной среде. Хост под управлением <a>Windows</a>, внутри
+            которого гостевые <a>Linux</a>-системы (<a>Docker</a>, <a>WSL</a>).
+        </p>
+        <p>
+            Плагин <a>KeeAgent</a> позволяет коммуникации через два вида
+            сокетов: Cygwin и msys. И хотя оба представляют из себя файлы,
+            выдавая себя за Linux-сокеты, в реальности просто содержат
+            информацию о том, на каком порту данный сокет открыт.
+        </p>
+        <p>
+            Помочь транслировать эту информацию в Linux-окружение может утилита{" "}
+            <a>socat</a>. Но по странному стечению обстоятельств, сокет даёт
+            ошибку "socat[2183] E write(5, 0x563e759459f0, 5): Connection
+            refused".
+        </p>
+        <p>
+            Другим вариантом является попытка расширить возможности KeeAgent,
+            поскольку он является <a>открытым ПО</a> и добавить в него поддержку
+            Unix socket напрямую. Первый эксперименты, правда, столькнулись с
+            такой проблемой, что созданный сокет-файл экзклюзивно заблокирован и
+            докер, например, не может его прочитать.
+        </p>
     </>
 );
 
