@@ -77,37 +77,82 @@ eval $(ssh-agent -s)
 ssh-add ~/.ssh/id_rsa
 `}</Code>
 
+        <h2>Install public key on remote host</h2>
+        <Code lang="bash">{`
+ssh-copy-id user_name@host_address.com
+        `}</Code>
+        <p>
+            Пока не удалось найти красивого способоа копирования заданного ключа
+            из ssh-agent и данная команда копирует все доступные. После такого
+            копирования стоит зайти на этот хост (ssh
+            user_name@host_address.com) и отредактировать файл
+            ~/.ssh/authorized_keys, удалив все лишние ключи.
+        </p>
+
         <h2>Инфраструктура KeePass/KeeAgent</h2>
         <p>
-            Теоретически решение выглядит предельно удобным. Приложение{" "}
-            <a>KeePass</a> используется для хранение секретной информации, а его
+            В целом решение выглядит предельно удобным и гармоничным. Приложение{" "}
+            <a>KeePass</a> используется для хранение секретной информации, его
             расширение <a>KeeAgent</a> выполняет роль <a>SSH Agent</a>,
-            предоставляя информацию о ключах.
+            предоставляя информацию о ключах самым разным инструментам.
+        </p>
+
+        <h3>Windows</h3>
+        <p>
+            После утановки Keeagent заходим в Tools -> Options -> KeeAgent,
+            устаналиваем настройки "Create Cygwin compatible socket file",
+            скажем в C:\Users\my_user\.ssh\keeagent-cygwin.sock, "Create msysGit
+            compatible socketfile" в C:\Users\my_user\.ssh\keeagent-msys.sock.
         </p>
         <p>
-            Проблемы начинаются при попытке использовать данное решение в
-            гетерогенной среде. Хост под управлением <a>Windows</a>, внутри
-            которого гостевые <a>Linux</a>-системы (<a>Docker</a>, <a>WSL</a>).
+            Далее <a>генерируем ключ</a> и прикрепляем оба сформированных файла
+            к записи в KeePass. С свойствах этой записи открываем закладку
+            KeeAgent и указываем "Private Key File Location" на прикрепленный
+            файл, а пароль записи на пароль заданный при создании ключа (если
+            таковой был).
         </p>
         <p>
-            Плагин <a>KeeAgent</a> позволяет коммуникации через два вида
-            сокетов: Cygwin и msys. И хотя оба представляют из себя файлы,
-            выдавая себя за Linux-сокеты, в реальности просто содержат
-            информацию о том, на каком порту данный сокет открыт.
+            После этого в меню Tools -> KeeAgent мы должны увидеть запись о
+            публикации нашего ключа.
         </p>
         <p>
-            Помочь транслировать эту информацию в Linux-окружение может утилита{" "}
-            <a>socat</a>. Но по странному стечению обстоятельств, сокет даёт
-            ошибку "socat[2183] E write(5, 0x563e759459f0, 5): Connection
-            refused".
+            После такой настройки практически сразу должны начать работать{" "}
+            <a>mRemoteNG</a>, <a>Kitty</a>, <a>Putty</a>, <a>Git bash</a>.
+            Возможно, единственной необходимой настройкой будет указание
+            переменной среды SSH_AUTH_SOCK на один из созданных ранее сокетов.
+            На примере Git bash:
         </p>
+        <Code lang="bash">{`
+$ export SSH_AUTH_SOCK=/c/Users/my_user/.ssh/keeagent-cygwin.sock
+$ ssh-add -l
+2048 SHA256:lxDdCEQTPhgzGdbC6OH2+gsvm5jqQb2UyAWO30W8vCc Default.pem (RSA)
+4096 SHA256:OSH9zR5Qmp6D9Bwh0DJBztlhCuRIm7CZTGkfgk53exg admin@egopolis.net (RSA)
+...
+        `}</Code>
         <p>
-            Другим вариантом является попытка расширить возможности KeeAgent,
-            поскольку он является <a>открытым ПО</a> и добавить в него поддержку
-            Unix socket напрямую. Первый эксперименты, правда, столькнулись с
-            такой проблемой, что созданный сокет-файл экзклюзивно заблокирован и
-            докер, например, не может его прочитать.
+            С настройкой гостевых систем вроде <a>Docker</a> будет немного
+            сложнее. Создаваемы сокеты, на самом деле, являются не сокетами, а
+            простыми текстовыми файлами, внутри которых, помимо прочего,
+            содержится порт реального сокета. Чтобы транслировать потоки между
+            сокетами хостовой и гостевой системы, можно воспользоваться утилитой{" "}
+            <a>socat</a>.
         </p>
+
+        <Code lang="powershell">{`
+# Передаём гостевой машине файл с информацией о сокете
+> docker run --rm -it -v "$($Env:USERPROFILE)/.ssh/keeagent-msys.sock:/root/.ssh/keeagent.sock" ubuntu /bin/bash
+
+# Извлекаем из файла информацию о сокете
+$ export SSH_AUTH_KEEAGENT_PORT=\`sed -r 's/!<socket >([0-9]*\\b).*/\\1/' ~/.ssh/keeagent.sock\`
+
+# Перенаправляем коммуникации между двумя сокетами
+$ export SSH_AUTH_SOCK=~/.ssh/agent.sock
+$ setsid socat UNIX-LISTEN:$\{SSH_AUTH_SOCK\},mode=0600,fork,shut-down TCP:host.docker.internal:$\{SSH_AUTH_KEEAGENT_PORT\},connect-timeout=2 2>&1 > /dev/null &
+
+$ ssh-add -l
+2048 SHA256:lxDdCEQTPhgzGdbC6OH2+gsvm5jqQb2UyAWO30W8vCc Default.pem (RSA)
+4096 SHA256:OSH9zR5Qmp6D9Bwh0DJBztlhCuRIm7CZTGkfgk53exg admin@egopolis.net (RSA)
+        `}</Code>
     </>
 );
 

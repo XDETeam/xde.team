@@ -52,6 +52,7 @@ code {
 }
 
 section.code {
+    background-color: #f4f4f4;
     padding: 0.5rem 2rem;
     overflow-x: auto;
 }
