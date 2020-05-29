@@ -29,6 +29,13 @@ export const Page = () => (
 $ winget install KeePass
         `}</Code>
 
+        <p>
+            TODO:{" "}
+            <a href="https://github.com/mitchcapper/KPEntryTemplates">
+                KeePass Entry Templates for custom gui displays of your entries.
+            </a>
+        </p>
+
         <h3>KeeAgent plugin</h3>
         <ul>
             <li>
