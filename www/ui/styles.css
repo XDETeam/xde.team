@@ -56,3 +56,8 @@ section.code {
     padding: 0.5rem 2rem;
     overflow-x: auto;
 }
+
+dfn {
+    font-style: normal;
+    font-weight: bold;
+}

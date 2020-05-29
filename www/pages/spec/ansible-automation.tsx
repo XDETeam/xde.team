@@ -28,6 +28,11 @@ export const Page = () => (
         <p>
             A list (structure?) of <a>managed nodes</a>.
         </p>
+        <p>Inventory is a nice-to-have thing even without Ansible.</p>
+        <p>
+            <dfn>Target expression</dfn>. Used both in <a>Ad-hoc</a> commands
+            and <a>playbook</a> files when providing "hosts" clause.
+        </p>
 
         <h2>Modules</h2>
         <p>
@@ -39,15 +44,44 @@ export const Page = () => (
             Probably <a>module</a> can be considered as function with parameters
             when <a>task</a> is its call?
         </p>
+        <p>
+            <dfn>Task expression</dfn> or <dfn>Module call expression</dfn>.
+            Used both in <a>Ad-hoc</a> commands via "-m" (module) option and{" "}
+            <a>playbook</a> files in "tasks" section.
+        </p>
 
         <h2>Playbooks</h2>
         <p>
             Ordered list of <a>tasks</a> applied for hosts from <a>inventory</a>
             .
         </p>
+        <p>
+            Playbooks are Ansible’s configuration, deployment, and orchestration
+            language. They can describe a policy you want your remote systems to
+            enforce, or a set of steps in a general IT process.
+        </p>
+        <Code lang="shell">{`
+ansible-playbook playbook.yml -i inventory
+        `}</Code>
+
+        <p>Playbook pattern looks like</p>
+        <Code lang="yaml">{`
+- hosts: {target_expression}
+  tasks:
+  - name: test connection
+    ping:
+  - name: another task
+    {module_name}: {task_expresion}
+  roles:
+    - common
+    - web-server
+        `}</Code>
 
         <h2>Ad Hoc Commands</h2>
         <Code lang="shell">ansible all -m ping -i inventory</Code>
+        <p>
+            Where <dfn>all</dfn> is a <a>target expression</a>.
+        </p>
     </>
 );
 
