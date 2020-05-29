@@ -12,6 +12,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/spec/apt-package-tool">
+                    <a>APT (Advanced Package Tool)</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/open-ssh-connectivity">
                     <a>OpenSSH</a>
                 </Link>
