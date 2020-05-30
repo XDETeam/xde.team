@@ -33,6 +33,20 @@ export const Page = () => (
             <dfn>Target expression</dfn>. Used both in <a>Ad-hoc</a> commands
             and <a>playbook</a> files when providing "hosts" clause.
         </p>
+        <p>Inventory sample</p>
+        <Code lang="yaml">{`
+all:
+    hosts:
+        host1.domain.com:
+            custom_var1: ...
+        host2.domain.com:
+        host3.domain.com:
+
+    children:
+        webservers:
+            hosts:
+                host3.domain.com:
+        `}</Code>
 
         <h2>Modules</h2>
         <p>
@@ -82,6 +96,17 @@ ansible-playbook playbook.yml -i inventory
         <p>
             Where <dfn>all</dfn> is a <a>target expression</a>.
         </p>
+
+        <h2>Usefull modules</h2>
+
+        <h3>Debugging</h3>
+        <Code lang="yaml">{`
+- hosts: all
+  tasks:
+  - debug:
+      msg: System {{ inventory_hostname }} has private IP {{ private_ip }}
+    when: private_ip is defined
+          `}</Code>
     </>
 );
 
