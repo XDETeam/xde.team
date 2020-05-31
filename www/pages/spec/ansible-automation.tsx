@@ -107,6 +107,61 @@ ansible-playbook playbook.yml -i inventory
       msg: System {{ inventory_hostname }} has private IP {{ private_ip }}
     when: private_ip is defined
           `}</Code>
+
+        <h2>Secrets</h2>
+
+        <p>
+            Encryption key can be stored in a file, e.g. if <a>controller</a> is
+            created temporary and this helps to avoid prompting every time.
+            Especially in development mode.
+        </p>
+        <Code lang="shell">{`
+$ echo 'my_vault_password' >> .vault
+        `}</Code>
+
+        <p>Then we can encrypt value (for embedding secret) or file</p>
+        <Code lang="shell">{`
+# Encrypting value with prompted key
+ansible-vault encrypt_string 'master_password_value' --name 'master_password'
+
+# Encrypting value with key from the file
+ansible-vault encrypt_string 'master_password_value' --vault-id .vault --name 'master_password'
+
+# Encrypting file with key from the file
+ansible-vault encrypt vars.yml --vault-id .vault
+
+# Creating encrypted file with key prompted
+ansible-vault create vars.yml
+        `}</Code>
+
+        <p>Generated value can be embedded into the playbook</p>
+        <Code lang="yaml">{`
+vars:
+    master_password: !vault |
+        $ANSIBLE_VAULT;1.1;AES256
+        39353161656537303835363537373733663766343264323732643233613933633038303561383562
+        3564663530353734306334343033643934373334366463320a303939653631646632386230306537
+        39663334353730623531303139613838626635623035346532613264353565656531323734386463
+        6530323134663230340a626235396166653939333332303930383334383662623530616362656465
+        3733
+      `}</Code>
+
+        <p>And later used with password propmpted or provided from the file</p>
+        <Code lang="shell">{`
+# Prompt for the key
+ansible-playbook config.yml -i inventory --ask-pass
+
+# Read decryption key from the file
+ansible-playbook config.yml -i inventory --vault-id .vault
+        `}</Code>
+
+        <h2>InBox</h2>
+        <p>
+            Ansible has some benefits compared to <a>Docker Compose</a>. Syntax
+            of compose files and <a>playbooks</a> <a>YAML</a> are almost the
+            same, but for Ansible flexibility of this tool is vital while for
+            Docker it's more an addon.
+        </p>
     </>
 );
 
