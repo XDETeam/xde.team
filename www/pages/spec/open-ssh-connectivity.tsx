@@ -99,10 +99,11 @@ ssh-copy-id user_name@host_address.com
 
         <h3>Windows</h3>
         <p>
-            После утановки Keeagent заходим в Tools -> Options -> KeeAgent,
-            устаналиваем настройки "Create Cygwin compatible socket file",
-            скажем в C:\Users\my_user\.ssh\keeagent-cygwin.sock, "Create msysGit
-            compatible socketfile" в C:\Users\my_user\.ssh\keeagent-msys.sock.
+            После утановки Keeagent заходим в Tools -&gt; Options -&gt;
+            KeeAgent, устаналиваем настройки "Create Cygwin compatible socket
+            file", скажем в C:\Users\my_user\.ssh\keeagent-cygwin.sock, "Create
+            msysGit compatible socketfile" в
+            C:\Users\my_user\.ssh\keeagent-msys.sock.
         </p>
         <p>
             Далее <a>генерируем ключ</a> и прикрепляем оба сформированных файла
@@ -112,7 +113,7 @@ ssh-copy-id user_name@host_address.com
             таковой был).
         </p>
         <p>
-            После этого в меню Tools -> KeeAgent мы должны увидеть запись о
+            После этого в меню Tools &gt; KeeAgent мы должны увидеть запись о
             публикации нашего ключа.
         </p>
         <p>
@@ -159,7 +160,8 @@ $ ssh-add -l
             Поскольку KeeAgent является проектом с исходнмы кодом, а Windows с
             недавнего времени поддерживает Unix sockets (AF_UNIX), можно
             расширить его возможности и реализовать сокет напрямую, без
-            проксирования socket -> msys soscket -> socat -> Unix socket.
+            проксирования socket -&gt; msys soscket -&gt; socat -&gt; Unix
+            socket.
         </p>
         <p>
             Первые эксперименты с UnixDomainSocketEndPoint привели к тому, что
