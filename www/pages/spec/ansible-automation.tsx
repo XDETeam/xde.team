@@ -97,6 +97,28 @@ ansible-playbook playbook.yml -i inventory
             Where <dfn>all</dfn> is a <a>target expression</a>.
         </p>
 
+        <h2>Variables</h2>
+
+        <h3>Playbook</h3>
+        <p>Put in vars: section of the host in playbook.</p>
+        <Code lang="yml">{`
+- hosts: docker_servers
+  vars:
+    recreate: yes #TODO: no
+  tasks:
+    ...
+              `}</Code>
+
+        <h3>Group vars</h3>
+        <p>
+            Put in /group_vars/[group_name].yml (e.g. /group_vars/all.yml)
+            something like:
+        </p>
+        <Code lang="yml">{`
+var_1_name: var_1_value
+var_2_name: var_2_value
+        `}</Code>
+
         <h2>Usefull modules</h2>
 
         <h3>Debugging</h3>
