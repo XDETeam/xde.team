@@ -17,6 +17,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/spec/docker-virtualization">
+                    <a>Docker</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/open-ssh-connectivity">
                     <a>OpenSSH</a>
                 </Link>
