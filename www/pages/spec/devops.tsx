@@ -27,6 +27,11 @@ export const Page = () => (
                 </Link>
             </li>
             <li>
+                <Link href="/spec/vscode-ide">
+                    <a>Visual Studio Code</a>
+                </Link>
+            </li>
+            <li>
                 <Link href="/spec/windows-environment">
                     <a>Windows</a>
                 </Link>
