@@ -25,6 +25,21 @@ export const Page = () => (
                 </a>
             </li>
         </ul>
+
+        <h2>InBox</h2>
+        <p>Take a look into actual plugins one more time.</p>
+        <p>
+            How to automate setup and execute batch of commands like "ext
+            install plugin_id".
+        </p>
+        <p>Release history has a lot of features described.</p>
+        <p>Configuration recommendations and where to store it.</p>
+        <p>
+            Add to benefits that it's written in TypeScript and easily
+            extensible.
+        </p>
+        <p>Remote access to VSCode from the phone.</p>
+        <p>How to write extensions easily?</p>
     </>
 );
 
