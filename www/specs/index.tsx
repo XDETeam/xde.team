@@ -1,73 +1,14 @@
 import { FunctionComponent, PropsWithChildren, createContext, useContext } from "react";
+import { ISpec, ISpecElement, ISpecify, SimpleSpecStorage } from "../lib";
 
 /**
  * TODO: Short statements about design:
- * - Mesh nodes are simply React elements
+ * - Mesh nodes are simply JSX elements
  * - Mesh relation are functions
  * - To add node to specification, specify(...) function is used.
  * 
  * TODO: Automatically generate h1?
  */
-
-/**
- * Specified entity.
- * 
- * @remarks
- * We know that something exists. But before and for its specification there is an abstraction
- * we use to identify it. For example, we can point it by finger or give it a name.
- */
-export type SpecEntity = string;
-
-/**
- * Something more or less atomic we can say about specified entity.
- */
-export interface ISpecInstruction {
-
-}
-
-/**
- * Complete specification of the entity.
- * 
- * @remarks
- * Specification is a set of {@link ISpecInstruction | instructions} that in common constructs
- * our understanding of the specified entity.
- * 
- */
-export interface ISpec {
-    /**
-     * Entity we specify.
-     */
-    id: SpecEntity;
-
-    instructions: ISpecInstruction[];
-}
-
-export interface IDictionary<TValue> {
-    [id: string]: TValue;
-}
-
-export interface ISpecifyStorage {
-    get(id: SpecEntity): ISpecElement | undefined;
-    set(id: SpecEntity, spec: ISpecElement);
-    select(): IDictionary<ISpecElement>;
-}
-
-export class SimpleSpecifyStorage implements ISpecifyStorage {
-    private _items: IDictionary<ISpecElement> = {};
-
-    get = (id: string): ISpecElement => this._items[id];
-
-    set = (id: string, spec: ISpecElement) => this._items[id] = spec;
-
-    select = (): IDictionary<ISpecElement> => this._items;
-}
-
-export type ISpecElement = ISpec & { element: JSX.Element };
-
-export interface ISpecify {
-    (id: SpecEntity, description?: JSX.Element): ISpecElement;
-    storage: ISpecifyStorage;
-}
 
 export const SpecContext = createContext<ISpec>({ id: "", instructions: [] });
 
@@ -99,7 +40,7 @@ export const specify: ISpecify = (id, element) => {
     return spec;
 }
 
-specify.storage = new SimpleSpecifyStorage();
+specify.storage = new SimpleSpecStorage();
 
 export const Russian = specify("russian-language");
 export const English = specify("english-language");
