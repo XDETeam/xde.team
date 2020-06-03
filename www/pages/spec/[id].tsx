@@ -12,14 +12,17 @@ export const Page: FunctionComponent<ISpecPageProps> = () => {
     const { id } = (router.query as unknown) as ISpecPageProps;
     const component = specs.get(id).element ?? <></>;
 
-    console.log("Spec", id, component);
-
     return (
         <>
-            <p>Spec: {id}</p>
             <main>
                 {component}
             </main>
+
+            {/* TODO: */}
+            <hr />
+            <p>
+                <strong>Spec ID</strong>: {id}
+            </p>
         </>
     );
 };

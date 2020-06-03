@@ -1,9 +1,11 @@
 import { IEntity, Entity, Is } from "../../mesh";
-import { entity as cssPreProcessor } from "./pre-processor-css";
+import { entity as cssPreProcessor } from "../../pages/spec/pre-processor-css";
+import { specify } from "../../lib";
 
 export const entity: IEntity = Entity.create("post-css");
 
-export const page = () => (
+export const PostCss = specify(
+	"post-css",
 	<>
 		<h1>Post CSS</h1>
 
@@ -20,5 +22,3 @@ export const page = () => (
 		</p>
 	</>
 );
-
-export default page;

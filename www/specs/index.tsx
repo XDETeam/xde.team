@@ -1,5 +1,5 @@
-import { FunctionComponent, PropsWithChildren, createContext, useContext } from "react";
-import { ISpec, ISpecElement, ISpecify, SimpleSpecStorage } from "../lib";
+import { FunctionComponent, PropsWithChildren, useContext } from "react";
+import { ISpec, ISpecElement, specify, SpecContext } from "../lib";
 
 /**
  * TODO: Short statements about design:
@@ -9,38 +9,6 @@ import { ISpec, ISpecElement, ISpecify, SimpleSpecStorage } from "../lib";
  * 
  * TODO: Automatically generate h1?
  */
-
-export const SpecContext = createContext<ISpec>({ id: "", instructions: [] });
-
-export const specify: ISpecify = (id, element) => {
-    const spec: ISpecElement = {
-        id,
-        instructions: [],
-        element
-    };
-
-    spec.element = <SpecContext.Provider value={spec}>
-        {element}
-    </SpecContext.Provider>
-
-    // TODO:Check if exists
-    specify.storage.set(id, spec);
-
-    //TODO:
-    if (element) {
-        if (element.props.children instanceof Array) {
-            element.props.children?.forEach((child) => {
-                console.log(`-- ${(child.type as Function).name}`);
-                //TODO:if relation
-                spec.instructions.push(child)
-            });
-        }
-    }
-
-    return spec;
-}
-
-specify.storage = new SimpleSpecStorage();
 
 export const Russian = specify("russian-language");
 export const English = specify("english-language");
@@ -77,5 +45,7 @@ export const Squat = specify(
         <TestContext />
     </>
 );
+
+export * from "../specs/css/post-css"
 
 export default specify.storage;

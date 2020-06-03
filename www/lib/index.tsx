@@ -8,3 +8,4 @@ export * from "./ISpecStorage"
 export * from "./ISpecify"
 
 export * from "./SimpleSpecStorage"
+export * from "./specify"
