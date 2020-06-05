@@ -17,6 +17,9 @@ export const Page = () => (
             <li>
                 <Link href="/service">Services</Link>
             </li>
+            <li>
+                <Link href="/app">Application</Link>
+            </li>
         </ul>
     </>
 );
