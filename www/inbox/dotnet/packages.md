@@ -1,0 +1,26 @@
+## Base
+
+-   aspnetcore
+-   aspnetcore-tooling
+-   AspNetCore.Docs
+-   BenchmarkDotNet
+-   blazor
+-   cli
+-   core
+-   corefx
+-   csharplang
+-   docs
+-   efcore
+-   extensions
+-   fsharp
+-   list
+-   orleans
+-   project-system
+-   roslyn
+-   roslyn-sdk
+-   roslyn-tools
+-   runtime
+-   sdk
+-   standard
+-   toolset
+-   tye
