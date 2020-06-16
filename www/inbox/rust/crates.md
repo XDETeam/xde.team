@@ -18,6 +18,7 @@
 [04100] nom
 [04000] rayon
 [04000] gfx (gpu)
+https://github.com/getzola/zola \*3900 A fast static site generator in a single binary with everything built-in.
 [03800] rust-analyzer
 [03700] tantivy
 [03700] mio
