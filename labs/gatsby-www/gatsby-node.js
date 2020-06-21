@@ -4,11 +4,17 @@ const traverse = require(`@babel/traverse`).default
 
 async function onCreateNode({
     node,
-    loadNodeContent
+    loadNodeContent,
+    createContentDigest,
+    actions
 }) {
-    if (node.name !== 'Workout') {
+    console.log("Node", node.name);
+
+    if (!['Workout', 'Squat'].includes(node.name)) {
         return;
     }
+
+    let error;
 
     console.log(`Mesh for`, node);
 
@@ -39,7 +45,7 @@ async function onCreateNode({
                 console.log(`${"".padStart(level * 2, ' ')}${path.key}: ${path.type}`);
                 level++;
             },
-            exit(path) {
+            exit() {
                 level--;
             }
             //SpecificExpression: function(path) ....
@@ -53,31 +59,43 @@ async function onCreateNode({
             stack: e.stack,
         }
     } finally {
-        // exportsData = {
-        //     ...someData,
-        //     error: error,
-        // }
+        const { createNode, createParentChildLink } = actions;
 
-        // const contentDigest = createContentDigest(node)
-        // const nodeData = {
-        //     id: `${node.id} >>> JavascriptsomeData`,
-        //     children: [],
-        //     parent: node.id,
-        //     node: { ...node },
-        //     internal: {
-        //         contentDigest,
-        //         type: `JavascriptsomeData`,
-        //     },
-        // }
+        var someData = {
+            bar: 1,
+            foo: 'Two',
+            items: [
+                1,
+                2,
+                3
+            ]
+        }
 
-        // nodeData.someData = { ...exportsData }
+        exportsData = {
+            ...someData,
+            error: error,
+        }
 
-        // if (node.internal.type === `File`) {
-        //     nodeData.fileAbsolutePath = node.absolutePath
-        // }
+        const contentDigest = createContentDigest(node)
+        const nodeData = {
+            id: `${node.id} >>> Spec`,
+            children: [],
+            parent: node.id,
+            node: { ...node },
+            internal: {
+                contentDigest,
+                type: `Spec`,
+            },
+        }
 
-        // createNode(nodeData)
-        // createParentChildLink({ parent: node, child: nodeData })
+        nodeData.someData = { ...exportsData }
+
+        if (node.internal.type === `File`) {
+            nodeData.fileAbsolutePath = node.absolutePath
+        }
+
+        createNode(nodeData)
+        createParentChildLink({ parent: node, child: nodeData })
     }
 }
 
