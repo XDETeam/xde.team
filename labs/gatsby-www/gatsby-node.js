@@ -8,7 +8,7 @@ async function onCreateNode({
     createContentDigest,
     actions
 }) {
-    console.log("Node", node.name);
+    console.log("Node", node.id, node.name);
 
     if (!['Workout', 'Squat'].includes(node.name)) {
         return;
@@ -78,13 +78,13 @@ async function onCreateNode({
 
         const contentDigest = createContentDigest(node)
         const nodeData = {
-            id: `${node.id} >>> Spec`,
+            id: `${node.id} >>> Mesh`,
             children: [],
             parent: node.id,
             node: { ...node },
             internal: {
                 contentDigest,
-                type: `Spec`,
+                type: `Mesh`,
             },
         }
 
@@ -99,4 +99,39 @@ async function onCreateNode({
     }
 }
 
+async function createPages({ graphql, actions }) {
+    const { createPage } = actions
+
+    const result = await graphql(`
+        query {
+            allMesh {
+                nodes {
+                    id
+                    someData {
+                        bar
+                        foo
+                    }
+                    node {
+                        relativePath
+                        absolutePath
+                        name
+                    }
+                }
+            }
+        }
+    `)
+
+    result.data.allMesh.nodes.forEach(({ id, node, someData }) => {
+        console.log("page", JSON.stringify(node, null, 4));
+        createPage({
+            path: `/mesh/${node.name.toLowerCase()}`,
+            component: `${node.absolutePath}`,
+            context: {
+
+            },
+        })
+    });
+}
+
 exports.onCreateNode = onCreateNode
+exports.createPages = createPages
