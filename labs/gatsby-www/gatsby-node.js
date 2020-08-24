@@ -8,15 +8,11 @@ async function onCreateNode({
     createContentDigest,
     actions
 }) {
-    console.log("Node", node.id, node.name);
-
-    if (!['Workout', 'Squat'].includes(node.name)) {
+    if (![`tsx`].includes(node.extension)) {
         return;
     }
 
     let error;
-
-    console.log(`Mesh for`, node);
 
     const code = await loadNodeContent(node)
     const options = {
@@ -42,7 +38,7 @@ async function onCreateNode({
         let level = 0;
         traverse(ast, {
             enter(path) {
-                console.log(`${"".padStart(level * 2, ' ')}${path.key}: ${path.type}`);
+                // console.log(`${"".padStart(level * 2, ' ')}${path.key}: ${path.type}`);
                 level++;
             },
             exit() {
@@ -61,6 +57,7 @@ async function onCreateNode({
     } finally {
         const { createNode, createParentChildLink } = actions;
 
+        //TODO:0
         var someData = {
             bar: 1,
             foo: 'Two',
@@ -122,7 +119,6 @@ async function createPages({ graphql, actions }) {
     `)
 
     result.data.allMesh.nodes.forEach(({ id, node, someData }) => {
-        console.log("page", JSON.stringify(node, null, 4));
         createPage({
             path: `/mesh/${node.name.toLowerCase()}`,
             component: `${node.absolutePath}`,
