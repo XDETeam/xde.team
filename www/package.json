@@ -1,0 +1,16 @@
+{
+  "name": "@xde/www",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^2.24.47",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
