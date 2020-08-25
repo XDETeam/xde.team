@@ -1,5 +1,10 @@
-import React from "react"
+import React from "react";
+import { Layout } from "../templates/layout";
 
-export default function Home() {
-  return <div>Welcome to XDE!</div>
-}
+export const Home = () => (
+	<Layout>
+		<h1>XDE</h1>
+	</Layout>
+);
+
+export default Home;
