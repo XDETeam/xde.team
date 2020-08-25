@@ -1,6 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&display=swap");
+
 body {
 	padding: 0;
-	line-height: 1.5;
+	line-height: 1.62;
+	font-family: Inter, Arial, sans-serif;
+	font-size: 1rem;
+	color: #333;
 }
 
 #gatsby-focus-wrapper {
@@ -9,7 +14,43 @@ body {
 	flex-direction: column;
 }
 
-main > section {
-	max-width: 1000px;
-	margin: 0 auto;
+h1,
+h2,
+h3 {
+	font-feature-settings: "kern";
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	color: #000;
+}
+
+main {
+	margin-right: 48px; /*TODO: aside width, calculation required*/
+
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-items: center;
+}
+
+/* TODO: In common layout is tricky. When horizontally stretched and width close to the max-width, there would be good to have a horizontal paddings especially on the sidebar side, but this won't work for full-size colored sections. May be make sidebar as a flex part as well */
+main > section,
+main > header {
+	max-width: 980px;
+	width: 100%;
+}
+
+main > header {
+	padding-top: 6rem;
+	padding-bottom: 0;
+}
+
+h1 {
+	font-size: 3.6rem;
+	padding: 0;
+	margin: 0;
+
+	/*TODO:Colorized headers (white on red/black/...).
+	color: #fff;
+	background-color: #c00;
+	*/
 }
