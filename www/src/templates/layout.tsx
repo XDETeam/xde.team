@@ -1,5 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
+import styles from "./layout.module.css";
 
-export const Layout = ({ children }) => (
-	<main style={{ margin: `0 auto`, maxWidth: 650, padding: `0 1rem` }}>{children}</main>
+export const Layout: FC = ({ children }) => (
+	<>
+		<header></header>
+		<main className={styles.main}>{children}</main>
+		<footer></footer>
+	</>
 );
