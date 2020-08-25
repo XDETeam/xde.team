@@ -1,0 +1,15 @@
+body {
+	padding: 0;
+	line-height: 1.5;
+}
+
+#gatsby-focus-wrapper {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+main > section {
+	max-width: 1000px;
+	margin: 0 auto;
+}

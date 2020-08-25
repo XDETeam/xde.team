@@ -1,5 +1,19 @@
-.main {
-	margin: 0 auto;
-	max-width: 650;
-	padding: 0 1rem;
+main {
+	flex: 1;
+}
+
+aside {
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 10;
+	width: 48px;
+	background-color: #eee;
+	height: 100vh;
+	text-align: center;
+}
+
+footer {
+	background: #222;
+	color: #fff;
 }
