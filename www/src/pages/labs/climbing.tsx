@@ -8,9 +8,11 @@ export const Climbing = () => (
 		</header>
 
 		<section>
-			Практичный (промальп, выживание в сложных условиях), интересный и развивающий (физика,
-			координация, вестибулярка) вид активности. По сути, это вертикальное перемещение
-			(verticality), то есть дополнительная свобода перемещения.
+			<p>
+				Практичный (промальп, выживание в сложных условиях), интересный и развивающий
+				(физика, координация, вестибулярка) вид активности. По сути, это вертикальное
+				перемещение (verticality), то есть дополнительная свобода перемещения.
+			</p>
 		</section>
 
 		<section>
@@ -18,9 +20,10 @@ export const Climbing = () => (
 
 			<p>
 				Верёвка. В промышленном альпинизме используется статическая верёвка диаметром 10-11
-				мм. Работа идёт минимум на двух верёвках. Количество верёвки следует выбирать исходя
-				из конкретных задач. Для предотвращения перетирания верёвки на перегибе
-				рекомендуется использовать специальную защиту.
+				мм (8-13,). Работа идёт минимум на двух верёвках. Количество верёвки следует
+				выбирать исходя из конкретных задач. Для предотвращения перетирания верёвки на
+				перегибе рекомендуется использовать специальную защиту. Диаметр, как я понимаю,
+				зависит от снаряжённого веса. От 90кг лучше брать от 10мм.
 			</p>
 
 			<p>
@@ -100,6 +103,8 @@ export const Climbing = () => (
 
 			<ul>
 				<li>https://users.livejournal.com/pastor-rk-/783352.html</li>
+				<li>https://www.youtube.com/channel/UCSCcYl0KHVZ-GLqhJIH-I-A</li>
+				<li>https://yarin-mikhail.livejournal.com/368083.html</li>
 				<li>
 					https://sport-marafon.ru/article/alpinizm/bazovyy-komplekt-snaryazheniya-dlya-promalpa-s-chego-nachat/
 				</li>
@@ -108,6 +113,9 @@ export const Climbing = () => (
 				</li>
 				<li>
 					https://pikabu.ru/story/zapiski_promyishlennogo_alpinistapromalpovtsa_chast_2_5941372
+				</li>
+				<li>
+					https://sport-marafon.ru/article/alpinizm/kak-vybrat-karabiny-dlya-skalolazaniya-i-alpinizma-likbez/
 				</li>
 			</ul>
 		</section>
