@@ -8,7 +8,7 @@ export const Home = () => (
 		</header>
 
 		<section>
-			<p>xDE is for people which passion is to create.</p>
+			<p>xDE is for people who are excited about engineering.</p>
 		</section>
 	</Layout>
 );
