@@ -7,13 +7,29 @@ aside {
 	right: 0;
 	top: 0;
 	z-index: 10;
-	width: 48px;
+	width: 64px;
+	padding: 0.5rem 0;
 	background-color: #eee;
 	height: 100vh;
 	text-align: center;
 }
 
+aside a {
+	display: block;
+	margin-top: 0.5rem;
+}
+
+aside svg {
+	max-width: 36px;
+	max-height: 40px;
+}
+
 footer {
 	background: #222;
 	color: #fff;
+	padding: 1rem;
+}
+
+footer a {
+	color: white;
 }

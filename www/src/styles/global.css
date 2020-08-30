@@ -54,3 +54,17 @@ h1 {
 	background-color: #c00;
 	*/
 }
+
+code {
+	font-family: Consolas, "Lucida Console", "DejaVu Sans Mono", "Courier New", Courier, monospace;
+	background-color: #f4f4f4;
+	padding: 0 2rem;
+	white-space: pre;
+	display: block;
+}
+
+section.code {
+	background-color: #f4f4f4;
+	padding: 0.5rem 2rem;
+	overflow-x: auto;
+}
