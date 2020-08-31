@@ -22,6 +22,16 @@ export const Labs = () => (
 				</li>
 			</ul>
 		</section>
+
+		<section>
+			<h2>Math</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/math/types-theory">Теория типов</a>
+				</li>
+			</ul>
+		</section>
 	</Layout>
 );
 
