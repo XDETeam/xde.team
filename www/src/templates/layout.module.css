@@ -24,6 +24,10 @@ aside svg {
 	max-height: 40px;
 }
 
+aside svg path {
+	fill: #000;
+}
+
 footer {
 	background: #222;
 	color: #fff;

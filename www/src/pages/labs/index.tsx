@@ -24,11 +24,39 @@ export const Labs = () => (
 		</section>
 
 		<section>
+			<h2>Behavior Engineering</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/behavior/choose-your-troubles">Выбирайте свои проблемы</a>
+				</li>
+				<li>
+					<a href="/labs/behavior/second-law-of-motion--behavior">
+						О втором законе Ньютона
+					</a>
+				</li>
+				<li>
+					<a href="/labs/behavior/turn-off-supervisor">Отключите надзирателя</a>
+				</li>
+			</ul>
+		</section>
+
+		<section>
 			<h2>Math</h2>
 
 			<ul>
 				<li>
 					<a href="/labs/math/types-theory">Теория типов</a>
+				</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Education</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/edu/teach-by-example">Обучайте на примерах</a>
 				</li>
 			</ul>
 		</section>

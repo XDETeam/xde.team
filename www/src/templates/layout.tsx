@@ -8,7 +8,7 @@ import * as twitterSharer from "share-this/dist/sharers/twitter";
 import "share-this/dist/share-this.css";
 import styles from "./layout.module.css";
 import DNA from "../../assets/noun_DNA_2335931.svg";
-import Gears from "../../assets/noun_Gears_9428.svg";
+import Lab from "../../assets/flaskOutline.svg";
 
 export const Layout: FC = ({ children }) => {
 	useEffect(() => {
@@ -32,7 +32,7 @@ export const Layout: FC = ({ children }) => {
 					<DNA />
 				</a>
 				<a href="/labs">
-					<Gears />
+					<Lab />
 				</a>
 			</aside>
 		</>
