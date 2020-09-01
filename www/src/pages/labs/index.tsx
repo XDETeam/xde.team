@@ -27,9 +27,17 @@ export const Labs = () => (
 			<h2>Behavior Engineering</h2>
 
 			<ul>
-				<li><a href="/labs/behavior/choose-your-troubles">Выбирайте свои проблемы</a></li>
-				<li><a href="/labs/behavior/second-law-of-motion--behavior">О втором законе Ньютона</a></li>
-				<li><a href="/labs/behavior/turn-off-supervisor">Отключите надзирателя</a></li>
+				<li>
+					<a href="/labs/behavior/choose-your-troubles">Выбирайте свои проблемы</a>
+				</li>
+				<li>
+					<a href="/labs/behavior/second-law-of-motion--behavior">
+						О втором законе Ньютона
+					</a>
+				</li>
+				<li>
+					<a href="/labs/behavior/turn-off-supervisor">Отключите надзирателя</a>
+				</li>
 			</ul>
 		</section>
 
@@ -44,12 +52,14 @@ export const Labs = () => (
 		</section>
 
 		<section>
-		<h2>Education</h2>
+			<h2>Education</h2>
 
-		<ul>
-			<li><a href="/edu/teach-by-example">Обучайте на примерах</a></li>
-		</ul>
-	</section>
+			<ul>
+				<li>
+					<a href="/labs/edu/teach-by-example">Обучайте на примерах</a>
+				</li>
+			</ul>
+		</section>
 	</Layout>
 );
 
