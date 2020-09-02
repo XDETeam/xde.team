@@ -18,6 +18,9 @@ export const Labs = () => (
 					<a href="/labs/software/sign-in-quest">Приключения Sign-In</a>
 				</li>
 				<li>
+					<a href="/labs/software/data-storage">Организация хранения данных</a>
+				</li>
+				<li>
 					<a href="/labs/software/git-practices">Практики Git</a>
 				</li>
 			</ul>
