@@ -49,6 +49,9 @@ export const Labs = () => (
 
 			<ul>
 				<li>
+					<a href="/labs/math/category-theory">Теория категорий</a>
+				</li>
+				<li>
 					<a href="/labs/math/types-theory">Теория типов</a>
 				</li>
 			</ul>
