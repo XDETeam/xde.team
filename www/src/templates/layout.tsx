@@ -8,8 +8,9 @@ import * as twitterSharer from "share-this/dist/sharers/twitter";
 import "share-this/dist/share-this.css";
 import styles from "./layout.module.css";
 import DNA from "../../assets/noun_DNA_2335931.svg";
+import Github from "../../assets/github.svg";
 import Lab from "../../assets/flaskOutline.svg";
-import { Hashtags } from "../pages/labs/xde/brand";
+import { AdditionalLinks, Hashtags } from "../pages/labs/xde/brand";
 
 export const Layout: FC = ({ children }) => {
 	useEffect(() => {
@@ -33,8 +34,12 @@ export const Layout: FC = ({ children }) => {
 				<a href="/">
 					<DNA />
 				</a>
-				<a href="/labs">
+				<a href="/labs" className={styles.pushNextDown}>
 					<Lab />
+				</a>
+
+				<a href={AdditionalLinks.github}>
+					<Github />
 				</a>
 			</aside>
 		</>
