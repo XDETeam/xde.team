@@ -58,6 +58,16 @@ export const Labs = () => (
 		</section>
 
 		<section>
+			<h2>Academy</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/academy/law-engineering">Law Engineering</a>
+				</li>
+			</ul>
+		</section>
+
+		<section>
 			<h2>Education</h2>
 
 			<ul>
