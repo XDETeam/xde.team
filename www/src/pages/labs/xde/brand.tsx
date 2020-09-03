@@ -1,19 +1,18 @@
 import React from "react";
 import { Layout } from "../../../templates/layout";
 
-export const Name = () => <>x-Driven Engineering</>
-export const Acronym = () => <>xDE</>
+export const Name = `x-Driven Engineering Team`;
+export const Acronym = `xDE`;
+export const Hashtags = [Acronym, `xDETeam`];
 export const Logo = () => <svg>TODO:</svg>;
 
-export const Framework = () => (
-	<p>Рассмотреть в рамках новой дисциплины инжиниринга бренда.</p>
-)
+export const Framework = () => <p>Рассмотреть в рамках новой дисциплины инжиниринга бренда.</p>;
 
 export const Brand = () => (
 	<Layout>
 		<header>
 			<h1>
-				<Name /> (<abbr><Acronym /></abbr>)
+				{Name} (<abbr>{Acronym}</abbr>)
 			</h1>
 		</header>
 
@@ -21,17 +20,17 @@ export const Brand = () => (
 			<Framework />
 
 			<p>
-				"X" символизирует ген, а тот - создание (generate, generation, etc). Причём,
-				символ похож и визуально на ген.
+				"X" символизирует ген, а тот - создание (generate, generation, etc). Причём, символ
+				похож и визуально на ген.
 			</p>
 
 			<p>ex- означает out of, обозначает источник.</p>
 
 			<p>
 				За X всегда будет прятаться некоторый X-фактор. Можно даже шутливо говорить, что
-				этого X мы ещё до конца не знаем :) Или это переменная ("где X принадлежи..."),
-				там может быть... и дальше по списку наших ценностей. Что отразиться и в форме
-				написания аббревиатуры: xDE. Вместо x может быть персона.
+				этого X мы ещё до конца не знаем :) Или это переменная ("где X принадлежи..."), там
+				может быть... и дальше по списку наших ценностей. Что отразиться и в форме написания
+				аббревиатуры: xDE. Вместо x может быть персона.
 			</p>
 
 			<p>

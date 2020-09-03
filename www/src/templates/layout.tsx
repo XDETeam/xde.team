@@ -9,13 +9,14 @@ import "share-this/dist/share-this.css";
 import styles from "./layout.module.css";
 import DNA from "../../assets/noun_DNA_2335931.svg";
 import Lab from "../../assets/flaskOutline.svg";
+import { Hashtags } from "../pages/labs/xde/brand";
 
 export const Layout: FC = ({ children }) => {
 	useEffect(() => {
 		const selectionShare = shareThis({
 			selector: "section",
 			sharers: [twitterSharer, facebookSharer, redditSharer, emailSharer],
-			transformer: (text: string) => `${text.trim()} #xDE #XdeTeam`,
+			transformer: (text: string) => `${text.trim()}${Hashtags.map((tag) => ` #${tag}`)}`,
 		});
 		selectionShare.init();
 		// TODO: didMount hook
