@@ -68,3 +68,8 @@ section.code {
 	padding: 0.5rem 2rem;
 	overflow-x: auto;
 }
+
+a {
+	color: #69c;
+	text-decoration: none;
+}
