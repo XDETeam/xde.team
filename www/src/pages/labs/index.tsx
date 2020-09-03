@@ -62,17 +62,10 @@ export const Labs = () => (
 
 			<ul>
 				<li>
-					<a href="/labs/academy/law-engineering">Law Engineering</a>
+					<a href="/labs/academy/teach-by-example">Обучайте на примерах</a>
 				</li>
-			</ul>
-		</section>
-
-		<section>
-			<h2>Education</h2>
-
-			<ul>
 				<li>
-					<a href="/labs/edu/teach-by-example">Обучайте на примерах</a>
+					<a href="/labs/academy/law-engineering">Law Engineering</a>
 				</li>
 			</ul>
 		</section>
