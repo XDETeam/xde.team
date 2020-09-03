@@ -16,7 +16,8 @@ export const Layout: FC = ({ children }) => {
 		const selectionShare = shareThis({
 			selector: "section",
 			sharers: [twitterSharer, facebookSharer, redditSharer, emailSharer],
-			transformer: (text: string) => `${text.trim()}${Hashtags.map((tag) => ` #${tag}`)}`,
+			transformer: (text: string) =>
+				`${text.trim()}${Hashtags.map((tag) => ` #${tag}`).join(``)}`,
 		});
 		selectionShare.init();
 		// TODO: didMount hook
