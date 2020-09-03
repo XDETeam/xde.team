@@ -69,6 +69,16 @@ export const Labs = () => (
 				</li>
 			</ul>
 		</section>
+
+		<section>
+			<h2>XDE</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/xde/app">App</a>
+				</li>
+			</ul>
+		</section>
 	</Layout>
 );
 
