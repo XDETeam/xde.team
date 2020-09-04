@@ -1,7 +1,8 @@
 import React from "react";
-import { Layout } from "../../../templates/layout";
+import { Layout } from "../../../../templates/layout";
 
-/*TODO:0
+/*
+TODO:
 export const Arrow = () => (
 	<Term>
 		<Aka>Морфизм</Aka>

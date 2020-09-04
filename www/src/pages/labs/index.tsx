@@ -13,7 +13,7 @@ export const Labs = () => (
 			<h3>Организация</h3>
 			<ul>
 				<li>
-					<a href="/labs/xde/app">Vision</a>
+					<a href="/labs/xde/vision">Vision</a>
 				</li>
 				<li>
 					<a href="/labs/xde/brand">Brand</a>
@@ -84,10 +84,18 @@ export const Labs = () => (
 			<h3>Math</h3>
 			<ul>
 				<li>
-					<a href="/labs/math/category-theory">Теория категорий</a>
+					<a href="/labs/academy/math/constructive-math">Конструктивная математика</a>
 				</li>
 				<li>
-					<a href="/labs/math/types-theory">Теория типов</a>
+					<a href="/labs/academy/math/homotopy-type-theory">
+						Гомотопическая теория типов
+					</a>
+				</li>
+				<li>
+					<a href="/labs/academy/math/category-theory">Теория категорий</a>
+				</li>
+				<li>
+					<a href="/labs/academy/math/types-theory">Теория типов</a>
 				</li>
 			</ul>
 

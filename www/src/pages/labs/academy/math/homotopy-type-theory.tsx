@@ -1,10 +1,10 @@
 import React from "react";
-import { Layout } from "../../../templates/layout";
+import { Layout } from "../../../../templates/layout";
 
-export const TypesTheory = () => (
+export const HomotopyTypesTheory = () => (
 	<Layout>
 		<header>
-			<h1>Теория типов</h1>
+			<h1>Гомотопическая теория типов</h1>
 		</header>
 
 		<section>
@@ -22,13 +22,8 @@ export const TypesTheory = () => (
 				</a>
 				.
 			</p>
-			<p>
-				Интенсиональная теория типов, классическая теория типов Мартин-Лёва (MLTT). Языки
-				Agda и Idris.
-			</p>
-			<p>Исчисление индуктивных конструкций (CIQ). Язык Coq.</p>
 		</section>
 	</Layout>
 );
 
-export default TypesTheory;
+export default HomotopyTypesTheory;
