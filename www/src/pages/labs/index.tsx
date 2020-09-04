@@ -15,6 +15,9 @@ export const Labs = () => (
 					<a href="/labs/xde/app">Vision</a>
 				</li>
 				<li>
+					<a href="/labs/xde/brand">Brand</a>
+				</li>
+				<li>
 					<a href="/labs/xde/app">App</a>
 				</li>
 			</ul>
