@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout } from "../../templates/layout";
+import { Layout } from "../../../templates/layout";
 
 export const Cx = () => (
 	<Layout>

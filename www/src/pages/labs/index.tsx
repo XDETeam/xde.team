@@ -18,6 +18,14 @@ export const Labs = () => (
 					<a href="/labs/xde/brand">Brand</a>
 				</li>
 				<li>
+					<a href="/labs/xde/cx-programming-language">Язык Cx</a>
+				</li>
+				<li>
+					<a href="/labs/xde/codex-knowledge-library">Библиотека CODEx</a>
+				</li>
+				<li>Mesh</li>
+				<li>The Mesh</li>
+				<li>
 					<a href="/labs/xde/app">App</a>
 				</li>
 			</ul>
@@ -81,8 +89,11 @@ export const Labs = () => (
 					<a href="/labs/academy/teach-by-example">Обучайте на примерах</a>
 				</li>
 				<li>
-					<a href="/labs/academy/law-engineering">Law Engineering</a>
+					<a href="/labs/academy/law-engineering">Law engineering</a>
 				</li>
+				<li>Content engineering</li>
+				<li>Conversation engineering</li>
+				<li>Career engineering</li>
 			</ul>
 		</section>
 	</Layout>
