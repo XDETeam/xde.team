@@ -10,6 +10,7 @@ export const Labs = () => (
 		<section>
 			<h2>XDE</h2>
 
+			<h3>Организация</h3>
 			<ul>
 				<li>
 					<a href="/labs/xde/app">Vision</a>
@@ -17,6 +18,10 @@ export const Labs = () => (
 				<li>
 					<a href="/labs/xde/brand">Brand</a>
 				</li>
+			</ul>
+
+			<h3>Экосистема</h3>
+			<ul>
 				<li>
 					<a href="/labs/xde/cx-programming-language">Язык Cx</a>
 				</li>
@@ -29,11 +34,23 @@ export const Labs = () => (
 					<a href="/labs/xde/app">App</a>
 				</li>
 			</ul>
+
+			<h3>Продукты</h3>
+			<ul>
+				<li>
+					<a href="/labs/xde/services">Услуги</a>
+				</li>
+			</ul>
 		</section>
 
 		<section>
-			<h2>Software Engineering</h2>
+			<h2>Labs</h2>
+		</section>
 
+		<section>
+			<h2>Academy</h2>
+
+			<h3>Software Engineering</h3>
 			<ul>
 				<li>
 					<a href="/labs/software/programming">Размышления о программировании</a>
@@ -48,11 +65,8 @@ export const Labs = () => (
 					<a href="/labs/software/git-practices">Практики Git</a>
 				</li>
 			</ul>
-		</section>
 
-		<section>
-			<h2>Behavior Engineering</h2>
-
+			<h3>Behavior Engineering</h3>
 			<ul>
 				<li>
 					<a href="/labs/behavior/choose-your-troubles">Выбирайте свои проблемы</a>
@@ -66,11 +80,8 @@ export const Labs = () => (
 					<a href="/labs/behavior/turn-off-supervisor">Отключите надзирателя</a>
 				</li>
 			</ul>
-		</section>
 
-		<section>
-			<h2>Math</h2>
-
+			<h3>Math</h3>
 			<ul>
 				<li>
 					<a href="/labs/math/category-theory">Теория категорий</a>
@@ -79,11 +90,8 @@ export const Labs = () => (
 					<a href="/labs/math/types-theory">Теория типов</a>
 				</li>
 			</ul>
-		</section>
 
-		<section>
-			<h2>Academy</h2>
-
+			<h3>InBox</h3>
 			<ul>
 				<li>
 					<a href="/labs/academy/teach-by-example">Обучайте на примерах</a>
@@ -94,7 +102,12 @@ export const Labs = () => (
 				<li>Content engineering</li>
 				<li>Conversation engineering</li>
 				<li>Career engineering</li>
+				<li>Brand engineering</li>
 			</ul>
+		</section>
+
+		<section>
+			<h2>Arena</h2>
 		</section>
 	</Layout>
 );
