@@ -50,6 +50,13 @@ export const Labs = () => (
 		<section>
 			<h2>Academy</h2>
 
+			<h3>Engineering</h3>
+			<ul>
+				<li>
+					<a href="/labs/academy/engineering">Engineering</a>
+				</li>
+			</ul>
+
 			<h3>Software Engineering</h3>
 			<ul>
 				<li>
@@ -83,6 +90,9 @@ export const Labs = () => (
 
 			<h3>Math</h3>
 			<ul>
+				<li>
+					<a href="/labs/academy/math/logic">Логика</a>
+				</li>
 				<li>
 					<a href="/labs/academy/math/constructive-math">Конструктивная математика</a>
 				</li>
