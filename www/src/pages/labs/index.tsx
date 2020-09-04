@@ -8,6 +8,19 @@ export const Labs = () => (
 		</header>
 
 		<section>
+			<h2>XDE</h2>
+
+			<ul>
+				<li>
+					<a href="/labs/xde/app">Vision</a>
+				</li>
+				<li>
+					<a href="/labs/xde/app">App</a>
+				</li>
+			</ul>
+		</section>
+
+		<section>
 			<h2>Software Engineering</h2>
 
 			<ul>
@@ -66,16 +79,6 @@ export const Labs = () => (
 				</li>
 				<li>
 					<a href="/labs/academy/law-engineering">Law Engineering</a>
-				</li>
-			</ul>
-		</section>
-
-		<section>
-			<h2>XDE</h2>
-
-			<ul>
-				<li>
-					<a href="/labs/xde/app">App</a>
 				</li>
 			</ul>
 		</section>
