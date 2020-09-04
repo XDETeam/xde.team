@@ -71,6 +71,11 @@ export const Labs = () => (
 				<li>
 					<a href="/labs/software/git-practices">Практики Git</a>
 				</li>
+				<li>
+					<a href="/labs/software/css-cascading-style-sheets">
+						Cascading style sheets (CSS)
+					</a>
+				</li>
 			</ul>
 
 			<h3>Behavior Engineering</h3>
