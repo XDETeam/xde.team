@@ -122,6 +122,13 @@ export const Labs = () => (
 				<li>Кровь</li>
 			</ul>
 
+			<h3>Physics</h3>
+			<ul>
+				<li>
+					<a href="/labs/academy/physics/entropy">Энтропия</a>
+				</li>
+			</ul>
+
 			<h3>InBox</h3>
 			<ul>
 				<li>
