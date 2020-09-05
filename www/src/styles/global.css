@@ -91,3 +91,9 @@ dd {
 dd + dt {
 	margin-top: 1rem;
 }
+
+em {
+	font-style: normal;
+	color: #d00;
+	font-weight: bold;
+}
