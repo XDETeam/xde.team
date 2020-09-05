@@ -57,6 +57,14 @@ export const Labs = () => (
 				</li>
 			</ul>
 
+			<h3>Philosophy</h3>
+			<ul>
+				<li>
+					<a href="/labs/academy/philosophy/category">Категории</a>
+				</li>
+				<li>Логика</li>
+			</ul>
+
 			<h3>Software Engineering</h3>
 			<ul>
 				<li>

@@ -79,3 +79,15 @@ a {
 	color: #69c;
 	text-decoration: none;
 }
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-inline-start: 0;
+}
+
+dd + dt {
+	margin-top: 1rem;
+}
