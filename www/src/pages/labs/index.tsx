@@ -114,6 +114,14 @@ export const Labs = () => (
 				</li>
 			</ul>
 
+			<h3>Bio Engineering</h3>
+			<ul>
+				<li>Аминокислоты</li>
+				<li>Липиды</li>
+				<li>Углеводы</li>
+				<li>Кровь</li>
+			</ul>
+
 			<h3>InBox</h3>
 			<ul>
 				<li>
