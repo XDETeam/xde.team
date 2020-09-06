@@ -20,6 +20,12 @@ aside {
 	text-align: center;
 }
 
+@media print {
+	aside {
+		display: none;
+	}
+}
+
 aside a {
 	display: block;
 	margin-top: 0.5rem;

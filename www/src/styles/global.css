@@ -36,6 +36,20 @@ main {
 	flex-flow: column;
 	align-items: center;
 	justify-items: center;
+	padding: 2rem;
+}
+
+@media only screen and (max-width: 480px) {
+	main {
+		padding: 1.5rem;
+	}
+}
+
+@media print {
+	main {
+		margin-right: 0;
+		padding: 0;
+	}
 }
 
 /* TODO: In common layout is tricky. When horizontally stretched and width close to the max-width, there would be good to have a horizontal paddings especially on the sidebar side, but this won't work for full-size colored sections. May be make sidebar as a flex part as well */
@@ -46,7 +60,7 @@ main > header {
 }
 
 main > header {
-	padding-top: 6rem;
+	padding-top: 4rem;
 	padding-bottom: 0;
 }
 
@@ -59,6 +73,13 @@ h1 {
 	color: #fff;
 	background-color: #c00;
 	*/
+}
+
+@media only screen and (max-width: 480px) {
+	h1 {
+		font-size: 2.6rem;
+		word-wrap: break-word;
+	}
 }
 
 code {
