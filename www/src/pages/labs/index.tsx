@@ -96,7 +96,7 @@ export const Labs = () => (
 			<h3>Behavior Engineering</h3>
 			<ul>
 				<li>
-					<a href="/labs/behavior/choose-your-troubles">Выбирайте свои проблемы</a>
+					<a href="/labs/behavior/choose-troubles">Выбирайте проблемы</a>
 				</li>
 				<li>
 					<a href="/labs/behavior/second-law-of-motion--behavior">
