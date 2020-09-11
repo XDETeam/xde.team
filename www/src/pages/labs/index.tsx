@@ -75,6 +75,9 @@ export const Labs = () => (
 					<a href="/labs/software/programming">Размышления о программировании</a>
 				</li>
 				<li>
+					<a href="/labs/software/functional-programming">Функциональное программирование</a>
+				</li>
+				<li>
 					<a href="/labs/software/spectral-design">Spectral design</a>
 				</li>
 				<li>
