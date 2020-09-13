@@ -30,7 +30,8 @@ h2 {
 }
 
 main {
-	margin-right: 48px; /*TODO: aside width, calculation required*/
+	margin-right: 48px;
+	/*TODO: aside width, calculation required*/
 
 	display: flex;
 	flex-flow: column;
@@ -53,13 +54,13 @@ main {
 }
 
 /* TODO: In common layout is tricky. When horizontally stretched and width close to the max-width, there would be good to have a horizontal paddings especially on the sidebar side, but this won't work for full-size colored sections. May be make sidebar as a flex part as well */
-main > section,
-main > header {
+main>section,
+main>header {
 	max-width: 980px;
 	width: 100%;
 }
 
-main > header {
+main>header {
 	padding-top: 4rem;
 	padding-bottom: 0;
 }
@@ -109,7 +110,7 @@ dd {
 	margin-inline-start: 0;
 }
 
-dd + dt {
+dd+dt {
 	margin-top: 1rem;
 }
 
@@ -117,4 +118,23 @@ em {
 	font-style: normal;
 	color: #d00;
 	font-weight: bold;
+}
+
+table.simple {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.simple thead tr {
+	border-bottom: solid 2pt #000;
+}
+
+table.simple td,
+table.simple th {
+	padding: 0.2rem;
+	text-align: left;
+}
+
+table.simple td.highlight {
+	background-color: #cfc;
 }
