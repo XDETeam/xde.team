@@ -75,7 +75,9 @@ export const Labs = () => (
 					<a href="/labs/software/programming">Размышления о программировании</a>
 				</li>
 				<li>
-					<a href="/labs/software/functional-programming">Функциональное программирование</a>
+					<a href="/labs/software/functional-programming">
+						Функциональное программирование
+					</a>
 				</li>
 				<li>
 					<a href="/labs/software/spectral-design">Spectral design</a>
@@ -98,6 +100,9 @@ export const Labs = () => (
 
 			<h3>Behavior Engineering</h3>
 			<ul>
+				<li>
+					<a href="/labs/behavior/intelligence-traps">Ловушки интеллекта</a>
+				</li>
 				<li>
 					<a href="/labs/behavior/choose-troubles">Выбирайте проблемы</a>
 				</li>
