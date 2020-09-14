@@ -1,8 +1,9 @@
 module.exports = {
 	siteMetadata: {
-		title: `XDE Team`,
+		title: `XDE.Team`,
 		description: `XDE Team.`,
 		author: `XDE Team`,
+		siteUrl: `https://xde.team`
 	},
 	plugins: [
 		{
@@ -18,6 +19,7 @@ module.exports = {
 					include: /assets/
 				}
 			}
-		}
+		},
+		`gatsby-plugin-sitemap`
 	],
 }

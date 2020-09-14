@@ -11,6 +11,8 @@
 	"dependencies": {
 		"gatsby": "^2.24.47",
 		"gatsby-plugin-react-svg": "^3.0.0",
+		"gatsby-plugin-sitemap": "^2.4.12",
+		"gatsby-source-filesystem": "^2.3.29",
 		"normalize.css": "^8.0.1",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
