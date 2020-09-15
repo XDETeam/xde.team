@@ -29,7 +29,7 @@ export const Labs = () => (
 					<a href="/labs/xde/codex-knowledge-library">Библиотека CODEx</a>
 				</li>
 				<li>Mesh</li>
-				<li>The Mesh</li>
+				<li>The Mesh - можно на него положиться также в плане дедупликации</li>
 				<li>
 					<a href="/labs/xde/app">App</a>
 				</li>
