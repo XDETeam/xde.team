@@ -1,7 +1,8 @@
-export const Name = "x-Driven Engineering Team";
-export const Acronym = "xDE";
+export const Name = `x-Driven Engineering Team`;
+export const Acronym = `xDE`;
+export const ShortName = `${Acronym}.Team`;
 
-export const Hashtags = [Acronym, "xDETeam"];
+export const Hashtags = [Acronym, `${Acronym}Team`];
 
 export const GitHub = "https://github.com/XDETeam";
 
