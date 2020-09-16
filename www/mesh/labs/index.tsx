@@ -89,6 +89,9 @@ export const Labs = () => (
 					<a href="/labs/software/data-storage">Организация хранения данных</a>
 				</li>
 				<li>
+					<a href="/labs/software/typescript">Typescript</a>
+				</li>
+				<li>
 					<a href="/labs/software/git-practices">Практики Git</a>
 				</li>
 				<li>
