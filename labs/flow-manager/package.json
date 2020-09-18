@@ -1,0 +1,17 @@
+{
+	"name": "flow-manager",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"test": "jest --watch",
+		"dev": "ts-node ./src/app.ts"
+	},
+	"dependencies": {
+		"@types/jest": "^26.0.14",
+		"jest": "^26.4.2",
+		"ts-jest": "^26.3.0",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.2"
+	}
+}
