@@ -10,7 +10,7 @@ import styles from "./layout.module.css";
 import DNA from "../assets/noun_DNA_2335931.svg";
 import Github from "../assets/github.svg";
 import Lab from "../assets/flaskOutline.svg";
-import { AdditionalLinks, Hashtags } from "../mesh/labs/xde/brand";
+import { SocialLinks, Hashtags } from "../mesh/about/index";
 
 export const Layout: FC = ({ children }) => {
 	useEffect(() => {
@@ -38,7 +38,7 @@ export const Layout: FC = ({ children }) => {
 					<Lab />
 				</a>
 
-				<a href={AdditionalLinks.github}>
+				<a href={SocialLinks.github}>
 					<Github />
 				</a>
 			</aside>

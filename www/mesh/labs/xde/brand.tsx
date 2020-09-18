@@ -1,21 +1,15 @@
 import React from "react";
+import * as XDE from "../../about/index";
 import { Layout } from "../../../templates/layout";
 
-export const Name = `x-Driven Engineering Team`;
-export const Acronym = `xDE`;
-export const Hashtags = [Acronym, `xDETeam`];
 export const Logo = () => <svg>TODO:</svg>;
-export const AdditionalLinks = {
-	github: "https://github.com/XDETeam",
-};
-
 export const Framework = () => <p>Рассмотреть в рамках новой дисциплины инжиниринга бренда.</p>;
 
 export const Brand = () => (
 	<Layout>
 		<header>
 			<h1>
-				{Name} (<abbr>{Acronym}</abbr>)
+				{XDE.Name} (<abbr>{XDE.Acronym}</abbr>)
 			</h1>
 		</header>
 
