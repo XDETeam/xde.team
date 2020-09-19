@@ -3,7 +3,7 @@ import { Aspects } from "../../../aspects/index";
 import { ITestHttpRequest } from "../../../models";
 
 export class Routed implements IFunctor {
-	requires = [Aspects.IsHttp, Aspects.HttpRequest];
+	requires = [Aspects.HttpRequest];
 	produces = [Aspects.Routed];
 
 	move(obj: { [Aspects.HttpRequest]: ITestHttpRequest }): {} {
@@ -16,4 +16,3 @@ export class Routed implements IFunctor {
 
 const routedInstance = new Routed();
 export default routedInstance;
- 

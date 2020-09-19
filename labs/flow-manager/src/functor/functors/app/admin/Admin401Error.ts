@@ -1,11 +1,11 @@
-import { IFunctor } from "../../Functor";
-import { Aspects } from "../../../aspects/index";
+import { IFunctor } from "../../../Functor";
+import { Aspects } from "../../../../aspects/index";
 
 export class Admin401Error implements IFunctor {
 	requires = [
 		{
 			aspect: Aspects.Routed,
-			lambda: (asp: string) => asp.startsWith("/adminPanelRoute"),
+			lambda: (asp: string) => asp.startsWith("/security/adminPanelRoute"),
 		},
 		{
 			aspect: Aspects.IsAdmin,

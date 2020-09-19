@@ -7,10 +7,14 @@ export enum Aspects {
 	 * @default 200
 	 */
 	ResponseCode = "ResponseCode",
+	LocationHeader = "LocationHeader",
 	RenderedHtml = "RenderedHtml",
 	Logged = "Logged",
 	Routed = "Routed",
 	RouteHandled = "RouteHandled",
-	IsHttp = "IsHttp",
 	TLSed = "TLSed",
+	Redirected = "Redirected",
+
+	// app
+	AppSecuredRouteAllowed = "AppSecuredRouteAllowed",
 }

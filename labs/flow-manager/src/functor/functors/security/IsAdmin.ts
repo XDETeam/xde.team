@@ -5,10 +5,10 @@ export class IsAdmin implements IFunctor {
 	requires = [Aspects.HasAuth];
 	produces = [Aspects.IsAdmin];
 
-	move(obj: {}): {} {
+	move(obj: { [Aspects.HasAuth]: boolean }): {} {
 		return {
 			...obj,
-			[Aspects.IsAdmin]: Math.random() > 0.5,
+			[Aspects.IsAdmin]: obj[Aspects.HasAuth] && Math.random() > 0.5,
 		};
 	}
 }

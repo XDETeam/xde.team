@@ -1,6 +1,11 @@
 import { IObject } from "../models";
 import { IFunctor } from "../functor/Functor";
 import { Aspects } from "../aspects";
+import { appDebug } from "../helpers/debug";
+
+const debug = appDebug.extend("ObjectFlow");
+const debugVerbose = debug.extend("verbose");
+const debugShort = debug.extend("short");
 
 export enum AspectType {
 	Exists = "Exists",
@@ -30,10 +35,17 @@ export class ObjectFlow implements IObjectFlow {
 		let functors;
 
 		while ((functors = this.findFunctors(functorsPool)) && functors.length) {
-			console.log("Found functors", functors);
-			console.log("Object before iteration", this.object);
+			debugVerbose("Found functors", functors);
+			debugVerbose("Object before iteration", this.object);
 			functors.forEach((functor) => (this.object = functor.move(this.object)));
-			console.log("Object after iteration", this.object);
+			debugShort(
+				`${
+					functors.length > 1
+						? `[${functors.map((functor) => functor.constructor.name).join(", ")}]`
+						: functors[0].constructor.name
+				}`
+			);
+			debugVerbose("Object after iteration", this.object);
 		}
 	}
 
@@ -50,7 +62,7 @@ export class ObjectFlow implements IObjectFlow {
 							req.lambda(this.object[req.aspect])
 						);
 					} else {
-						return !!this.object[req];
+						return this.object[req] !== undefined;
 					}
 				})
 			) {
@@ -65,8 +77,8 @@ export class ObjectFlow implements IObjectFlow {
 		let functors;
 
 		while ((functors = this.findFunctorsPass(functorsPool)) && functors.length) {
-			console.log(`Found ${functors.length} functor(s)`, functors);
-			console.log("Object before iteration", this.object);
+			debugVerbose(`Found ${functors.length} functor(s)`, functors);
+			debugVerbose("Object before iteration", this.object);
 			functors.forEach(
 				(functor) =>
 					(this.object = {
@@ -78,7 +90,7 @@ export class ObjectFlow implements IObjectFlow {
 					})
 			);
 
-			console.log("Object after iteration", this.object);
+			debugVerbose("Object after iteration", this.object);
 		}
 	}
 

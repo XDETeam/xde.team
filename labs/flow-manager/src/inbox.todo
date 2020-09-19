@@ -1,0 +1,3 @@
+oneOf aspects
+allow undefined aspects for lambdas
+404 handling

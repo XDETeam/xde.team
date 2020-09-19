@@ -1,17 +1,23 @@
 import { ObjectFlow } from "./ObjectFlow";
 import hasAuthInstance from "../functor/functors/security/HasAuth";
 import isAdminInstance from "../functor/functors/security/IsAdmin";
-import adminPanelResponseInstance from "../functor/functors/app/AdminPanelResponse";
-import admin401ErrorInstance from "../functor/functors/app/Admin401Error";
+import adminPanelResponseInstance from "../functor/functors/app/admin/AdminPanelResponse";
+import admin401ErrorInstance from "../functor/functors/app/admin/Admin401Error";
 import error401Instance from "../functor/functors/errors/Error401";
 import httpRendererInstance from "../functor/functors/http/HttpRenderer";
 import routedInstance from "../functor/functors/http/Routed";
-import httpInstance from "../functor/functors/http/Http";
 import { Aspects } from "../aspects";
+import tLSedInstance from "../functor/functors/http/TLSed";
+import appSecuredRouteAllowedInstance from "../functor/functors/app/AppSecuredRouteAllowed";
+import { ITestHttpRequest } from "../models";
 
 it("should register functors to the flow manager", () => {
 	const flow = new ObjectFlow({
-		HttpRequest: { authCookie: "valid", route: "/adminPanelRoute" },
+		HttpRequest: {
+			authCookie: "valid",
+			route: "/security/adminPanelRoute",
+			isTLS: true,
+		} as ITestHttpRequest,
 	});
 	flow.move([hasAuthInstance, isAdminInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
@@ -20,14 +26,22 @@ it("should register functors to the flow manager", () => {
 });
 
 it("should handle lambda functions", () => {
-	const flow = new ObjectFlow({ IsAdmin: true, Routed: "/adminPanelRoute" });
+	const flow = new ObjectFlow({
+		IsAdmin: true,
+		Routed: "/security/adminPanelRoute",
+		AppSecuredRouteAllowed: true,
+	});
 	flow.move([adminPanelResponseInstance, admin401ErrorInstance, error401Instance]);
 	expect(flow.object).toHaveProperty(httpRendererInstance.requires);
 });
 
 it("should move pass", () => {
 	const flow = new ObjectFlow({
-		HttpRequest: { authCookie: "valid", route: "/adminPanelRoute" },
+		HttpRequest: {
+			authCookie: "valid",
+			route: "/security/adminPanelRoute",
+			isTLS: true,
+		} as ITestHttpRequest,
 	});
 
 	flow.movePass([
@@ -37,7 +51,7 @@ it("should move pass", () => {
 		httpRendererInstance,
 		routedInstance,
 		hasAuthInstance,
-		httpInstance,
+		tLSedInstance,
 	]);
 	expect(flow.object).toHaveProperty(Aspects.GeneratedHtml);
 });

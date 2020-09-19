@@ -2,6 +2,10 @@ import { IObject } from "../models";
 import { IFunctor, IHookFunctor } from "../functor/Functor";
 import { ObjectFlow } from "./ObjectFlow";
 import { Aspects } from "../aspects";
+import { appDebug } from "../helpers/debug";
+
+const debug = appDebug.extend("FlowManager");
+
 export interface IFlowManager {
 	/**
 	 * тут можно передать объект
@@ -55,7 +59,7 @@ export class FlowManager implements IFlowManager {
 	private registerFunctor(functor: IFunctor | IHookFunctor): void {
 		// TODO: validate requires and produces non-zero length
 		if ("isHook" in functor) {
-			console.log(`Registering hook functor ${functor.constructor.name}`);
+			debug(`Registering hook functor ${functor.constructor.name}`);
 			if (this.beforeObjectReleaseFunctors.indexOf(functor) !== -1) {
 				throw new Error(
 					`Can't register duplicate hook functor ${functor.constructor.name}`
@@ -63,7 +67,7 @@ export class FlowManager implements IFlowManager {
 			}
 			this.beforeObjectReleaseFunctors.push(functor);
 		} else {
-			console.log(`Registering functor ${functor.constructor.name}`);
+			debug(`Registering functor ${functor.constructor.name}`);
 			if (this.functors.indexOf(functor) !== -1) {
 				throw new Error(`Can't register duplicate functor ${functor.constructor.name}`);
 			}
