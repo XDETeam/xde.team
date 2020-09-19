@@ -32,6 +32,13 @@ it("should properly deal with hook functors", () => {
 	expect(flow.beforeObjectReleaseFunctors.length).toEqual(1);
 });
 
+it("should register an array of functors (module)", () => {
+	const flow = new FlowManager();
+	flow.register([httpInstance, app404ErrorInstance, httpRendererInstance]);
+	expect(flow.functors.length).toEqual(2);
+	expect(flow.beforeObjectReleaseFunctors.length).toEqual(1);
+});
+
 it("should f*cking handle the test app!", () => {
 	const flow = new FlowManager();
 	flow.register(admin401ErrorInstance);

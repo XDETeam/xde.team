@@ -11,7 +11,7 @@ export interface IFlowManager {
 	/**
 	 * добавляем функтор
 	 */
-	register(functor: IFunctor | IHookFunctor): void;
+	register(functor: IFunctor | IHookFunctor | Array<IFunctor | IHookFunctor>): void;
 }
 
 // Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
@@ -30,7 +30,15 @@ export class FlowManager implements IFlowManager {
 		}
 	}
 
-	register(functor: IFunctor | IHookFunctor): void {
+	register(functor: IFunctor | IHookFunctor | Array<IFunctor | IHookFunctor>): void {
+		if (Array.isArray(functor)) {
+			functor.forEach((f) => this.registerFunctor(f));
+		} else {
+			this.registerFunctor(functor);
+		}
+	}
+
+	private registerFunctor(functor: IFunctor | IHookFunctor): void {
 		// TODO: validate requires and produces non-zero length
 		if ("isHook" in functor) {
 			console.log(`Registering hook functor ${functor.constructor.name}`);
