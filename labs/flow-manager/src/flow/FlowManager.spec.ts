@@ -10,6 +10,7 @@ import httpRendererInstance from "../functor/functors/http/HttpRenderer";
 import routedInstance from "../functor/functors/http/Routed";
 import hasAuthInstance from "../functor/functors/security/HasAuth";
 import isAdminInstance from "../functor/functors/security/IsAdmin";
+import { Aspects } from "../aspects";
 
 it("should register functors to the flow manager", () => {
 	const flow = new FlowManager();
@@ -50,4 +51,12 @@ it("should f*cking handle the test app!", () => {
 	flow.register(hasAuthInstance);
 	flow.register(isAdminInstance);
 	flow.notify({ HttpRequest: { authCookie: "valid", route: "/adminPanelRoute" } });
+});
+
+it("should test if it is possible to receive some aspect", () => {
+	const flow = new FlowManager();
+	flow.register([httpInstance, app404ErrorInstance, error404Instance, httpRendererInstance]);
+	expect(flow.isPossible(Aspects.RouteHandled, Aspects.GeneratedHtml)).toEqual(true);
+	expect(flow.isPossible(Aspects.IsHttp, Aspects.GeneratedHtml)).toEqual(false);
+	expect(flow.isPossible(Aspects.GeneratedHtml, Aspects.RenderedHtml)).toEqual(true);
 });

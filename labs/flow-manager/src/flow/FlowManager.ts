@@ -1,7 +1,7 @@
 import { IObject } from "../models";
 import { IFunctor, IHookFunctor } from "../functor/Functor";
 import { ObjectFlow } from "./ObjectFlow";
-
+import { Aspects } from "../aspects";
 export interface IFlowManager {
 	/**
 	 * тут можно передать объект
@@ -12,6 +12,8 @@ export interface IFlowManager {
 	 * добавляем функтор
 	 */
 	register(functor: IFunctor | IHookFunctor | Array<IFunctor | IHookFunctor>): void;
+
+	isPossible(from: Aspects, receive: Aspects): boolean;
 }
 
 // Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
@@ -36,6 +38,18 @@ export class FlowManager implements IFlowManager {
 		} else {
 			this.registerFunctor(functor);
 		}
+	}
+
+	isPossible(from: Aspects, receive: Aspects): boolean {
+		const moved = new ObjectFlow({ [from]: true });
+		moved.movePass(this.functors);
+
+		if (this.beforeObjectReleaseFunctors.length) {
+			moved.movePass(this.beforeObjectReleaseFunctors);
+			moved.movePass(this.functors);
+		}
+
+		return moved.object[receive] !== undefined;
 	}
 
 	private registerFunctor(functor: IFunctor | IHookFunctor): void {

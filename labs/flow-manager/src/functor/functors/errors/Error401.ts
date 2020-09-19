@@ -5,7 +5,7 @@ export class Error401 implements IFunctor {
 	requires = [
 		{
 			aspect: Aspects.ResponseCode,
-			lambda: (asp: number) => !!asp && asp === 401,
+			lambda: (asp: number) => asp === 401,
 		},
 	];
 	produces = [Aspects.GeneratedHtml];
