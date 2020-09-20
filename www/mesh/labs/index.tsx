@@ -9,7 +9,6 @@ export const Labs = () => (
 
 		<section>
 			<h2>XDE</h2>
-
 			<h3>Организация</h3>
 			<ul>
 				<li>
@@ -19,7 +18,6 @@ export const Labs = () => (
 					<a href="/labs/xde/brand">Brand</a>
 				</li>
 			</ul>
-
 			<h3>Экосистема</h3>
 			<ul>
 				<li>
@@ -34,7 +32,6 @@ export const Labs = () => (
 					<a href="/labs/xde/app">App</a>
 				</li>
 			</ul>
-
 			<h3>Продукты</h3>
 			<ul>
 				<li>
@@ -164,6 +161,9 @@ export const Labs = () => (
 				<li>Conversation engineering</li>
 				<li>Career engineering</li>
 				<li>Brand engineering</li>
+				<li>
+					<a href="/labs/quantum-mechanics">Quantum mechanics</a>
+				</li>
 			</ul>
 		</section>
 
