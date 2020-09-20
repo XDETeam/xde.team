@@ -4,26 +4,21 @@ import { Aspects } from "../../../../aspects/index";
 export class AdminPanelResponse implements IFunctor {
 	requires = [
 		{
-			aspect: Aspects.IsAdmin,
-			lambda: (isAdmin: boolean) => isAdmin === true,
-		},
-		{
 			aspect: Aspects.Routed,
 			lambda: (asp: string) => asp.endsWith("/security/adminPanelRoute"),
 		},
 		// TODO: не сильно нравится, что нужно это повторять для каждого роута группы Secured
 		{
-			aspect: Aspects.AppSecuredRouteAllowed,
+			aspect: Aspects.AppAdminRouteAllowed,
 			lambda: (allowed: boolean) => allowed === true,
 		},
 	];
-	produces = [Aspects.GeneratedHtml, Aspects.RouteHandled];
+	produces = [Aspects.GeneratedHtml];
 
 	move(obj: {}): {} {
 		return {
 			...obj,
 			[Aspects.GeneratedHtml]: "<div>secret dashboard</div>",
-			[Aspects.RouteHandled]: true,
 		};
 	}
 }

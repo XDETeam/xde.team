@@ -1,6 +1,5 @@
 import { ObjectFlow } from "./ObjectFlow";
 import hasAuthInstance from "../functor/functors/security/HasAuth";
-import isAdminInstance from "../functor/functors/security/IsAdmin";
 import adminPanelResponseInstance from "../functor/functors/app/admin/AdminPanelResponse";
 import admin401ErrorInstance from "../functor/functors/app/admin/Admin401Error";
 import error401Instance from "../functor/functors/errors/Error401";
@@ -8,10 +7,11 @@ import httpRendererInstance from "../functor/functors/http/HttpRenderer";
 import routedInstance from "../functor/functors/http/Routed";
 import { Aspects } from "../aspects";
 import securedInstance from "../functor/functors/http/Secured";
-import appSecuredRouteAllowedInstance from "../functor/functors/app/AppSecuredRouteAllowed";
+import appAdminRouteAllowedInstance from "../functor/functors/app/AppAdminRouteAllowed";
 import { ITestHttpRequest } from "../models";
+import appSecuredRouteRedirectedInstance from "../functor/functors/app/AppSecuredRouteRedirected";
 
-it("should register functors to the flow manager", () => {
+it("should handle simple flow", () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",
@@ -19,19 +19,18 @@ it("should register functors to the flow manager", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.move([hasAuthInstance, isAdminInstance]);
+	flow.move([hasAuthInstance, securedInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
 	expect(flow.object).toHaveProperty(hasAuthInstance.produces);
-	expect(flow.object).toHaveProperty(isAdminInstance.produces);
+	expect(flow.object).toHaveProperty(securedInstance.produces);
 });
 
 it("should handle lambda functions", () => {
 	const flow = new ObjectFlow({
-		IsAdmin: true,
 		Routed: "/security/adminPanelRoute",
-		AppSecuredRouteAllowed: true,
+		AppAdminRouteAllowed: false,
 	});
-	flow.move([adminPanelResponseInstance, admin401ErrorInstance, error401Instance]);
+	flow.move([admin401ErrorInstance, error401Instance]);
 	expect(flow.object).toHaveProperty(httpRendererInstance.requires);
 });
 
@@ -45,7 +44,7 @@ it("should move pass", () => {
 	});
 
 	flow.movePass([
-		isAdminInstance,
+		appAdminRouteAllowedInstance,
 		admin401ErrorInstance,
 		error401Instance,
 		httpRendererInstance,

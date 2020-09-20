@@ -3,8 +3,8 @@ import { Aspects } from "../../../aspects/index";
 
 export class AppSecuredRouteRedirected implements IFunctor {
 	requires = [
-		{ aspect: Aspects.AppSecuredRouteAllowed, lambda: (allowed: boolean) => allowed === false },
-		Aspects.Routed,
+		{ aspect: Aspects.Routed, lambda: (route: string) => route.startsWith("/security/") },
+		{ aspect: Aspects.Secured, lambda: (secured: boolean) => secured === false },
 	];
 	produces = [Aspects.LocationHeader, Aspects.ResponseCode];
 

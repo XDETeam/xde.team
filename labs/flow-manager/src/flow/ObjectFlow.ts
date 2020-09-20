@@ -1,11 +1,14 @@
+import { diff } from "deep-object-diff";
+
 import { IObject } from "../models";
 import { IFunctor } from "../functor/Functor";
-import { Aspects } from "../aspects";
+import { Aspects, AspectState, AspectsState } from "../aspects";
 import { appDebug } from "../helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
 const debugVerbose = debug.extend("verbose");
 const debugShort = debug.extend("short");
+const debugShortFunctor = debugShort.extend("functor");
 const debugShortObject = debugShort.extend("object");
 
 export enum AspectType {
@@ -34,23 +37,26 @@ export class ObjectFlow implements IObjectFlow {
 
 	move(functorsPool: IFunctor[]): void {
 		let functors;
+		let prevObject = { ...this.object };
 
 		while ((functors = this.findFunctors(functorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
-			debugShortObject(
-				`[${Object.keys(this.object)
-					.map((key) => `${key}: ${this.object[key]}`)
-					.join(", ")}]`
-			);
 			functors.forEach((functor) => (this.object = functor.move(this.object)));
-			debugShort(
+			debugShortFunctor(
 				`${
 					functors.length > 1
 						? `[${functors.map((functor) => functor.constructor.name).join(", ")}]`
 						: functors[0].constructor.name
 				}`
 			);
+			debugShortObject(diff(prevObject, this.object));
+			prevObject = { ...this.object };
+			// debugShortObject(
+			// 	`[${Object.keys(this.object)
+			// 		.map((key) => `${key}: ${this.object[key]}`)
+			// 		.join(", ")}]`
+			// );
 			debugVerbose("Object after iteration", this.object);
 		}
 	}
@@ -63,10 +69,24 @@ export class ObjectFlow implements IObjectFlow {
 				functor.produces.every((produce) => this.object[produce] === undefined) &&
 				functor.requires.every((req) => {
 					if (typeof req === "object") {
-						return (
-							this.object[req.aspect] !== undefined &&
-							req.lambda(this.object[req.aspect])
-						);
+						if ("is" in req) {
+							switch (req.is) {
+								case AspectState.Undefined: {
+									return this.object[req.aspect] === undefined;
+								}
+							}
+						} else if ("are" in req) {
+							switch (req.are) {
+								case AspectsState.SomeTruthy: {
+									return req.aspects.some((aspect) => !!this.object[aspect]);
+								}
+							}
+						} else {
+							return (
+								this.object[req.aspect] !== undefined &&
+								req.lambda(this.object[req.aspect])
+							);
+						}
 					} else {
 						return this.object[req] !== undefined;
 					}
@@ -106,9 +126,27 @@ export class ObjectFlow implements IObjectFlow {
 		functorsPool.forEach((functor) => {
 			if (
 				functor.produces.every((produce) => this.object[produce] === undefined) &&
-				functor.requires.every(
-					(req) => this.object[typeof req === "object" ? req.aspect : req] !== undefined
-				)
+				functor.requires.every((req) => {
+					if (typeof req === "object") {
+						if ("is" in req) {
+							switch (req.is) {
+								case AspectState.Undefined: {
+									return this.object[req.aspect] === undefined;
+								}
+							}
+						} else if ("are" in req) {
+							switch (req.are) {
+								case AspectsState.SomeTruthy: {
+									return req.aspects.some((aspect) => !!this.object[aspect]);
+								}
+							}
+						} else {
+							return this.object[req.aspect] !== undefined;
+						}
+					} else {
+						return this.object[req] !== undefined;
+					}
+				})
 			) {
 				ret.push(functor);
 			}

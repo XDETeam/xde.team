@@ -1,7 +1,6 @@
 export enum Aspects {
 	HttpRequest = "HttpRequest",
 	HasAuth = "HasAuth",
-	IsAdmin = "IsAdmin",
 	GeneratedHtml = "GeneratedHtml",
 	/**
 	 * @default 200
@@ -16,5 +15,15 @@ export enum Aspects {
 	Redirected = "Redirected",
 
 	// app
-	AppSecuredRouteAllowed = "AppSecuredRouteAllowed",
+	AppAdminRouteAllowed = "AppAdminRouteAllowed",
+}
+
+export enum AspectState {
+	Undefined,
+}
+
+export enum AspectsState {
+	SomeTruthy,
+	// is default without object
+	// EveryTruthy,
 }

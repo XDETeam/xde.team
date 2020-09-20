@@ -5,10 +5,10 @@ export class Admin401Error implements IFunctor {
 	requires = [
 		{
 			aspect: Aspects.Routed,
-			lambda: (asp: string) => asp.startsWith("/security/adminPanelRoute"),
+			lambda: (asp: string) => asp.startsWith("/security/"),
 		},
 		{
-			aspect: Aspects.IsAdmin,
+			aspect: Aspects.AppAdminRouteAllowed,
 			lambda: (asp: boolean) => asp === false,
 		},
 	];

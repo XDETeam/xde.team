@@ -1,11 +1,15 @@
 import { IObject } from "../models";
-import { Aspects } from "../aspects";
+import { Aspects, AspectsState, AspectState } from "../aspects";
+
+export type IFunctorRequiresExt =
+	| { aspect: Aspects; lambda: (aspect?: any) => boolean }
+	| { aspect: Aspects; is: AspectState }
+	| { aspects: Aspects[]; are: AspectsState };
 
 export interface IFunctor {
 	move(obj: IObject): IObject;
-	// TODO: Can go from Aspects to just functor names?
 	// requires или produces НЕ могут быть пустыми, даже если на конце цепочки
-	requires: Array<Aspects | { aspect: Aspects; lambda: (aspect: any) => boolean }>;
+	requires: Array<Aspects | IFunctorRequiresExt>;
 	produces: Aspects[];
 }
 

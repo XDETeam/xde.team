@@ -8,7 +8,6 @@ import error404Instance from "../functor/functors/errors/Error404";
 import httpRendererInstance from "../functor/functors/http/HttpRenderer";
 import routedInstance from "../functor/functors/http/Routed";
 import hasAuthInstance from "../functor/functors/security/HasAuth";
-import isAdminInstance from "../functor/functors/security/IsAdmin";
 import { Aspects } from "../aspects";
 import securedInstance from "../functor/functors/http/Secured";
 import { ITestHttpRequest } from "../models";
@@ -50,7 +49,6 @@ it("should f*cking handle the test app!", () => {
 	flow.register(httpRendererInstance);
 	flow.register(routedInstance);
 	flow.register(hasAuthInstance);
-	flow.register(isAdminInstance);
 	flow.notify({
 		HttpRequest: {
 			authCookie: "valid",
@@ -63,7 +61,7 @@ it("should f*cking handle the test app!", () => {
 it("should test if it is possible to receive some aspect", () => {
 	const flow = new FlowManager();
 	flow.register([securedInstance, app404ErrorInstance, error404Instance, httpRendererInstance]);
-	expect(flow.isPossible(Aspects.RouteHandled, Aspects.GeneratedHtml)).toEqual(true);
+	expect(flow.isPossible(Aspects.ResponseCode, Aspects.RenderedHtml)).toEqual(true);
 	expect(flow.isPossible(Aspects.Secured, Aspects.GeneratedHtml)).toEqual(false);
 	expect(flow.isPossible(Aspects.GeneratedHtml, Aspects.RenderedHtml)).toEqual(true);
 });
