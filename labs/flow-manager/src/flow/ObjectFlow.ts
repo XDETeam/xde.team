@@ -6,6 +6,7 @@ import { appDebug } from "../helpers/debug";
 const debug = appDebug.extend("ObjectFlow");
 const debugVerbose = debug.extend("verbose");
 const debugShort = debug.extend("short");
+const debugShortObject = debugShort.extend("object");
 
 export enum AspectType {
 	Exists = "Exists",
@@ -37,6 +38,11 @@ export class ObjectFlow implements IObjectFlow {
 		while ((functors = this.findFunctors(functorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
+			debugShortObject(
+				`[${Object.keys(this.object)
+					.map((key) => `${key}: ${this.object[key]}`)
+					.join(", ")}]`
+			);
 			functors.forEach((functor) => (this.object = functor.move(this.object)));
 			debugShort(
 				`${

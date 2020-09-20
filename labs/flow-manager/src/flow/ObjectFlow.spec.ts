@@ -7,7 +7,7 @@ import error401Instance from "../functor/functors/errors/Error401";
 import httpRendererInstance from "../functor/functors/http/HttpRenderer";
 import routedInstance from "../functor/functors/http/Routed";
 import { Aspects } from "../aspects";
-import tLSedInstance from "../functor/functors/http/TLSed";
+import securedInstance from "../functor/functors/http/Secured";
 import appSecuredRouteAllowedInstance from "../functor/functors/app/AppSecuredRouteAllowed";
 import { ITestHttpRequest } from "../models";
 
@@ -51,7 +51,7 @@ it("should move pass", () => {
 		httpRendererInstance,
 		routedInstance,
 		hasAuthInstance,
-		tLSedInstance,
+		securedInstance,
 	]);
 	expect(flow.object).toHaveProperty(Aspects.GeneratedHtml);
 });

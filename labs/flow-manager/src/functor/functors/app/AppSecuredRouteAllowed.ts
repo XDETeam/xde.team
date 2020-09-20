@@ -4,14 +4,14 @@ import { Aspects } from "../../../aspects/index";
 export class AppSecuredRouteAllowed implements IFunctor {
 	requires = [
 		{ aspect: Aspects.Routed, lambda: (route: string) => route.startsWith("/security/") },
-		Aspects.TLSed,
+		Aspects.Secured,
 	];
 	produces = [Aspects.AppSecuredRouteAllowed];
 
-	move(obj: { [Aspects.TLSed]: boolean }): {} {
+	move(obj: { [Aspects.Secured]: boolean }): {} {
 		return {
 			...obj,
-			[Aspects.AppSecuredRouteAllowed]: obj[Aspects.TLSed],
+			[Aspects.AppSecuredRouteAllowed]: obj[Aspects.Secured],
 		};
 	}
 }

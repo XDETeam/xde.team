@@ -11,7 +11,7 @@ import error404Instance from "./functor/functors/errors/Error404";
 import httpRedirectInstance from "./functor/functors/http/HttpRedirect";
 import httpRendererInstance from "./functor/functors/http/HttpRenderer";
 import routedInstance from "./functor/functors/http/Routed";
-import tLSedInstance from "./functor/functors/http/TLSed";
+import securedInstance from "./functor/functors/http/Secured";
 import hasAuthInstance from "./functor/functors/security/HasAuth";
 import isAdminInstance from "./functor/functors/security/IsAdmin";
 import { ITestHttpRequest } from "./models";
@@ -30,11 +30,11 @@ flow.register([
 	httpRendererInstance,
 	isAdminInstance,
 	routedInstance,
-	tLSedInstance,
+	securedInstance,
 ]);
 
 // Debug.enable("*");
-Debug.enable("app:ObjectFlow:short");
+Debug.enable("app:ObjectFlow:short*");
 
 flow.notify({
 	HttpRequest: {

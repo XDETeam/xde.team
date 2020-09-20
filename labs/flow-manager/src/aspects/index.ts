@@ -12,7 +12,7 @@ export enum Aspects {
 	Logged = "Logged",
 	Routed = "Routed",
 	RouteHandled = "RouteHandled",
-	TLSed = "TLSed",
+	Secured = "Secured",
 	Redirected = "Redirected",
 
 	// app
