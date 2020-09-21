@@ -52,3 +52,22 @@ it("should move pass", () => {
 	]);
 	expect(flow.object).toHaveProperty(Aspect.GeneratedHtml);
 });
+
+it("should handle replacements of move functions", () => {
+	const flow = new ObjectFlow({
+		HttpRequest: {
+			authCookie: "valid",
+			route: "/security/adminPanelRoute",
+			isTLS: true,
+		} as ITestHttpRequest,
+	});
+	flow.move([hasAuthInstance, securedInstance], {
+		[securedInstance.constructor.name]: (obj) => ({
+			...obj,
+			[securedInstance.produces[0]]: 42,
+		}),
+	});
+	expect(flow.object).toHaveProperty("HttpRequest");
+	expect(flow.object).toHaveProperty(hasAuthInstance.produces);
+	expect(flow.object[securedInstance.produces[0]]).toEqual(42);
+});

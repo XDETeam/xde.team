@@ -67,3 +67,20 @@ it("should test if it is possible to receive some aspect", () => {
 	expect(functor.isPossible(Aspect.Secured, Aspect.GeneratedHtml)).toEqual(false);
 	expect(functor.isPossible(Aspect.GeneratedHtml, Aspect.RenderedHtml)).toEqual(true);
 });
+
+it("should register replace move method", () => {
+	const compositeFunctor = new testCompositeFunctor();
+	const primitiveFunctor = new testPrimitiveFunctor();
+	compositeFunctor.addSubFunctors(primitiveFunctor);
+	compositeFunctor.replace(primitiveFunctor, () => ({}));
+
+	expect(primitiveFunctor.constructor.name in compositeFunctor.replacements).toEqual(true);
+});
+
+it("should not allow to replace move method for unregistered subfunctor", () => {
+	const compositeFunctor = new testCompositeFunctor();
+	const primitiveFunctor = new testPrimitiveFunctor();
+	const primitiveFunctor2 = new testPrimitiveFunctor2();
+	compositeFunctor.addSubFunctors(primitiveFunctor);
+	expect(() => compositeFunctor.replace(primitiveFunctor2, () => ({}))).toThrowError(/register/i);
+});

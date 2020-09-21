@@ -28,7 +28,7 @@ export interface IRequiredAspect {
 }
 
 export interface IObjectFlow {
-	move(functorsPool: IFunctor[]): void;
+	move(functorsPool: IFunctor[], replacements?: IFunctor["replacements"]): void;
 	movePass(functorsPool: IFunctor[]): void;
 }
 
@@ -37,7 +37,7 @@ export class ObjectFlow implements IObjectFlow {
 
 	// Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
 	// Мысленно все разруливается с конца - Вы можете перенести пользователя в добавленные. добавленный пользователь требует x, x требует y и т.д.
-	move(functorsPool: IFunctor[]): void {
+	move(functorsPool: IFunctor[], replacements?: IFunctor["replacements"]): void {
 		let functors: IFunctor[];
 		let prevObject = { ...this.object };
 		let currentFunctorsPool = functorsPool.slice();
@@ -45,7 +45,13 @@ export class ObjectFlow implements IObjectFlow {
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
-			functors.forEach((functor) => (this.object = functor.move(this.object)));
+			functors.forEach((functor) => {
+				if (replacements && functor.constructor.name in replacements) {
+					this.object = replacements[functor.constructor.name](this.object);
+				} else {
+					this.object = functor.move(this.object);
+				}
+			});
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
 			debugShortFunctor(
 				`${

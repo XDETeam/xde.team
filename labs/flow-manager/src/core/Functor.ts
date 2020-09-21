@@ -12,28 +12,37 @@ export type IFunctorRequiresExt =
 	| { aspects: Aspect[]; are: AspectsState };
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
-// добавляем проверку - если объект в конце не имеет свойства из produces - ошибка
 export interface IFunctor {
-	subFunctors: IFunctor[];
-	// move should become nofity
-	// also move should support substitution of move function
-	move(obj: IObject): IObject;
-	// requires или produces НЕ могут быть пустыми, даже если на конце цепочки
 	requires: Array<Aspect | IFunctorRequiresExt>;
 	produces: Aspect[];
 
-	addSubFunctors(functor: IFunctor | IFunctor[]): void;
+	subFunctors: IFunctor[];
 
+	/**
+	 * Rewrite me to make primitive functor
+	 */
+	move(obj: IObject): IObject;
+	addSubFunctors(functor: IFunctor | IFunctor[]): void;
 	isPossible(from: Aspect, receive: Aspect): boolean;
+
+	/**
+	 * Replaces move method of subfunctor
+	 * @param existing Replace move method for this functor
+	 * @param newMove Move function to replace with
+	 */
+	replace(existing: IFunctor, newMove: IFunctor["move"]): void;
+	replacements: { [key: string]: IFunctor["move"] };
 }
 
 export abstract class Functor implements IFunctor {
 	// Allows to debug some info when overriding "move" method
 	public static debugger: Debugger = debug;
 
-	subFunctors: IFunctor[] = [];
 	abstract requires: IFunctor["requires"];
 	abstract produces: IFunctor["produces"];
+
+	subFunctors: IFunctor[] = [];
+	replacements: IFunctor["replacements"] = {};
 
 	move(obj: IObject): IObject {
 		if (!this.subFunctors.length) {
@@ -43,7 +52,7 @@ export abstract class Functor implements IFunctor {
 		}
 
 		const moved = new ObjectFlow(obj);
-		moved.move(this.subFunctors);
+		moved.move(this.subFunctors, this.replacements);
 
 		// TODO: Validate with produces - if not - throw!
 		return moved.object;
@@ -62,6 +71,16 @@ export abstract class Functor implements IFunctor {
 		moved.movePass(this.subFunctors);
 
 		return moved.object[receive] !== undefined;
+	}
+
+	replace(existing: IFunctor, newMove: IFunctor["move"]): void {
+		if (!this.subFunctors.includes(existing)) {
+			throw new Error(
+				"It is not possible to replace method of unregistered subfunctor. Add it first."
+			);
+		}
+
+		this.replacements[existing.constructor.name] = newMove;
 	}
 
 	private addSubFunctor(functor: IFunctor): void {
