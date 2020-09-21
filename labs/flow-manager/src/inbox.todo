@@ -1,3 +1,4 @@
-oneOf aspects
-allow undefined aspects for lambdas
-404 handling
+возможно, работа с генерацией html-form окажется просто отдельным flow manager.
+сделать генерацию sp
+
+1. возможность подменять реализацию метода move для указанного функтора

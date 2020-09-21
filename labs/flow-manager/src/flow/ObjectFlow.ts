@@ -35,14 +35,18 @@ export interface IObjectFlow {
 export class ObjectFlow implements IObjectFlow {
 	constructor(public object: IObject) {}
 
+	// Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
+	// Мысленно все разруливается с конца - Вы можете перенести пользователя в добавленные. добавленный пользователь требует x, x требует y и т.д.
 	move(functorsPool: IFunctor[]): void {
-		let functors;
+		let functors: IFunctor[];
 		let prevObject = { ...this.object };
+		let currentFunctorsPool = functorsPool.slice();
 
-		while ((functors = this.findFunctors(functorsPool)) && functors.length) {
+		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
 			functors.forEach((functor) => (this.object = functor.move(this.object)));
+			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
 			debugShortFunctor(
 				`${
 					functors.length > 1
@@ -66,6 +70,7 @@ export class ObjectFlow implements IObjectFlow {
 
 		functorsPool.forEach((functor) => {
 			if (
+				// TODO: Do we need this line?
 				functor.produces.every((produce) => this.object[produce] === undefined) &&
 				functor.requires.every((req) => {
 					if (typeof req === "object") {

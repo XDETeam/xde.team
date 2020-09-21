@@ -1,7 +1,7 @@
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects } from "../../../aspects/index";
 
-export class Error401 implements IFunctor {
+export class Error401 extends Functor {
 	requires = [
 		{
 			aspect: Aspects.ResponseCode,

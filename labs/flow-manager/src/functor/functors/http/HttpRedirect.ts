@@ -1,10 +1,7 @@
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects } from "../../../aspects/index";
-import { appDebug } from "../../../helpers/debug";
 
-const debug = appDebug.extend("HttpRedirect");
-
-export class HttpRedirect implements IFunctor {
+export class HttpRedirect extends Functor {
 	requires = [
 		{
 			aspect: Aspects.ResponseCode,
@@ -15,7 +12,7 @@ export class HttpRedirect implements IFunctor {
 	produces = [Aspects.Redirected];
 
 	move(obj: { [Aspects.LocationHeader]: string }): {} {
-		debug(`Redirected to ${obj[Aspects.LocationHeader]}`);
+		Functor.debugger.extend("HttpRedirect")(`Redirected to ${obj[Aspects.LocationHeader]}`);
 		return {
 			...obj,
 			[Aspects.Redirected]: true,

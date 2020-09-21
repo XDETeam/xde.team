@@ -1,8 +1,8 @@
 import { Aspects } from "../../../aspects";
 import { ITestHttpRequest } from "../../../models";
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 
-export class Secured implements IFunctor {
+export class Secured extends Functor {
 	requires = [Aspects.HttpRequest];
 	produces = [Aspects.Secured];
 

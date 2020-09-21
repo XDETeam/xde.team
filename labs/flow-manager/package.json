@@ -5,7 +5,7 @@
 	"license": "UNLICENSED",
 	"scripts": {
 		"test": "jest --watch",
-		"test:dev:manager": "jest --watch FlowManager",
+		"test:dev:functor": "jest --watch Functor",
 		"test:dev:object": "jest --watch ObjectFlow",
 		"dev": "ts-node ./src/app.ts"
 	},

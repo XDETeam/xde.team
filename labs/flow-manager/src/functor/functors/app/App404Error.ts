@@ -1,9 +1,7 @@
-import { IHookFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects, AspectState } from "../../../aspects/index";
 
-export class App404Error implements IHookFunctor {
-	isHook: true = true;
-
+export class App404Error extends Functor {
 	requires = [
 		{ aspect: Aspects.RouteHandled, is: AspectState.Undefined },
 		// Two below - to ensure we are not adding 404 handling for something that doesn't need it.

@@ -1,7 +1,7 @@
-import { IFunctor } from "../../../Functor";
+import { Functor } from "../../../Functor";
 import { Aspects } from "../../../../aspects/index";
 
-export class AdminPanelResponse implements IFunctor {
+export class AdminPanelResponse extends Functor {
 	requires = [
 		{
 			aspect: Aspects.Routed,

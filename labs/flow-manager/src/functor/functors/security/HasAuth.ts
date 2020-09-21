@@ -1,16 +1,13 @@
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects } from "../../../aspects/index";
 import { ITestHttpRequest } from "../../../models";
-import { appDebug } from "../../../helpers/debug";
 
-const debug = appDebug.extend("HasAuth");
-
-export class HasAuth implements IFunctor {
+export class HasAuth extends Functor {
 	requires = [Aspects.HttpRequest];
 	produces = [Aspects.HasAuth];
 
 	move(obj: { [Aspects.HttpRequest]: ITestHttpRequest }): {} {
-		debug("Pass 'valid' to be authorized");
+		Functor.debugger.extend("HasAuth")("Pass 'valid' to be authorized");
 
 		return {
 			...obj,

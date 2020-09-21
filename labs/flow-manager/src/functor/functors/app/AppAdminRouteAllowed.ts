@@ -1,7 +1,7 @@
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects } from "../../../aspects/index";
 
-export class AppAdminRouteAllowed implements IFunctor {
+export class AppAdminRouteAllowed extends Functor {
 	requires = [
 		{ aspect: Aspects.Routed, lambda: (route: string) => route.startsWith("/security/") },
 		{ aspect: Aspects.Secured, lambda: (secured: boolean) => secured === true },

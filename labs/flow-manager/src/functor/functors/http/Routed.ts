@@ -1,8 +1,8 @@
-import { IFunctor } from "../../Functor";
+import { Functor } from "../../Functor";
 import { Aspects } from "../../../aspects/index";
 import { ITestHttpRequest } from "../../../models";
 
-export class Routed implements IFunctor {
+export class Routed extends Functor {
 	requires = [Aspects.HttpRequest];
 	produces = [Aspects.Routed];
 
