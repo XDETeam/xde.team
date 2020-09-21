@@ -71,3 +71,22 @@ it("should handle replacements of move functions", () => {
 	expect(flow.object).toHaveProperty(hasAuthInstance.produces);
 	expect(flow.object[securedInstance.produces[0]]).toEqual(42);
 });
+
+it("should produce an error when resulting object does not have functor produces", () => {
+	const flow = new ObjectFlow({
+		HttpRequest: {
+			authCookie: "valid",
+			route: "/security/adminPanelRoute",
+			isTLS: true,
+		} as ITestHttpRequest,
+	});
+
+	expect(() =>
+		flow.move([hasAuthInstance, securedInstance], {
+			[securedInstance.constructor.name]: (obj) => ({
+				...obj,
+				Key: 42,
+			}),
+		})
+	).toThrow(/validation failed/i);
+});

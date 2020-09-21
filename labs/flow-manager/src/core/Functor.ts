@@ -54,7 +54,7 @@ export abstract class Functor implements IFunctor {
 		const moved = new ObjectFlow(obj);
 		moved.move(this.subFunctors, this.replacements);
 
-		// TODO: Validate with produces - if not - throw!
+		// TODO: Validate with produces - if not - throw! now handled by ObjectFlow
 		return moved.object;
 	}
 
@@ -84,7 +84,6 @@ export abstract class Functor implements IFunctor {
 	}
 
 	private addSubFunctor(functor: IFunctor): void {
-		// TODO: validate requires and produces non-zero length
 		if (!functor.requires.length) {
 			throw new Error("Empty requires: Functor will never be invoked.");
 		}

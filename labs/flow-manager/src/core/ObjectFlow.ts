@@ -51,6 +51,15 @@ export class ObjectFlow implements IObjectFlow {
 				} else {
 					this.object = functor.move(this.object);
 				}
+				if (!this.validateProduces(this.object, functor)) {
+					throw new Error(
+						`Produces validation failed for functor ${
+							functor.constructor.name
+						} with produces ${JSON.stringify(
+							functor.produces
+						)} and resulting object ${JSON.stringify(this.object, null, 2)}`
+					);
+				}
 			});
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
 			debugShortFunctor(
@@ -164,6 +173,21 @@ export class ObjectFlow implements IObjectFlow {
 		});
 
 		return ret;
+	}
+
+	private validateProduces(obj: IObject, functor: IFunctor): boolean {
+		return functor.produces.every((product) => {
+			if (typeof product !== "object") {
+				if (!(product in obj)) {
+					debug(
+						`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
+						obj
+					);
+				}
+				return product in obj;
+			}
+			return false;
+		});
 	}
 
 	// private getRequiredAspects(extendedAspect: IExtendedAspect): IRequiredAspect[] {
