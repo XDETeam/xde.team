@@ -1,46 +1,55 @@
 import Debug from "debug";
-
-import { FlowManager } from "./flow/FlowManager";
 import admin401ErrorInstance from "./functors/app/admin/Admin401Error";
 import adminPanelResponseInstance from "./functors/app/admin/AdminPanelResponse";
 import app404ErrorInstance from "./functors/app/App404Error";
 import appAdminRouteAllowedInstance from "./functors/app/AppAdminRouteAllowed";
 import appSecuredRouteRedirectedInstance from "./functors/app/AppSecuredRouteRedirected";
-import error401Instance from "./functors/functors/errors/Error401";
-import error404Instance from "./functors/functors/errors/Error404";
-import httpRedirectInstance from "./functors/functors/http/HttpRedirect";
-import httpRendererInstance from "./functors/functors/http/HttpRenderer";
-import routedInstance from "./functors/functors/http/Routed";
-import securedInstance from "./functors/functors/http/Secured";
-import hasAuthInstance from "./functors/functors/security/HasAuth";
+import error401Instance from "./functors/errors/Error401";
+import error404Instance from "./functors/errors/Error404";
+import httpRedirectInstance from "./functors/http/HttpRedirect";
+import httpRendererInstance from "./functors/http/HttpRenderer";
+import routedInstance from "./functors/http/Routed";
+import securedInstance from "./functors/http/Secured";
+import hasAuthInstance from "./functors/security/HasAuth";
 import { ITestHttpRequest } from "./models";
-import routeHandledInstance from "./functors/functors/http/RouteHandled";
+import { CompositeFunctor } from "./core/Functor";
+import { Aspect, AspectsState } from "./core/models";
 
-const flow = new FlowManager();
-flow.register([
-	admin401ErrorInstance,
-	adminPanelResponseInstance,
-	app404ErrorInstance,
-	appAdminRouteAllowedInstance,
-	appSecuredRouteRedirectedInstance,
-	error401Instance,
+const renderer = new CompositeFunctor(
+	[{ aspects: [Aspect.ResponseCode, Aspect.GeneratedHtml], are: AspectsState.SomeTruthy }],
+	[]
+);
+renderer.addSubFunctors([
 	error404Instance,
-	hasAuthInstance,
+	error401Instance,
 	httpRedirectInstance,
 	httpRendererInstance,
-	routedInstance,
-	securedInstance,
-	routeHandledInstance,
 ]);
 
-// Debug.enable("*");
-Debug.enable("app:ObjectFlow:short*");
+const basicApp = new CompositeFunctor([Aspect.HttpRequest], []);
+basicApp.addSubFunctors([
+	admin401ErrorInstance,
+	adminPanelResponseInstance,
+	appAdminRouteAllowedInstance,
+	appSecuredRouteRedirectedInstance,
+	hasAuthInstance,
+	routedInstance,
+	securedInstance,
+]);
 
-flow.notify({
+const root = new CompositeFunctor([], []);
+root.addSubFunctors([basicApp, app404ErrorInstance, renderer]);
+
+// Debug.enable("*");
+// Debug.enable("app:ObjectFlow:short*");
+Debug.enable("app:ObjectFlow:verbose*");
+
+root.move({
 	HttpRequest: {
 		authCookie: "valid",
-		route: "/security/adminPanelRoute",
+		route: "/security/non-existing",
 		isTLS: true,
 	} as ITestHttpRequest,
+	AdminFlag: true,
 });
 // flow.notify({ HttpRequest: { authCookie: "invalid", route: "/fdsfadf" } });

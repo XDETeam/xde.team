@@ -63,19 +63,18 @@ export class ObjectFlow implements IObjectFlow {
 			});
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
 			debugShortFunctor(
-				`${
-					functors.length > 1
-						? `[${functors.map((functor) => functor.constructor.name).join(", ")}]`
-						: functors[0].constructor.name
-				}`
+				`[${functors
+					.map((functor) =>
+						functor.subFunctors.length
+							? `--- [${functor.subFunctors
+									.map((f) => f.constructor.name)
+									.join(", ")}] ---`
+							: functor.constructor.name
+					)
+					.join(", ")}]`
 			);
 			debugShortObject(diff(prevObject, this.object));
 			prevObject = { ...this.object };
-			// debugShortObject(
-			// 	`[${Object.keys(this.object)
-			// 		.map((key) => `${key}: ${this.object[key]}`)
-			// 		.join(", ")}]`
-			// );
 			debugVerbose("Object after iteration", this.object);
 		}
 	}

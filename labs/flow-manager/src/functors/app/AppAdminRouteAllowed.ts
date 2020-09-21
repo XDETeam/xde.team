@@ -9,9 +9,10 @@ export class AppAdminRouteAllowed extends Functor {
 	produces = [Aspect.AppAdminRouteAllowed];
 
 	move(obj: {}): {} {
+		Functor.debugger.extend("AppAdminRouteAllowed")("Set AdminFlag to any to pass");
 		return {
 			...obj,
-			[Aspect.AppAdminRouteAllowed]: Math.random() > 0.5,
+			[Aspect.AppAdminRouteAllowed]: "AdminFlag" in obj,
 		};
 	}
 }

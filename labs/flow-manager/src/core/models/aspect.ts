@@ -10,7 +10,6 @@ export enum Aspect {
 	RenderedHtml = "RenderedHtml",
 	Logged = "Logged",
 	Routed = "Routed",
-	RouteHandled = "RouteHandled",
 	Secured = "Secured",
 	Redirected = "Redirected",
 

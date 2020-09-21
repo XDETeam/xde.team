@@ -96,3 +96,9 @@ export abstract class Functor implements IFunctor {
 		debug(`Functor ${functor.constructor.name} added as a child for ${this.constructor.name}`);
 	}
 }
+
+export class CompositeFunctor extends Functor {
+	constructor(public requires: Functor["requires"], public produces: Functor["produces"]) {
+		super();
+	}
+}
