@@ -1,15 +1,15 @@
 import { Debugger } from "debug";
-import { IObject } from "../models";
-import { Aspects, AspectsState, AspectState } from "../aspects";
-import { appDebug } from "../helpers/debug";
-import { ObjectFlow } from "../flow/ObjectFlow";
+
+import { appDebug } from "./helpers/debug";
+import { Aspect, AspectsState, AspectState, IObject } from "./models";
+import { ObjectFlow } from "./ObjectFlow";
 
 const debug = appDebug.extend("Functor");
 
 export type IFunctorRequiresExt =
-	| { aspect: Aspects; lambda: (aspect?: any) => boolean }
-	| { aspect: Aspects; is: AspectState }
-	| { aspects: Aspects[]; are: AspectsState };
+	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
+	| { aspect: Aspect; is: AspectState }
+	| { aspects: Aspect[]; are: AspectsState };
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
 // добавляем проверку - если объект в конце не имеет свойства из produces - ошибка
@@ -19,12 +19,12 @@ export interface IFunctor {
 	// also move should support substitution of move function
 	move(obj: IObject): IObject;
 	// requires или produces НЕ могут быть пустыми, даже если на конце цепочки
-	requires: Array<Aspects | IFunctorRequiresExt>;
-	produces: Aspects[];
+	requires: Array<Aspect | IFunctorRequiresExt>;
+	produces: Aspect[];
 
 	addSubFunctors(functor: IFunctor | IFunctor[]): void;
 
-	isPossible(from: Aspects, receive: Aspects): boolean;
+	isPossible(from: Aspect, receive: Aspect): boolean;
 }
 
 export abstract class Functor implements IFunctor {
@@ -57,7 +57,7 @@ export abstract class Functor implements IFunctor {
 		}
 	}
 
-	isPossible(from: Aspects, receive: Aspects): boolean {
+	isPossible(from: Aspect, receive: Aspect): boolean {
 		const moved = new ObjectFlow({ [from]: true });
 		moved.movePass(this.subFunctors);
 

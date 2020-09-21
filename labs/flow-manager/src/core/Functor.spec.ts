@@ -1,18 +1,18 @@
+import app404ErrorInstance from "../functors/app/App404Error";
+import error404Instance from "../functors/errors/Error404";
+import httpRendererInstance from "../functors/http/HttpRenderer";
+import securedInstance from "../functors/http/Secured";
+import { Aspect } from "./models/index";
 import { Functor } from "./Functor";
-import { Aspects } from "../aspects/index";
-import app404ErrorInstance from "./functors/app/App404Error";
-import error404Instance from "./functors/errors/Error404";
-import httpRendererInstance from "./functors/http/HttpRenderer";
-import securedInstance from "./functors/http/Secured";
 
 class testPrimitiveFunctor extends Functor {
-	requires = [Aspects.HttpRequest];
-	produces = [Aspects.HasAuth];
+	requires = [Aspect.HttpRequest];
+	produces = [Aspect.HasAuth];
 }
 
 class testPrimitiveFunctor2 extends Functor {
-	requires = [Aspects.HasAuth];
-	produces = [Aspects.AppAdminRouteAllowed];
+	requires = [Aspect.HasAuth];
+	produces = [Aspect.AppAdminRouteAllowed];
 }
 
 class testCompositeFunctor extends Functor {
@@ -41,7 +41,7 @@ it("should register an array of functors as child to the functor", () => {
 it("should prevent registration of functor with empty requires", () => {
 	class somePrimitiveFunctor extends Functor {
 		requires = [];
-		produces = [Aspects.HasAuth];
+		produces = [Aspect.HasAuth];
 	}
 	const compositeFunctor = new testCompositeFunctor();
 
@@ -63,7 +63,7 @@ it("should test if it is possible to receive some aspect", () => {
 		error404Instance,
 		httpRendererInstance,
 	]);
-	expect(functor.isPossible(Aspects.ResponseCode, Aspects.RenderedHtml)).toEqual(true);
-	expect(functor.isPossible(Aspects.Secured, Aspects.GeneratedHtml)).toEqual(false);
-	expect(functor.isPossible(Aspects.GeneratedHtml, Aspects.RenderedHtml)).toEqual(true);
+	expect(functor.isPossible(Aspect.ResponseCode, Aspect.RenderedHtml)).toEqual(true);
+	expect(functor.isPossible(Aspect.Secured, Aspect.GeneratedHtml)).toEqual(false);
+	expect(functor.isPossible(Aspect.GeneratedHtml, Aspect.RenderedHtml)).toEqual(true);
 });

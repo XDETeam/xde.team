@@ -1,16 +1,16 @@
-import { Functor } from "../../Functor";
-import { Aspects } from "../../../aspects/index";
+import { Functor } from "../../core/Functor";
+import { Aspect } from "../../core/models";
 
 export class HttpRenderer extends Functor {
-	requires = [Aspects.GeneratedHtml];
-	produces = [Aspects.RenderedHtml];
+	requires = [Aspect.GeneratedHtml];
+	produces = [Aspect.RenderedHtml];
 
 	move(obj: {}): {} {
 		// console.log("Also sets status code in case exists?");
 
 		return {
 			...obj,
-			[Aspects.RenderedHtml]: true,
+			[Aspect.RenderedHtml]: true,
 		};
 	}
 }

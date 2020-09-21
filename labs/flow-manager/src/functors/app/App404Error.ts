@@ -1,19 +1,19 @@
-import { Functor } from "../../Functor";
-import { Aspects, AspectState } from "../../../aspects/index";
+import { Functor } from "../../core/Functor";
+import { Aspect, AspectState } from "../../core/models";
 
 export class App404Error extends Functor {
 	requires = [
-		{ aspect: Aspects.RouteHandled, is: AspectState.Undefined },
+		{ aspect: Aspect.RouteHandled, is: AspectState.Undefined },
 		// Two below - to ensure we are not adding 404 handling for something that doesn't need it.
-		Aspects.Routed,
-		Aspects.HttpRequest,
+		Aspect.Routed,
+		Aspect.HttpRequest,
 	];
-	produces = [Aspects.ResponseCode];
+	produces = [Aspect.ResponseCode];
 
 	move(obj: {}): {} {
 		return {
 			...obj,
-			[Aspects.ResponseCode]: 404,
+			[Aspect.ResponseCode]: 404,
 		};
 	}
 }

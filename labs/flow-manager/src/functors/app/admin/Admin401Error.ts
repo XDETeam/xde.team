@@ -1,23 +1,23 @@
-import { Functor } from "../../../Functor";
-import { Aspects } from "../../../../aspects/index";
+import { Functor } from "../../../core/Functor";
+import { Aspect } from "../../../core/models";
 
 export class Admin401Error extends Functor {
 	requires = [
 		{
-			aspect: Aspects.Routed,
+			aspect: Aspect.Routed,
 			lambda: (asp: string) => asp.startsWith("/security/"),
 		},
 		{
-			aspect: Aspects.AppAdminRouteAllowed,
+			aspect: Aspect.AppAdminRouteAllowed,
 			lambda: (asp: boolean) => asp === false,
 		},
 	];
-	produces = [Aspects.ResponseCode];
+	produces = [Aspect.ResponseCode];
 
 	move(obj: {}): {} {
 		return {
 			...obj,
-			[Aspects.ResponseCode]: 401,
+			[Aspect.ResponseCode]: 401,
 		};
 	}
 }

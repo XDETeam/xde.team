@@ -1,9 +1,9 @@
 import { diff } from "deep-object-diff";
 
-import { IObject } from "../models";
-import { IFunctor } from "../functor/Functor";
-import { Aspects, AspectState, AspectsState } from "../aspects";
-import { appDebug } from "../helpers/debug";
+import { IObject } from "./models";
+import { IFunctor } from "./Functor";
+import { Aspect, AspectState, AspectsState } from "./models";
+import { appDebug } from "./helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
 const debugVerbose = debug.extend("verbose");
@@ -18,7 +18,7 @@ export enum AspectType {
 
 export interface IExtendedAspect {
 	type: AspectType;
-	aspect: Aspects;
+	aspect: Aspect;
 }
 
 export interface IRequiredAspect {

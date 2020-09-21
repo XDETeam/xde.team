@@ -1,19 +1,19 @@
-import { Functor } from "../../Functor";
-import { Aspects } from "../../../aspects/index";
+import { Functor } from "../../core/Functor";
+import { Aspect } from "../../core/models";
 
 export class Error401 extends Functor {
 	requires = [
 		{
-			aspect: Aspects.ResponseCode,
+			aspect: Aspect.ResponseCode,
 			lambda: (asp: number) => asp === 401,
 		},
 	];
-	produces = [Aspects.GeneratedHtml];
+	produces = [Aspect.GeneratedHtml];
 
 	move(obj: {}): {} {
 		return {
 			...obj,
-			[Aspects.GeneratedHtml]: "<div>401 page</div>",
+			[Aspect.GeneratedHtml]: "<div>401 page</div>",
 		};
 	}
 }

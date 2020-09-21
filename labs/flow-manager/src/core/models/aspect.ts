@@ -1,4 +1,4 @@
-export enum Aspects {
+export enum Aspect {
 	HttpRequest = "HttpRequest",
 	HasAuth = "HasAuth",
 	GeneratedHtml = "GeneratedHtml",

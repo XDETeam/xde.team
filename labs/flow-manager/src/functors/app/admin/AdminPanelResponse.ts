@@ -1,24 +1,24 @@
-import { Functor } from "../../../Functor";
-import { Aspects } from "../../../../aspects/index";
+import { Functor } from "../../../core/Functor";
+import { Aspect } from "../../../core/models";
 
 export class AdminPanelResponse extends Functor {
 	requires = [
 		{
-			aspect: Aspects.Routed,
+			aspect: Aspect.Routed,
 			lambda: (asp: string) => asp.endsWith("/security/adminPanelRoute"),
 		},
 		// TODO: не сильно нравится, что нужно это повторять для каждого роута группы Secured
 		{
-			aspect: Aspects.AppAdminRouteAllowed,
+			aspect: Aspect.AppAdminRouteAllowed,
 			lambda: (allowed: boolean) => allowed === true,
 		},
 	];
-	produces = [Aspects.GeneratedHtml];
+	produces = [Aspect.GeneratedHtml];
 
 	move(obj: {}): {} {
 		return {
 			...obj,
-			[Aspects.GeneratedHtml]: "<div>secret dashboard</div>",
+			[Aspect.GeneratedHtml]: "<div>secret dashboard</div>",
 		};
 	}
 }
