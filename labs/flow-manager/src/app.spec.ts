@@ -12,7 +12,7 @@ import securedInstance from "./functors/http/Secured";
 import hasAuthInstance from "./functors/security/HasAuth";
 import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "./core/Functor";
-import { Aspect, AspectsState } from "./core/models";
+import { Aspect } from "./core/models";
 
 const initialApp = new CompositeFunctor([Aspect.HttpRequest], []);
 initialApp.addSubFunctors([
@@ -26,7 +26,7 @@ initialApp.addSubFunctors([
 ]);
 
 const renderer = new CompositeFunctor(
-	[{ aspects: [Aspect.ResponseCode, Aspect.GeneratedHtml], are: AspectsState.SomeTruthy }],
+	[{ someTruthy: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
 	[]
 );
 renderer.addSubFunctors([

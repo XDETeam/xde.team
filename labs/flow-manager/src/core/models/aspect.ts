@@ -16,13 +16,3 @@ export enum Aspect {
 	// app
 	AppAdminRouteAllowed = "AppAdminRouteAllowed",
 }
-
-export enum AspectState {
-	Undefined,
-}
-
-export enum AspectsState {
-	SomeTruthy,
-	// is default without object
-	// EveryTruthy,
-}

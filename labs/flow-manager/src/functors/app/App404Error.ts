@@ -1,10 +1,10 @@
 import { Functor } from "../../core/Functor";
-import { Aspect, AspectState } from "../../core/models";
+import { Aspect } from "../../core/models";
 
 export class App404Error extends Functor {
 	requires = [
-		{ aspect: Aspect.GeneratedHtml, is: AspectState.Undefined },
-		{ aspect: Aspect.Redirected, is: AspectState.Undefined },
+		{ undef: Aspect.GeneratedHtml },
+		{ undef: Aspect.Redirected },
 		// Two below - to ensure we are not adding 404 handling for something that doesn't need it.
 		Aspect.Routed,
 		Aspect.HttpRequest,

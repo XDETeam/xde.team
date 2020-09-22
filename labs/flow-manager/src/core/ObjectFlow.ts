@@ -2,7 +2,7 @@ import { diff } from "deep-object-diff";
 
 import { IObject } from "./models";
 import { IFunctor } from "./Functor";
-import { Aspect, AspectState, AspectsState } from "./models";
+import { Aspect } from "./models";
 import { appDebug } from "./helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
@@ -79,37 +79,13 @@ export class ObjectFlow implements IObjectFlow {
 		}
 	}
 
-	findFunctors(functorsPool: IFunctor[]): IFunctor[] {
+	findFunctors(functorsPool: IFunctor[], justPass?: boolean): IFunctor[] {
 		const ret: IFunctor[] = [];
 
 		functorsPool.forEach((functor) => {
 			if (
-				// TODO: Do we need this line?
-				functor.produces.every((produce) => this.object[produce] === undefined) &&
-				functor.requires.every((req) => {
-					if (typeof req === "object") {
-						if ("is" in req) {
-							switch (req.is) {
-								case AspectState.Undefined: {
-									return this.object[req.aspect] === undefined;
-								}
-							}
-						} else if ("are" in req) {
-							switch (req.are) {
-								case AspectsState.SomeTruthy: {
-									return req.aspects.some((aspect) => !!this.object[aspect]);
-								}
-							}
-						} else {
-							return (
-								this.object[req.aspect] !== undefined &&
-								req.lambda(this.object[req.aspect])
-							);
-						}
-					} else {
-						return this.object[req] !== undefined;
-					}
-				})
+				this.producesAllow(functor.produces, this.object) &&
+				this.requiresAllow(functor.requires, this.object, justPass)
 			) {
 				ret.push(functor);
 			}
@@ -121,72 +97,97 @@ export class ObjectFlow implements IObjectFlow {
 	movePass(functorsPool: IFunctor[]): void {
 		let functors;
 
-		while ((functors = this.findFunctorsPass(functorsPool)) && functors.length) {
+		while ((functors = this.findFunctors(functorsPool, true)) && functors.length) {
 			debugVerbose(`Found ${functors.length} functor(s)`, functors);
 			debugVerbose("Object before iteration", this.object);
-			functors.forEach(
-				(functor) =>
-					(this.object = {
+			functors.forEach((functor) => {
+				if (Array.isArray(functor.produces)) {
+					this.object = {
 						...this.object,
 						...functor.produces.reduce((a, b) => {
-							a[b] = true;
+							typeof b === "object" ? (a[b.rewritable] = true) : (a[b] = true);
 							return a;
 						}, {} as any),
-					})
-			);
+					};
+				} else {
+					// TODO: DRY?
+					this.object = functor.produces.exactAspects.reduce((a, b) => {
+						typeof b === "object" ? (a[b.rewritable] = true) : (a[b] = true);
+						return a;
+					}, {} as any);
+				}
+			});
 
 			debugVerbose("Object after iteration", this.object);
 		}
 	}
 
-	findFunctorsPass(functorsPool: IFunctor[]): IFunctor[] {
-		const ret: IFunctor[] = [];
+	private producesAllow(functorProduces: IFunctor["produces"], obj: IObject): boolean {
+		const produces = Array.isArray(functorProduces)
+			? functorProduces
+			: functorProduces.exactAspects;
 
-		functorsPool.forEach((functor) => {
-			if (
-				functor.produces.every((produce) => this.object[produce] === undefined) &&
-				functor.requires.every((req) => {
-					if (typeof req === "object") {
-						if ("is" in req) {
-							switch (req.is) {
-								case AspectState.Undefined: {
-									return this.object[req.aspect] === undefined;
-								}
-							}
-						} else if ("are" in req) {
-							switch (req.are) {
-								case AspectsState.SomeTruthy: {
-									return req.aspects.some((aspect) => !!this.object[aspect]);
-								}
-							}
-						} else {
-							return this.object[req.aspect] !== undefined;
-						}
-					} else {
-						return this.object[req] !== undefined;
-					}
-				})
-			) {
-				ret.push(functor);
+		return produces.every((product) =>
+			typeof product === "object" && "rewritable" in product
+				? true
+				: obj[product] === undefined
+		);
+	}
+
+	private requiresAllow(
+		functorRequires: IFunctor["requires"],
+		obj: IObject,
+		justPass?: boolean
+	): boolean {
+		return functorRequires.every((req) => {
+			if (typeof req === "object") {
+				if ("undef" in req) {
+					return obj[req.undef] === undefined;
+				} else if ("someTruthy" in req) {
+					return req.someTruthy.some((aspect) => !!obj[aspect]);
+				} else if ("lambda" in req) {
+					return (
+						obj[req.aspect] !== undefined && (!!justPass || req.lambda(obj[req.aspect]))
+					);
+				}
+				return false;
+			} else {
+				return obj[req] !== undefined;
 			}
 		});
-
-		return ret;
 	}
 
 	private validateProduces(obj: IObject, functor: IFunctor): boolean {
-		return functor.produces.every((product) => {
-			if (typeof product !== "object") {
-				if (!(product in obj)) {
-					debug(
-						`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
-						obj
-					);
+		if (Array.isArray(functor.produces)) {
+			return functor.produces.every((product) => {
+				if (typeof product !== "object") {
+					if (!(product in obj)) {
+						debug(
+							`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
+							obj
+						);
+					}
+					return product in obj;
 				}
-				return product in obj;
+				return false;
+			});
+		} else {
+			const objKeys = Object.keys(obj);
+			const prodKeys = Object.keys(functor.produces.exactAspects);
+
+			if (
+				objKeys.length === prodKeys.length &&
+				prodKeys.every((prodKey) => objKeys.includes(prodKey))
+			) {
+				return true;
+			} else {
+				debug(
+					`Produces validation failed for ${functor.constructor.name}: Object has keys: ${objKeys}. But expected to have only keys: ${prodKeys}`,
+					obj
+				);
+				return false;
 			}
-			return false;
-		});
+		}
 	}
 
 	// private getRequiredAspects(extendedAspect: IExtendedAspect): IRequiredAspect[] {

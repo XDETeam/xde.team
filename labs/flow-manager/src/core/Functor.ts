@@ -1,20 +1,39 @@
 import { Debugger } from "debug";
 
 import { appDebug } from "./helpers/debug";
-import { Aspect, AspectsState, AspectState, IObject } from "./models";
+import { Aspect, IObject } from "./models";
 import { ObjectFlow } from "./ObjectFlow";
 
 const debug = appDebug.extend("Functor");
 
-export type IFunctorRequiresExt =
+export type IFunctorRequires =
 	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
-	| { aspect: Aspect; is: AspectState }
-	| { aspects: Aspect[]; are: AspectsState };
+	| { undef: Aspect }
+	| { someTruthy: Aspect[] };
+
+export type IFunctorProduces = Aspect | { rewritable: Aspect };
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
 export interface IFunctor {
-	requires: Array<Aspect | IFunctorRequiresExt>;
-	produces: Aspect[];
+	/**
+	 * In case array item is:
+	 * 	- simple Aspect - check that is not undefined
+	 *  - object
+	 * 		- aspect and lambda - check that lambda returns truthy
+	 * 		- undef - check that aspect is undefined
+	 * 		- someTruthy - check that some of aspects is truthy
+	 */
+	requires: Array<Aspect | IFunctorRequires>;
+
+	/**
+	 * In case is
+	 * 	- an object
+	 * 		- exactAspects - not allow to have additional aspects
+	 *  - an array
+	 * 		- simple Aspect - any defined value
+	 * 		- object rewritable - allow to run functor even if Aspect is already defined
+	 */
+	produces: IFunctorProduces[] | { exactAspects: IFunctorProduces[] };
 
 	subFunctors: IFunctor[];
 
