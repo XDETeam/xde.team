@@ -15,10 +15,7 @@ import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "./core/Functor";
 import { Aspect } from "./core/models";
 
-const renderer = new CompositeFunctor(
-	[{ someTruthy: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
-	[]
-);
+const renderer = new CompositeFunctor([{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }], []);
 renderer.addSubFunctors([
 	error404Instance,
 	error401Instance,
@@ -37,7 +34,7 @@ basicApp.addSubFunctors([
 	securedInstance,
 ]);
 
-const root = new CompositeFunctor([], []);
+export const root = new CompositeFunctor([], []);
 root.addSubFunctors([basicApp, app404ErrorInstance, renderer]);
 
 // Debug.enable("*");

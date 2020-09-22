@@ -14,17 +14,22 @@ const debugShortObject = debugShort.extend("object");
 export enum AspectType {
 	Exists = "Exists",
 	SpecificValue = "SpecificValue",
+	Undefined = "Undefined",
+	Some = "Some",
 }
 
-export interface IExtendedAspect {
-	type: AspectType;
-	aspect: Aspect;
-}
+export type AspectsTyped =
+	| {
+			aspect: Aspect;
+			type: Exclude<AspectType, AspectType.Some>;
+	  }
+	| { aspects: Aspect[]; type: AspectType.Some };
 
-export interface IRequiredAspect {
+export interface IFunctorExplained {
 	functorName: string;
-	forAspect: IExtendedAspect;
-	requires: IExtendedAspect[];
+	from: AspectsTyped[];
+	to: AspectsTyped[];
+	children?: IFunctorExplained[];
 }
 
 export interface IObjectFlow {
@@ -101,21 +106,23 @@ export class ObjectFlow implements IObjectFlow {
 			debugVerbose(`Found ${functors.length} functor(s)`, functors);
 			debugVerbose("Object before iteration", this.object);
 			functors.forEach((functor) => {
-				if (Array.isArray(functor.produces)) {
-					this.object = {
-						...this.object,
-						...functor.produces.reduce((a, b) => {
-							typeof b === "object" ? (a[b.rewritable] = true) : (a[b] = true);
-							return a;
-						}, {} as any),
-					};
-				} else {
-					// TODO: DRY?
-					this.object = functor.produces.exactAspects.reduce((a, b) => {
-						typeof b === "object" ? (a[b.rewritable] = true) : (a[b] = true);
+				this.object = {
+					...this.object,
+					...functor.produces.reduce((a, b) => {
+						if (typeof b === "object") {
+							if ("undef" in b) {
+								a[b.undef] = undefined;
+							} else if ("aspect" in b) {
+								a[b.aspect] = true;
+							} else if ("some" in b) {
+								b.some.forEach((x) => (a[x] = true));
+							}
+						} else {
+							a[b] = true;
+						}
 						return a;
-					}, {} as any);
-				}
+					}, {} as any),
+				};
 			});
 
 			debugVerbose("Object after iteration", this.object);
@@ -123,15 +130,18 @@ export class ObjectFlow implements IObjectFlow {
 	}
 
 	private producesAllow(functorProduces: IFunctor["produces"], obj: IObject): boolean {
-		const produces = Array.isArray(functorProduces)
-			? functorProduces
-			: functorProduces.exactAspects;
-
-		return produces.every((product) =>
-			typeof product === "object" && "rewritable" in product
-				? true
-				: obj[product] === undefined
-		);
+		return functorProduces.every((product) => {
+			if (typeof product === "object") {
+				if ("rewritable" in product) {
+					return true;
+				} else if ("undef" in product) {
+					// TODO: should we check if defined before?
+					return true;
+				}
+			} else {
+				return obj[product] === undefined;
+			}
+		});
 	}
 
 	private requiresAllow(
@@ -143,8 +153,8 @@ export class ObjectFlow implements IObjectFlow {
 			if (typeof req === "object") {
 				if ("undef" in req) {
 					return obj[req.undef] === undefined;
-				} else if ("someTruthy" in req) {
-					return req.someTruthy.some((aspect) => !!obj[aspect]);
+				} else if ("some" in req) {
+					return req.some.some((aspect) => !!obj[aspect]);
 				} else if ("lambda" in req) {
 					return (
 						obj[req.aspect] !== undefined && (!!justPass || req.lambda(obj[req.aspect]))
@@ -158,71 +168,105 @@ export class ObjectFlow implements IObjectFlow {
 	}
 
 	private validateProduces(obj: IObject, functor: IFunctor): boolean {
-		if (Array.isArray(functor.produces)) {
-			return functor.produces.every((product) => {
-				if (typeof product !== "object") {
-					if (!(product in obj)) {
+		return functor.produces.every((product) => {
+			if (typeof product === "object") {
+				if ("undef" in product) {
+					if (obj[product.undef] !== undefined) {
 						debug(
-							`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
+							`Produces validation failed for ${functor.constructor.name}: ${product.undef} should be undefined`,
 							obj
 						);
 					}
-					return product in obj;
+					return obj[product.undef] === undefined;
+				} else if ("some" in product) {
+					const res = product.some.some((aspect) => !!obj[aspect]);
+					debug(
+						`Produces validation failed for ${functor.constructor.name}: At least one of ${product.some} should be truthy`,
+						obj
+					);
+					return res;
+				} else if ("aspect" in product) {
+					// TODO: DRY
+					if (!(product.aspect in obj)) {
+						debug(
+							`Produces validation failed for ${functor.constructor.name}: ${product.aspect} not found in resulting object`,
+							obj
+						);
+					}
+					return product.aspect in obj;
 				}
 				return false;
-			});
-		} else {
-			const objKeys = Object.keys(obj);
-			const prodKeys = Object.keys(functor.produces.exactAspects);
-
-			if (
-				objKeys.length === prodKeys.length &&
-				prodKeys.every((prodKey) => objKeys.includes(prodKey))
-			) {
-				return true;
 			} else {
-				debug(
-					`Produces validation failed for ${functor.constructor.name}: Object has keys: ${objKeys}. But expected to have only keys: ${prodKeys}`,
-					obj
-				);
-				return false;
+				if (!(product in obj)) {
+					debug(
+						`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
+						obj
+					);
+				}
+				return product in obj;
 			}
-		}
+		});
 	}
 
-	// private getRequiredAspects(extendedAspect: IExtendedAspect): IRequiredAspect[] {
-	// 	const ret: IRequiredAspect[] = [];
-	// 	const list = this.getFunctorsProducing(extendedAspect, this.functors);
+	// TODO: Test coverage
+	public static explainFunctor(
+		functor: IFunctor,
+		functorNameNamespace: string = ""
+	): IFunctorExplained {
+		const from: AspectsTyped[] = [];
+		const to: AspectsTyped[] = [];
 
-	// 	if (list.length) {
-	// 		list.forEach((functor) => {
-	// 			const req: IRequiredAspect = {
-	// 				functorName: functor.constructor.name,
-	// 				forAspect: extendedAspect,
-	// 				requires: [],
-	// 			};
+		functor.requires.forEach((req) => {
+			if (typeof req === "object") {
+				if ("undef" in req) {
+					from.push({ aspect: req.undef, type: AspectType.Undefined });
+				} else if ("some" in req) {
+					from.push({ aspects: req.some, type: AspectType.Some });
+				} else if ("lambda" in req) {
+					from.push({ aspect: req.aspect, type: AspectType.SpecificValue });
+				}
+			} else {
+				from.push({ aspect: req, type: AspectType.Exists });
+			}
+		});
 
-	// 			functor.requires.forEach((product) => {
-	// 				req.requires.push(
-	// 					typeof product === "object"
-	// 						? {
-	// 								aspect: product.aspect,
-	// 								type: AspectType.SpecificValue,
-	// 						  }
-	// 						: { aspect: product, type: AspectType.Exists }
-	// 				);
-	// 			});
+		functor.produces.forEach((product) => {
+			if (typeof product === "object") {
+				if ("some" in product) {
+					to.push({
+						aspects: product.some,
+						type: AspectType.Some,
+					});
+				} else if ("undef" in product) {
+					to.push({
+						aspect: product.undef,
+						type: AspectType.Undefined,
+					});
+				} else if ("aspect" in product) {
+					to.push({
+						aspect: product.aspect,
+						type: AspectType.Exists,
+					});
+				}
+			} else {
+				to.push({
+					aspect: product,
+					type: AspectType.Exists,
+				});
+			}
+		});
 
-	// 			ret.push(req);
-	// 		});
-	// 	} else {
-	// 		ret.push({
-	// 			functorName: "NonExistingFunctor",
-	// 			forAspect: extendedAspect,
-	// 			requires: [],
-	// 		});
-	// 	}
-
-	// 	return ret;
-	// }
+		return {
+			functorName: `${functor.constructor.name}${
+				functorNameNamespace ? `${functorNameNamespace}.` : ""
+			}`,
+			from,
+			to,
+			children: functor.subFunctors.length
+				? functor.subFunctors.map((f, i) =>
+						this.explainFunctor(f, `${functorNameNamespace}${i}`)
+				  )
+				: undefined,
+		};
+	}
 }

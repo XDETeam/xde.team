@@ -9,9 +9,12 @@ const debug = appDebug.extend("Functor");
 export type IFunctorRequires =
 	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
 	| { undef: Aspect }
-	| { someTruthy: Aspect[] };
+	| { some: Aspect[] };
 
-export type IFunctorProduces = Aspect | { rewritable: Aspect };
+export type IFunctorProduces =
+	| { undef: Aspect }
+	| { aspect: Aspect; rewritable: boolean }
+	| { some: Aspect[]; rewritable: true };
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
 export interface IFunctor {
@@ -21,19 +24,19 @@ export interface IFunctor {
 	 *  - object
 	 * 		- aspect and lambda - check that lambda returns truthy
 	 * 		- undef - check that aspect is undefined
-	 * 		- someTruthy - check that some of aspects is truthy
+	 * 		- some - check that some of aspects is truthy
 	 */
 	requires: Array<Aspect | IFunctorRequires>;
 
 	/**
 	 * In case is
-	 * 	- an object
-	 * 		- exactAspects - not allow to have additional aspects
-	 *  - an array
-	 * 		- simple Aspect - any defined value
-	 * 		- object rewritable - allow to run functor even if Aspect is already defined
+	 * 	- simple Aspect - any defined value
+	 *  - object
+	 * 		- undef - removes aspect
+	 *		- rewritable - allow to run functor even if Aspect is already defined
+	 * 		- some - produces one of. Should be rewritable
 	 */
-	produces: IFunctorProduces[] | { exactAspects: IFunctorProduces[] };
+	produces: Array<Aspect | IFunctorProduces>;
 
 	subFunctors: IFunctor[];
 

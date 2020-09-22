@@ -1,13 +1,14 @@
 {
-	"name": "flow-manager",
-	"version": "1.0.0",
+	"name": "@xde/flow-manager",
+	"version": "0.0.1",
 	"main": "index.js",
 	"license": "UNLICENSED",
 	"scripts": {
 		"test": "jest --watch",
 		"test:dev:functor": "jest --watch Functor",
 		"test:dev:object": "jest --watch ObjectFlow",
-		"dev": "ts-node ./src/app.ts"
+		"dev": "ts-node ./src/app.ts",
+		"build": "tsc"
 	},
 	"dependencies": {
 		"@types/debug": "^4.1.5",

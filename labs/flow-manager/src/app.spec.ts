@@ -26,7 +26,7 @@ initialApp.addSubFunctors([
 ]);
 
 const renderer = new CompositeFunctor(
-	[{ someTruthy: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
+	[{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
 	[]
 );
 renderer.addSubFunctors([
