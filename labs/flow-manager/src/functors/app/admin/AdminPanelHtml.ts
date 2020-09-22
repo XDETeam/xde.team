@@ -1,10 +1,11 @@
 import { Functor } from "../../../core/Functor";
 import { Aspect } from "../../../core/models";
 
-export class AdminPanelResponse extends Functor {
+export class AdminPanelHtml extends Functor {
+	name = "AdminPanelHtml";
 	requires = [
 		{
-			aspect: Aspect.Routed,
+			aspect: Aspect.HttpRouted,
 			lambda: (asp: string) => asp.endsWith("/security/adminPanelRoute"),
 		},
 		// TODO: не сильно нравится, что нужно это повторять для каждого роута группы Secured
@@ -23,5 +24,5 @@ export class AdminPanelResponse extends Functor {
 	}
 }
 
-const adminPanelResponseInstance = new AdminPanelResponse();
-export default adminPanelResponseInstance;
+const adminPanelHtmlInstance = new AdminPanelHtml();
+export default adminPanelHtmlInstance;

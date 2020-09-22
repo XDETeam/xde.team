@@ -1,10 +1,11 @@
 import { Functor } from "../../../core/Functor";
 import { Aspect } from "../../../core/models";
 
-export class Admin401Error extends Functor {
+export class Admin401 extends Functor {
+	name = "Admin401";
 	requires = [
 		{
-			aspect: Aspect.Routed,
+			aspect: Aspect.HttpRouted,
 			lambda: (asp: string) => asp.startsWith("/security/"),
 		},
 		{
@@ -22,5 +23,5 @@ export class Admin401Error extends Functor {
 	}
 }
 
-const admin401ErrorInstance = new Admin401Error();
-export default admin401ErrorInstance;
+const admin401Instance = new Admin401();
+export default admin401Instance;

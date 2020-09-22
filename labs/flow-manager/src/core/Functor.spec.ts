@@ -1,21 +1,24 @@
-import app404ErrorInstance from "../functors/app/App404Error";
-import error404Instance from "../functors/errors/Error404";
-import httpRendererInstance from "../functors/http/HttpRenderer";
-import securedInstance from "../functors/http/Secured";
-import { Aspect } from "./models/index";
+import { Aspect } from "./models";
 import { Functor } from "./Functor";
+import httpSecuredInstance from "../functors/http/HttpSecured";
+import app404Instance from "../functors/app/App404";
+import code404HtmlInstance from "../functors/errors/Code404Html";
+import htmlRendererInstance from "../functors/http/HtmlRenderer";
 
 class testPrimitiveFunctor extends Functor {
+	name = "testPrimitiveFunctor";
 	requires = [Aspect.HttpRequest];
 	produces = [Aspect.HasAuth];
 }
 
 class testPrimitiveFunctor2 extends Functor {
+	name = "testPrimitiveFunctor2";
 	requires = [Aspect.HasAuth];
 	produces = [Aspect.AppAdminRouteAllowed];
 }
 
 class testCompositeFunctor extends Functor {
+	name = "testCompositeFunctor";
 	requires = [];
 	produces = [];
 }
@@ -40,6 +43,7 @@ it("should register an array of functors as child to the functor", () => {
 
 it("should prevent registration of functor with empty requires", () => {
 	class somePrimitiveFunctor extends Functor {
+		name = "somePrimitiveFunctor";
 		requires = [];
 		produces = [Aspect.HasAuth];
 	}
@@ -58,10 +62,10 @@ it("should prevent duplication of registered functors", () => {
 it("should test if it is possible to receive some aspect", () => {
 	const functor = new testCompositeFunctor();
 	functor.addSubFunctors([
-		securedInstance,
-		app404ErrorInstance,
-		error404Instance,
-		httpRendererInstance,
+		httpSecuredInstance,
+		app404Instance,
+		code404HtmlInstance,
+		htmlRendererInstance,
 	]);
 	expect(functor.isPossible(Aspect.ResponseCode, Aspect.RenderedHtml)).toEqual(true);
 	expect(functor.isPossible(Aspect.Secured, Aspect.GeneratedHtml)).toEqual(false);

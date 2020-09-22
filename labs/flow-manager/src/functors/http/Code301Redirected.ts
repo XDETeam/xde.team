@@ -1,7 +1,8 @@
 import { Functor } from "../../core/Functor";
 import { Aspect } from "../../core/models";
 
-export class HttpRedirect extends Functor {
+export class Code301Redirected extends Functor {
+	name = "Code301Redirected";
 	requires = [
 		{
 			aspect: Aspect.ResponseCode,
@@ -12,7 +13,7 @@ export class HttpRedirect extends Functor {
 	produces = [Aspect.Redirected];
 
 	move(obj: { [Aspect.LocationHeader]: string }): {} {
-		Functor.debugger.extend("HttpRedirect")(`Redirected to ${obj[Aspect.LocationHeader]}`);
+		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);
 		return {
 			...obj,
 			[Aspect.Redirected]: true,
@@ -20,5 +21,5 @@ export class HttpRedirect extends Functor {
 	}
 }
 
-const httpRedirectInstance = new HttpRedirect();
-export default httpRedirectInstance;
+const code301RedirectedInstance = new Code301Redirected();
+export default code301RedirectedInstance;

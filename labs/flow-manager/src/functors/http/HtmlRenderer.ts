@@ -1,7 +1,8 @@
 import { Functor } from "../../core/Functor";
 import { Aspect } from "../../core/models";
 
-export class HttpRenderer extends Functor {
+export class HtmlRenderer extends Functor {
+	name = "HtmlRenderer";
 	requires = [Aspect.GeneratedHtml];
 	produces = [Aspect.RenderedHtml];
 
@@ -15,5 +16,5 @@ export class HttpRenderer extends Functor {
 	}
 }
 
-const httpRendererInstance = new HttpRenderer();
-export default httpRendererInstance;
+const htmlRendererInstance = new HtmlRenderer();
+export default htmlRendererInstance;

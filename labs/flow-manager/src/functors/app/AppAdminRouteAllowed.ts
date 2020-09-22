@@ -2,8 +2,9 @@ import { Functor } from "../../core/Functor";
 import { Aspect } from "../../core/models";
 
 export class AppAdminRouteAllowed extends Functor {
+	name = "AppAdminRouteAllowed";
 	requires = [
-		{ aspect: Aspect.Routed, lambda: (route: string) => route.startsWith("/security/") },
+		{ aspect: Aspect.HttpRouted, lambda: (route: string) => route.startsWith("/security/") },
 		{ aspect: Aspect.Secured, lambda: (secured: boolean) => secured === true },
 	];
 	produces = [Aspect.AppAdminRouteAllowed];

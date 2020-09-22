@@ -2,7 +2,8 @@ import { Aspect } from "../../core/models";
 import { Functor } from "../../core/Functor";
 import { ITestHttpRequest } from "../../models";
 
-export class Secured extends Functor {
+export class HttpSecured extends Functor {
+	name = "HttpSecured";
 	requires = [Aspect.HttpRequest];
 	produces = [Aspect.Secured];
 
@@ -14,5 +15,5 @@ export class Secured extends Functor {
 	}
 }
 
-const securedInstance = new Secured();
-export default securedInstance;
+const httpSecuredInstance = new HttpSecured();
+export default httpSecuredInstance;

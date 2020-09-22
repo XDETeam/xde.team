@@ -1,7 +1,8 @@
 import { Functor } from "../../core/Functor";
 import { Aspect } from "../../core/models";
 
-export class Error404 extends Functor {
+export class Code404Html extends Functor {
+	name = "Code404Html";
 	requires = [
 		{
 			aspect: Aspect.ResponseCode,
@@ -18,5 +19,5 @@ export class Error404 extends Functor {
 	}
 }
 
-const error404Instance = new Error404();
-export default error404Instance;
+const code404HtmlInstance = new Code404Html();
+export default code404HtmlInstance;

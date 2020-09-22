@@ -2,12 +2,13 @@ import { Functor } from "../../core/Functor";
 import { Aspect } from "../../core/models";
 import { ITestHttpRequest } from "../../models";
 
-export class HasAuth extends Functor {
+export class HttpHasAuth extends Functor {
+	name = "HttpHasAuth";
 	requires = [Aspect.HttpRequest];
 	produces = [Aspect.HasAuth];
 
 	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
-		Functor.debugger.extend("HasAuth")("Pass 'valid' to be authorized");
+		Functor.debugger.extend("HttpHasAuth")("Pass 'valid' to be authorized");
 
 		return {
 			...obj,
@@ -16,5 +17,5 @@ export class HasAuth extends Functor {
 	}
 }
 
-const hasAuthInstance = new HasAuth();
-export default hasAuthInstance;
+const httpHasAuthInstance = new HttpHasAuth();
+export default httpHasAuthInstance;

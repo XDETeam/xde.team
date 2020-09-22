@@ -1,41 +1,45 @@
 import Debug from "debug";
-import admin401ErrorInstance from "./functors/app/admin/Admin401Error";
-import adminPanelResponseInstance from "./functors/app/admin/AdminPanelResponse";
-import app404ErrorInstance from "./functors/app/App404Error";
+import admin401Instance from "./functors/app/admin/Admin401";
+import adminPanelHtmlInstance from "./functors/app/admin/AdminPanelHtml";
+import app404Instance from "./functors/app/App404";
 import appAdminRouteAllowedInstance from "./functors/app/AppAdminRouteAllowed";
 import appSecuredRouteRedirectedInstance from "./functors/app/AppSecuredRouteRedirected";
-import error401Instance from "./functors/errors/Error401";
-import error404Instance from "./functors/errors/Error404";
-import httpRedirectInstance from "./functors/http/HttpRedirect";
-import httpRendererInstance from "./functors/http/HttpRenderer";
-import routedInstance from "./functors/http/Routed";
-import securedInstance from "./functors/http/Secured";
-import hasAuthInstance from "./functors/security/HasAuth";
+import code401HtmlInstance from "./functors/errors/Code401Html";
+import code404HtmlInstance from "./functors/errors/Code404Html";
+import code301RedirectedInstance from "./functors/http/Code301Redirected";
+import htmlRendererInstance from "./functors/http/HtmlRenderer";
+import httpRoutedInstance from "./functors/http/HttpRouted";
+import httpSecuredInstance from "./functors/http/HttpSecured";
+import httpHasAuthInstance from "./functors/security/HttpHasAuth";
 import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "./core/Functor";
 import { Aspect } from "./core/models";
 
-const renderer = new CompositeFunctor([{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }], []);
+const renderer = new CompositeFunctor(
+	"renderer",
+	[{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
+	[]
+);
 renderer.addSubFunctors([
-	error404Instance,
-	error401Instance,
-	httpRedirectInstance,
-	httpRendererInstance,
+	code404HtmlInstance,
+	code401HtmlInstance,
+	code301RedirectedInstance,
+	htmlRendererInstance,
 ]);
 
-const basicApp = new CompositeFunctor([Aspect.HttpRequest], []);
+const basicApp = new CompositeFunctor("basicApp", [Aspect.HttpRequest], []);
 basicApp.addSubFunctors([
-	admin401ErrorInstance,
-	adminPanelResponseInstance,
+	admin401Instance,
+	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
 	appSecuredRouteRedirectedInstance,
-	hasAuthInstance,
-	routedInstance,
-	securedInstance,
+	httpHasAuthInstance,
+	httpRoutedInstance,
+	httpSecuredInstance,
 ]);
 
-export const root = new CompositeFunctor([], []);
-root.addSubFunctors([basicApp, app404ErrorInstance, renderer]);
+export const root = new CompositeFunctor("root", [], []);
+root.addSubFunctors([basicApp, app404Instance, renderer]);
 
 // Debug.enable("*");
 // Debug.enable("app:ObjectFlow:short*");

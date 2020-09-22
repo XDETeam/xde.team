@@ -1,43 +1,44 @@
-import admin401ErrorInstance from "./functors/app/admin/Admin401Error";
-import adminPanelResponseInstance from "./functors/app/admin/AdminPanelResponse";
-import app404ErrorInstance from "./functors/app/App404Error";
-import appAdminRouteAllowedInstance from "./functors/app/AppAdminRouteAllowed";
-import appSecuredRouteRedirectedInstance from "./functors/app/AppSecuredRouteRedirected";
-import error401Instance from "./functors/errors/Error401";
-import error404Instance from "./functors/errors/Error404";
-import httpRedirectInstance from "./functors/http/HttpRedirect";
-import httpRendererInstance from "./functors/http/HttpRenderer";
-import routedInstance from "./functors/http/Routed";
-import securedInstance from "./functors/http/Secured";
-import hasAuthInstance from "./functors/security/HasAuth";
-import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "./core/Functor";
 import { Aspect } from "./core/models";
+import admin401Instance from "./functors/app/admin/Admin401";
+import adminPanelHtmlInstance from "./functors/app/admin/AdminPanelHtml";
+import app404Instance from "./functors/app/App404";
+import appAdminRouteAllowedInstance from "./functors/app/AppAdminRouteAllowed";
+import appSecuredRouteRedirectedInstance from "./functors/app/AppSecuredRouteRedirected";
+import code401HtmlInstance from "./functors/errors/Code401Html";
+import code404HtmlInstance from "./functors/errors/Code404Html";
+import code301RedirectedInstance from "./functors/http/Code301Redirected";
+import htmlRendererInstance from "./functors/http/HtmlRenderer";
+import httpRoutedInstance from "./functors/http/HttpRouted";
+import httpSecuredInstance from "./functors/http/HttpSecured";
+import httpHasAuthInstance from "./functors/security/HttpHasAuth";
+import { ITestHttpRequest } from "./models";
 
-const initialApp = new CompositeFunctor([Aspect.HttpRequest], []);
+const initialApp = new CompositeFunctor("initialApp", [Aspect.HttpRequest], []);
 initialApp.addSubFunctors([
-	admin401ErrorInstance,
-	adminPanelResponseInstance,
+	admin401Instance,
+	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
 	appSecuredRouteRedirectedInstance,
-	hasAuthInstance,
-	routedInstance,
-	securedInstance,
+	httpHasAuthInstance,
+	httpRoutedInstance,
+	httpSecuredInstance,
 ]);
 
 const renderer = new CompositeFunctor(
+	"renderer",
 	[{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
 	[]
 );
 renderer.addSubFunctors([
-	error404Instance,
-	error401Instance,
-	httpRedirectInstance,
-	httpRendererInstance,
+	code401HtmlInstance,
+	code404HtmlInstance,
+	code301RedirectedInstance,
+	htmlRendererInstance,
 ]);
 
-const root = new CompositeFunctor([], []);
-root.addSubFunctors([initialApp, app404ErrorInstance, renderer]);
+const root = new CompositeFunctor("root", [], []);
+root.addSubFunctors([initialApp, app404Instance, renderer]);
 
 const httpRequest: ITestHttpRequest = {
 	authCookie: "valid",
@@ -52,7 +53,7 @@ it("should return 401 on admin route for non-admin", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/adminPanelRoute",
+			HttpRouted: "/security/adminPanelRoute",
 			Secured: true,
 			AppAdminRouteAllowed: false,
 			ResponseCode: 401,
@@ -73,7 +74,7 @@ it("should return 401 on non-existing security route for non-admin", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/non-existing",
+			HttpRouted: "/security/non-existing",
 			Secured: true,
 			AppAdminRouteAllowed: false,
 			ResponseCode: 401,
@@ -94,7 +95,7 @@ it("should return 301 on security route without tls for non-admin", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/adminPanelRoute",
+			HttpRouted: "/security/adminPanelRoute",
 			Secured: false,
 			LocationHeader: "https:///security/adminPanelRoute",
 			ResponseCode: 301,
@@ -118,7 +119,7 @@ it("should return 301 on security route without tls for admin", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/non-existing",
+			HttpRouted: "/security/non-existing",
 			Secured: false,
 			LocationHeader: "https:///security/non-existing",
 			ResponseCode: 301,
@@ -138,7 +139,7 @@ it("should show admin panel for valid admin request", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/adminPanelRoute",
+			HttpRouted: "/security/adminPanelRoute",
 			Secured: true,
 			AppAdminRouteAllowed: true,
 			GeneratedHtml: "<div>secret dashboard</div>",
@@ -160,7 +161,7 @@ it("should return 404 for non-existing admin route for admin user", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: true,
-			Routed: "/security/non-existing",
+			HttpRouted: "/security/non-existing",
 			Secured: true,
 			AppAdminRouteAllowed: true,
 			ResponseCode: 404,
@@ -182,7 +183,7 @@ it("should return 404 on any non-existing route for any user", () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			HasAuth: false,
-			Routed: "/non-existing/adminPanelRoute",
+			HttpRouted: "/non-existing/adminPanelRoute",
 			Secured: true,
 			ResponseCode: 404,
 			GeneratedHtml: "<div>404 page</div>",

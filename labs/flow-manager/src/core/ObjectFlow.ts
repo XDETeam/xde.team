@@ -51,15 +51,15 @@ export class ObjectFlow implements IObjectFlow {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
 			functors.forEach((functor) => {
-				if (replacements && functor.constructor.name in replacements) {
-					this.object = replacements[functor.constructor.name](this.object);
+				if (replacements && functor.name in replacements) {
+					this.object = replacements[functor.name](this.object);
 				} else {
 					this.object = functor.move(this.object);
 				}
 				if (!this.validateProduces(this.object, functor)) {
 					throw new Error(
 						`Produces validation failed for functor ${
-							functor.constructor.name
+							functor.name
 						} with produces ${JSON.stringify(
 							functor.produces
 						)} and resulting object ${JSON.stringify(this.object, null, 2)}`
@@ -71,10 +71,8 @@ export class ObjectFlow implements IObjectFlow {
 				`[${functors
 					.map((functor) =>
 						functor.subFunctors.length
-							? `--- [${functor.subFunctors
-									.map((f) => f.constructor.name)
-									.join(", ")}] ---`
-							: functor.constructor.name
+							? `--- [${functor.subFunctors.map((f) => f.name).join(", ")}] ---`
+							: functor.name
 					)
 					.join(", ")}]`
 			);
@@ -173,7 +171,7 @@ export class ObjectFlow implements IObjectFlow {
 				if ("undef" in product) {
 					if (obj[product.undef] !== undefined) {
 						debug(
-							`Produces validation failed for ${functor.constructor.name}: ${product.undef} should be undefined`,
+							`Produces validation failed for ${functor.name}: ${product.undef} should be undefined`,
 							obj
 						);
 					}
@@ -181,7 +179,7 @@ export class ObjectFlow implements IObjectFlow {
 				} else if ("some" in product) {
 					const res = product.some.some((aspect) => !!obj[aspect]);
 					debug(
-						`Produces validation failed for ${functor.constructor.name}: At least one of ${product.some} should be truthy`,
+						`Produces validation failed for ${functor.name}: At least one of ${product.some} should be truthy`,
 						obj
 					);
 					return res;
@@ -189,7 +187,7 @@ export class ObjectFlow implements IObjectFlow {
 					// TODO: DRY
 					if (!(product.aspect in obj)) {
 						debug(
-							`Produces validation failed for ${functor.constructor.name}: ${product.aspect} not found in resulting object`,
+							`Produces validation failed for ${functor.name}: ${product.aspect} not found in resulting object`,
 							obj
 						);
 					}
@@ -199,7 +197,7 @@ export class ObjectFlow implements IObjectFlow {
 			} else {
 				if (!(product in obj)) {
 					debug(
-						`Produces validation failed for ${functor.constructor.name}: ${product} not found in resulting object`,
+						`Produces validation failed for ${functor.name}: ${product} not found in resulting object`,
 						obj
 					);
 				}
@@ -257,14 +255,17 @@ export class ObjectFlow implements IObjectFlow {
 		});
 
 		return {
-			functorName: `${functor.constructor.name}${
-				functorNameNamespace ? `${functorNameNamespace}.` : ""
-			}`,
+			functorName: `${functorNameNamespace ? `${functorNameNamespace}.` : ""}${functor.name}`,
 			from,
 			to,
 			children: functor.subFunctors.length
-				? functor.subFunctors.map((f, i) =>
-						this.explainFunctor(f, `${functorNameNamespace}${i}`)
+				? functor.subFunctors.map((f) =>
+						this.explainFunctor(
+							f,
+							`${functorNameNamespace ? `${functorNameNamespace}.` : ""}${
+								functor.name
+							}`
+						)
 				  )
 				: undefined,
 		};

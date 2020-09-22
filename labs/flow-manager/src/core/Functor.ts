@@ -8,6 +8,7 @@ const debug = appDebug.extend("Functor");
 
 export type IFunctorRequires =
 	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
+	// TODO: can be achieved just with lambda function
 	| { undef: Aspect }
 	| { some: Aspect[] };
 
@@ -18,6 +19,8 @@ export type IFunctorProduces =
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
 export interface IFunctor {
+	name: string;
+
 	/**
 	 * In case array item is:
 	 * 	- simple Aspect - check that is not undefined
@@ -62,6 +65,7 @@ export abstract class Functor implements IFunctor {
 
 	abstract requires: IFunctor["requires"];
 	abstract produces: IFunctor["produces"];
+	abstract name: string;
 
 	subFunctors: IFunctor[] = [];
 	replacements: IFunctor["replacements"] = {};
@@ -102,25 +106,32 @@ export abstract class Functor implements IFunctor {
 			);
 		}
 
-		this.replacements[existing.constructor.name] = newMove;
+		this.replacements[existing.name] = newMove;
 	}
 
 	private addSubFunctor(functor: IFunctor): void {
 		if (!functor.requires.length) {
 			throw new Error("Empty requires: Functor will never be invoked.");
 		}
-		if (this.subFunctors.indexOf(functor) !== -1) {
+		if (
+			this.subFunctors.indexOf(functor) !== -1 ||
+			this.subFunctors.findIndex((f) => f.name === functor.name) !== -1
+		) {
 			throw new Error(
-				`Can't register duplicate functor ${functor.constructor.name} as a child for ${this.constructor.name}`
+				`Can't register duplicate functor ${functor.name} as a child for ${this.name}`
 			);
 		}
 		this.subFunctors.push(functor);
-		debug(`Functor ${functor.constructor.name} added as a child for ${this.constructor.name}`);
+		debug(`Functor ${functor.name} added as a child for ${this.name}`);
 	}
 }
 
 export class CompositeFunctor extends Functor {
-	constructor(public requires: Functor["requires"], public produces: Functor["produces"]) {
+	constructor(
+		public name: Functor["name"],
+		public requires: Functor["requires"],
+		public produces: Functor["produces"]
+	) {
 		super();
 	}
 }

@@ -1,13 +1,13 @@
 import { Aspect } from "./models";
 import { ObjectFlow } from "./ObjectFlow";
-import admin401ErrorInstance from "../functors/app/admin/Admin401Error";
+import admin401Instance from "../functors/app/admin/Admin401";
 import appAdminRouteAllowedInstance from "../functors/app/AppAdminRouteAllowed";
-import error401Instance from "../functors/errors/Error401";
-import httpRendererInstance from "../functors/http/HttpRenderer";
-import routedInstance from "../functors/http/Routed";
-import securedInstance from "../functors/http/Secured";
-import hasAuthInstance from "../functors/security/HasAuth";
 import { ITestHttpRequest } from "../models";
+import httpHasAuthInstance from "../functors/security/HttpHasAuth";
+import httpSecuredInstance from "../functors/http/HttpSecured";
+import code401HtmlInstance from "../functors/errors/Code401Html";
+import htmlRendererInstance from "../functors/http/HtmlRenderer";
+import httpRoutedInstance from "../functors/http/HttpRouted";
 
 it("should handle simple flow", () => {
 	const flow = new ObjectFlow({
@@ -17,19 +17,19 @@ it("should handle simple flow", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.move([hasAuthInstance, securedInstance]);
+	flow.move([httpHasAuthInstance, httpSecuredInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
-	expect(flow.object).toHaveProperty(hasAuthInstance.produces);
-	expect(flow.object).toHaveProperty(securedInstance.produces);
+	expect(flow.object).toHaveProperty(httpHasAuthInstance.produces);
+	expect(flow.object).toHaveProperty(httpSecuredInstance.produces);
 });
 
 it("should handle lambda functions", () => {
 	const flow = new ObjectFlow({
-		Routed: "/security/adminPanelRoute",
+		HttpRouted: "/security/adminPanelRoute",
 		AppAdminRouteAllowed: false,
 	});
-	flow.move([admin401ErrorInstance, error401Instance]);
-	expect(flow.object).toHaveProperty(httpRendererInstance.requires);
+	flow.move([admin401Instance, code401HtmlInstance]);
+	expect(flow.object).toHaveProperty(htmlRendererInstance.requires);
 });
 
 it("should move pass", () => {
@@ -43,12 +43,12 @@ it("should move pass", () => {
 
 	flow.movePass([
 		appAdminRouteAllowedInstance,
-		admin401ErrorInstance,
-		error401Instance,
-		httpRendererInstance,
-		routedInstance,
-		hasAuthInstance,
-		securedInstance,
+		admin401Instance,
+		code401HtmlInstance,
+		htmlRendererInstance,
+		httpRoutedInstance,
+		httpHasAuthInstance,
+		httpSecuredInstance,
 	]);
 	expect(flow.object).toHaveProperty(Aspect.GeneratedHtml);
 });
@@ -61,15 +61,15 @@ it("should handle replacements of move functions", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.move([hasAuthInstance, securedInstance], {
-		[securedInstance.constructor.name]: (obj) => ({
+	flow.move([httpHasAuthInstance, httpSecuredInstance], {
+		[httpSecuredInstance.name]: (obj) => ({
 			...obj,
-			[securedInstance.produces[0]]: 42,
+			[httpSecuredInstance.produces[0]]: 42,
 		}),
 	});
 	expect(flow.object).toHaveProperty("HttpRequest");
-	expect(flow.object).toHaveProperty(hasAuthInstance.produces);
-	expect(flow.object[securedInstance.produces[0]]).toEqual(42);
+	expect(flow.object).toHaveProperty(httpHasAuthInstance.produces);
+	expect(flow.object[httpSecuredInstance.produces[0]]).toEqual(42);
 });
 
 it("should produce an error when resulting object does not have functor produces", () => {
@@ -82,8 +82,8 @@ it("should produce an error when resulting object does not have functor produces
 	});
 
 	expect(() =>
-		flow.move([hasAuthInstance, securedInstance], {
-			[securedInstance.constructor.name]: (obj) => ({
+		flow.move([httpHasAuthInstance, httpSecuredInstance], {
+			[httpSecuredInstance.name]: (obj) => ({
 				...obj,
 				Key: 42,
 			}),
