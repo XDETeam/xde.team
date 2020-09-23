@@ -2,11 +2,8 @@
     "private": true,
     "version": "0.0.1",
     "workspaces": [
-        "docs",
         "packages/*",
-		"labs/*",
-        "www",
-        "../xde-typescript/packages/*"
+        "www"
     ],
     "scripts": {
         "docs:dev": "yarn --cwd docs/ run dev",
