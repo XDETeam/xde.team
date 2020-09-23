@@ -1,115 +1,77 @@
-import { IFunctor } from "@xde/flow-manager/.build/core/Functor";
-import {
-	ObjectFlow,
-	AspectType,
-	IFunctorExplained,
-} from "@xde/flow-manager/.build/core/ObjectFlow";
-
-export enum GraphNodeType {
-	Functor,
-}
-
-export type GraphNode = {
-	id: string;
-	name: string;
-	type: AspectType | GraphNodeType;
-};
-
-export type GraphLink = {
-	source: GraphNode["id"] | GraphNode;
-	target: GraphNode["id"] | GraphNode;
-	// TODO: Add functor name
-};
-export interface IForceGraphData {
-	nodes: GraphNode[];
-	links: GraphLink[];
-	// TODO: type of link: oneof, undefined
-}
-
-export interface IGraphData {
-	data: IForceGraphData;
-	addLink(link: GraphLink): void;
-	addNode(node: GraphNode): void;
-}
-export class GraphData implements IGraphData {
-	data: IForceGraphData = { nodes: [], links: [] };
-
-	addLink(link: GraphLink): void {
-		if (
-			this.data.links.findIndex(
-				(x) => x.source === link.source && x.target === link.target
-			) === -1
-		) {
-			this.data.links.push(link);
-		}
-	}
-	addNode(node: GraphNode): void {
-		if (this.data.nodes.findIndex((x) => x.id === node.id) === -1) {
-			this.data.nodes.push(node);
-		}
-	}
-}
+import { Functor, IFunctor, IFunctorExplained } from "@xde/flow-manager/.build/core/Functor";
+import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "./GraphData";
 
 export interface IGraphConverter {
-	toForceGraphData(functor: IFunctor): IForceGraphData;
+	toGraphData(functor: IFunctor): GraphData["data"];
 }
 
 export class GraphConverter implements IGraphConverter {
-	toForceGraphData(functor: IFunctor): IForceGraphData {
-		const explained = ObjectFlow.explainFunctor(functor);
+	toGraphData(functor: IFunctor): GraphData["data"] {
+		const explained = Functor.explain(functor);
 
 		const data = new GraphData();
 		let namespace = "";
 
-		console.log(functor.constructor);
+		console.log(explained);
 
-		this.process(explained, namespace, data);
+		this.process(explained, data);
 
 		return data.data;
 	}
 
-	process(explanation: IFunctorExplained, namespace: string, data: IGraphData): void {
-		const explanationNodeId = `${namespace}.Functor`;
-		const explanationNode = {
+	process(explanation: IFunctorExplained, data: IGraphData, parent?: GraphNode): void {
+		console.log("data before", JSON.stringify(data.data, null, 2));
+		console.log("explanation", JSON.stringify(explanation, null, 2));
+
+		const explanationNodeId = parent
+			? `${parent.id}.${explanation.functorName}`
+			: explanation.functorName;
+		const explanationNode = data.addNode({
 			id: explanationNodeId,
-			name: explanationNodeId,
+			// name: explanationNodeId,
 			type: GraphNodeType.Functor,
-		};
-		data.addNode(explanationNode);
+		});
+		if (parent) {
+			data.addLink({
+				source: parent.id,
+				target: explanationNode.id,
+				type: GraphLinkType.FunctorComposition,
+			});
+		}
 
 		explanation.from.forEach((from, i) => {
 			if ("aspect" in from) {
-				const node = {
-					id: from.aspect,
-					name: this.getName(from.aspect, from.type, namespace),
-					type: from.type,
-				};
-				data.addNode(node);
+				const node = data.addNode({
+					id: this.getName(from.aspect, parent?.id),
+					// name: this.getName(from.aspect, parentFunctorName),
+					type: GraphNodeType.Aspect,
+				});
 				data.addLink({
 					source: node.id,
 					target: explanationNode.id,
+					type: from.type,
 				});
 			} else {
-				const outerNode = {
-					id: this.getName(`${i}`, from.type, namespace),
-					name: this.getName(`${i}`, from.type, namespace),
-					type: from.type,
-				};
-				data.addNode(outerNode);
+				const outerNode = data.addNode({
+					id: this.getName(`Group${i}`, parent?.id),
+					// name: this.getName(`Group${i}`, parentFunctorName),
+					type: GraphNodeType.AspectsGroup,
+				});
 				data.addLink({
 					source: outerNode.id,
 					target: explanationNode.id,
+					type: from.type,
 				});
 				from.aspects.forEach((aspect) => {
-					const node = {
-						id: aspect,
-						name: this.getName(aspect, from.type, namespace),
-						type: from.type,
-					};
-					data.addNode(node);
+					const node = data.addNode({
+						id: this.getName(aspect, parent?.id),
+						// name: this.getName(aspect, parentFunctorName),
+						type: GraphNodeType.Aspect,
+					});
 					data.addLink({
 						source: node.id,
 						target: outerNode.id,
+						type: from.type,
 					});
 				});
 			}
@@ -117,37 +79,37 @@ export class GraphConverter implements IGraphConverter {
 
 		explanation.to.forEach((to, i) => {
 			if ("aspect" in to) {
-				const node = {
-					id: to.aspect,
-					name: this.getName(to.aspect, to.type, namespace),
-					type: to.type,
-				};
-				data.addNode(node);
+				const node = data.addNode({
+					id: this.getName(to.aspect, parent?.id),
+					// name: this.getName(to.aspect, parentFunctorName),
+					type: GraphNodeType.Aspect,
+				});
 				data.addLink({
 					source: explanationNode.id,
 					target: node.id,
+					type: to.type,
 				});
 			} else {
-				const outerNode = {
-					id: this.getName(`${i}`, to.type, namespace),
-					name: this.getName(`${i}`, to.type, namespace),
-					type: to.type,
-				};
-				data.addNode(outerNode);
+				const outerNode = data.addNode({
+					id: this.getName(`Group${i}`, parent?.id),
+					// name: this.getName(`Group${i}`, parentFunctorName),
+					type: GraphNodeType.AspectsGroup,
+				});
 				data.addLink({
 					source: explanationNode.id,
 					target: outerNode.id,
+					type: to.type,
 				});
 				to.aspects.forEach((aspect) => {
-					const node = {
-						id: aspect,
-						name: this.getName(aspect, to.type, namespace),
-						type: to.type,
-					};
-					data.addNode(node);
+					const node = data.addNode({
+						id: this.getName(aspect, parent?.id),
+						// name: this.getName(aspect, parentFunctorName),
+						type: GraphNodeType.Aspect,
+					});
 					data.addLink({
 						source: outerNode.id,
 						target: node.id,
+						type: to.type,
 					});
 				});
 			}
@@ -155,13 +117,13 @@ export class GraphConverter implements IGraphConverter {
 
 		if (explanation.children) {
 			explanation.children?.forEach((child, i) => {
-				this.process(child, `${explanation.functorName}${namespace}`, data);
+				this.process(child, data, explanationNode);
 			});
 		}
 	}
 
-	private getName(name: string, type: AspectType, namespace: string): string {
-		return `${namespace}.${name}.${type}`;
+	private getName(name: string, namespace?: string): string {
+		return namespace ? `${namespace}.${name}` : name;
 	}
 }
 

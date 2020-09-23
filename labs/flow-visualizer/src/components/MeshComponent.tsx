@@ -1,29 +1,41 @@
-import React, { FC, useMemo } from "react";
-import ForceGraph2D from "react-force-graph-2d";
+import React, { FC, useMemo, useRef } from "react";
+import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
 import { IFunctor } from "@xde/flow-manager/.build/core/Functor";
 import graphConverterInstance from "../models/GraphConverter";
+import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type MeshComponentProps = {
 	functor: IFunctor;
 };
 
+// TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
 const MeshComponent: FC<MeshComponentProps> = ({ functor }) => {
-	const data = useMemo(() => graphConverterInstance.toForceGraphData(functor), [functor]);
+	const data = useMemo(() => graphConverterInstance.toGraphData(functor), [functor]);
+	const ref = useRef<ForceGraphMethods>();
 	return (
 		<div>
 			<details>
 				<summary>Nodes</summary>
-				{JSON.stringify(data.nodes, null, 2)}
+				<pre>{JSON.stringify(data.nodes, null, 2)}</pre>
 			</details>
 			<details>
 				<summary>Edges</summary>
-				{JSON.stringify(data.links, null, 2)}
+				<pre>{JSON.stringify(data.links, null, 2)}</pre>
 			</details>
 			<ForceGraph2D
+				ref={ref}
 				graphData={data}
 				nodeLabel="name"
-				nodeAutoColorBy="group"
-				linkDirectionalParticles={1}
+				nodeAutoColorBy="type"
+				linkDirectionalArrowLength={6}
+				linkCurvature="curvature"
+				onNodeClick={(node) => {
+					ref.current?.centerAt(node.x, node.y, 1000);
+					ref.current?.zoom(8, 2000);
+				}}
+				linkAutoColorBy="type"
+				linkLabel="type"
+				// linkDirectionalParticles={1}
 				nodeCanvasObject={(node, ctx, globalScale) => {
 					const label = node.id;
 					const fontSize = 12 / globalScale;
@@ -31,7 +43,7 @@ const MeshComponent: FC<MeshComponentProps> = ({ functor }) => {
 					const textWidth = ctx.measureText(`${label}`).width;
 					const bckgDimensions = [textWidth, fontSize].map((n) => n + fontSize * 0.2); // some padding
 
-					ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+					ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
 					ctx.fillRect(
 						node.x! - bckgDimensions[0] / 2,
 						node.y! - bckgDimensions[1] / 2,
@@ -40,7 +52,21 @@ const MeshComponent: FC<MeshComponentProps> = ({ functor }) => {
 
 					ctx.textAlign = "center";
 					ctx.textBaseline = "middle";
-					ctx.fillStyle = "black";
+					switch ((node as GraphNode).type) {
+						case GraphNodeType.Aspect: {
+							ctx.fillStyle = "black";
+							break;
+						}
+						case GraphNodeType.AspectsGroup: {
+							ctx.fillStyle = "grey";
+							break;
+						}
+						case GraphNodeType.Functor: {
+							ctx.fillStyle = "blue";
+							break;
+						}
+					}
+
 					ctx.fillText(`${label}`, node.x!, node.y!);
 
 					return ctx;
