@@ -1,0 +1,24 @@
+{
+	"name": "@xde/flow-manager",
+	"version": "0.0.1",
+	"main": "index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"test": "jest --watch",
+		"test:dev:functor": "jest --watch Functor",
+		"test:dev:object": "jest --watch ObjectFlow",
+		"dev": "ts-node ./src/app.ts",
+		"build": "tsc",
+		"build:watch": "tsc --watch"
+	},
+	"dependencies": {
+		"@types/debug": "^4.1.5",
+		"@types/jest": "^26.0.14",
+		"debug": "^4.2.0",
+		"deep-object-diff": "^1.1.0",
+		"jest": "^26.4.2",
+		"ts-jest": "^26.3.0",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.2"
+	}
+}
