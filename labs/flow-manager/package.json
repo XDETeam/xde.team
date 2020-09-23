@@ -8,7 +8,8 @@
 		"test:dev:functor": "jest --watch Functor",
 		"test:dev:object": "jest --watch ObjectFlow",
 		"dev": "ts-node ./src/app.ts",
-		"build": "tsc"
+		"build": "tsc",
+		"build:watch": "tsc --watch"
 	},
 	"dependencies": {
 		"@types/debug": "^4.1.5",

@@ -17,8 +17,12 @@ import { Aspect } from "./core/models";
 
 const renderer = new CompositeFunctor(
 	"renderer",
-	[{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
-	[]
+	// TODO: Optional LocationHeader
+	[
+		Aspect.ResponseCode,
+		{ some: [Aspect.LocationHeader, Aspect.ResponseCode, Aspect.GeneratedHtml] },
+	],
+	[{ some: [Aspect.RenderedHtml, Aspect.Redirected], rewritable: true }]
 );
 renderer.addSubFunctors([
 	code404HtmlInstance,
@@ -27,7 +31,21 @@ renderer.addSubFunctors([
 	htmlRendererInstance,
 ]);
 
-const basicApp = new CompositeFunctor("basicApp", [Aspect.HttpRequest], []);
+const basicApp = new CompositeFunctor(
+	"basicApp",
+	[Aspect.HttpRequest],
+	[
+		{
+			some: [
+				Aspect.LocationHeader,
+				Aspect.ResponseCode,
+				Aspect.GeneratedHtml,
+				Aspect.HttpRouted,
+			],
+			rewritable: true,
+		},
+	]
+);
 basicApp.addSubFunctors([
 	admin401Instance,
 	adminPanelHtmlInstance,

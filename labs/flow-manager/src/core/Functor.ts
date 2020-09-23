@@ -59,9 +59,85 @@ export interface IFunctor {
 	replacements: { [key: string]: IFunctor["move"] };
 }
 
+export enum AspectType {
+	Exists = "Exists",
+	SpecificValue = "SpecificValue",
+	Undefined = "Undefined",
+	Some = "Some",
+}
+
+export type AspectsTyped =
+	| {
+			aspect: Aspect;
+			type: Exclude<AspectType, AspectType.Some>;
+	  }
+	| { aspects: Aspect[]; type: AspectType.Some };
+
+export interface IFunctorExplained {
+	functorName: string;
+	from: AspectsTyped[];
+	to: AspectsTyped[];
+	children?: IFunctorExplained[];
+}
+
 export abstract class Functor implements IFunctor {
 	// Allows to debug some info when overriding "move" method
 	public static debugger: Debugger = debug;
+
+	// TODO: Test coverage
+	public static explain(functor: IFunctor): IFunctorExplained {
+		const from: AspectsTyped[] = [];
+		const to: AspectsTyped[] = [];
+
+		functor.requires.forEach((req) => {
+			if (typeof req === "object") {
+				if ("undef" in req) {
+					from.push({ aspect: req.undef, type: AspectType.Undefined });
+				} else if ("some" in req) {
+					from.push({ aspects: req.some, type: AspectType.Some });
+				} else if ("lambda" in req) {
+					from.push({ aspect: req.aspect, type: AspectType.SpecificValue });
+				}
+			} else {
+				from.push({ aspect: req, type: AspectType.Exists });
+			}
+		});
+
+		functor.produces.forEach((product) => {
+			if (typeof product === "object") {
+				if ("some" in product) {
+					to.push({
+						aspects: product.some,
+						type: AspectType.Some,
+					});
+				} else if ("undef" in product) {
+					to.push({
+						aspect: product.undef,
+						type: AspectType.Undefined,
+					});
+				} else if ("aspect" in product) {
+					to.push({
+						aspect: product.aspect,
+						type: AspectType.Exists,
+					});
+				}
+			} else {
+				to.push({
+					aspect: product,
+					type: AspectType.Exists,
+				});
+			}
+		});
+
+		return {
+			functorName: functor.name,
+			from,
+			to,
+			children: functor.subFunctors.length
+				? functor.subFunctors.map((f) => Functor.explain(f))
+				: undefined,
+		};
+	}
 
 	abstract requires: IFunctor["requires"];
 	abstract produces: IFunctor["produces"];

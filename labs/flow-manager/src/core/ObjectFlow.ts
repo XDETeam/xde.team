@@ -2,7 +2,6 @@ import { diff } from "deep-object-diff";
 
 import { IObject } from "./models";
 import { IFunctor } from "./Functor";
-import { Aspect } from "./models";
 import { appDebug } from "./helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
@@ -10,27 +9,6 @@ const debugVerbose = debug.extend("verbose");
 const debugShort = debug.extend("short");
 const debugShortFunctor = debugShort.extend("functor");
 const debugShortObject = debugShort.extend("object");
-
-export enum AspectType {
-	Exists = "Exists",
-	SpecificValue = "SpecificValue",
-	Undefined = "Undefined",
-	Some = "Some",
-}
-
-export type AspectsTyped =
-	| {
-			aspect: Aspect;
-			type: Exclude<AspectType, AspectType.Some>;
-	  }
-	| { aspects: Aspect[]; type: AspectType.Some };
-
-export interface IFunctorExplained {
-	functorName: string;
-	from: AspectsTyped[];
-	to: AspectsTyped[];
-	children?: IFunctorExplained[];
-}
 
 export interface IObjectFlow {
 	move(functorsPool: IFunctor[], replacements?: IFunctor["replacements"]): void;
@@ -165,6 +143,7 @@ export class ObjectFlow implements IObjectFlow {
 		});
 	}
 
+	// TODO: Test coverage
 	private validateProduces(obj: IObject, functor: IFunctor): boolean {
 		return functor.produces.every((product) => {
 			if (typeof product === "object") {
@@ -204,70 +183,5 @@ export class ObjectFlow implements IObjectFlow {
 				return product in obj;
 			}
 		});
-	}
-
-	// TODO: Test coverage
-	public static explainFunctor(
-		functor: IFunctor,
-		functorNameNamespace: string = ""
-	): IFunctorExplained {
-		const from: AspectsTyped[] = [];
-		const to: AspectsTyped[] = [];
-
-		functor.requires.forEach((req) => {
-			if (typeof req === "object") {
-				if ("undef" in req) {
-					from.push({ aspect: req.undef, type: AspectType.Undefined });
-				} else if ("some" in req) {
-					from.push({ aspects: req.some, type: AspectType.Some });
-				} else if ("lambda" in req) {
-					from.push({ aspect: req.aspect, type: AspectType.SpecificValue });
-				}
-			} else {
-				from.push({ aspect: req, type: AspectType.Exists });
-			}
-		});
-
-		functor.produces.forEach((product) => {
-			if (typeof product === "object") {
-				if ("some" in product) {
-					to.push({
-						aspects: product.some,
-						type: AspectType.Some,
-					});
-				} else if ("undef" in product) {
-					to.push({
-						aspect: product.undef,
-						type: AspectType.Undefined,
-					});
-				} else if ("aspect" in product) {
-					to.push({
-						aspect: product.aspect,
-						type: AspectType.Exists,
-					});
-				}
-			} else {
-				to.push({
-					aspect: product,
-					type: AspectType.Exists,
-				});
-			}
-		});
-
-		return {
-			functorName: `${functorNameNamespace ? `${functorNameNamespace}.` : ""}${functor.name}`,
-			from,
-			to,
-			children: functor.subFunctors.length
-				? functor.subFunctors.map((f) =>
-						this.explainFunctor(
-							f,
-							`${functorNameNamespace ? `${functorNameNamespace}.` : ""}${
-								functor.name
-							}`
-						)
-				  )
-				: undefined,
-		};
 	}
 }

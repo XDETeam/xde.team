@@ -8,7 +8,6 @@ export class App404 extends Functor {
 		{ undef: Aspect.Redirected },
 		// Two below - to ensure we are not adding 404 handling for something that doesn't need it.
 		Aspect.HttpRouted,
-		Aspect.HttpRequest,
 	];
 	produces = [Aspect.ResponseCode];
 
