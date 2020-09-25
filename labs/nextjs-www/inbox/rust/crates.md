@@ -1,3 +1,8 @@
+-   https://github.com/bevyengine/bevy \*4100 Bevy is a refreshingly simple data-driven (ECS) game engine built in Rust. - https://dev.to/ethanyidong/the-bevy-engine-1-4k4k
+-   https://github.com/ntex-rs/ntex \*213
+-   https://github.com/redsift/redbpf \*368 A Rust eBPF toolchain.
+-   https://github.com/getzola/zola \*4200 A fast static site generator in a single binary with everything built-in.
+
 [45600] rust
 [23200] alacritty
 [18000] xi-editor
@@ -18,7 +23,6 @@
 [04100] nom
 [04000] rayon
 [04000] gfx (gpu)
-https://github.com/getzola/zola \*3900 A fast static site generator in a single binary with everything built-in.
 [03800] rust-analyzer
 [03700] tantivy
 [03700] mio
