@@ -19,7 +19,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     // TODO:Not happy with this implementation
     var specs = [];
     for await (var spec of buildSpecs()) {
-        specs.push(spec);
+        specs.push(spec.uri);
     }
 
     return {
