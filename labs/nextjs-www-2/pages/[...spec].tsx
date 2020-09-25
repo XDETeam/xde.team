@@ -16,7 +16,11 @@ export const Page = () => {
 export default Page;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    var specs = [...buildSpecs()];
+    // TODO:Not happy with this implementation
+    var specs = [];
+    for await (var spec of buildSpecs()) {
+        specs.push(spec);
+    }
 
     return {
         paths: specs,
