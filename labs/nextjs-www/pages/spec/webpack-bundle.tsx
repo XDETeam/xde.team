@@ -7,6 +7,9 @@ export const Page = () => (
         <h2>Modules</h2>
 
         <h2>Loaders</h2>
+		<p>
+			TODO:Describe using chain/pipe pattern.
+		</p>
         <p>
             Loader is a transformations that is applied to the source code of a
             module. It is written as functions that accept source code as a
