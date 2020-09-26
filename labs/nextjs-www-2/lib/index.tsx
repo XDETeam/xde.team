@@ -1,15 +1,11 @@
-import { mkdir, writeFile, existsSync } from "fs";
+import { mkdir, existsSync, readFileSync, writeFileSync } from "fs";
 import { dirname } from "path";
 import globby from "globby";
 import { FunctionComponent, ReactElement } from "react";
+import { ISpec } from "./ISpec";
 
 export const MESH_ROOT = process.env.MESH_ROOT || "mesh";
 export const MESH_DB_JSON = process.env.MESH_DB_JSON || ".data/mesh.json";
-
-export interface ISpec {
-    path: string;
-    uri: string
-}
 
 export interface ISpecModule {
     Uri: string;
@@ -19,12 +15,15 @@ export interface ISpecModule {
 export interface ISpecStorage {
     clear();
     add(path: string, module: any): ISpec;
-    flush();
+    load();
+    save();
+    get(spec: string): ISpec;
 }
 
 class SimpleStorage implements ISpecStorage {
     _path: string = MESH_DB_JSON;
     _items: { [uri: string]: ISpec } = {};
+    _loaded: boolean = false;
 
     clear () {
         Object
@@ -36,13 +35,21 @@ class SimpleStorage implements ISpecStorage {
     add(path: string, module: ISpecModule) {
         const result = this._items[module.Uri] =  {
             path,
+            module: path.replace(/\.[^/.]+$/, ""),
             uri: module.Uri
         }
 
         return result;
     }
 
-    flush() {
+    load() {
+        const data = readFileSync(this._path, { encoding: 'utf8' });
+        this._items = JSON.parse(data);
+
+        this._loaded = true;
+    }
+
+    save() {
         if (!existsSync(this._path)) {
             const folder = dirname(this._path);
 
@@ -51,9 +58,15 @@ class SimpleStorage implements ISpecStorage {
             })
         }
 
-        writeFile(this._path, JSON.stringify(this._items, null, 2), e => {
-            if (e) throw e;
-        })
+        writeFileSync(this._path, JSON.stringify(this._items, null, 2));
+    }
+
+    get = (spec: string): ISpec => {
+        if (!this._loaded) {
+            this.load();
+        }
+
+        return this._items[spec];
     }
 }
 
@@ -77,5 +90,7 @@ export async function* buildSpecs() {
         }
     }
 
-    storage.flush();
+    storage.save();
 }
+
+export const getSpec = (spec: string) => storage.get(spec);

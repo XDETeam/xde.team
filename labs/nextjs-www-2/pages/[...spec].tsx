@@ -1,14 +1,19 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { buildSpecs } from "../lib";
+import dynamic from "next/dynamic"
+import { buildSpecs, getSpec, ISpec } from "../lib";
 
-export const Page = () => {
-    const router = useRouter();
-    const { spec } = router.query;
+export const Page = ({ uri, path, module }: ISpec) => {
+    //TODO:
+    //const DynamicComponent = dynamic(() => import(`../${module}`))
+    const DynamicComponent = dynamic(() => import(`../mesh/cooking/Melon`))
 
     return (
         <>
-            TODO:Component for {spec}
+            <h1>TODO:Component for {uri} {path} {module}</h1>
+
+            <main>
+                <DynamicComponent />
+            </main>
         </>
     );
 };
@@ -29,5 +34,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    return { props: params };
+    const { spec: slug } = params;
+    const id = `/${Array.isArray(slug) ? slug.join('/') : slug}`;
+    const spec = getSpec(id);
+
+    console.log("TODO:Spec", id, spec );
+
+    return {
+        props: {
+            ...spec
+        }
+    };
 }
