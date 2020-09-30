@@ -1,4 +1,10 @@
-import { Functor, IFunctor, IFunctorExplained } from "@xde/flow-manager/.build/core/Functor";
+import {
+	Functor,
+	IFunctor,
+	IFunctorExplained,
+	AspectsTyped,
+	AspectType,
+} from "@xde/flow-manager/.build/core/Functor";
 import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "./GraphData";
 
 export interface IGraphConverter {
@@ -19,7 +25,12 @@ export class GraphConverter implements IGraphConverter {
 		return data.data;
 	}
 
-	process(explanation: IFunctorExplained, data: IGraphData, parent?: GraphNode): void {
+	process(
+		explanation: IFunctorExplained,
+		data: IGraphData,
+		parent?: GraphNode,
+		idx: number = 0
+	): void {
 		console.log("data before", JSON.stringify(data.data, null, 2));
 		console.log("explanation", JSON.stringify(explanation, null, 2));
 
@@ -31,93 +42,95 @@ export class GraphConverter implements IGraphConverter {
 			// name: explanationNodeId,
 			type: GraphNodeType.Functor,
 		});
-		if (parent) {
-			data.addLink({
-				source: parent.id,
-				target: explanationNode.id,
-				type: GraphLinkType.FunctorComposition,
-			});
-		}
+		// if (parent) {
+		// 	data.addLink({
+		// 		source: parent.id,
+		// 		target: explanationNode.id,
+		// 		type: GraphLinkType.FunctorComposition,
+		// 	});
+		// }
 
 		explanation.from.forEach((from, i) => {
-			if ("aspect" in from) {
-				const node = data.addNode({
-					id: this.getName(from.aspect, parent?.id),
-					// name: this.getName(from.aspect, parentFunctorName),
-					type: GraphNodeType.Aspect,
-				});
-				data.addLink({
-					source: node.id,
-					target: explanationNode.id,
-					type: from.type,
-				});
-			} else {
-				const outerNode = data.addNode({
-					id: this.getName(`Group${i}`, parent?.id),
-					// name: this.getName(`Group${i}`, parentFunctorName),
-					type: GraphNodeType.AspectsGroup,
-				});
-				data.addLink({
-					source: outerNode.id,
-					target: explanationNode.id,
-					type: from.type,
-				});
-				from.aspects.forEach((aspect) => {
-					const node = data.addNode({
-						id: this.getName(aspect, parent?.id),
-						// name: this.getName(aspect, parentFunctorName),
-						type: GraphNodeType.Aspect,
-					});
-					data.addLink({
-						source: node.id,
-						target: outerNode.id,
-						type: from.type,
-					});
-				});
-			}
+			this.handleExplanation(from, data, explanationNode, `${idx}.${i}`, parent, false);
 		});
 
 		explanation.to.forEach((to, i) => {
-			if ("aspect" in to) {
-				const node = data.addNode({
-					id: this.getName(to.aspect, parent?.id),
-					// name: this.getName(to.aspect, parentFunctorName),
-					type: GraphNodeType.Aspect,
-				});
-				data.addLink({
-					source: explanationNode.id,
-					target: node.id,
-					type: to.type,
-				});
-			} else {
-				const outerNode = data.addNode({
-					id: this.getName(`Group${i}`, parent?.id),
-					// name: this.getName(`Group${i}`, parentFunctorName),
-					type: GraphNodeType.AspectsGroup,
-				});
-				data.addLink({
-					source: explanationNode.id,
-					target: outerNode.id,
-					type: to.type,
-				});
-				to.aspects.forEach((aspect) => {
-					const node = data.addNode({
-						id: this.getName(aspect, parent?.id),
-						// name: this.getName(aspect, parentFunctorName),
-						type: GraphNodeType.Aspect,
-					});
-					data.addLink({
-						source: outerNode.id,
-						target: node.id,
-						type: to.type,
-					});
-				});
-			}
+			this.handleExplanation(to, data, explanationNode, `${idx}.${i}`, parent, true);
 		});
 
 		if (explanation.children) {
 			explanation.children?.forEach((child, i) => {
-				this.process(child, data, explanationNode);
+				this.process(child, data, explanationNode, i);
+			});
+		}
+	}
+
+	private handleExplanation(
+		explanation: AspectsTyped,
+		data: IGraphData,
+		explanationNode: GraphNode,
+		i: string,
+		parent?: GraphNode,
+		inverse?: boolean
+	) {
+		if ("aspect" in explanation) {
+			const node = data.addNode({
+				id: this.getName(explanation.aspect, parent?.id),
+				// name: this.getName(from.aspect, parentFunctorName),
+				type: GraphNodeType.Aspect,
+			});
+			data.addLink({
+				source: inverse ? explanationNode.id : node.id,
+				target: inverse ? node.id : explanationNode.id,
+				type: explanation.type,
+			});
+		} else {
+			const outerNode = data.addNode({
+				id: this.getName(`${inverse ? "To" : "From"}Group${i}`, parent?.id),
+				// name: this.getName(`Group${i}`, parentFunctorName),
+				type: GraphNodeType.AspectsGroup,
+			});
+			data.addLink({
+				source: inverse ? explanationNode.id : outerNode.id,
+				target: inverse ? outerNode.id : explanationNode.id,
+				type: AspectType.Exists,
+			});
+			explanation.aspects.forEach((aspect, j) => {
+				if (Array.isArray(aspect)) {
+					const innerNode = data.addNode({
+						id: this.getName(`${inverse ? "To" : "From"}Group${i}.${j}`, parent?.id),
+						// name: this.getName(`Group${i}`, parentFunctorName),
+						type: GraphNodeType.AspectsGroup,
+					});
+					data.addLink({
+						source: inverse ? outerNode.id : innerNode.id,
+						target: inverse ? innerNode.id : outerNode.id,
+						type: explanation.type,
+					});
+
+					aspect.forEach((a) => {
+						const aspectNode = data.addNode({
+							id: this.getName(a, parent?.id),
+							type: GraphNodeType.Aspect,
+						});
+						data.addLink({
+							source: inverse ? innerNode.id : aspectNode,
+							target: inverse ? aspectNode : innerNode.id,
+							type: AspectType.Exists,
+						});
+					});
+				} else {
+					const node = data.addNode({
+						id: this.getName(aspect, parent?.id),
+						// name: this.getName(aspect, parentFunctorName),
+						type: GraphNodeType.Aspect,
+					});
+					data.addLink({
+						source: inverse ? outerNode.id : node.id,
+						target: inverse ? node.id : outerNode.id,
+						type: explanation.type,
+					});
+				}
 			});
 		}
 	}
