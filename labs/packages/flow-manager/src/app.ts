@@ -18,10 +18,7 @@ import { Aspect } from "./core/models";
 const renderer = new CompositeFunctor(
 	"renderer",
 	// TODO: Optional LocationHeader
-	[
-		Aspect.ResponseCode,
-		{ some: [Aspect.LocationHeader, Aspect.ResponseCode, Aspect.GeneratedHtml] },
-	],
+	[Aspect.ResponseCode, { optional: Aspect.LocationHeader }, { optional: Aspect.GeneratedHtml }],
 	[{ some: [Aspect.RenderedHtml, Aspect.Redirected], rewritable: true }]
 );
 renderer.addSubFunctors([
@@ -37,10 +34,10 @@ const basicApp = new CompositeFunctor(
 	[
 		{
 			some: [
-				Aspect.LocationHeader,
+				Aspect.HttpRouted,
+				[Aspect.LocationHeader, Aspect.ResponseCode],
 				Aspect.ResponseCode,
 				Aspect.GeneratedHtml,
-				Aspect.HttpRouted,
 			],
 			rewritable: true,
 		},

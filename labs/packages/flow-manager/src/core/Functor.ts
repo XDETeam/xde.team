@@ -7,20 +7,27 @@ import { ObjectFlow } from "./ObjectFlow";
 const debug = appDebug.extend("Functor");
 
 export type IFunctorRequires =
+	| Aspect
 	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
 	// TODO: can be achieved just with lambda function
 	| { undef: Aspect }
-	| { some: Aspect[] };
+	| { some: Array<Aspect | Aspect[]> }
+	| { optional: Aspect };
+// | { or: IFunctorRequires[][] };
 
 export type IFunctorProduces =
+	| Aspect
 	| { undef: Aspect }
 	| { aspect: Aspect; rewritable: boolean }
-	| { some: Aspect[]; rewritable: true };
+	| { some: Array<Aspect | Aspect[]>; rewritable: true }
+	| { optional: Aspect };
+// | { or: IFunctorProduces[][] };
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
 export interface IFunctor {
 	name: string;
 
+	// TODO: rename requires -> from, produces -> to
 	/**
 	 * In case array item is:
 	 * 	- simple Aspect - check that is not undefined
@@ -29,7 +36,7 @@ export interface IFunctor {
 	 * 		- undef - check that aspect is undefined
 	 * 		- some - check that some of aspects is truthy
 	 */
-	requires: Array<Aspect | IFunctorRequires>;
+	requires: Array<IFunctorRequires>;
 
 	/**
 	 * In case is
@@ -39,7 +46,7 @@ export interface IFunctor {
 	 *		- rewritable - allow to run functor even if Aspect is already defined
 	 * 		- some - produces one of. Should be rewritable
 	 */
-	produces: Array<Aspect | IFunctorProduces>;
+	produces: Array<IFunctorProduces>;
 
 	subFunctors: IFunctor[];
 
@@ -64,6 +71,7 @@ export enum AspectType {
 	SpecificValue = "SpecificValue",
 	Undefined = "Undefined",
 	Some = "Some",
+	Optional = "Optional",
 }
 
 export type AspectsTyped =
@@ -71,7 +79,7 @@ export type AspectsTyped =
 			aspect: Aspect;
 			type: Exclude<AspectType, AspectType.Some>;
 	  }
-	| { aspects: Aspect[]; type: AspectType.Some };
+	| { aspects: Array<Aspect | Aspect[]>; type: AspectType.Some };
 
 export interface IFunctorExplained {
 	functorName: string;
@@ -97,6 +105,8 @@ export abstract class Functor implements IFunctor {
 					from.push({ aspects: req.some, type: AspectType.Some });
 				} else if ("lambda" in req) {
 					from.push({ aspect: req.aspect, type: AspectType.SpecificValue });
+				} else if ("optional" in req) {
+					from.push({ aspect: req.optional, type: AspectType.Optional });
 				}
 			} else {
 				from.push({ aspect: req, type: AspectType.Exists });
@@ -119,6 +129,11 @@ export abstract class Functor implements IFunctor {
 					to.push({
 						aspect: product.aspect,
 						type: AspectType.Exists,
+					});
+				} else if ("optional" in product) {
+					to.push({
+						aspect: product.optional,
+						type: AspectType.Optional,
 					});
 				}
 			} else {

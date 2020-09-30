@@ -91,7 +91,15 @@ export class ObjectFlow implements IObjectFlow {
 							} else if ("aspect" in b) {
 								a[b.aspect] = true;
 							} else if ("some" in b) {
-								b.some.forEach((x) => (a[x] = true));
+								b.some.forEach((x) => {
+									if (Array.isArray(x)) {
+										x.forEach((y) => (a[y] = true));
+									} else {
+										a[x] = true;
+									}
+								});
+							} else if ("optional" in b) {
+								a[b.optional] = true;
 							}
 						} else {
 							a[b] = true;
@@ -109,9 +117,17 @@ export class ObjectFlow implements IObjectFlow {
 		return functorProduces.every((product) => {
 			if (typeof product === "object") {
 				if ("rewritable" in product) {
-					return true;
+					if (product.rewritable) {
+						return true;
+					} else {
+						if ("aspect" in product) {
+							return obj[product.aspect] === undefined;
+						}
+					}
 				} else if ("undef" in product) {
 					// TODO: should we check if defined before?
+					return true;
+				} else if ("optional" in product) {
 					return true;
 				}
 			} else {
@@ -130,11 +146,19 @@ export class ObjectFlow implements IObjectFlow {
 				if ("undef" in req) {
 					return obj[req.undef] === undefined;
 				} else if ("some" in req) {
-					return req.some.some((aspect) => !!obj[aspect]);
+					return req.some.some((aspect) => {
+						if (Array.isArray(aspect)) {
+							return aspect.every((a) => !!obj[a]);
+						} else {
+							return !!obj[aspect];
+						}
+					});
 				} else if ("lambda" in req) {
 					return (
 						obj[req.aspect] !== undefined && (!!justPass || req.lambda(obj[req.aspect]))
 					);
+				} else if ("optional" in req) {
+					return true;
 				}
 				return false;
 			} else {
@@ -156,11 +180,20 @@ export class ObjectFlow implements IObjectFlow {
 					}
 					return obj[product.undef] === undefined;
 				} else if ("some" in product) {
-					const res = product.some.some((aspect) => !!obj[aspect]);
-					debug(
-						`Produces validation failed for ${functor.name}: At least one of ${product.some} should be truthy`,
-						obj
-					);
+					const res = product.some.some((aspect) => {
+						if (Array.isArray(aspect)) {
+							return aspect.every((a) => !!obj[a]);
+						} else {
+							return !!obj[aspect];
+						}
+					});
+					if (!res) {
+						debug(
+							`Produces validation failed for ${functor.name}: At least one of ${product.some} should be truthy`,
+							obj
+						);
+					}
+
 					return res;
 				} else if ("aspect" in product) {
 					// TODO: DRY
@@ -171,6 +204,8 @@ export class ObjectFlow implements IObjectFlow {
 						);
 					}
 					return product.aspect in obj;
+				} else if ("optional" in product) {
+					return true;
 				}
 				return false;
 			} else {

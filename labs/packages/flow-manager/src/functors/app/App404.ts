@@ -6,7 +6,7 @@ export class App404 extends Functor {
 	requires = [
 		{ undef: Aspect.GeneratedHtml },
 		{ undef: Aspect.Redirected },
-		// Two below - to ensure we are not adding 404 handling for something that doesn't need it.
+		// To ensure we are not adding 404 handling for something that doesn't need it.
 		Aspect.HttpRouted,
 	];
 	produces = [Aspect.ResponseCode];
