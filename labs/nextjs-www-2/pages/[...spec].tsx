@@ -4,8 +4,8 @@ import { buildSpecs, getSpec, ISpec } from "../lib";
 
 export const Page = ({ uri, path, module }: ISpec) => {
     //TODO:
-    //const DynamicComponent = dynamic(() => import(`../${module}`))
-    const DynamicComponent = dynamic(() => import(`../mesh/cooking/Melon`))
+    const DynamicComponent = dynamic(() => import(`../${module}`))
+    //const DynamicComponent = dynamic(() => import(`../mesh/cooking/Melon`))
 
     return (
         <>
