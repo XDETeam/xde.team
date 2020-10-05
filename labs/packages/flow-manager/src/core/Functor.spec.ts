@@ -7,20 +7,20 @@ import htmlRendererInstance from "../functors/http/HtmlRenderer";
 
 class testPrimitiveFunctor extends Functor {
 	name = "testPrimitiveFunctor";
-	requires = [Aspect.HttpRequest];
-	produces = [Aspect.HasAuth];
+	from = [Aspect.HttpRequest];
+	to = [Aspect.HasAuth];
 }
 
 class testPrimitiveFunctor2 extends Functor {
 	name = "testPrimitiveFunctor2";
-	requires = [Aspect.HasAuth];
-	produces = [Aspect.AppAdminRouteAllowed];
+	from = [Aspect.HasAuth];
+	to = [Aspect.AppAdminRouteAllowed];
 }
 
 class testCompositeFunctor extends Functor {
 	name = "testCompositeFunctor";
-	requires = [];
-	produces = [];
+	from = [];
+	to = [];
 }
 
 it("should produce an error with primitive functor when there is no subfunctors registered", () => {
@@ -41,11 +41,11 @@ it("should register an array of functors as child to the functor", () => {
 	expect(compositeFunctor.subFunctors.length).toEqual(2);
 });
 
-it("should prevent registration of functor with empty requires", () => {
+it("should prevent registration of functor with empty from", () => {
 	class somePrimitiveFunctor extends Functor {
 		name = "somePrimitiveFunctor";
-		requires = [];
-		produces = [Aspect.HasAuth];
+		from = [];
+		to = [Aspect.HasAuth];
 	}
 	const compositeFunctor = new testCompositeFunctor();
 
@@ -57,19 +57,6 @@ it("should prevent duplication of registered functors", () => {
 	const primitiveFunctor = new testPrimitiveFunctor();
 	compositeFunctor.addSubFunctors(primitiveFunctor);
 	expect(() => compositeFunctor.addSubFunctors(primitiveFunctor)).toThrowError(/duplicate/i);
-});
-
-it("should test if it is possible to receive some aspect", () => {
-	const functor = new testCompositeFunctor();
-	functor.addSubFunctors([
-		httpSecuredInstance,
-		app404Instance,
-		code404HtmlInstance,
-		htmlRendererInstance,
-	]);
-	expect(functor.isPossible(Aspect.ResponseCode, Aspect.RenderedHtml)).toEqual(true);
-	expect(functor.isPossible(Aspect.Secured, Aspect.GeneratedHtml)).toEqual(false);
-	expect(functor.isPossible(Aspect.GeneratedHtml, Aspect.RenderedHtml)).toEqual(true);
 });
 
 it("should register replace move method", () => {

@@ -1,4 +1,3 @@
-import { Aspect } from "./models";
 import { ObjectFlow } from "./ObjectFlow";
 import admin401Instance from "../functors/app/admin/Admin401";
 import appAdminRouteAllowedInstance from "../functors/app/AppAdminRouteAllowed";
@@ -19,8 +18,8 @@ it("should handle simple flow", () => {
 	});
 	flow.move([httpHasAuthInstance, httpSecuredInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
-	expect(flow.object).toHaveProperty(httpHasAuthInstance.produces);
-	expect(flow.object).toHaveProperty(httpSecuredInstance.produces);
+	expect(flow.object).toHaveProperty(httpHasAuthInstance.to);
+	expect(flow.object).toHaveProperty(httpSecuredInstance.to);
 });
 
 it("should handle lambda functions", () => {
@@ -29,28 +28,7 @@ it("should handle lambda functions", () => {
 		AppAdminRouteAllowed: false,
 	});
 	flow.move([admin401Instance, code401HtmlInstance]);
-	expect(flow.object).toHaveProperty(htmlRendererInstance.requires);
-});
-
-it("should move pass", () => {
-	const flow = new ObjectFlow({
-		HttpRequest: {
-			authCookie: "valid",
-			route: "/security/adminPanelRoute",
-			isTLS: true,
-		} as ITestHttpRequest,
-	});
-
-	flow.movePass([
-		appAdminRouteAllowedInstance,
-		admin401Instance,
-		code401HtmlInstance,
-		htmlRendererInstance,
-		httpRoutedInstance,
-		httpHasAuthInstance,
-		httpSecuredInstance,
-	]);
-	expect(flow.object).toHaveProperty(Aspect.GeneratedHtml);
+	expect(flow.object).toHaveProperty(htmlRendererInstance.from);
 });
 
 it("should handle replacements of move functions", () => {
@@ -64,15 +42,15 @@ it("should handle replacements of move functions", () => {
 	flow.move([httpHasAuthInstance, httpSecuredInstance], {
 		[httpSecuredInstance.name]: (obj) => ({
 			...obj,
-			[httpSecuredInstance.produces[0]]: 42,
+			[httpSecuredInstance.to[0]]: 42,
 		}),
 	});
 	expect(flow.object).toHaveProperty("HttpRequest");
-	expect(flow.object).toHaveProperty(httpHasAuthInstance.produces);
-	expect(flow.object[httpSecuredInstance.produces[0]]).toEqual(42);
+	expect(flow.object).toHaveProperty(httpHasAuthInstance.to);
+	expect(flow.object[httpSecuredInstance.to[0]]).toEqual(42);
 });
 
-it("should produce an error when resulting object does not have functor produces", () => {
+it("should produce an error when resulting object does not have functor to", () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",

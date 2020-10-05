@@ -1,165 +1,108 @@
 import { Debugger } from "debug";
 
 import { appDebug } from "./helpers/debug";
-import { Aspect, IObject } from "./models";
+import { ILambda } from "./helpers/lambdas";
+import { Aspect, AspectType, IObject } from "./models";
 import { ObjectFlow } from "./ObjectFlow";
 
 const debug = appDebug.extend("Functor");
 
-export type IFunctorRequires =
-	| Aspect
-	| { aspect: Aspect; lambda: (aspect?: any) => boolean }
-	// TODO: can be achieved just with lambda function
-	| { undef: Aspect }
-	| { some: Array<Aspect | Aspect[]> }
-	| { optional: Aspect };
-// | { or: IFunctorRequires[][] };
+export type LambdaAspect<TAspect extends string = Aspect> = {
+	aspect: TAspect | Array<TAspect | TAspect[]>;
+	lambda: ILambda<TAspect>;
+};
 
-export type IFunctorProduces =
-	| Aspect
-	| { undef: Aspect }
-	| { aspect: Aspect; rewritable: boolean }
-	| { some: Array<Aspect | Aspect[]>; rewritable: true }
-	| { optional: Aspect };
-// | { or: IFunctorProduces[][] };
+export type IFunctorFrom<TAspect extends string = Aspect> = TAspect | LambdaAspect<TAspect>;
+
+export type IFunctorTo<TAspect extends string = Aspect> =
+	| TAspect
+	| (LambdaAspect<TAspect> & {
+			/**
+			 * Run despite it's look like aspects producing already exists in the object
+			 */
+			force?: boolean;
+	  });
 
 // 2 типа функторов - композитный и примитивный. по умолчанию - композитный
-export interface IFunctor {
+export interface IFunctor<TAspect extends string = Aspect> {
 	name: string;
 
-	// TODO: rename requires -> from, produces -> to
-	/**
-	 * In case array item is:
-	 * 	- simple Aspect - check that is not undefined
-	 *  - object
-	 * 		- aspect and lambda - check that lambda returns truthy
-	 * 		- undef - check that aspect is undefined
-	 * 		- some - check that some of aspects is truthy
-	 */
-	requires: Array<IFunctorRequires>;
+	from: Array<IFunctorFrom<TAspect>>;
+	to: Array<IFunctorTo<TAspect>>;
 
-	/**
-	 * In case is
-	 * 	- simple Aspect - any defined value
-	 *  - object
-	 * 		- undef - removes aspect
-	 *		- rewritable - allow to run functor even if Aspect is already defined
-	 * 		- some - produces one of. Should be rewritable
-	 */
-	produces: Array<IFunctorProduces>;
-
-	subFunctors: IFunctor[];
+	subFunctors: IFunctor<TAspect>[];
 
 	/**
 	 * Rewrite me to make primitive functor
 	 */
 	move(obj: IObject): IObject;
-	addSubFunctors(functor: IFunctor | IFunctor[]): void;
-	isPossible(from: Aspect, receive: Aspect): boolean;
+	addSubFunctors(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void;
 
 	/**
 	 * Replaces move method of subfunctor
 	 * @param existing Replace move method for this functor
 	 * @param newMove Move function to replace with
 	 */
-	replace(existing: IFunctor, newMove: IFunctor["move"]): void;
-	replacements: { [key: string]: IFunctor["move"] };
+	replace(existing: IFunctor<TAspect>, newMove: IFunctor<TAspect>["move"]): void;
+	replacements: { [key: string]: IFunctor<TAspect>["move"] };
 }
 
-export enum AspectType {
-	Exists = "Exists",
-	SpecificValue = "SpecificValue",
-	Undefined = "Undefined",
-	Some = "Some",
-	Optional = "Optional",
-}
-
-export type AspectsTyped =
-	| {
-			aspect: Aspect;
-			type: Exclude<AspectType, AspectType.Some>;
-	  }
-	| { aspects: Array<Aspect | Aspect[]>; type: AspectType.Some };
-
-export interface IFunctorExplained {
+export type AspectsTyped<TAspect extends string = Aspect> = {
+	aspect: LambdaAspect<TAspect>["aspect"];
+	type: AspectType;
+};
+export interface IFunctorExplained<TAspect extends string = Aspect> {
 	functorName: string;
-	from: AspectsTyped[];
-	to: AspectsTyped[];
-	children?: IFunctorExplained[];
+	from: AspectsTyped<TAspect>[];
+	to: AspectsTyped<TAspect>[];
+	children?: IFunctorExplained<TAspect>[];
 }
 
-export abstract class Functor implements IFunctor {
+export abstract class Functor<TAspect extends string = Aspect> implements IFunctor<TAspect> {
 	// Allows to debug some info when overriding "move" method
 	public static debugger: Debugger = debug;
 
 	// TODO: Test coverage
-	public static explain(functor: IFunctor): IFunctorExplained {
-		const from: AspectsTyped[] = [];
-		const to: AspectsTyped[] = [];
+	public static explain<T extends string>(functor: IFunctor<T>): IFunctorExplained<T> {
+		const from: AspectsTyped<T>[] = [];
+		const to: AspectsTyped<T>[] = [];
 
-		functor.requires.forEach((req) => {
-			if (typeof req === "object") {
-				if ("undef" in req) {
-					from.push({ aspect: req.undef, type: AspectType.Undefined });
-				} else if ("some" in req) {
-					from.push({ aspects: req.some, type: AspectType.Some });
-				} else if ("lambda" in req) {
-					from.push({ aspect: req.aspect, type: AspectType.SpecificValue });
-				} else if ("optional" in req) {
-					from.push({ aspect: req.optional, type: AspectType.Optional });
+		const add = (
+			description: Array<IFunctorFrom<T>> | Array<IFunctorTo<T>>,
+			arr: AspectsTyped<T>[]
+		): void => {
+			description.forEach((x) => {
+				if (typeof x === "object") {
+					if (x.lambda.type) {
+						arr.push({ aspect: x.aspect, type: x.lambda.type });
+					} else {
+						arr.push({ aspect: x.aspect, type: AspectType.SpecificValue });
+					}
+				} else {
+					arr.push({ aspect: x, type: AspectType.Exists });
 				}
-			} else {
-				from.push({ aspect: req, type: AspectType.Exists });
-			}
-		});
+			});
+		};
 
-		functor.produces.forEach((product) => {
-			if (typeof product === "object") {
-				if ("some" in product) {
-					to.push({
-						aspects: product.some,
-						type: AspectType.Some,
-					});
-				} else if ("undef" in product) {
-					to.push({
-						aspect: product.undef,
-						type: AspectType.Undefined,
-					});
-				} else if ("aspect" in product) {
-					to.push({
-						aspect: product.aspect,
-						type: AspectType.Exists,
-					});
-				} else if ("optional" in product) {
-					to.push({
-						aspect: product.optional,
-						type: AspectType.Optional,
-					});
-				}
-			} else {
-				to.push({
-					aspect: product,
-					type: AspectType.Exists,
-				});
-			}
-		});
+		add(functor.from, from);
+		add(functor.to, to);
 
 		return {
 			functorName: functor.name,
 			from,
 			to,
 			children: functor.subFunctors.length
-				? functor.subFunctors.map((f) => Functor.explain(f))
+				? functor.subFunctors.map((f) => Functor.explain<T>(f))
 				: undefined,
 		};
 	}
 
-	abstract requires: IFunctor["requires"];
-	abstract produces: IFunctor["produces"];
+	abstract from: IFunctor<TAspect>["from"];
+	abstract to: IFunctor<TAspect>["to"];
 	abstract name: string;
 
-	subFunctors: IFunctor[] = [];
-	replacements: IFunctor["replacements"] = {};
+	subFunctors: IFunctor<TAspect>[] = [];
+	replacements: IFunctor<TAspect>["replacements"] = {};
 
 	move(obj: IObject): IObject {
 		if (!this.subFunctors.length) {
@@ -168,14 +111,14 @@ export abstract class Functor implements IFunctor {
 			);
 		}
 
-		const moved = new ObjectFlow(obj);
+		const moved = new ObjectFlow<TAspect>(obj);
 		moved.move(this.subFunctors, this.replacements);
 
-		// TODO: Validate with produces - if not - throw! now handled by ObjectFlow
+		// TODO: Validate with 'to' - if not - throw! now handled by ObjectFlow
 		return moved.object;
 	}
 
-	addSubFunctors(functor: IFunctor | IFunctor[]): void {
+	addSubFunctors(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void {
 		if (Array.isArray(functor)) {
 			functor.forEach((f) => this.addSubFunctor(f));
 		} else {
@@ -183,14 +126,7 @@ export abstract class Functor implements IFunctor {
 		}
 	}
 
-	isPossible(from: Aspect, receive: Aspect): boolean {
-		const moved = new ObjectFlow({ [from]: true });
-		moved.movePass(this.subFunctors);
-
-		return moved.object[receive] !== undefined;
-	}
-
-	replace(existing: IFunctor, newMove: IFunctor["move"]): void {
+	replace(existing: IFunctor<TAspect>, newMove: IFunctor<TAspect>["move"]): void {
 		if (!this.subFunctors.includes(existing)) {
 			throw new Error(
 				"It is not possible to replace method of unregistered subfunctor. Add it first."
@@ -200,9 +136,9 @@ export abstract class Functor implements IFunctor {
 		this.replacements[existing.name] = newMove;
 	}
 
-	private addSubFunctor(functor: IFunctor): void {
-		if (!functor.requires.length) {
-			throw new Error("Empty requires: Functor will never be invoked.");
+	private addSubFunctor(functor: IFunctor<TAspect>): void {
+		if (!functor.from.length) {
+			throw new Error("Empty from: Functor will never be invoked.");
 		}
 		if (
 			this.subFunctors.indexOf(functor) !== -1 ||
@@ -217,11 +153,11 @@ export abstract class Functor implements IFunctor {
 	}
 }
 
-export class CompositeFunctor extends Functor {
+export class CompositeFunctor<TAspect extends string = Aspect> extends Functor<TAspect> {
 	constructor(
-		public name: Functor["name"],
-		public requires: Functor["requires"],
-		public produces: Functor["produces"]
+		public name: Functor<TAspect>["name"],
+		public from: Functor<TAspect>["from"],
+		public to: Functor<TAspect>["to"]
 	) {
 		super();
 	}

@@ -1,16 +1,18 @@
 import { Functor } from "../../core/Functor";
+import { PartialObject } from "../../core/helpers/lambdas";
 import { Aspect } from "../../core/models";
 
 export class Code301Redirected extends Functor {
 	name = "Code301Redirected";
-	requires = [
+	from = [
 		{
 			aspect: Aspect.ResponseCode,
-			lambda: (asp: number) => asp === 301,
+			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
+				obj[Aspect.ResponseCode] === 301,
 		},
 		Aspect.LocationHeader,
 	];
-	produces = [Aspect.Redirected];
+	to = [Aspect.Redirected];
 
 	move(obj: { [Aspect.LocationHeader]: string }): {} {
 		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);

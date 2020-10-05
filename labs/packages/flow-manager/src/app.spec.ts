@@ -1,4 +1,5 @@
 import { CompositeFunctor } from "./core/Functor";
+import { Some } from "./core/helpers/lambdas";
 import { Aspect } from "./core/models";
 import admin401Instance from "./functors/app/admin/Admin401";
 import adminPanelHtmlInstance from "./functors/app/admin/AdminPanelHtml";
@@ -14,8 +15,43 @@ import httpSecuredInstance from "./functors/http/HttpSecured";
 import httpHasAuthInstance from "./functors/security/HttpHasAuth";
 import { ITestHttpRequest } from "./models";
 
-const initialApp = new CompositeFunctor("initialApp", [Aspect.HttpRequest], []);
-initialApp.addSubFunctors([
+const renderer = new CompositeFunctor<Aspect>(
+	"renderer",
+	[
+		{
+			aspect: [
+				Aspect.ResponseCode,
+				[Aspect.ResponseCode, Aspect.LocationHeader],
+				Aspect.GeneratedHtml,
+			],
+			lambda: Some,
+		},
+	],
+	[{ aspect: [Aspect.RenderedHtml, Aspect.Redirected], lambda: Some }]
+);
+renderer.addSubFunctors([
+	code404HtmlInstance,
+	code401HtmlInstance,
+	code301RedirectedInstance,
+	htmlRendererInstance,
+]);
+
+const basicApp = new CompositeFunctor<Aspect>(
+	"basicApp",
+	[Aspect.HttpRequest],
+	[
+		{
+			aspect: [
+				Aspect.HttpRouted,
+				[Aspect.LocationHeader, Aspect.ResponseCode],
+				Aspect.ResponseCode,
+				Aspect.GeneratedHtml,
+			],
+			lambda: Some,
+		},
+	]
+);
+basicApp.addSubFunctors([
 	admin401Instance,
 	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
@@ -25,20 +61,8 @@ initialApp.addSubFunctors([
 	httpSecuredInstance,
 ]);
 
-const renderer = new CompositeFunctor(
-	"renderer",
-	[{ some: [Aspect.ResponseCode, Aspect.GeneratedHtml] }],
-	[]
-);
-renderer.addSubFunctors([
-	code401HtmlInstance,
-	code404HtmlInstance,
-	code301RedirectedInstance,
-	htmlRendererInstance,
-]);
-
-const root = new CompositeFunctor("root", [], []);
-root.addSubFunctors([initialApp, app404Instance, renderer]);
+export const root = new CompositeFunctor<Aspect>("root", [], []);
+root.addSubFunctors([basicApp, app404Instance, renderer]);
 
 const httpRequest: ITestHttpRequest = {
 	authCookie: "valid",

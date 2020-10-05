@@ -1,7 +1,7 @@
 import { diff } from "deep-object-diff";
 
-import { IObject } from "./models";
-import { IFunctor } from "./Functor";
+import { Aspect, AspectType, IObject } from "./models";
+import { IFunctor, LambdaAspect } from "./Functor";
 import { appDebug } from "./helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
@@ -10,21 +10,22 @@ const debugShort = debug.extend("short");
 const debugShortFunctor = debugShort.extend("functor");
 const debugShortObject = debugShort.extend("object");
 
-export interface IObjectFlow {
-	move(functorsPool: IFunctor[], replacements?: IFunctor["replacements"]): void;
-	movePass(functorsPool: IFunctor[]): void;
+export interface IObjectFlow<TAspect extends string = Aspect> {
+	move(functorsPool: IFunctor<TAspect>[], replacements?: IFunctor<TAspect>["replacements"]): void;
 }
 
-export class ObjectFlow implements IObjectFlow {
+export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<TAspect> {
 	constructor(public object: IObject) {}
 
 	// Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
 	// Мысленно все разруливается с конца - Вы можете перенести пользователя в добавленные. добавленный пользователь требует x, x требует y и т.д.
-	move(functorsPool: IFunctor[], replacements?: IFunctor["replacements"]): void {
-		let functors: IFunctor[];
+	move(
+		functorsPool: IFunctor<TAspect>[],
+		replacements?: IFunctor<TAspect>["replacements"]
+	): void {
+		let functors: IFunctor<TAspect>[];
 		let prevObject = { ...this.object };
 		let currentFunctorsPool = functorsPool.slice();
-
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
@@ -34,12 +35,10 @@ export class ObjectFlow implements IObjectFlow {
 				} else {
 					this.object = functor.move(this.object);
 				}
-				if (!this.validateProduces(this.object, functor)) {
+				if (!this.validateTo(this.object, functor)) {
 					throw new Error(
-						`Produces validation failed for functor ${
-							functor.name
-						} with produces ${JSON.stringify(
-							functor.produces
+						`To validation failed for functor ${functor.name} with to ${JSON.stringify(
+							functor.to
 						)} and resulting object ${JSON.stringify(this.object, null, 2)}`
 					);
 				}
@@ -60,13 +59,13 @@ export class ObjectFlow implements IObjectFlow {
 		}
 	}
 
-	findFunctors(functorsPool: IFunctor[], justPass?: boolean): IFunctor[] {
-		const ret: IFunctor[] = [];
+	findFunctors(functorsPool: IFunctor<TAspect>[]): IFunctor<TAspect>[] {
+		const ret: IFunctor<TAspect>[] = [];
 
 		functorsPool.forEach((functor) => {
 			if (
-				this.producesAllow(functor.produces, this.object) &&
-				this.requiresAllow(functor.requires, this.object, justPass)
+				this.toAllow(functor.to, this.object) &&
+				this.fromAllow(functor.from, this.object)
 			) {
 				ret.push(functor);
 			}
@@ -75,60 +74,26 @@ export class ObjectFlow implements IObjectFlow {
 		return ret;
 	}
 
-	movePass(functorsPool: IFunctor[]): void {
-		let functors;
-
-		while ((functors = this.findFunctors(functorsPool, true)) && functors.length) {
-			debugVerbose(`Found ${functors.length} functor(s)`, functors);
-			debugVerbose("Object before iteration", this.object);
-			functors.forEach((functor) => {
-				this.object = {
-					...this.object,
-					...functor.produces.reduce((a, b) => {
-						if (typeof b === "object") {
-							if ("undef" in b) {
-								a[b.undef] = undefined;
-							} else if ("aspect" in b) {
-								a[b.aspect] = true;
-							} else if ("some" in b) {
-								b.some.forEach((x) => {
-									if (Array.isArray(x)) {
-										x.forEach((y) => (a[y] = true));
-									} else {
-										a[x] = true;
-									}
-								});
-							} else if ("optional" in b) {
-								a[b.optional] = true;
-							}
-						} else {
-							a[b] = true;
-						}
-						return a;
-					}, {} as any),
-				};
-			});
-
-			debugVerbose("Object after iteration", this.object);
-		}
-	}
-
-	private producesAllow(functorProduces: IFunctor["produces"], obj: IObject): boolean {
-		return functorProduces.every((product) => {
+	private toAllow(functorTo: IFunctor<TAspect>["to"], obj: IObject): boolean {
+		return functorTo.every((product) => {
 			if (typeof product === "object") {
-				if ("rewritable" in product) {
-					if (product.rewritable) {
-						return true;
-					} else {
-						if ("aspect" in product) {
-							return obj[product.aspect] === undefined;
+				if ("force" in product && product.force) {
+					return true;
+				} else {
+					switch (product.lambda.type) {
+						case AspectType.Undefined: {
+							return this.everyAspectDefined(product, obj);
+						}
+						case AspectType.Some: {
+							return this.someAspectUndefined(product, obj);
+						}
+						case AspectType.Exists:
+						case AspectType.Optional:
+						case AspectType.SpecificValue:
+						default: {
+							return this.everyAspectUndefined(product, obj);
 						}
 					}
-				} else if ("undef" in product) {
-					// TODO: should we check if defined before?
-					return true;
-				} else if ("optional" in product) {
-					return true;
 				}
 			} else {
 				return obj[product] === undefined;
@@ -136,87 +101,91 @@ export class ObjectFlow implements IObjectFlow {
 		});
 	}
 
-	private requiresAllow(
-		functorRequires: IFunctor["requires"],
-		obj: IObject,
-		justPass?: boolean
-	): boolean {
-		return functorRequires.every((req) => {
+	private fromAllow(functorFrom: IFunctor<TAspect>["from"], obj: IObject): boolean {
+		return functorFrom.every((req) => {
 			if (typeof req === "object") {
-				if ("undef" in req) {
-					return obj[req.undef] === undefined;
-				} else if ("some" in req) {
-					return req.some.some((aspect) => {
-						if (Array.isArray(aspect)) {
-							return aspect.every((a) => !!obj[a]);
-						} else {
-							return !!obj[aspect];
-						}
-					});
-				} else if ("lambda" in req) {
-					return (
-						obj[req.aspect] !== undefined && (!!justPass || req.lambda(obj[req.aspect]))
-					);
-				} else if ("optional" in req) {
-					return true;
-				}
-				return false;
+				return this.runLambda(req, obj);
 			} else {
 				return obj[req] !== undefined;
 			}
 		});
 	}
 
-	// TODO: Test coverage
-	private validateProduces(obj: IObject, functor: IFunctor): boolean {
-		return functor.produces.every((product) => {
-			if (typeof product === "object") {
-				if ("undef" in product) {
-					if (obj[product.undef] !== undefined) {
-						debug(
-							`Produces validation failed for ${functor.name}: ${product.undef} should be undefined`,
-							obj
-						);
-					}
-					return obj[product.undef] === undefined;
-				} else if ("some" in product) {
-					const res = product.some.some((aspect) => {
-						if (Array.isArray(aspect)) {
-							return aspect.every((a) => !!obj[a]);
-						} else {
-							return !!obj[aspect];
-						}
-					});
-					if (!res) {
-						debug(
-							`Produces validation failed for ${functor.name}: At least one of ${product.some} should be truthy`,
-							obj
-						);
-					}
-
-					return res;
-				} else if ("aspect" in product) {
-					// TODO: DRY
-					if (!(product.aspect in obj)) {
-						debug(
-							`Produces validation failed for ${functor.name}: ${product.aspect} not found in resulting object`,
-							obj
-						);
-					}
-					return product.aspect in obj;
-				} else if ("optional" in product) {
-					return true;
-				}
-				return false;
+	private validateTo(obj: IObject, functor: IFunctor<TAspect>): boolean {
+		return functor.to.every((req, i) => {
+			if (typeof req === "object") {
+				return this.runLambda(req, obj);
 			} else {
-				if (!(product in obj)) {
-					debug(
-						`Produces validation failed for ${functor.name}: ${product} not found in resulting object`,
-						obj
-					);
-				}
-				return product in obj;
+				return obj[req] !== undefined;
 			}
 		});
+	}
+
+	private runLambda(aspects: LambdaAspect<TAspect>, obj: IObject): boolean {
+		let result: IObject[] = [];
+		if (Array.isArray(aspects.aspect)) {
+			if (aspects.aspect.some((x) => Array.isArray(x))) {
+				aspects.aspect.forEach((a) => {
+					const res: IObject = {};
+					if (Array.isArray(a)) {
+						a.forEach((x) => (res[x] = obj[x]));
+					} else {
+						res[a] = obj[a];
+					}
+					result.push(res);
+				});
+			} else {
+				const res: IObject = {};
+				aspects.aspect.forEach((a) => (res[a as TAspect] = obj[a as TAspect]));
+				result.push(res);
+			}
+		} else {
+			const res: IObject = {};
+			res[aspects.aspect] = obj[aspects.aspect];
+			result.push(res);
+		}
+		return aspects.lambda(result.length === 1 ? result[0] : result);
+	}
+
+	private someAspectUndefined(aspects: LambdaAspect<TAspect>, obj: IObject): boolean {
+		if (Array.isArray(aspects)) {
+			return aspects.some((x) => {
+				if (Array.isArray(x)) {
+					return x.every((y) => obj[y] === undefined);
+				} else {
+					return obj[x] !== undefined;
+				}
+			});
+		} else {
+			return obj[aspects.aspect as TAspect] === undefined;
+		}
+	}
+
+	private everyAspectDefined(aspects: LambdaAspect<TAspect>, obj: IObject): boolean {
+		if (Array.isArray(aspects)) {
+			return aspects.every((x) => {
+				if (Array.isArray(x)) {
+					return x.every((y) => obj[y] !== undefined);
+				} else {
+					return obj[x] !== undefined;
+				}
+			});
+		} else {
+			return obj[aspects.aspect as TAspect] !== undefined;
+		}
+	}
+
+	private everyAspectUndefined(aspects: LambdaAspect<TAspect>, obj: IObject): boolean {
+		if (Array.isArray(aspects)) {
+			return aspects.every((x) => {
+				if (Array.isArray(x)) {
+					return x.every((y) => obj[y] === undefined);
+				} else {
+					return obj[x] === undefined;
+				}
+			});
+		} else {
+			return obj[aspects.aspect as TAspect] === undefined;
+		}
 	}
 }

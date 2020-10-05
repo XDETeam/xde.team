@@ -4,8 +4,8 @@ import { ITestHttpRequest } from "../../models";
 
 export class HttpHasAuth extends Functor {
 	name = "HttpHasAuth";
-	requires = [Aspect.HttpRequest];
-	produces = [Aspect.HasAuth];
+	from = [Aspect.HttpRequest];
+	to = [Aspect.HasAuth];
 
 	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
 		Functor.debugger.extend("HttpHasAuth")("Pass 'valid' to be authorized");

@@ -1,15 +1,17 @@
 import { Functor } from "../../core/Functor";
+import { PartialObject } from "../../core/helpers/lambdas";
 import { Aspect } from "../../core/models";
 
 export class Code401Html extends Functor {
-	name = "Code401Html"
-	requires = [
+	name = "Code401Html";
+	from = [
 		{
 			aspect: Aspect.ResponseCode,
-			lambda: (asp: number) => asp === 401,
+			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
+				obj[Aspect.ResponseCode] === 401,
 		},
 	];
-	produces = [Aspect.GeneratedHtml];
+	to = [Aspect.GeneratedHtml];
 
 	move(obj: {}): {} {
 		return {

@@ -3,8 +3,8 @@ import { Aspect } from "../../core/models";
 
 export class HtmlRenderer extends Functor {
 	name = "HtmlRenderer";
-	requires = [Aspect.GeneratedHtml];
-	produces = [Aspect.RenderedHtml];
+	from = [Aspect.GeneratedHtml];
+	to = [Aspect.RenderedHtml];
 
 	move(obj: {}): {} {
 		// console.log("Also sets status code in case exists?");

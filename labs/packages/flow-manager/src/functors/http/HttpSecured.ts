@@ -4,8 +4,8 @@ import { ITestHttpRequest } from "../../models";
 
 export class HttpSecured extends Functor {
 	name = "HttpSecured";
-	requires = [Aspect.HttpRequest];
-	produces = [Aspect.Secured];
+	from = [Aspect.HttpRequest];
+	to = [Aspect.Secured];
 
 	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
 		return {

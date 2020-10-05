@@ -1,20 +1,26 @@
 import { Functor } from "../../../core/Functor";
+import { PartialObject } from "../../../core/helpers/lambdas";
 import { Aspect } from "../../../core/models";
 
 export class AdminPanelHtml extends Functor {
 	name = "AdminPanelHtml";
-	requires = [
+	from = [
 		{
 			aspect: Aspect.HttpRouted,
-			lambda: (asp: string) => asp.endsWith("/security/adminPanelRoute"),
+			lambda: (obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: string }>) =>
+				!!obj[Aspect.HttpRouted]?.endsWith("/security/adminPanelRoute"),
 		},
-		// TODO: не сильно нравится, что нужно это повторять для каждого роута группы Secured
 		{
 			aspect: Aspect.AppAdminRouteAllowed,
-			lambda: (allowed: boolean) => allowed === true,
+			lambda: (
+				obj: PartialObject<
+					Aspect.AppAdminRouteAllowed,
+					{ [Aspect.AppAdminRouteAllowed]?: boolean }
+				>
+			) => obj[Aspect.AppAdminRouteAllowed] === true,
 		},
 	];
-	produces = [Aspect.GeneratedHtml];
+	to = [Aspect.GeneratedHtml];
 
 	move(obj: {}): {} {
 		return {

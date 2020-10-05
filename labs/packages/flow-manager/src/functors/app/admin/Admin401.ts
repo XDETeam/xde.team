@@ -1,19 +1,26 @@
 import { Functor } from "../../../core/Functor";
+import { PartialObject } from "../../../core/helpers/lambdas";
 import { Aspect } from "../../../core/models";
 
 export class Admin401 extends Functor {
 	name = "Admin401";
-	requires = [
+	from = [
 		{
 			aspect: Aspect.HttpRouted,
-			lambda: (asp: string) => asp.startsWith("/security/"),
+			lambda: (obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: string }>) =>
+				!!obj[Aspect.HttpRouted]?.startsWith("/security/"),
 		},
 		{
 			aspect: Aspect.AppAdminRouteAllowed,
-			lambda: (asp: boolean) => asp === false,
+			lambda: (
+				obj: PartialObject<
+					Aspect.AppAdminRouteAllowed,
+					{ [Aspect.AppAdminRouteAllowed]?: boolean }
+				>
+			) => obj[Aspect.AppAdminRouteAllowed] === false,
 		},
 	];
-	produces = [Aspect.ResponseCode];
+	to = [Aspect.ResponseCode];
 
 	move(obj: {}): {} {
 		return {

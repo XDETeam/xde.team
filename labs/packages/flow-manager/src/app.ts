@@ -14,12 +14,21 @@ import httpHasAuthInstance from "./functors/security/HttpHasAuth";
 import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "./core/Functor";
 import { Aspect } from "./core/models";
+import { Some } from "./core/helpers/lambdas";
 
-const renderer = new CompositeFunctor(
+const renderer = new CompositeFunctor<Aspect>(
 	"renderer",
-	// TODO: Optional LocationHeader
-	[Aspect.ResponseCode, { optional: Aspect.LocationHeader }, { optional: Aspect.GeneratedHtml }],
-	[{ some: [Aspect.RenderedHtml, Aspect.Redirected], rewritable: true }]
+	[
+		{
+			aspect: [
+				Aspect.ResponseCode,
+				[Aspect.ResponseCode, Aspect.LocationHeader],
+				Aspect.GeneratedHtml,
+			],
+			lambda: Some,
+		},
+	],
+	[{ aspect: [Aspect.RenderedHtml, Aspect.Redirected], lambda: Some }]
 );
 renderer.addSubFunctors([
 	code404HtmlInstance,
@@ -28,18 +37,18 @@ renderer.addSubFunctors([
 	htmlRendererInstance,
 ]);
 
-const basicApp = new CompositeFunctor(
+const basicApp = new CompositeFunctor<Aspect>(
 	"basicApp",
 	[Aspect.HttpRequest],
 	[
 		{
-			some: [
+			aspect: [
 				Aspect.HttpRouted,
 				[Aspect.LocationHeader, Aspect.ResponseCode],
 				Aspect.ResponseCode,
 				Aspect.GeneratedHtml,
 			],
-			rewritable: true,
+			lambda: Some,
 		},
 	]
 );
@@ -53,7 +62,7 @@ basicApp.addSubFunctors([
 	httpSecuredInstance,
 ]);
 
-export const root = new CompositeFunctor("root", [], []);
+export const root = new CompositeFunctor<Aspect>("root", [], []);
 root.addSubFunctors([basicApp, app404Instance, renderer]);
 
 // Debug.enable("*");
