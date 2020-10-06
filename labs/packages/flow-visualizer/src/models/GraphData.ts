@@ -1,4 +1,4 @@
-import { AspectType } from "@xde/flow-manager/.build/core/models";
+import { AspectType } from "@xde/flow-manager";
 
 export enum GraphNodeType {
 	Functor = "Functor",

@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useRef, useEffect } from "react";
 import { forceCollide } from "d3-force";
 import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
-import { IFunctor } from "@xde/flow-manager/.build/core/Functor";
+import { IFunctor } from "@xde/flow-manager";
 import graphConverterInstance from "../models/GraphConverter";
 import { GraphNode, GraphNodeType } from "../models/GraphData";
 

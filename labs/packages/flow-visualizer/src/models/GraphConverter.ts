@@ -1,10 +1,4 @@
-import {
-	Functor,
-	IFunctor,
-	IFunctorExplained,
-	AspectsTyped,
-} from "@xde/flow-manager/.build/core/Functor";
-import { AspectType } from "@xde/flow-manager/.build/core/models";
+import { AspectType, Functor, IFunctor, IFunctorExplained, AspectsTyped } from "@xde/flow-manager";
 import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "./GraphData";
 
 export interface IGraphConverter {

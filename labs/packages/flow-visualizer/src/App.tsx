@@ -1,11 +1,11 @@
 import React from "react";
-import { root } from "@xde/flow-manager/.build/app";
+import { webapp } from "@xde/flow-manager";
 // import { root } from "@xde/flow-manager/.build/lab-business";
 
 import MeshComponent from "./components/MeshComponent";
 
 function App() {
-	return <MeshComponent functor={root} />;
+	return <MeshComponent functor={webapp} />;
 }
 
 export default App;
