@@ -1,8 +1,8 @@
 import { Debugger } from "debug";
 
-import { appDebug } from "./helpers/debug";
-import { ILambda } from "./helpers/lambdas";
-import { Aspect, AspectType, IObject } from "./models";
+import { appDebug } from "../helpers/debug";
+import { ILambda } from "../helpers/lambdas";
+import { Aspect, AspectType, IObject } from "../models";
 import { ObjectFlow } from "./ObjectFlow";
 
 const debug = appDebug.extend("Functor");

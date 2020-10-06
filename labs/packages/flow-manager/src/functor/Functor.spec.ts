@@ -1,9 +1,5 @@
-import { Aspect } from "./models";
+import { Aspect } from "../models";
 import { Functor } from "./Functor";
-import httpSecuredInstance from "../functors/http/HttpSecured";
-import app404Instance from "../functors/app/App404";
-import code404HtmlInstance from "../functors/errors/Code404Html";
-import htmlRendererInstance from "../functors/http/HtmlRenderer";
 
 class testPrimitiveFunctor extends Functor {
 	name = "testPrimitiveFunctor";

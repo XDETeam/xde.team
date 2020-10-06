@@ -1,4 +1,4 @@
-import { AspectType, IObject } from "../models";
+import { AspectType } from "../models";
 
 export type PartialObject<
 	TAspect extends string,

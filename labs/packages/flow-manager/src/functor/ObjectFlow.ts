@@ -1,8 +1,8 @@
 import { diff } from "deep-object-diff";
 
-import { Aspect, AspectType, IObject } from "./models";
+import { Aspect, AspectType, IObject } from "../models";
 import { IFunctor, LambdaAspect } from "./Functor";
-import { appDebug } from "./helpers/debug";
+import { appDebug } from "../helpers/debug";
 
 const debug = appDebug.extend("ObjectFlow");
 const debugVerbose = debug.extend("verbose");

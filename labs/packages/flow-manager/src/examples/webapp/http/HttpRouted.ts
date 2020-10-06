@@ -1,6 +1,6 @@
-import { Functor } from "../../core/Functor";
-import { Aspect } from "../../core/models";
-import { ITestHttpRequest } from "../../models";
+import { Functor } from "../../../functor/Functor";
+import { Aspect } from "../../../models";
+import { ITestHttpRequest } from "../models";
 
 export class HttpRouted extends Functor {
 	name = "HttpRouted";

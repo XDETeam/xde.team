@@ -1,19 +1,19 @@
-import { CompositeFunctor } from "./core/Functor";
-import { Some } from "./core/helpers/lambdas";
-import { Aspect } from "./core/models";
-import admin401Instance from "./functors/app/admin/Admin401";
-import adminPanelHtmlInstance from "./functors/app/admin/AdminPanelHtml";
-import app404Instance from "./functors/app/App404";
-import appAdminRouteAllowedInstance from "./functors/app/AppAdminRouteAllowed";
-import appSecuredRouteRedirectedInstance from "./functors/app/AppSecuredRouteRedirected";
-import code401HtmlInstance from "./functors/errors/Code401Html";
-import code404HtmlInstance from "./functors/errors/Code404Html";
-import code301RedirectedInstance from "./functors/http/Code301Redirected";
-import htmlRendererInstance from "./functors/http/HtmlRenderer";
-import httpRoutedInstance from "./functors/http/HttpRouted";
-import httpSecuredInstance from "./functors/http/HttpSecured";
-import httpHasAuthInstance from "./functors/security/HttpHasAuth";
 import { ITestHttpRequest } from "./models";
+import { CompositeFunctor } from "../../functor/Functor";
+import { Aspect } from "../../models";
+import { Some } from "../../helpers/lambdas";
+import code404HtmlInstance from "./errors/Code404Html";
+import httpRoutedInstance from "./http/HttpRouted";
+import app404Instance from "./app/App404";
+import code401HtmlInstance from "./errors/Code401Html";
+import code301RedirectedInstance from "./http/Code301Redirected";
+import htmlRendererInstance from "./http/HtmlRenderer";
+import admin401Instance from "./app/admin/Admin401";
+import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
+import appAdminRouteAllowedInstance from "./app/AppAdminRouteAllowed";
+import appSecuredRouteRedirectedInstance from "./app/AppSecuredRouteRedirected";
+import httpHasAuthInstance from "./security/HttpHasAuth";
+import httpSecuredInstance from "./http/HttpSecured";
 
 const renderer = new CompositeFunctor<Aspect>(
 	"renderer",

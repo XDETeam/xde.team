@@ -1,6 +1,6 @@
-import { Functor } from "../../../core/Functor";
-import { PartialObject } from "../../../core/helpers/lambdas";
-import { Aspect } from "../../../core/models";
+import { Functor } from "../../../../functor/Functor";
+import { PartialObject } from "../../../../helpers/lambdas";
+import { Aspect } from "../../../../models";
 
 export class AdminPanelHtml extends Functor {
 	name = "AdminPanelHtml";

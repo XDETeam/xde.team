@@ -1,12 +1,10 @@
+import { ITestHttpRequest } from "../examples/webapp/models";
 import { ObjectFlow } from "./ObjectFlow";
-import admin401Instance from "../functors/app/admin/Admin401";
-import appAdminRouteAllowedInstance from "../functors/app/AppAdminRouteAllowed";
-import { ITestHttpRequest } from "../models";
-import httpHasAuthInstance from "../functors/security/HttpHasAuth";
-import httpSecuredInstance from "../functors/http/HttpSecured";
-import code401HtmlInstance from "../functors/errors/Code401Html";
-import htmlRendererInstance from "../functors/http/HtmlRenderer";
-import httpRoutedInstance from "../functors/http/HttpRouted";
+import httpHasAuthInstance from "../examples/webapp/security/HttpHasAuth";
+import admin401Instance from "../examples/webapp/app/admin/Admin401";
+import code401HtmlInstance from "../examples/webapp/errors/Code401Html";
+import htmlRendererInstance from "../examples/webapp/http/HtmlRenderer";
+import httpSecuredInstance from "../examples/webapp/http/HttpSecured";
 
 it("should handle simple flow", () => {
 	const flow = new ObjectFlow({

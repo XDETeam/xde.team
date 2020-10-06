@@ -1,6 +1,6 @@
-import { Functor } from "../../core/Functor";
-import { Aspect } from "../../core/models";
-import { PartialObject } from "../../core/helpers/lambdas";
+import { Functor } from "../../../functor/Functor";
+import { PartialObject } from "../../../helpers/lambdas";
+import { Aspect } from "../../../models";
 
 export class AppSecuredRouteRedirected extends Functor {
 	name = "AppSecuredRouteRedirected";

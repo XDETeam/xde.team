@@ -1,5 +1,5 @@
-import { Functor } from "../../core/Functor";
-import { Aspect } from "../../core/models";
+import { Functor } from "../../../functor/Functor";
+import { Aspect } from "../../../models";
 
 export class HtmlRenderer extends Functor {
 	name = "HtmlRenderer";

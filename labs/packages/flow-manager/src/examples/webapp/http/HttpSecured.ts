@@ -1,6 +1,6 @@
-import { Aspect } from "../../core/models";
-import { Functor } from "../../core/Functor";
-import { ITestHttpRequest } from "../../models";
+import { Functor } from "../../../functor/Functor";
+import { Aspect } from "../../../models";
+import { ITestHttpRequest } from "../models";
 
 export class HttpSecured extends Functor {
 	name = "HttpSecured";

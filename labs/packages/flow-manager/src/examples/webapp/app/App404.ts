@@ -1,6 +1,6 @@
-import { Functor } from "../../core/Functor";
-import { Aspect } from "../../core/models";
-import { Undefined } from "../../core/helpers/lambdas";
+import { Functor } from "../../../functor/Functor";
+import { Undefined } from "../../../helpers/lambdas";
+import { Aspect } from "../../../models";
 
 export class App404 extends Functor {
 	name = "App404";
