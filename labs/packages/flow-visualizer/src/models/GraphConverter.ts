@@ -3,8 +3,8 @@ import {
 	IFunctor,
 	IFunctorExplained,
 	AspectsTyped,
-	AspectType,
 } from "@xde/flow-manager/.build/core/Functor";
+import { AspectType } from "@xde/flow-manager/.build/core/models";
 import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "./GraphData";
 
 export interface IGraphConverter {
@@ -73,18 +73,7 @@ export class GraphConverter implements IGraphConverter {
 		parent?: GraphNode,
 		inverse?: boolean
 	) {
-		if ("aspect" in explanation) {
-			const node = data.addNode({
-				id: this.getName(explanation.aspect, parent?.id),
-				// name: this.getName(from.aspect, parentFunctorName),
-				type: GraphNodeType.Aspect,
-			});
-			data.addLink({
-				source: inverse ? explanationNode.id : node.id,
-				target: inverse ? node.id : explanationNode.id,
-				type: explanation.type,
-			});
-		} else {
+		if (Array.isArray(explanation.aspect)) {
 			const outerNode = data.addNode({
 				id: this.getName(`${inverse ? "To" : "From"}Group${i}`, parent?.id),
 				// name: this.getName(`Group${i}`, parentFunctorName),
@@ -95,7 +84,7 @@ export class GraphConverter implements IGraphConverter {
 				target: inverse ? outerNode.id : explanationNode.id,
 				type: AspectType.Exists,
 			});
-			explanation.aspects.forEach((aspect, j) => {
+			explanation.aspect.forEach((aspect, j) => {
 				if (Array.isArray(aspect)) {
 					const innerNode = data.addNode({
 						id: this.getName(`${inverse ? "To" : "From"}Group${i}.${j}`, parent?.id),
@@ -131,6 +120,17 @@ export class GraphConverter implements IGraphConverter {
 						type: explanation.type,
 					});
 				}
+			});
+		} else {
+			const node = data.addNode({
+				id: this.getName(explanation.aspect, parent?.id),
+				// name: this.getName(from.aspect, parentFunctorName),
+				type: GraphNodeType.Aspect,
+			});
+			data.addLink({
+				source: inverse ? explanationNode.id : node.id,
+				target: inverse ? node.id : explanationNode.id,
+				type: explanation.type,
 			});
 		}
 	}

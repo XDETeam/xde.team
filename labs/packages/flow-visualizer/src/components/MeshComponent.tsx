@@ -6,7 +6,7 @@ import graphConverterInstance from "../models/GraphConverter";
 import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type MeshComponentProps = {
-	functor: IFunctor;
+	functor: IFunctor<any>;
 };
 
 // TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
