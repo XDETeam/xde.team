@@ -41,7 +41,7 @@ export interface IFunctor<TAspect extends string = Aspect> {
 	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void;
 
 	/**
-	 * Maps from <from category> to <to category>.
+	 * Maps from [from category] to [to category].
 	 * Rewrite me to make primitive functor.
 	 */
 	map(obj: IObject): IObject;
