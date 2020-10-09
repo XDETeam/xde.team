@@ -7,7 +7,7 @@ export class HttpHasAuth extends Functor {
 	from = [Aspect.HttpRequest];
 	to = [Aspect.HasAuth];
 
-	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
+	map(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
 		Functor.debugger.extend("HttpHasAuth")("Pass 'valid' to be authorized");
 
 		return {

@@ -7,7 +7,7 @@ export class HttpSecured extends Functor {
 	from = [Aspect.HttpRequest];
 	to = [Aspect.Secured];
 
-	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
+	map(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
 		return {
 			...obj,
 			[Aspect.Secured]: obj[Aspect.HttpRequest].isTLS,

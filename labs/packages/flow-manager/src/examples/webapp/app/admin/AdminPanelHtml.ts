@@ -22,7 +22,7 @@ export class AdminPanelHtml extends Functor {
 	];
 	to = [Aspect.GeneratedHtml];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		return {
 			...obj,
 			[Aspect.GeneratedHtml]: "<div>secret dashboard</div>",

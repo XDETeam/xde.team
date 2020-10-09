@@ -18,7 +18,7 @@ export class AppAdminRouteAllowed extends Functor {
 	];
 	to = [Aspect.AppAdminRouteAllowed];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		Functor.debugger.extend("AppAdminRouteAllowed")("Set AdminFlag to any to pass");
 		return {
 			...obj,

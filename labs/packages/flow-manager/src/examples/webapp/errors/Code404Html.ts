@@ -7,13 +7,14 @@ export class Code404Html extends Functor {
 	from = [
 		{
 			aspect: Aspect.ResponseCode,
-			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
-				obj[Aspect.ResponseCode] === 404,
+			lambda: (
+				obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>
+			) => obj[Aspect.ResponseCode] === 404,
 		},
 	];
 	to = [Aspect.GeneratedHtml];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		return {
 			...obj,
 			[Aspect.GeneratedHtml]: "<div>404 page</div>",

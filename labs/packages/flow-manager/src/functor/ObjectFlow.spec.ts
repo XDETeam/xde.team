@@ -14,7 +14,7 @@ it("should handle simple flow", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.move([httpHasAuthInstance, httpSecuredInstance]);
+	flow.process([httpHasAuthInstance, httpSecuredInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
 	expect(flow.object).toHaveProperty(httpHasAuthInstance.to);
 	expect(flow.object).toHaveProperty(httpSecuredInstance.to);
@@ -25,11 +25,11 @@ it("should handle lambda functions", () => {
 		HttpRouted: "/security/adminPanelRoute",
 		AppAdminRouteAllowed: false,
 	});
-	flow.move([admin401Instance, code401HtmlInstance]);
+	flow.process([admin401Instance, code401HtmlInstance]);
 	expect(flow.object).toHaveProperty(htmlRendererInstance.from);
 });
 
-it("should handle replacements of move functions", () => {
+it("should handle replacements of map functions", () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",
@@ -37,7 +37,7 @@ it("should handle replacements of move functions", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.move([httpHasAuthInstance, httpSecuredInstance], {
+	flow.process([httpHasAuthInstance, httpSecuredInstance], {
 		[httpSecuredInstance.name]: (obj) => ({
 			...obj,
 			[httpSecuredInstance.to[0]]: 42,
@@ -58,7 +58,7 @@ it("should produce an error when resulting object does not have functor to", () 
 	});
 
 	expect(() =>
-		flow.move([httpHasAuthInstance, httpSecuredInstance], {
+		flow.process([httpHasAuthInstance, httpSecuredInstance], {
 			[httpSecuredInstance.name]: (obj) => ({
 				...obj,
 				Key: 42,

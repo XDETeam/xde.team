@@ -7,15 +7,18 @@ export class Code301Redirected extends Functor {
 	from = [
 		{
 			aspect: Aspect.ResponseCode,
-			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
-				obj[Aspect.ResponseCode] === 301,
+			lambda: (
+				obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>
+			) => obj[Aspect.ResponseCode] === 301,
 		},
 		Aspect.LocationHeader,
 	];
 	to = [Aspect.Redirected];
 
-	move(obj: { [Aspect.LocationHeader]: string }): {} {
-		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);
+	map(obj: { [Aspect.LocationHeader]: string }): {} {
+		Functor.debugger.extend("Code301Redirected")(
+			`Redirected to ${obj[Aspect.LocationHeader]}`
+		);
 		return {
 			...obj,
 			[Aspect.Redirected]: true,

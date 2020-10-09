@@ -1,4 +1,5 @@
 import Debug from "debug";
+
 import { ITestHttpRequest } from "./models";
 import { CompositeFunctor } from "../../functor/Functor";
 import { Aspect } from "../../models";
@@ -30,7 +31,7 @@ const renderer = new CompositeFunctor<Aspect>(
 	],
 	[{ aspect: [Aspect.RenderedHtml, Aspect.Redirected], lambda: Some }]
 );
-renderer.addSubFunctors([
+renderer.addChildren([
 	code404HtmlInstance,
 	code401HtmlInstance,
 	code301RedirectedInstance,
@@ -52,7 +53,7 @@ const basicApp = new CompositeFunctor<Aspect>(
 		},
 	]
 );
-basicApp.addSubFunctors([
+basicApp.addChildren([
 	admin401Instance,
 	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
@@ -63,13 +64,13 @@ basicApp.addSubFunctors([
 ]);
 
 export const root = new CompositeFunctor<Aspect>("root", [], []);
-root.addSubFunctors([basicApp, app404Instance, renderer]);
+root.addChildren([basicApp, app404Instance, renderer]);
 
 // Debug.enable("*");
-// Debug.enable("app:ObjectFlow:short*");
+// Debug.enable("app:ObjecctFlow:short*");
 Debug.enable("app:ObjectFlow:verbose*");
 
-root.move({
+root.map({
 	HttpRequest: {
 		authCookie: "valid",
 		route: "/security/non-existing",

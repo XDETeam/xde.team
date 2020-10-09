@@ -18,7 +18,7 @@ export class AppSecuredRouteRedirected extends Functor {
 	];
 	to = [Aspect.LocationHeader, Aspect.ResponseCode];
 
-	move(obj: { [Aspect.HttpRouted]: string }): {} {
+	map(obj: { [Aspect.HttpRouted]: string }): {} {
 		return {
 			...obj,
 			[Aspect.LocationHeader]: `https://${obj[Aspect.HttpRouted]}`,

@@ -7,13 +7,14 @@ export class Code401Html extends Functor {
 	from = [
 		{
 			aspect: Aspect.ResponseCode,
-			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
-				obj[Aspect.ResponseCode] === 401,
+			lambda: (
+				obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>
+			) => obj[Aspect.ResponseCode] === 401,
 		},
 	];
 	to = [Aspect.GeneratedHtml];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		return {
 			...obj,
 			[Aspect.GeneratedHtml]: "<div>401 page</div>",

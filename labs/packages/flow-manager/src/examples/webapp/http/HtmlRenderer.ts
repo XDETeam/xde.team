@@ -6,7 +6,7 @@ export class HtmlRenderer extends Functor {
 	from = [Aspect.GeneratedHtml];
 	to = [Aspect.RenderedHtml];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		// console.log("Also sets status code in case exists?");
 
 		return {

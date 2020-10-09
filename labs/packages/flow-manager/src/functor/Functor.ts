@@ -27,24 +27,32 @@ export type IFunctorTo<TAspect extends string = Aspect> =
 export interface IFunctor<TAspect extends string = Aspect> {
 	name: string;
 
+	/**
+	 * Category to map from
+	 */
 	from: Array<IFunctorFrom<TAspect>>;
+
+	/**
+	 * Category maps to
+	 */
 	to: Array<IFunctorTo<TAspect>>;
 
-	subFunctors: IFunctor<TAspect>[];
+	children: IFunctor<TAspect>[];
+	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void;
 
 	/**
-	 * Rewrite me to make primitive functor
+	 * Maps from <from category> to <to category>.
+	 * Rewrite me to make primitive functor.
 	 */
-	move(obj: IObject): IObject;
-	addSubFunctors(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void;
+	map(obj: IObject): IObject;
 
 	/**
-	 * Replaces move method of subfunctor
-	 * @param existing Replace move method for this functor
-	 * @param newMove Move function to replace with
+	 * Replaces map method for one of children
+	 * @param existing Replace map method for this functor
+	 * @param newMap Map function to replace with
 	 */
-	replace(existing: IFunctor<TAspect>, newMove: IFunctor<TAspect>["move"]): void;
-	replacements: { [key: string]: IFunctor<TAspect>["move"] };
+	mapReplace(existing: IFunctor<TAspect>, newMap: IFunctor<TAspect>["map"]): void;
+	mapReplacements: { [key: string]: IFunctor<TAspect>["map"] };
 }
 
 export type AspectsTyped<TAspect extends string = Aspect> = {
@@ -59,7 +67,7 @@ export interface IFunctorExplained<TAspect extends string = Aspect> {
 }
 
 export abstract class Functor<TAspect extends string = Aspect> implements IFunctor<TAspect> {
-	// Allows to debug some info when overriding "move" method
+	// Allows to debug some info when overriding "map" method
 	public static debugger: Debugger = debug;
 
 	// TODO: Test coverage
@@ -91,8 +99,8 @@ export abstract class Functor<TAspect extends string = Aspect> implements IFunct
 			functorName: functor.name,
 			from,
 			to,
-			children: functor.subFunctors.length
-				? functor.subFunctors.map((f) => Functor.explain<T>(f))
+			children: functor.children.length
+				? functor.children.map((f) => Functor.explain<T>(f))
 				: undefined,
 		};
 	}
@@ -101,54 +109,54 @@ export abstract class Functor<TAspect extends string = Aspect> implements IFunct
 	abstract to: IFunctor<TAspect>["to"];
 	abstract name: string;
 
-	subFunctors: IFunctor<TAspect>[] = [];
-	replacements: IFunctor<TAspect>["replacements"] = {};
+	children: IFunctor<TAspect>[] = [];
+	mapReplacements: IFunctor<TAspect>["mapReplacements"] = {};
 
-	move(obj: IObject): IObject {
-		if (!this.subFunctors.length) {
+	map(obj: IObject): IObject {
+		if (!this.children.length) {
 			throw new Error(
-				"You should either add subfunctors to the composite functor or make it primitive by overriding this method."
+				"You should either add children functors to the composite functor or make it primitive by overriding this method."
 			);
 		}
 
-		const moved = new ObjectFlow<TAspect>(obj);
-		moved.move(this.subFunctors, this.replacements);
+		const objectFlow = new ObjectFlow<TAspect>(obj);
+		objectFlow.process(this.children, this.mapReplacements);
 
 		// TODO: Validate with 'to' - if not - throw! now handled by ObjectFlow
-		return moved.object;
+		return objectFlow.object;
 	}
 
-	addSubFunctors(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void {
+	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void {
 		if (Array.isArray(functor)) {
-			functor.forEach((f) => this.addSubFunctor(f));
+			functor.forEach((f) => this.addChild(f));
 		} else {
-			this.addSubFunctor(functor);
+			this.addChild(functor);
 		}
 	}
 
-	replace(existing: IFunctor<TAspect>, newMove: IFunctor<TAspect>["move"]): void {
-		if (!this.subFunctors.includes(existing)) {
+	mapReplace(existing: IFunctor<TAspect>, newMap: IFunctor<TAspect>["map"]): void {
+		if (!this.children.includes(existing)) {
 			throw new Error(
-				"It is not possible to replace method of unregistered subfunctor. Add it first."
+				"It is not possible to replace method of unregistered child functor. Add it first."
 			);
 		}
 
-		this.replacements[existing.name] = newMove;
+		this.mapReplacements[existing.name] = newMap;
 	}
 
-	private addSubFunctor(functor: IFunctor<TAspect>): void {
+	private addChild(functor: IFunctor<TAspect>): void {
 		if (!functor.from.length) {
 			throw new Error("Empty from: Functor will never be invoked.");
 		}
 		if (
-			this.subFunctors.indexOf(functor) !== -1 ||
-			this.subFunctors.findIndex((f) => f.name === functor.name) !== -1
+			this.children.indexOf(functor) !== -1 ||
+			this.children.findIndex((f) => f.name === functor.name) !== -1
 		) {
 			throw new Error(
 				`Can't register duplicate functor ${functor.name} as a child for ${this.name}`
 			);
 		}
-		this.subFunctors.push(functor);
+		this.children.push(functor);
 		debug(`Functor ${functor.name} added as a child for ${this.name}`);
 	}
 }

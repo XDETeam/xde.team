@@ -29,7 +29,7 @@ const renderer = new CompositeFunctor<Aspect>(
 	],
 	[{ aspect: [Aspect.RenderedHtml, Aspect.Redirected], lambda: Some }]
 );
-renderer.addSubFunctors([
+renderer.addChildren([
 	code404HtmlInstance,
 	code401HtmlInstance,
 	code301RedirectedInstance,
@@ -51,7 +51,7 @@ const basicApp = new CompositeFunctor<Aspect>(
 		},
 	]
 );
-basicApp.addSubFunctors([
+basicApp.addChildren([
 	admin401Instance,
 	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
@@ -62,7 +62,7 @@ basicApp.addSubFunctors([
 ]);
 
 export const root = new CompositeFunctor<Aspect>("root", [], []);
-root.addSubFunctors([basicApp, app404Instance, renderer]);
+root.addChildren([basicApp, app404Instance, renderer]);
 
 const httpRequest: ITestHttpRequest = {
 	authCookie: "valid",
@@ -71,7 +71,7 @@ const httpRequest: ITestHttpRequest = {
 };
 
 it("should return 401 on admin route for non-admin", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: httpRequest,
 	});
 	expect(res).toEqual(
@@ -89,7 +89,7 @@ it("should return 401 on admin route for non-admin", () => {
 });
 
 it("should return 401 on non-existing security route for non-admin", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -110,7 +110,7 @@ it("should return 401 on non-existing security route for non-admin", () => {
 });
 
 it("should return 301 on security route without tls for non-admin", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: {
 			...httpRequest,
 			isTLS: false,
@@ -132,7 +132,7 @@ it("should return 301 on security route without tls for non-admin", () => {
 });
 
 it("should return 301 on security route without tls for admin", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -156,7 +156,7 @@ it("should return 301 on security route without tls for admin", () => {
 });
 
 it("should show admin panel for valid admin request", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: httpRequest,
 		AdminFlag: true,
 	});
@@ -175,7 +175,7 @@ it("should show admin panel for valid admin request", () => {
 });
 
 it("should return 404 for non-existing admin route for admin user", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -197,7 +197,7 @@ it("should return 404 for non-existing admin route for admin user", () => {
 });
 
 it("should return 404 on any non-existing route for any user", () => {
-	const res = root.move({
+	const res = root.map({
 		HttpRequest: {
 			...httpRequest,
 			authCookie: "",

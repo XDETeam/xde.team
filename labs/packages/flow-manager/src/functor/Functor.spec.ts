@@ -19,22 +19,22 @@ class testCompositeFunctor extends Functor {
 	to = [];
 }
 
-it("should produce an error with primitive functor when there is no subfunctors registered", () => {
+it("should produce an error with primitive functor when there is no children functors registered", () => {
 	const functor = new testPrimitiveFunctor();
-	expect(() => functor.move({})).toThrow(/primitive/i);
+	expect(() => functor.map({})).toThrow(/primitive/i);
 });
 
 it("should register functors as child to the functor", () => {
 	const compositeFunctor = new testCompositeFunctor();
-	compositeFunctor.addSubFunctors(new testPrimitiveFunctor());
-	compositeFunctor.addSubFunctors(new testPrimitiveFunctor2());
-	expect(compositeFunctor.subFunctors.length).toEqual(2);
+	compositeFunctor.addChildren(new testPrimitiveFunctor());
+	compositeFunctor.addChildren(new testPrimitiveFunctor2());
+	expect(compositeFunctor.children.length).toEqual(2);
 });
 
 it("should register an array of functors as child to the functor", () => {
 	const compositeFunctor = new testCompositeFunctor();
-	compositeFunctor.addSubFunctors([new testPrimitiveFunctor(), new testPrimitiveFunctor2()]);
-	expect(compositeFunctor.subFunctors.length).toEqual(2);
+	compositeFunctor.addChildren([new testPrimitiveFunctor(), new testPrimitiveFunctor2()]);
+	expect(compositeFunctor.children.length).toEqual(2);
 });
 
 it("should prevent registration of functor with empty from", () => {
@@ -45,29 +45,31 @@ it("should prevent registration of functor with empty from", () => {
 	}
 	const compositeFunctor = new testCompositeFunctor();
 
-	expect(() => compositeFunctor.addSubFunctors(new somePrimitiveFunctor())).toThrow(/never/i);
+	expect(() => compositeFunctor.addChildren(new somePrimitiveFunctor())).toThrow(/never/i);
 });
 
 it("should prevent duplication of registered functors", () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
-	compositeFunctor.addSubFunctors(primitiveFunctor);
-	expect(() => compositeFunctor.addSubFunctors(primitiveFunctor)).toThrowError(/duplicate/i);
+	compositeFunctor.addChildren(primitiveFunctor);
+	expect(() => compositeFunctor.addChildren(primitiveFunctor)).toThrowError(/duplicate/i);
 });
 
-it("should register replace move method", () => {
+it("should register replace map method", () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
-	compositeFunctor.addSubFunctors(primitiveFunctor);
-	compositeFunctor.replace(primitiveFunctor, () => ({}));
+	compositeFunctor.addChildren(primitiveFunctor);
+	compositeFunctor.mapReplace(primitiveFunctor, () => ({}));
 
-	expect(primitiveFunctor.constructor.name in compositeFunctor.replacements).toEqual(true);
+	expect(primitiveFunctor.constructor.name in compositeFunctor.mapReplacements).toEqual(true);
 });
 
-it("should not allow to replace move method for unregistered subfunctor", () => {
+it("should not allow to replace map method for unregistered child functor", () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
 	const primitiveFunctor2 = new testPrimitiveFunctor2();
-	compositeFunctor.addSubFunctors(primitiveFunctor);
-	expect(() => compositeFunctor.replace(primitiveFunctor2, () => ({}))).toThrowError(/register/i);
+	compositeFunctor.addChildren(primitiveFunctor);
+	expect(() => compositeFunctor.mapReplace(primitiveFunctor2, () => ({}))).toThrowError(
+		/register/i
+	);
 });

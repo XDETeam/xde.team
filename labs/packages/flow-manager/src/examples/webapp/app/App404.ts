@@ -11,7 +11,7 @@ export class App404 extends Functor {
 	];
 	to = [Aspect.ResponseCode];
 
-	move(obj: {}): {} {
+	map(obj: {}): {} {
 		return {
 			...obj,
 			[Aspect.ResponseCode]: 404,

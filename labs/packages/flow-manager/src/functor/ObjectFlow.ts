@@ -11,7 +11,10 @@ const debugShortFunctor = debugShort.extend("functor");
 const debugShortObject = debugShort.extend("object");
 
 export interface IObjectFlow<TAspect extends string = Aspect> {
-	move(functorsPool: IFunctor<TAspect>[], replacements?: IFunctor<TAspect>["replacements"]): void;
+	process(
+		functorsPool: IFunctor<TAspect>[],
+		mapReplacements?: IFunctor<TAspect>["mapReplacements"]
+	): void;
 }
 
 export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<TAspect> {
@@ -19,9 +22,9 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 
 	// Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
 	// Мысленно все разруливается с конца - Вы можете перенести пользователя в добавленные. добавленный пользователь требует x, x требует y и т.д.
-	move(
+	process(
 		functorsPool: IFunctor<TAspect>[],
-		replacements?: IFunctor<TAspect>["replacements"]
+		mapReplacements?: IFunctor<TAspect>["mapReplacements"]
 	): void {
 		let functors: IFunctor<TAspect>[];
 		let prevObject = { ...this.object };
@@ -30,10 +33,10 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
 			functors.forEach((functor) => {
-				if (replacements && functor.name in replacements) {
-					this.object = replacements[functor.name](this.object);
+				if (mapReplacements && functor.name in mapReplacements) {
+					this.object = mapReplacements[functor.name](this.object);
 				} else {
-					this.object = functor.move(this.object);
+					this.object = functor.map(this.object);
 				}
 				if (!this.validateTo(this.object, functor)) {
 					throw new Error(
@@ -47,8 +50,8 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 			debugShortFunctor(
 				`[${functors
 					.map((functor) =>
-						functor.subFunctors.length
-							? `--- [${functor.subFunctors.map((f) => f.name).join(", ")}] ---`
+						functor.children.length
+							? `--- [${functor.children.map((f) => f.name).join(", ")}] ---`
 							: functor.name
 					)
 					.join(", ")}]`
@@ -62,6 +65,7 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 	findFunctors(functorsPool: IFunctor<TAspect>[]): IFunctor<TAspect>[] {
 		const ret: IFunctor<TAspect>[] = [];
 
+		// TODO: Приоритет выполнения функторов: 1) количество from 2) порядок добавления
 		functorsPool.forEach((functor) => {
 			if (
 				this.toAllow(functor.to, this.object) &&
@@ -122,7 +126,7 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 	}
 
 	private runLambda(aspects: LambdaAspect<TAspect>, obj: IObject): boolean {
-		let result: IObject[] = [];
+		const result: IObject[] = [];
 		if (Array.isArray(aspects.aspect)) {
 			if (aspects.aspect.some((x) => Array.isArray(x))) {
 				aspects.aspect.forEach((a) => {

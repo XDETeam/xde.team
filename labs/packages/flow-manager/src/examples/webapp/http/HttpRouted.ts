@@ -7,7 +7,7 @@ export class HttpRouted extends Functor {
 	from = [Aspect.HttpRequest];
 	to = [Aspect.HttpRouted];
 
-	move(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
+	map(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
 		return {
 			...obj,
 			[Aspect.HttpRouted]: obj[Aspect.HttpRequest].route,
