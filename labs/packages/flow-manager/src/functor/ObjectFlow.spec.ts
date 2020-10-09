@@ -6,7 +6,7 @@ import code401HtmlInstance from "../examples/webapp/errors/Code401Html";
 import htmlRendererInstance from "../examples/webapp/http/HtmlRenderer";
 import httpSecuredInstance from "../examples/webapp/http/HttpSecured";
 
-it("should handle simple flow", () => {
+it("should handle simple flow", async () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",
@@ -14,22 +14,22 @@ it("should handle simple flow", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.process([httpHasAuthInstance, httpSecuredInstance]);
+	await flow.process([httpHasAuthInstance, httpSecuredInstance]);
 	expect(flow.object).toHaveProperty("HttpRequest");
 	expect(flow.object).toHaveProperty(httpHasAuthInstance.to);
 	expect(flow.object).toHaveProperty(httpSecuredInstance.to);
 });
 
-it("should handle lambda functions", () => {
+it("should handle lambda functions", async () => {
 	const flow = new ObjectFlow({
 		HttpRouted: "/security/adminPanelRoute",
 		AppAdminRouteAllowed: false,
 	});
-	flow.process([admin401Instance, code401HtmlInstance]);
+	await flow.process([admin401Instance, code401HtmlInstance]);
 	expect(flow.object).toHaveProperty(htmlRendererInstance.from);
 });
 
-it("should handle replacements of map functions", () => {
+it("should handle replacements of map functions", async () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",
@@ -37,7 +37,7 @@ it("should handle replacements of map functions", () => {
 			isTLS: true,
 		} as ITestHttpRequest,
 	});
-	flow.process([httpHasAuthInstance, httpSecuredInstance], {
+	await flow.process([httpHasAuthInstance, httpSecuredInstance], {
 		[httpSecuredInstance.name]: (obj) => ({
 			...obj,
 			[httpSecuredInstance.to[0]]: 42,
@@ -48,7 +48,7 @@ it("should handle replacements of map functions", () => {
 	expect(flow.object[httpSecuredInstance.to[0]]).toEqual(42);
 });
 
-it("should produce an error when resulting object does not have functor to", () => {
+it("should produce an error when resulting object does not have functor to", async () => {
 	const flow = new ObjectFlow({
 		HttpRequest: {
 			authCookie: "valid",
@@ -57,12 +57,12 @@ it("should produce an error when resulting object does not have functor to", () 
 		} as ITestHttpRequest,
 	});
 
-	expect(() =>
+	await expect(
 		flow.process([httpHasAuthInstance, httpSecuredInstance], {
 			[httpSecuredInstance.name]: (obj) => ({
 				...obj,
 				Key: 42,
 			}),
 		})
-	).toThrow(/validation failed/i);
+	).rejects.toThrow(/validation failed/i);
 });

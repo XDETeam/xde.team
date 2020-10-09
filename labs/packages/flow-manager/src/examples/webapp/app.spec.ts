@@ -70,8 +70,8 @@ const httpRequest: ITestHttpRequest = {
 	isTLS: true,
 };
 
-it("should return 401 on admin route for non-admin", () => {
-	const res = root.map({
+it("should return 401 on admin route for non-admin", async () => {
+	const res = await root.map({
 		HttpRequest: httpRequest,
 	});
 	expect(res).toEqual(
@@ -88,8 +88,8 @@ it("should return 401 on admin route for non-admin", () => {
 	expect(res).not.toHaveProperty(Aspect.LocationHeader);
 });
 
-it("should return 401 on non-existing security route for non-admin", () => {
-	const res = root.map({
+it("should return 401 on non-existing security route for non-admin", async () => {
+	const res = await root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -109,8 +109,8 @@ it("should return 401 on non-existing security route for non-admin", () => {
 	expect(res).not.toHaveProperty(Aspect.LocationHeader);
 });
 
-it("should return 301 on security route without tls for non-admin", () => {
-	const res = root.map({
+it("should return 301 on security route without tls for non-admin", async () => {
+	const res = await root.map({
 		HttpRequest: {
 			...httpRequest,
 			isTLS: false,
@@ -131,8 +131,8 @@ it("should return 301 on security route without tls for non-admin", () => {
 	expect(res).not.toHaveProperty(Aspect.RenderedHtml);
 });
 
-it("should return 301 on security route without tls for admin", () => {
-	const res = root.map({
+it("should return 301 on security route without tls for admin", async () => {
+	const res = await root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -155,8 +155,8 @@ it("should return 301 on security route without tls for admin", () => {
 	expect(res).not.toHaveProperty(Aspect.RenderedHtml);
 });
 
-it("should show admin panel for valid admin request", () => {
-	const res = root.map({
+it("should show admin panel for valid admin request", async () => {
+	const res = await root.map({
 		HttpRequest: httpRequest,
 		AdminFlag: true,
 	});
@@ -174,8 +174,8 @@ it("should show admin panel for valid admin request", () => {
 	expect(res).not.toHaveProperty(Aspect.LocationHeader);
 });
 
-it("should return 404 for non-existing admin route for admin user", () => {
-	const res = root.map({
+it("should return 404 for non-existing admin route for admin user", async () => {
+	const res = await root.map({
 		HttpRequest: {
 			...httpRequest,
 			route: "/security/non-existing",
@@ -196,8 +196,8 @@ it("should return 404 for non-existing admin route for admin user", () => {
 	expect(res).not.toHaveProperty(Aspect.Redirected);
 });
 
-it("should return 404 on any non-existing route for any user", () => {
-	const res = root.map({
+it("should return 404 on any non-existing route for any user", async () => {
+	const res = await root.map({
 		HttpRequest: {
 			...httpRequest,
 			authCookie: "",

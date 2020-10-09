@@ -44,7 +44,7 @@ export interface IFunctor<TAspect extends string = Aspect> {
 	 * Maps from [from category] to [to category].
 	 * Rewrite me to make primitive functor.
 	 */
-	map(obj: IObject): IObject;
+	map(obj: IObject): IObject | Promise<Object>;
 
 	/**
 	 * Replaces map method for one of children
@@ -112,7 +112,7 @@ export abstract class Functor<TAspect extends string = Aspect> implements IFunct
 	children: IFunctor<TAspect>[] = [];
 	mapReplacements: IFunctor<TAspect>["mapReplacements"] = {};
 
-	map(obj: IObject): IObject {
+	map(obj: IObject): IObject | Promise<IObject> {
 		if (!this.children.length) {
 			throw new Error(
 				"You should either add children functors to the composite functor or make it primitive by overriding this method."
@@ -120,10 +120,12 @@ export abstract class Functor<TAspect extends string = Aspect> implements IFunct
 		}
 
 		const objectFlow = new ObjectFlow<TAspect>(obj);
-		objectFlow.process(this.children, this.mapReplacements);
+
+		return objectFlow
+			.process(this.children, this.mapReplacements)
+			.then(() => objectFlow.object);
 
 		// TODO: Validate with 'to' - if not - throw! now handled by ObjectFlow
-		return objectFlow.object;
 	}
 
 	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void {

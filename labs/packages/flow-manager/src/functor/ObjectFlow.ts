@@ -14,7 +14,7 @@ export interface IObjectFlow<TAspect extends string = Aspect> {
 	process(
 		functorsPool: IFunctor<TAspect>[],
 		mapReplacements?: IFunctor<TAspect>["mapReplacements"]
-	): void;
+	): Promise<void>;
 }
 
 export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<TAspect> {
@@ -22,30 +22,33 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 
 	// Пока есть плагин, который может работать с аспектом или набором аспектов - выполняем. Как только плагины заканчиваются - освобождаем объект
 	// Мысленно все разруливается с конца - Вы можете перенести пользователя в добавленные. добавленный пользователь требует x, x требует y и т.д.
-	process(
+	async process(
 		functorsPool: IFunctor<TAspect>[],
 		mapReplacements?: IFunctor<TAspect>["mapReplacements"]
-	): void {
+	): Promise<void> {
 		let functors: IFunctor<TAspect>[];
 		let prevObject = { ...this.object };
 		let currentFunctorsPool = functorsPool.slice();
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
 			debugVerbose("Object before iteration", this.object);
-			functors.forEach((functor) => {
-				if (mapReplacements && functor.name in mapReplacements) {
-					this.object = mapReplacements[functor.name](this.object);
+			for (let i = 0, l = functors.length; i < l; i++) {
+				if (mapReplacements && functors[i].name in mapReplacements) {
+					this.object = await mapReplacements[functors[i].name](this.object);
 				} else {
-					this.object = functor.map(this.object);
+					this.object = await functors[i].map(this.object);
 				}
-				if (!this.validateTo(this.object, functor)) {
+				if (!this.validateTo(this.object, functors[i])) {
 					throw new Error(
-						`To validation failed for functor ${functor.name} with to ${JSON.stringify(
-							functor.to
+						`To validation failed for functor ${
+							functors[i].name
+						} with to ${JSON.stringify(
+							functors[i].to
 						)} and resulting object ${JSON.stringify(this.object, null, 2)}`
 					);
 				}
-			});
+			}
+
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
 			debugShortFunctor(
 				`[${functors

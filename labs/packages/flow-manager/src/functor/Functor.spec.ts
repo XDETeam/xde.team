@@ -64,6 +64,22 @@ it("should register replace map method", () => {
 	expect(primitiveFunctor.constructor.name in compositeFunctor.mapReplacements).toEqual(true);
 });
 
+it("should handle async map", async () => {
+	const compositeFunctor = new testCompositeFunctor();
+	const primitiveFunctor = new testPrimitiveFunctor();
+	compositeFunctor.addChildren(primitiveFunctor);
+	compositeFunctor.mapReplace(primitiveFunctor, async (obj) => {
+		return {
+			...obj,
+			[Aspect.HasAuth]: true,
+			some: await Promise.resolve(1),
+		};
+	});
+	const obj = await compositeFunctor.map({ [Aspect.HttpRequest]: true });
+
+	expect(obj.some).toEqual(1);
+});
+
 it("should not allow to replace map method for unregistered child functor", () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
