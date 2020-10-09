@@ -13,6 +13,7 @@
 		"@types/react-dom": "^16.9.0",
 		"@xde/flow-manager": "^0.0.1",
 		"@xde/webapp-express": "^0.0.1",
+		"@xde/lab-business": "^0.0.1",
 		"d3-force": "^2.1.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
