@@ -43,6 +43,7 @@ const basicApp = new CompositeFunctor<Aspect>(
 		Aspect.HttpRouted,
 		{
 			aspect: [
+				Aspect.HttpRouted,
 				[Aspect.LocationHeader, Aspect.ResponseCode],
 				Aspect.ResponseCode,
 				Aspect.GeneratedHtml,

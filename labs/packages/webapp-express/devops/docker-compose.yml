@@ -1,0 +1,16 @@
+version: "3.1"
+services:
+    postgres:
+        image: postgres:11.3
+        environment:
+            POSTGRES_USER: ${PG_USER}
+            POSTGRES_PASSWORD: ${PG_PASSWORD}
+            POSTGRES_DB: ${PG_DATABASE}
+        ports:
+            - "${PG_PORT}:5432"
+
+    # http://localhost:8080/?pgsql=postgres%3A5432&username=postgres&db=db&password=postgres
+    adminer:
+        image: adminer:latest
+        ports:
+            - 8080:8080

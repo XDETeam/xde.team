@@ -7,12 +7,17 @@
 		"dev": "nodemon src/app.ts",
 		"build": "run-s clean tsc",
 		"tsc": "tsc",
-		"clean": "rimraf dist"
+		"clean": "rimraf dist",
+		"db:up": "cd devops && docker-compose --env-file ../.env up"
 	},
 	"dependencies": {
 		"@xde/flow-manager": "^0.0.1",
 		"cookie-parser": "^1.4.5",
-		"express": "^4.17.1"
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"pg": "^8.4.1",
+		"reflect-metadata": "^0.1.13",
+		"typeorm": "^0.2.28"
 	},
 	"devDependencies": {
 		"@types/cookie-parser": "^1.4.2",
