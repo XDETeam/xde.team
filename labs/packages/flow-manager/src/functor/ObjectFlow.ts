@@ -3,6 +3,7 @@ import { diff } from "deep-object-diff";
 import { Aspect, AspectType, IObject } from "../models";
 import { IFunctor, LambdaAspect } from "./Functor";
 import { appDebug } from "../helpers/debug";
+import { replaceCircular } from "../helpers/circular";
 
 const debug = appDebug.extend("ObjectFlow");
 const debugVerbose = debug.extend("verbose");
@@ -31,7 +32,7 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 		let currentFunctorsPool = functorsPool.slice();
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
-			debugVerbose("Object before iteration", this.object);
+			debugVerbose("Object before iteration", replaceCircular(this.object));
 			for (let i = 0, l = functors.length; i < l; i++) {
 				if (mapReplacements && functors[i].name in mapReplacements) {
 					this.object = await mapReplacements[functors[i].name](this.object);
@@ -44,7 +45,11 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 							functors[i].name
 						} with to ${JSON.stringify(
 							functors[i].to
-						)} and resulting object ${JSON.stringify(this.object, null, 2)}`
+						)} and resulting object ${JSON.stringify(
+							replaceCircular(this.object),
+							null,
+							2
+						)}`
 					);
 				}
 			}
@@ -59,9 +64,9 @@ export class ObjectFlow<TAspect extends string = Aspect> implements IObjectFlow<
 					)
 					.join(", ")}]`
 			);
-			debugShortObject(diff(prevObject, this.object));
+			debugShortObject(diff(replaceCircular(prevObject), replaceCircular(this.object)));
 			prevObject = { ...this.object };
-			debugVerbose("Object after iteration", this.object);
+			debugVerbose("Object after iteration", replaceCircular(this.object));
 		}
 	}
 
