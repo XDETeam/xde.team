@@ -46,18 +46,20 @@ async function onCreateNode({
 
 	traverse(ast, {
 		ExportNamedDeclaration(path) {
-			path.node.declaration.declarations
-				.filter(ast => ast.id && ast.id.name === `Url`)
-				.forEach(ast => {
-					switch (ast.id.name) {
-						case `Url`:
-							if (ast.init.type !== `StringLiteral`) {
-								throw `[${node.relativePath}]: String literal required for Url, but ${ast.init.type} found`;
-							}
-							meshData.slug = ast.init.value;
-					}
-				})
-				;
+			const decls = path.node.declaration.declarations;
+			if (decls) {
+				decls
+					.filter(ast => ast.id && ast.id.name === `Url`)
+					.forEach(ast => {
+						switch (ast.id.name) {
+							case `Url`:
+								if (ast.init.type !== `StringLiteral`) {
+									throw `[${node.relativePath}]: String literal required for Url, but ${ast.init.type} found`;
+								}
+								meshData.slug = ast.init.value;
+						}
+					})
+			}
 		},
 
 		enter(path) {
