@@ -1,17 +1,27 @@
-import React, { FC, useMemo, useRef } from "react";
+import React, { FC, useMemo, useRef, useEffect } from "react";
+import { forceCollide } from "d3-force";
 import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
-import { IFunctor } from "@xde/flow-manager/.build/core/Functor";
+import { IFunctor } from "@xde/flow-manager";
 import graphConverterInstance from "../models/GraphConverter";
 import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type MeshComponentProps = {
-	functor: IFunctor;
+	functor: IFunctor<any>;
 };
 
 // TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
 const MeshComponent: FC<MeshComponentProps> = ({ functor }) => {
 	const data = useMemo(() => graphConverterInstance.toGraphData(functor), [functor]);
 	const ref = useRef<ForceGraphMethods>();
+
+	useEffect(() => {
+		// add collision force
+		ref.current?.d3Force(
+			"collision",
+			forceCollide((node) => Math.sqrt(100 / ((node as any).level + 1)))
+		);
+		(ref.current?.d3Force("charge") as any).strength(-150);
+	}, [ref]);
 	return (
 		<div>
 			<details>
@@ -26,9 +36,11 @@ const MeshComponent: FC<MeshComponentProps> = ({ functor }) => {
 				ref={ref}
 				graphData={data}
 				nodeLabel="name"
+				// nodeThreeObjectExtend={true}
 				nodeAutoColorBy="type"
-				linkDirectionalArrowLength={6}
-				linkCurvature="curvature"
+				linkDirectionalArrowLength={8}
+				linkCurvature={0.1}
+				nodeCanvasObjectMode={() => "after"}
 				onNodeClick={(node) => {
 					ref.current?.centerAt(node.x, node.y, 1000);
 					ref.current?.zoom(8, 2000);
