@@ -1,5 +1,5 @@
 {
-  "name": "@xde/www",
+  "name": "@xde.team/www-docz",
   "version": "0.0.1",
   "scripts": {
     "dev": "docz dev",
