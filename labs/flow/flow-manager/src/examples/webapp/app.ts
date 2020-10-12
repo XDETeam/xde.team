@@ -67,8 +67,8 @@ export const root = new CompositeFunctor<Aspect>("root", [], []);
 root.addChildren([basicApp, app404Instance, renderer]);
 
 // Debug.enable("*");
-// Debug.enable("app:ObjecctFlow:short*");
-Debug.enable("app:ObjectFlow:verbose*");
+Debug.enable("app:ObjectFlow:short*");
+// Debug.enable("app:ObjectFlow:verbose*");
 
 root.map({
 	HttpRequest: {
