@@ -21,8 +21,8 @@ export class Code301Redirected extends Functor<Aspect> {
 		[Aspect.LocationHeader]: string;
 		[Aspect.ResponseCode]: 301;
 	}): {} {
-		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);
 		obj[Aspect.HttpResponse].redirect(obj[Aspect.ResponseCode], obj[Aspect.LocationHeader]);
+		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);
 		return {
 			...obj,
 			[Aspect.Redirected]: true,

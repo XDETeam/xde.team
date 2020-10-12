@@ -1,4 +1,4 @@
-import { CompositeFunctor, Some } from "@xde/flow-manager";
+import { CompositeFunctor, Some, Optional } from "@xde/flow-manager";
 
 import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
@@ -14,26 +14,33 @@ import httpSecuredInstance from "./http/HttpSecured";
 import httpUserRoledInstance from "./security/HttpUserRoled";
 import { Aspect } from "../models/aspects";
 import httpEndedInstance from "./http/HttpEnded";
+import { api } from "./app/api/module";
+import httpEndpointTypedInstance from "./http/HttpEndpointTyped";
+import apiSenderInstance from "./http/ApiSender";
 
 const renderer = new CompositeFunctor<Aspect>(
 	"renderer",
 	[
+		Aspect.HttpResponse,
 		{
 			aspect: [
 				Aspect.ResponseCode,
+				Aspect.GeneratedApiBody,
 				[Aspect.ResponseCode, Aspect.LocationHeader],
 				Aspect.GeneratedHtml,
 			],
 			lambda: Some,
 		},
+		{ aspect: Aspect.AdditionalHeaders, lambda: Optional },
 	],
-	[{ aspect: [Aspect.SentHtml, Aspect.Redirected], lambda: Some }]
+	[{ aspect: [Aspect.SentHtml, Aspect.Redirected, Aspect.SentApiResponse], lambda: Some }]
 );
 renderer.addChildren([
 	code404HtmlInstance,
 	code401HtmlInstance,
 	code301RedirectedInstance,
 	htmlRendererInstance,
+	apiSenderInstance,
 ]);
 
 const basicApp = new CompositeFunctor<Aspect>(
@@ -41,6 +48,9 @@ const basicApp = new CompositeFunctor<Aspect>(
 	[Aspect.HttpRequest],
 	[
 		Aspect.HttpRouted,
+		Aspect.Secured,
+		Aspect.UserRoled,
+		Aspect.EndpointType,
 		{
 			aspect: [
 				Aspect.HttpRouted,
@@ -60,6 +70,7 @@ basicApp.addChildren([
 	httpUserRoledInstance,
 	httpRoutedInstance,
 	httpSecuredInstance,
+	httpEndpointTypedInstance,
 ]);
 
 export const root = new CompositeFunctor<Aspect>(
@@ -67,4 +78,5 @@ export const root = new CompositeFunctor<Aspect>(
 	[Aspect.HttpRequest, Aspect.HttpResponse],
 	[Aspect.Ended]
 );
-root.addChildren([basicApp, app404Instance, renderer, httpEndedInstance]);
+// app404Instance
+root.addChildren([basicApp, renderer, httpEndedInstance, api]);

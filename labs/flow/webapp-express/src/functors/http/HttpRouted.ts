@@ -1,7 +1,8 @@
 import { Functor } from "@xde/flow-manager";
+import { THttpMethod } from "@xde/common";
 import { Request } from "express";
-import { APP_HTTP_PORT, APP_TLS_PORT } from "../../config";
 
+import { APP_HTTP_PORT, APP_TLS_PORT } from "../../config";
 import { Aspect } from "../../models/aspects";
 
 export interface IHttpRouted {
@@ -25,6 +26,8 @@ export interface IHttpRouted {
 	 * /users?sort=desc
 	 */
 	originalUrl: string;
+
+	method: THttpMethod;
 }
 
 export class HttpRouted extends Functor<Aspect> {
@@ -42,6 +45,7 @@ export class HttpRouted extends Functor<Aspect> {
 			nonStandardPort: port === 80 || port === 443 ? undefined : port,
 			path: obj[Aspect.HttpRequest].path,
 			originalUrl: obj[Aspect.HttpRequest].originalUrl,
+			method: obj[Aspect.HttpRequest].method as any,
 		};
 		return {
 			...obj,

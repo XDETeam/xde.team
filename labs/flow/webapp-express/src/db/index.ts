@@ -1,5 +1,5 @@
 import { createConnection } from "typeorm";
-import { User } from "../models";
+import { User } from "../models/user/User";
 
 export const connection = createConnection({
 	type: "postgres",
@@ -11,4 +11,8 @@ export const connection = createConnection({
 	entities: [User],
 	synchronize: true,
 	logging: false,
+}).catch((e) => {
+	return {
+		error: e,
+	};
 });

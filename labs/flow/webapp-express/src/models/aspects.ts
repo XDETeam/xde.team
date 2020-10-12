@@ -4,10 +4,15 @@ export enum Aspect {
 
 	UserRoled = "UserRoled",
 	GeneratedHtml = "GeneratedHtml",
+	GeneratedApiBody = "GeneratedApiBody",
+
+	EndpointType = "EndpointType",
 
 	ResponseCode = "ResponseCode",
 	LocationHeader = "LocationHeader",
+	AdditionalHeaders = "AdditionalHeaders",
 	SentHtml = "SentHtml",
+	SentApiResponse = "SentApiResponse",
 	// Logged = "Logged",
 	HttpRouted = "HttpRouted",
 	Secured = "Secured",
@@ -16,4 +21,11 @@ export enum Aspect {
 
 	// app
 	AppAdminRouteAllowed = "AppAdminRouteAllowed",
+
+	// api
+	ApiRawSignInRequest = "ApiRawSignInRequest",
+	ApiValidSignInRequest = "ApiValidSignInRequest",
+
+	ApiRawSignUpRequest = "ApiRawSignUpRequest",
+	ApiValidSignUpRequest = "ApiValidSignUpRequest",
 }

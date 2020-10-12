@@ -10,30 +10,18 @@ import cookieParser from "cookie-parser";
 
 import { root } from "./functors/app";
 import { APP_HTTP_PORT, APP_TLS_PORT } from "./config";
-import { connection } from "./db/index";
-import { User } from "./models/index";
 
 const app = express();
 
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+
 app.use((req, res, next) => {
 	const start = {
 		[Aspect.HttpRequest]: req,
 		[Aspect.HttpResponse]: res,
 	};
-
-	connection
-		.then((connection) => {
-			let user = new User();
-			user.email = "22@ss.cc";
-			user.name = "name";
-			user.password = "pas";
-
-			return connection.manager.save(user).then((user) => {
-				console.log("user has been saved. user id is", user.id);
-			});
-		})
-		.catch((error) => console.log(error));
 
 	root.map(start);
 });

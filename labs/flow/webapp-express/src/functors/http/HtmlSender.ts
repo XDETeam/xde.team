@@ -15,10 +15,10 @@ export class HtmlSender extends Functor<Aspect> {
 	map(obj: {
 		[Aspect.HttpResponse]: Response;
 		[Aspect.GeneratedHtml]: string;
-		[Aspect.ResponseCode]?: number;
+		[Aspect.ResponseCode]: number;
 	}) {
 		obj[Aspect.HttpResponse]
-			.status(obj[Aspect.ResponseCode] ?? 200)
+			.status(obj[Aspect.ResponseCode])
 			.send(obj[Aspect.GeneratedHtml]);
 
 		return {

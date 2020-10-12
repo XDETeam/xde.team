@@ -12,6 +12,8 @@
 	},
 	"dependencies": {
 		"@xde/flow-manager": "^0.0.1",
+		"@xde/common": "^0.0.1",
+		"class-validator": "^0.12.2",
 		"cookie-parser": "^1.4.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
