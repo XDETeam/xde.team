@@ -1,5 +1,8 @@
 {
 	"private": true,
+	"scripts": {
+		"build:flow": "cd flow-manager && npm run build"
+	},
 	"workspaces": {
 		"packages": [
 			"**"
