@@ -1,0 +1,13 @@
+{
+	"name": "@xde/endpoint-error-codes",
+	"version": "0.0.1",
+	"main": ".build/index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch"
+	},
+	"dependencies": {
+		"typescript": "^4.0.2"
+	}
+}
