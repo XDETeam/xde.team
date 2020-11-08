@@ -1,16 +1,22 @@
-import { Functor } from "../../../functor/Functor";
-import { Aspect } from "../../../models";
-import { ITestHttpRequest } from "../models";
+import { THttpRouted, HttpRouted as HttpRoutedAspect } from "@xde/aspects";
 
-export class HttpRouted extends Functor {
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+import { TestHttpRequest, TTestHttpRequest } from "../models/TestHttpRequest";
+
+export class HttpRouted extends PrimitiveFunctor<TTestHttpRequest, THttpRouted> {
 	name = "HttpRouted";
-	from = [Aspect.HttpRequest];
-	to = [Aspect.HttpRouted];
+	from = [TestHttpRequest];
+	to = [HttpRoutedAspect];
 
-	map(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
+	distinct(obj: TTestHttpRequest): THttpRouted {
 		return {
-			...obj,
-			[Aspect.HttpRouted]: obj[Aspect.HttpRequest].route,
+			[HttpRoutedAspect]: {
+				protocol: obj[TestHttpRequest].isTLS ? "https" : "http",
+				hostname: obj[TestHttpRequest].host,
+				path: obj[TestHttpRequest].path,
+				originalUrl: obj[TestHttpRequest].path,
+				method: "GET",
+			},
 		};
 	}
 }

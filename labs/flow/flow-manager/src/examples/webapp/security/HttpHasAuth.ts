@@ -1,18 +1,19 @@
+import { TAuthorized, Authorized } from "@xde/aspects";
+
 import { Functor } from "../../../functor/Functor";
-import { Aspect } from "../../../models";
-import { ITestHttpRequest } from "../models";
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+import { TestHttpRequest, TTestHttpRequest } from "../models/TestHttpRequest";
 
-export class HttpHasAuth extends Functor {
+export class HttpHasAuth extends PrimitiveFunctor<TTestHttpRequest, TAuthorized> {
 	name = "HttpHasAuth";
-	from = [Aspect.HttpRequest];
-	to = [Aspect.HasAuth];
+	from = [TestHttpRequest];
+	to = [Authorized];
 
-	map(obj: { [Aspect.HttpRequest]: ITestHttpRequest }): {} {
+	distinct(obj: TTestHttpRequest): TAuthorized {
 		Functor.debugger.extend("HttpHasAuth")("Pass 'valid' to be authorized");
 
 		return {
-			...obj,
-			[Aspect.HasAuth]: obj[Aspect.HttpRequest].authCookie === "valid",
+			[Authorized]: obj[TestHttpRequest].authCookie === "valid",
 		};
 	}
 }

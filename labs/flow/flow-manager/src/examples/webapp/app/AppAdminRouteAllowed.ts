@@ -1,28 +1,30 @@
-import { Functor } from "../../../functor/Functor";
-import { PartialObject } from "../../../helpers/lambdas";
-import { Aspect } from "../../../models";
+import { THttpRouted, THttpSecured, HttpSecured, HttpRouted } from "@xde/aspects";
 
-export class AppAdminRouteAllowed extends Functor {
+import { Functor } from "../../../functor/Functor";
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../models/";
+
+export class AppAdminRouteAllowed extends PrimitiveFunctor<
+	THttpRouted & THttpSecured,
+	TAppAdminRouteAllowed
+> {
 	name = "AppAdminRouteAllowed";
 	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: string }>) =>
-				!!obj[Aspect.HttpRouted]?.startsWith("/security/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
 		},
 		{
-			aspect: Aspect.Secured,
-			lambda: (obj: PartialObject<Aspect.Secured, { [Aspect.Secured]?: boolean }>) =>
-				obj[Aspect.Secured] === true,
+			aspect: HttpSecured,
+			lambda: (obj: THttpSecured) => obj[HttpSecured] === true,
 		},
 	];
-	to = [Aspect.AppAdminRouteAllowed];
+	to = [AppAdminRouteAllow];
 
-	map(obj: {}): {} {
+	distinct(obj: THttpRouted & THttpSecured): TAppAdminRouteAllowed {
 		Functor.debugger.extend("AppAdminRouteAllowed")("Set AdminFlag to any to pass");
 		return {
-			...obj,
-			[Aspect.AppAdminRouteAllowed]: "AdminFlag" in obj,
+			[AppAdminRouteAllow]: "AdminFlag" in obj,
 		};
 	}
 }

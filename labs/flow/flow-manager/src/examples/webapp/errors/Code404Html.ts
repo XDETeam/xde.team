@@ -1,23 +1,20 @@
-import { Functor } from "../../../functor/Functor";
-import { PartialObject } from "../../../helpers/lambdas";
-import { Aspect } from "../../../models";
+import { THttpStatusCode, HttpStatusCode, GeneratedHtml, TGeneratedHtml } from "@xde/aspects";
 
-export class Code404Html extends Functor {
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+
+export class Code404Html extends PrimitiveFunctor<THttpStatusCode, TGeneratedHtml> {
 	name = "Code404Html";
 	from = [
 		{
-			aspect: Aspect.ResponseCode,
-			lambda: (
-				obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>
-			) => obj[Aspect.ResponseCode] === 404,
+			aspect: HttpStatusCode,
+			lambda: (obj: THttpStatusCode) => obj[HttpStatusCode] === 404,
 		},
 	];
-	to = [Aspect.GeneratedHtml];
+	to = [GeneratedHtml];
 
-	map(obj: {}): {} {
+	distinct(): TGeneratedHtml {
 		return {
-			...obj,
-			[Aspect.GeneratedHtml]: "<div>404 page</div>",
+			[GeneratedHtml]: "<div>404 page</div>",
 		};
 	}
 }

@@ -1,57 +1,87 @@
-import { ITestHttpRequest } from "./models";
-import { CompositeFunctor } from "../../functor/Functor";
-import { Aspect } from "../../models";
+import {
+	Authorized,
+	HttpSecured,
+	THttpStatusCode,
+	HttpStatusCode,
+	THttpHeaders,
+	HttpRouted,
+	THttpRouted,
+	HttpHeaders,
+	GeneratedHtml,
+	TGeneratedHtml,
+	SentHtml,
+	TSentHtml,
+	HttpRedirected,
+	THttpRedirected,
+} from "@xde/aspects";
+
+import { AppAdminRouteAllow, TestHttpRequest, TTestHttpRequest } from "./models";
 import { Some } from "../../helpers/lambdas";
 import code404HtmlInstance from "./errors/Code404Html";
 import httpRoutedInstance from "./http/HttpRouted";
 import app404Instance from "./app/App404";
 import code401HtmlInstance from "./errors/Code401Html";
 import code301RedirectedInstance from "./http/Code301Redirected";
-import htmlRendererInstance from "./http/HtmlRenderer";
+import htmlSenderInstance from "./http/HtmlSender";
 import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
 import appAdminRouteAllowedInstance from "./app/AppAdminRouteAllowed";
 import appSecuredRouteRedirectedInstance from "./app/AppSecuredRouteRedirected";
 import httpHasAuthInstance from "./security/HttpHasAuth";
 import httpSecuredInstance from "./http/HttpSecured";
+import { CompositeFunctor } from "../../functor/CompositeFunctor";
+import { deepCloneUnsafe } from "../../../../common/src/object/clone";
 
-const renderer = new CompositeFunctor<Aspect>(
-	"renderer",
-	[
+export class AppRenderer extends CompositeFunctor<
+	THttpStatusCode | (THttpHeaders & THttpStatusCode) | TGeneratedHtml,
+	TSentHtml | THttpRedirected
+> {
+	name = "AppRenderer";
+	from = [
 		{
-			aspect: [
-				Aspect.ResponseCode,
-				[Aspect.ResponseCode, Aspect.LocationHeader],
-				Aspect.GeneratedHtml,
-			],
+			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [GeneratedHtml]],
 			lambda: Some,
 		},
-	],
-	[{ aspect: [Aspect.RenderedHtml, Aspect.Redirected], lambda: Some }]
-);
+	];
+	to = [
+		{
+			aspect: [SentHtml, HttpRedirected],
+			lambda: Some,
+		},
+	];
+}
+
+const renderer = new AppRenderer();
+
 renderer.addChildren([
 	code404HtmlInstance,
 	code401HtmlInstance,
 	code301RedirectedInstance,
-	htmlRendererInstance,
+	htmlSenderInstance,
 ]);
 
-const basicApp = new CompositeFunctor<Aspect>(
-	"basicApp",
-	[Aspect.HttpRequest],
-	[
+export class AppMain extends CompositeFunctor<
+	TTestHttpRequest,
+	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | TGeneratedHtml
+> {
+	name = "AppMain";
+	from = [TestHttpRequest];
+	to = [
 		{
 			aspect: [
-				Aspect.HttpRouted,
-				[Aspect.LocationHeader, Aspect.ResponseCode],
-				Aspect.ResponseCode,
-				Aspect.GeneratedHtml,
+				[HttpRouted],
+				[HttpHeaders, HttpStatusCode],
+				[HttpStatusCode],
+				[GeneratedHtml],
 			],
 			lambda: Some,
 		},
-	]
-);
-basicApp.addChildren([
+	];
+}
+
+const appMain = new AppMain();
+
+appMain.addChildren([
 	admin401Instance,
 	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
@@ -61,159 +91,198 @@ basicApp.addChildren([
 	httpSecuredInstance,
 ]);
 
-export const root = new CompositeFunctor<Aspect>("root", [], []);
-root.addChildren([basicApp, app404Instance, renderer]);
+export class Root extends CompositeFunctor<TTestHttpRequest, TSentHtml> {
+	name = "Root";
+	from = [TestHttpRequest];
+	to = [SentHtml];
+}
 
-const httpRequest: ITestHttpRequest = {
-	authCookie: "valid",
-	route: "/security/adminPanelRoute",
-	isTLS: true,
+export const root = new Root();
+root.addChildren([appMain, app404Instance, renderer]);
+
+const httpRequest: TTestHttpRequest = {
+	[TestHttpRequest]: {
+		authCookie: "valid",
+		host: "www.host",
+		path: "/security/adminPanelRoute",
+		isTLS: true,
+	},
 };
 
 it("should return 401 on admin route for non-admin", async () => {
-	const res = await root.map({
-		HttpRequest: httpRequest,
-	});
+	const res = await root.map(httpRequest);
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/adminPanelRoute",
-			Secured: true,
-			AppAdminRouteAllowed: false,
-			ResponseCode: 401,
-			GeneratedHtml: expect.any(String),
-			RenderedHtml: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: httpRequest[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: httpRequest[TestHttpRequest].path,
+				path: httpRequest[TestHttpRequest].path,
+				protocol: "https",
+			},
+			[HttpSecured]: true,
+			[AppAdminRouteAllow]: false,
+			[HttpStatusCode]: 401,
+			[GeneratedHtml]: expect.any(String),
+			[SentHtml]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.LocationHeader);
+	expect(res).not.toHaveProperty(HttpHeaders);
 });
 
 it("should return 401 on non-existing security route for non-admin", async () => {
-	const res = await root.map({
-		HttpRequest: {
-			...httpRequest,
-			route: "/security/non-existing",
-		} as ITestHttpRequest,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	req[TestHttpRequest].path = "/security/non-existing";
+	const res = await root.map(req);
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/non-existing",
-			Secured: true,
-			AppAdminRouteAllowed: false,
-			ResponseCode: 401,
-			GeneratedHtml: expect.any(String),
-			RenderedHtml: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "https",
+			},
+			[HttpSecured]: true,
+			[AppAdminRouteAllow]: false,
+			[HttpStatusCode]: 401,
+			[GeneratedHtml]: expect.any(String),
+			[SentHtml]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.LocationHeader);
+	expect(res).not.toHaveProperty(HttpHeaders);
 });
 
 it("should return 301 on security route without tls for non-admin", async () => {
-	const res = await root.map({
-		HttpRequest: {
-			...httpRequest,
-			isTLS: false,
-		} as ITestHttpRequest,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	req[TestHttpRequest].isTLS = false;
+	const res = await root.map(req);
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/adminPanelRoute",
-			Secured: false,
-			LocationHeader: "https:///security/adminPanelRoute",
-			ResponseCode: 301,
-			Redirected: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "http",
+			},
+			[HttpSecured]: false,
+			[HttpHeaders]: { Location: "https://www.host/security/adminPanelRoute" },
+			[HttpStatusCode]: 301,
+			[HttpRedirected]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.AppAdminRouteAllowed);
-	expect(res).not.toHaveProperty(Aspect.GeneratedHtml);
-	expect(res).not.toHaveProperty(Aspect.RenderedHtml);
+	expect(res).not.toHaveProperty(AppAdminRouteAllow);
+	expect(res).not.toHaveProperty(GeneratedHtml);
+	expect(res).not.toHaveProperty(SentHtml);
 });
 
 it("should return 301 on security route without tls for admin", async () => {
-	const res = await root.map({
-		HttpRequest: {
-			...httpRequest,
-			route: "/security/non-existing",
-			isTLS: false,
-		} as ITestHttpRequest,
-		AdminFlag: true,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	req[TestHttpRequest].isTLS = false;
+	req[TestHttpRequest].path = "/security/non-existing";
+	(req as any).AdminFlag = true;
+
+	const res = await root.map(req);
+
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/non-existing",
-			Secured: false,
-			LocationHeader: "https:///security/non-existing",
-			ResponseCode: 301,
-			Redirected: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "http",
+			},
+			[HttpSecured]: false,
+			[HttpHeaders]: { Location: "https://www.host/security/non-existing" },
+			[HttpStatusCode]: 301,
+			[HttpRedirected]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.AppAdminRouteAllowed);
-	expect(res).not.toHaveProperty(Aspect.GeneratedHtml);
-	expect(res).not.toHaveProperty(Aspect.RenderedHtml);
+	expect(res).not.toHaveProperty(AppAdminRouteAllow);
+	expect(res).not.toHaveProperty(GeneratedHtml);
+	expect(res).not.toHaveProperty(SentHtml);
 });
 
 it("should show admin panel for valid admin request", async () => {
-	const res = await root.map({
-		HttpRequest: httpRequest,
-		AdminFlag: true,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	(req as any).AdminFlag = true;
+
+	const res = await root.map(req);
+
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/adminPanelRoute",
-			Secured: true,
-			AppAdminRouteAllowed: true,
-			GeneratedHtml: "<div>secret dashboard</div>",
-			RenderedHtml: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "https",
+			},
+			[HttpSecured]: true,
+			[AppAdminRouteAllow]: true,
+			[GeneratedHtml]: "<div>secret dashboard</div>",
+			[SentHtml]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.Redirected);
-	expect(res).not.toHaveProperty(Aspect.LocationHeader);
+	expect(res).not.toHaveProperty(HttpRedirected);
+	expect(res).not.toHaveProperty(HttpHeaders);
 });
 
 it("should return 404 for non-existing admin route for admin user", async () => {
-	const res = await root.map({
-		HttpRequest: {
-			...httpRequest,
-			route: "/security/non-existing",
-		} as ITestHttpRequest,
-		AdminFlag: true,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	req[TestHttpRequest].path = "/security/non-existing";
+	(req as any).AdminFlag = true;
+	const res = await root.map(req);
+
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: true,
-			HttpRouted: "/security/non-existing",
-			Secured: true,
-			AppAdminRouteAllowed: true,
-			ResponseCode: 404,
-			GeneratedHtml: expect.any(String),
-			RenderedHtml: true,
+			[Authorized]: true,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "https",
+			},
+			[HttpSecured]: true,
+			[AppAdminRouteAllow]: true,
+			[HttpStatusCode]: 404,
+			[GeneratedHtml]: expect.any(String),
+			[SentHtml]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.Redirected);
+	expect(res).not.toHaveProperty(HttpRedirected);
 });
 
 it("should return 404 on any non-existing route for any user", async () => {
-	const res = await root.map({
-		HttpRequest: {
-			...httpRequest,
-			authCookie: "",
-			route: "/non-existing/adminPanelRoute",
-		} as ITestHttpRequest,
-	});
+	const req = deepCloneUnsafe(httpRequest);
+	req[TestHttpRequest].path = "/non-existing/adminPanelRoute";
+	req[TestHttpRequest].authCookie = "";
+	const res = await root.map(req);
+
 	expect(res).toEqual(
 		expect.objectContaining({
-			HasAuth: false,
-			HttpRouted: "/non-existing/adminPanelRoute",
-			Secured: true,
-			ResponseCode: 404,
-			GeneratedHtml: "<div>404 page</div>",
-			RenderedHtml: true,
+			[Authorized]: false,
+			[HttpRouted]: {
+				hostname: req[TestHttpRequest].host,
+				method: "GET",
+				originalUrl: req[TestHttpRequest].path,
+				path: req[TestHttpRequest].path,
+				protocol: "https",
+			},
+			[HttpSecured]: true,
+			[HttpStatusCode]: 404,
+			[GeneratedHtml]: "<div>404 page</div>",
+			[SentHtml]: true,
 		})
 	);
-	expect(res).not.toHaveProperty(Aspect.AppAdminRouteAllowed);
-	expect(res).not.toHaveProperty(Aspect.Redirected);
+	expect(res).not.toHaveProperty(AppAdminRouteAllow);
+	expect(res).not.toHaveProperty(HttpRedirected);
 });

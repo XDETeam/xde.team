@@ -1,27 +1,32 @@
-import { Aspect } from "../models";
-import { Functor } from "./Functor";
+import { PrimitiveFunctor } from "./PrimitiveFunctor";
+import { CompositeFunctor } from "./CompositeFunctor";
 
-class testPrimitiveFunctor extends Functor {
+class testPrimitiveFunctor extends PrimitiveFunctor<{ HttpRequest: string }, { HasAuth: boolean }> {
 	name = "testPrimitiveFunctor";
-	from = [Aspect.HttpRequest];
-	to = [Aspect.HasAuth];
+	from = ["HttpRequest" as const];
+	to = ["HasAuth" as const];
+	distinct = () => ({ HasAuth: true });
 }
 
-class testPrimitiveFunctor2 extends Functor {
+class testPrimitiveFunctor2 extends PrimitiveFunctor<
+	{ HasAuth: boolean },
+	{ AppAdminRouteAllowed: boolean }
+> {
 	name = "testPrimitiveFunctor2";
-	from = [Aspect.HasAuth];
-	to = [Aspect.AppAdminRouteAllowed];
+	from = ["HasAuth" as const];
+	to = ["AppAdminRouteAllowed" as const];
+	distinct = () => ({ AppAdminRouteAllowed: true });
 }
 
-class testCompositeFunctor extends Functor {
+class testCompositeFunctor extends CompositeFunctor<any, any> {
 	name = "testCompositeFunctor";
 	from = [];
 	to = [];
 }
 
-it("should produce an error with primitive functor when there is no children functors registered", () => {
-	const functor = new testPrimitiveFunctor();
-	expect(() => functor.map({})).toThrow(/primitive/i);
+it("should produce an error with composite functor when there is no children functors registered", async () => {
+	const functor = new testCompositeFunctor();
+	await expect(() => functor.map({})).rejects.toThrow(/add children/i);
 });
 
 it("should register functors as child to the functor", () => {
@@ -38,10 +43,11 @@ it("should register an array of functors as child to the functor", () => {
 });
 
 it("should prevent registration of functor with empty from", () => {
-	class somePrimitiveFunctor extends Functor {
+	class somePrimitiveFunctor extends PrimitiveFunctor<any, any> {
 		name = "somePrimitiveFunctor";
 		from = [];
-		to = [Aspect.HasAuth];
+		to = ["value"];
+		distinct = () => ({ value: 2 });
 	}
 	const compositeFunctor = new testCompositeFunctor();
 
@@ -55,37 +61,36 @@ it("should prevent duplication of registered functors", () => {
 	expect(() => compositeFunctor.addChildren(primitiveFunctor)).toThrowError(/duplicate/i);
 });
 
-it("should register replace map method", () => {
+it("should register replace distinct method", () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
 	compositeFunctor.addChildren(primitiveFunctor);
-	compositeFunctor.mapReplace(primitiveFunctor, () => ({}));
+	compositeFunctor.distinctReplace(primitiveFunctor, () => ({}));
 
-	expect(primitiveFunctor.constructor.name in compositeFunctor.mapReplacements).toEqual(true);
+	expect(primitiveFunctor.name in compositeFunctor.distinctReplacements).toEqual(true);
+});
+
+it("should not allow to replace distinct method for unregistered child functor", () => {
+	const compositeFunctor = new testCompositeFunctor();
+	const primitiveFunctor = new testPrimitiveFunctor();
+	const primitiveFunctor2 = new testPrimitiveFunctor2();
+	compositeFunctor.addChildren(primitiveFunctor);
+	expect(() => compositeFunctor.distinctReplace(primitiveFunctor2, () => ({}))).toThrowError(
+		/register/i
+	);
 });
 
 it("should handle async map", async () => {
 	const compositeFunctor = new testCompositeFunctor();
 	const primitiveFunctor = new testPrimitiveFunctor();
 	compositeFunctor.addChildren(primitiveFunctor);
-	compositeFunctor.mapReplace(primitiveFunctor, async (obj) => {
+	compositeFunctor.distinctReplace(primitiveFunctor, async (obj) => {
 		return {
-			...obj,
-			[Aspect.HasAuth]: true,
+			HasAuth: true,
 			some: await Promise.resolve(1),
 		};
 	});
-	const obj = await compositeFunctor.map({ [Aspect.HttpRequest]: true });
+	const obj = await compositeFunctor.map({ HttpRequest: true });
 
 	expect(obj.some).toEqual(1);
-});
-
-it("should not allow to replace map method for unregistered child functor", () => {
-	const compositeFunctor = new testCompositeFunctor();
-	const primitiveFunctor = new testPrimitiveFunctor();
-	const primitiveFunctor2 = new testPrimitiveFunctor2();
-	compositeFunctor.addChildren(primitiveFunctor);
-	expect(() => compositeFunctor.mapReplace(primitiveFunctor2, () => ({}))).toThrowError(
-		/register/i
-	);
 });

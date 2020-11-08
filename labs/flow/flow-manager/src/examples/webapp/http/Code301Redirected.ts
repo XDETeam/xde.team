@@ -1,27 +1,36 @@
-import { Functor } from "../../../functor/Functor";
-import { PartialObject } from "../../../helpers/lambdas";
-import { Aspect } from "../../../models";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	THttpHeaders,
+	HttpHeaders,
+	THttpRedirected,
+	HttpRedirected,
+} from "@xde/aspects";
 
-export class Code301Redirected extends Functor {
+import { Functor } from "../../../functor/Functor";
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+
+export class Code301Redirected extends PrimitiveFunctor<
+	THttpStatusCode & THttpHeaders,
+	THttpRedirected
+> {
 	name = "Code301Redirected";
 	from = [
 		{
-			aspect: Aspect.ResponseCode,
-			lambda: (
-				obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>
-			) => obj[Aspect.ResponseCode] === 301,
+			aspect: HttpStatusCode,
+			lambda: (obj: THttpStatusCode) => obj[HttpStatusCode] === 301,
 		},
-		Aspect.LocationHeader,
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: THttpHeaders) => "Location" in obj[HttpHeaders],
+		},
 	];
-	to = [Aspect.Redirected];
+	to = [HttpRedirected];
 
-	map(obj: { [Aspect.LocationHeader]: string }): {} {
-		Functor.debugger.extend("Code301Redirected")(
-			`Redirected to ${obj[Aspect.LocationHeader]}`
-		);
+	distinct(obj: THttpHeaders): THttpRedirected {
+		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[HttpHeaders].Location}`);
 		return {
-			...obj,
-			[Aspect.Redirected]: true,
+			[HttpRedirected]: true,
 		};
 	}
 }

@@ -1,93 +1,94 @@
+import { IDictionary, TKeysOf } from "@xde/common";
 import { Debugger } from "debug";
 
 import { appDebug } from "../helpers/debug";
-import { ILambda } from "../helpers/lambdas";
-import { Aspect, AspectType, IObject } from "../models";
-import { ObjectFlow } from "./ObjectFlow";
+import { ILambdaPrimitive, ILambdaDeep } from "../helpers/lambdas";
+import { AspectType } from "../models";
+import { AnyFunctor } from "./models";
 
 const debug = appDebug.extend("Functor");
 
-export type LambdaAspect<TAspect extends string = Aspect> = {
-	aspect: TAspect | Array<TAspect | TAspect[]>;
-	lambda: ILambda<TAspect>;
+export type LambdaPrimitiveAspect<TPartial extends IDictionary> = {
+	aspect: TKeysOf<TPartial> | Array<TKeysOf<TPartial>>;
+	// TODO: Existential type from aspect?
+	lambda: ILambdaPrimitive<TPartial>;
 };
 
-export type IFunctorFrom<TAspect extends string = Aspect> = TAspect | LambdaAspect<TAspect>;
+export type LambdaDeepAspect<TPartial extends IDictionary> = {
+	aspect: Array<Array<TKeysOf<TPartial>>>;
+	// TODO: Existential type from aspect?
+	lambda: ILambdaDeep<TPartial>;
+};
 
-export type IFunctorTo<TAspect extends string = Aspect> =
-	| TAspect
-	| (LambdaAspect<TAspect> & {
+export type LambdaAspect<TPartial extends IDictionary> =
+	| LambdaPrimitiveAspect<TPartial>
+	| LambdaDeepAspect<TPartial>;
+
+export type IFunctorFrom<TFrom extends IDictionary> = TKeysOf<TFrom> | LambdaAspect<TFrom>;
+
+export type IFunctorTo<TTo extends IDictionary> =
+	| TKeysOf<TTo>
+	| (LambdaAspect<TTo> & {
 			/**
 			 * Run despite it's look like aspects producing already exists in the object
 			 */
 			force?: boolean;
 	  });
 
-// 2 типа функторов - композитный и примитивный. по умолчанию - композитный
-export interface IFunctor<TAspect extends string = Aspect> {
+export interface IFunctor<TFrom extends IDictionary, TTo extends IDictionary> {
 	name: string;
 
 	/**
 	 * Category to map from
 	 */
-	from: Array<IFunctorFrom<TAspect>>;
+	from: Array<IFunctorFrom<TFrom>>;
 
 	/**
 	 * Category maps to
 	 */
-	to: Array<IFunctorTo<TAspect>>;
-
-	children: IFunctor<TAspect>[];
-	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void;
-
-	/**
-	 * Maps from [from category] to [to category].
-	 * Rewrite me to make primitive functor.
-	 */
-	map(obj: IObject): IObject | Promise<Object>;
-
-	/**
-	 * Replaces map method for one of children
-	 * @param existing Replace map method for this functor
-	 * @param newMap Map function to replace with
-	 */
-	mapReplace(existing: IFunctor<TAspect>, newMap: IFunctor<TAspect>["map"]): void;
-	mapReplacements: { [key: string]: IFunctor<TAspect>["map"] };
+	to: Array<IFunctorTo<TTo>>;
 }
 
-export type AspectsTyped<TAspect extends string = Aspect> = {
-	aspect: LambdaAspect<TAspect>["aspect"];
+export type AspectsTyped<TPartial extends IDictionary> = {
+	aspect: LambdaAspect<TPartial>["aspect"];
 	type: AspectType;
 };
-export interface IFunctorExplained<TAspect extends string = Aspect> {
+export interface IFunctorExplained<TFrom extends IDictionary, TTo extends IDictionary> {
 	functorName: string;
-	from: AspectsTyped<TAspect>[];
-	to: AspectsTyped<TAspect>[];
-	children?: IFunctorExplained<TAspect>[];
+	from: AspectsTyped<TFrom>[];
+	to: AspectsTyped<TTo>[];
+	children?: IFunctorExplained<any, any>[];
 }
 
-export abstract class Functor<TAspect extends string = Aspect> implements IFunctor<TAspect> {
+export abstract class Functor<TFrom extends IDictionary, TTo extends IDictionary>
+	implements IFunctor<TFrom, TTo> {
 	// Allows to debug some info when overriding "map" method
 	public static debugger: Debugger = debug;
 
+	abstract from: IFunctor<TFrom, TTo>["from"];
+	abstract to: IFunctor<TFrom, TTo>["to"];
+	abstract name: IFunctor<TFrom, TTo>["name"];
+
 	// TODO: Test coverage
-	public static explain<T extends string>(functor: IFunctor<T>): IFunctorExplained<T> {
-		const from: AspectsTyped<T>[] = [];
-		const to: AspectsTyped<T>[] = [];
+	public static explain<TFrom extends IDictionary, TTo extends IDictionary>(
+		functor: AnyFunctor<TFrom, TTo>
+	): IFunctorExplained<TFrom, TTo> {
+		const from: AspectsTyped<TFrom>[] = [];
+		const to: AspectsTyped<TTo>[] = [];
 
 		const add = (
-			description: Array<IFunctorFrom<T>> | Array<IFunctorTo<T>>,
-			arr: AspectsTyped<T>[]
+			description: Array<IFunctorFrom<TFrom>> | Array<IFunctorTo<TTo>>,
+			arr: AspectsTyped<TFrom>[] | AspectsTyped<TTo>[]
 		): void => {
-			description.forEach((x) => {
+			description.forEach((x: keyof TFrom | keyof TTo | LambdaAspect<any>) => {
 				if (typeof x === "object") {
 					if (x.lambda.type) {
-						arr.push({ aspect: x.aspect, type: x.lambda.type });
+						arr.push({ aspect: x.aspect as any, type: x.lambda.type });
 					} else {
-						arr.push({ aspect: x.aspect, type: AspectType.SpecificValue });
+						arr.push({ aspect: x.aspect as any, type: AspectType.SpecificValue });
 					}
 				} else {
-					arr.push({ aspect: x, type: AspectType.Exists });
+					arr.push({ aspect: x as any, type: AspectType.Exists });
 				}
 			});
 		};
@@ -99,76 +100,10 @@ export abstract class Functor<TAspect extends string = Aspect> implements IFunct
 			functorName: functor.name,
 			from,
 			to,
-			children: functor.children.length
-				? functor.children.map((f) => Functor.explain<T>(f))
-				: undefined,
+			children:
+				"children" in functor
+					? functor.children.map((f) => Functor.explain<any, any>(f))
+					: undefined,
 		};
-	}
-
-	abstract from: IFunctor<TAspect>["from"];
-	abstract to: IFunctor<TAspect>["to"];
-	abstract name: string;
-
-	children: IFunctor<TAspect>[] = [];
-	mapReplacements: IFunctor<TAspect>["mapReplacements"] = {};
-
-	map(obj: IObject): IObject | Promise<IObject> {
-		if (!this.children.length) {
-			throw new Error(
-				"You should either add children functors to the composite functor or make it primitive by overriding this method."
-			);
-		}
-
-		const objectFlow = new ObjectFlow<TAspect>(obj);
-
-		return objectFlow
-			.process(this.children, this.mapReplacements)
-			.then(() => objectFlow.object);
-
-		// TODO: Validate with 'to' - if not - throw! now handled by ObjectFlow
-	}
-
-	addChildren(functor: IFunctor<TAspect> | IFunctor<TAspect>[]): void {
-		if (Array.isArray(functor)) {
-			functor.forEach((f) => this.addChild(f));
-		} else {
-			this.addChild(functor);
-		}
-	}
-
-	mapReplace(existing: IFunctor<TAspect>, newMap: IFunctor<TAspect>["map"]): void {
-		if (!this.children.includes(existing)) {
-			throw new Error(
-				"It is not possible to replace method of unregistered child functor. Add it first."
-			);
-		}
-
-		this.mapReplacements[existing.name] = newMap;
-	}
-
-	private addChild(functor: IFunctor<TAspect>): void {
-		if (!functor.from.length) {
-			throw new Error("Empty from: Functor will never be invoked.");
-		}
-		if (
-			this.children.indexOf(functor) !== -1 ||
-			this.children.findIndex((f) => f.name === functor.name) !== -1
-		) {
-			throw new Error(
-				`Can't register duplicate functor ${functor.name} as a child for ${this.name}`
-			);
-		}
-		this.children.push(functor);
-		debug(`Functor ${functor.name} added as a child for ${this.name}`);
-	}
-}
-
-export class CompositeFunctor<TAspect extends string = Aspect> extends Functor<TAspect> {
-	constructor(
-		public name: Functor<TAspect>["name"],
-		public from: Functor<TAspect>["from"],
-		public to: Functor<TAspect>["to"]
-	) {
-		super();
 	}
 }

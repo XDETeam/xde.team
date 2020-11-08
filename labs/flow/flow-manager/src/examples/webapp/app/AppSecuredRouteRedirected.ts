@@ -1,28 +1,41 @@
-import { Functor } from "../../../functor/Functor";
-import { PartialObject } from "../../../helpers/lambdas";
-import { Aspect } from "../../../models";
+import {
+	THttpRouted,
+	THttpSecured,
+	HttpSecured,
+	HttpRouted,
+	HttpHeaders,
+	THttpHeaders,
+	THttpStatusCode,
+	HttpStatusCode,
+} from "@xde/aspects";
 
-export class AppSecuredRouteRedirected extends Functor {
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+
+export class AppSecuredRouteRedirected extends PrimitiveFunctor<
+	THttpRouted & THttpSecured,
+	THttpHeaders & THttpStatusCode
+> {
 	name = "AppSecuredRouteRedirected";
 	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: string }>) =>
-				!!obj[Aspect.HttpRouted]?.startsWith("/security/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
 		},
 		{
-			aspect: Aspect.Secured,
-			lambda: (obj: PartialObject<Aspect.Secured, { [Aspect.Secured]?: boolean }>) =>
-				obj[Aspect.Secured] === false,
+			aspect: HttpSecured,
+			lambda: (obj: THttpSecured) => obj[HttpSecured] === false,
 		},
 	];
-	to = [Aspect.LocationHeader, Aspect.ResponseCode];
+	to = [HttpHeaders, HttpStatusCode];
 
-	map(obj: { [Aspect.HttpRouted]: string }): {} {
+	distinct(obj: THttpRouted): THttpHeaders & THttpStatusCode {
 		return {
-			...obj,
-			[Aspect.LocationHeader]: `https://${obj[Aspect.HttpRouted]}`,
-			[Aspect.ResponseCode]: 301,
+			[HttpHeaders]: {
+				Location: `https://${obj[HttpRouted].hostname}${
+					obj[HttpRouted].nonStandardPort ? `:${obj[HttpRouted].nonStandardPort}` : ""
+				}${obj[HttpRouted].originalUrl}`,
+			},
+			[HttpStatusCode]: 301,
 		};
 	}
 }

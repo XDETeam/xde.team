@@ -1,16 +1,26 @@
+import { IDictionary } from "@xde/common";
+
 import { AspectType } from "../models";
 
-export type PartialObject<
-	TAspect extends string,
-	TObject extends { [key in TAspect]?: any }
-> = TObject;
-
-export interface ILambda<TAspect extends string> {
-	(partial: PartialObject<TAspect, any> | PartialObject<TAspect, any>[]): boolean;
+export interface ILambdaCommon {
 	type?: AspectType;
 }
 
-export const Some: ILambda<any> = (partial) => {
+export interface ILambdaPrimitive<TPartial extends IDictionary> extends ILambdaCommon {
+	(partial: TPartial): boolean;
+}
+
+/**
+ * When aspects specified as array of arrays.
+ */
+export interface ILambdaDeep<TPartial extends IDictionary> extends ILambdaCommon {
+	(partial: TPartial[]): boolean;
+}
+
+export type Lambda<TPartial extends IDictionary> = ILambdaPrimitive<TPartial> &
+	ILambdaDeep<TPartial>;
+
+export const Some: Lambda<any> = (partial: IDictionary | IDictionary[]) => {
 	if (!Array.isArray(partial)) {
 		return Object.keys(partial).some((aspect) => partial[aspect] !== undefined);
 	} else {
@@ -24,10 +34,10 @@ Some.type = AspectType.Some;
 /**
  * Useful for visualizations
  */
-export const Optional: ILambda<any> = () => true;
+export const Optional: Lambda<any> = () => true;
 Optional.type = AspectType.Optional;
 
-export const Undefined: ILambda<any> = (partial) => {
+export const Undefined: Lambda<any> = (partial: IDictionary | IDictionary[]) => {
 	if (!Array.isArray(partial)) {
 		return Object.keys(partial).every((aspect) => partial[aspect] === undefined);
 	} else {
@@ -38,7 +48,7 @@ export const Undefined: ILambda<any> = (partial) => {
 };
 Undefined.type = AspectType.Undefined;
 
-export const Exists: ILambda<any> = (partial) => {
+export const Exists: Lambda<any> = (partial: IDictionary | IDictionary[]) => {
 	if (!Array.isArray(partial)) {
 		return Object.keys(partial).every((aspect) => partial[aspect] !== undefined);
 	} else {

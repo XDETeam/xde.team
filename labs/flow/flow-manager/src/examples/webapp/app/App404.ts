@@ -1,20 +1,33 @@
-import { Functor } from "../../../functor/Functor";
-import { Undefined } from "../../../helpers/lambdas";
-import { Aspect } from "../../../models";
+import {
+	TGeneratedHtml,
+	GeneratedHtml,
+	THttpRedirected,
+	HttpRedirected,
+	THttpRouted,
+	HttpRouted,
+	THttpStatusCode,
+	HttpStatusCode,
+} from "@xde/aspects";
+import { TUndefined } from "@xde/common";
 
-export class App404 extends Functor {
+import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+import { Undefined } from "../../../helpers/lambdas";
+
+export class App404 extends PrimitiveFunctor<
+	TUndefined<TGeneratedHtml> & TUndefined<THttpRedirected> & THttpRouted,
+	THttpStatusCode
+> {
 	name = "App404";
 	from = [
-		{ aspect: [Aspect.GeneratedHtml, Aspect.Redirected], lambda: Undefined },
+		{ aspect: [GeneratedHtml, HttpRedirected], lambda: Undefined },
 		// To ensure we are not adding 404 handling for something that doesn't need it.
-		Aspect.HttpRouted,
+		HttpRouted,
 	];
-	to = [Aspect.ResponseCode];
+	to = [HttpStatusCode];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[Aspect.ResponseCode]: 404,
+			[HttpStatusCode]: 404,
 		};
 	}
 }
