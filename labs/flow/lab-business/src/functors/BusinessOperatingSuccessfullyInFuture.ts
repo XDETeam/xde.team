@@ -1,21 +1,40 @@
-import { Functor } from "@xde/flow-manager";
-import { BusinessAspect } from "./model";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-export class BusinessOperatingSuccessfullyInFuture extends Functor<BusinessAspect> {
+import {
+	Money,
+	TMoney,
+	TRefundedAmount,
+	RefundedAmount,
+	TBusinessOperatingSuccessfullyInFuture,
+	BusinessOperatingSuccessfullyInFuture as BusinessOperatingSuccessfullyInFutureAspect,
+	StudentsAppointed,
+	TStudentsAppointed,
+	NiceClassRoomed,
+	TNiceClassRoomed,
+	Legal,
+	TLegal,
+} from "../models";
+
+export class BusinessOperatingSuccessfullyInFuture extends PrimitiveFunctor<
+	TMoney & TRefundedAmount & TStudentsAppointed & TNiceClassRoomed & TLegal,
+	TBusinessOperatingSuccessfullyInFuture
+> {
 	name = "BusinessOperatingSuccessfullyInFuture";
 	from = [
-		{ aspect: BusinessAspect.Money, lambda: (amount: string) => +amount > -100 },
-		{ aspect: BusinessAspect.RefundedAmount, lambda: (amount: number) => amount < 0.05 },
-		{ aspect: BusinessAspect.StudentsAppointed, lambda: (students: number) => students > 30 },
-		BusinessAspect.NiceClassRoomed,
-		BusinessAspect.Legaled,
+		{ aspect: Money, lambda: (obj: TMoney) => obj[Money] > -100 },
+		{ aspect: RefundedAmount, lambda: (obj: TRefundedAmount) => obj[RefundedAmount] < 0.05 },
+		{
+			aspect: StudentsAppointed,
+			lambda: (obj: TStudentsAppointed) => obj[StudentsAppointed] > 30,
+		},
+		NiceClassRoomed,
+		Legal,
 	];
-	to = [BusinessAspect.BusinessOperatingSuccessfullyInFuture];
+	to = [BusinessOperatingSuccessfullyInFutureAspect];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[BusinessAspect.BusinessOperatingSuccessfullyInFuture]: true,
+			[BusinessOperatingSuccessfullyInFutureAspect]: true,
 		};
 	}
 }

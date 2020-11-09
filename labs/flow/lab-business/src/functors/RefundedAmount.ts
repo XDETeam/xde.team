@@ -1,20 +1,29 @@
-import { Functor } from "@xde/flow-manager";
-import { BusinessAspect } from "./model";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-export class RefundedAmount extends Functor<BusinessAspect> {
+import {
+	RefundedAmount as RefundedAmountAspect,
+	TMoney,
+	Money,
+	TRefundedAmount,
+	StudentHappy,
+	TStudentHappy,
+} from "../models";
+
+export class RefundedAmount extends PrimitiveFunctor<
+	TMoney & TStudentHappy,
+	TRefundedAmount & TMoney
+> {
 	name = "RefundedAmount";
 	from = [
-		{ aspect: BusinessAspect.Money, lambda: (amount: string) => +amount > 10 },
-		{ aspect: BusinessAspect.StudentHappy, lambda: (happiness: number) => happiness < 1 },
+		{ aspect: Money, lambda: (obj: TMoney) => obj[Money] > 10 },
+		{ aspect: StudentHappy, lambda: (obj: TStudentHappy) => obj[StudentHappy] < 1 },
 	];
-	to = [BusinessAspect.RefundedAmount, BusinessAspect.Money];
+	to = [RefundedAmountAspect, Money];
 
-	map(obj: {}): {} {
+	distinct(obj: TMoney) {
 		return {
-			...obj,
-			[BusinessAspect.RefundedAmount]: true,
-			// TODO: Calculations
-			[BusinessAspect.Money]: true,
+			[RefundedAmountAspect]: 0.1,
+			[Money]: obj[Money] - 1,
 		};
 	}
 }

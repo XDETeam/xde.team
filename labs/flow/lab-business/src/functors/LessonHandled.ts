@@ -1,20 +1,29 @@
-import { Functor } from "@xde/flow-manager";
-import { BusinessAspect } from "./model";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-export class LessonHandled extends Functor<BusinessAspect> {
+import {
+	CoursePrepared,
+	TCoursePrepared,
+	TLessonsHandled,
+	StudentsAppointed,
+	TStudentsAppointed,
+	LessonsHandled as LessonsHandledAspect,
+	Teachered,
+	TTeachered,
+	ClassRoomed,
+	TClassRoomed,
+} from "../models";
+
+export class LessonHandled extends PrimitiveFunctor<
+	TCoursePrepared & TStudentsAppointed & TTeachered & TClassRoomed,
+	TLessonsHandled
+> {
 	name = "LessonHandled";
-	from = [
-		BusinessAspect.CoursePrepared,
-		BusinessAspect.StudentsAppointed,
-		BusinessAspect.Teachered,
-		BusinessAspect.ClassRoomed,
-	];
-	to = [BusinessAspect.LessonHandled];
+	from = [CoursePrepared, StudentsAppointed, Teachered, ClassRoomed];
+	to = [LessonsHandledAspect];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[BusinessAspect.LessonHandled]: true,
+			[LessonsHandledAspect]: 1,
 		};
 	}
 }

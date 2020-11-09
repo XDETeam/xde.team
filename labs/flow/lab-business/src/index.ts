@@ -6,7 +6,6 @@ import businessOperatingSuccessfullyInFutureInstance from "./functors/BusinessOp
 import courseHandledInstance from "./functors/CourseHandled";
 import coursePreparedInstance from "./functors/CoursePrepared";
 import lessonHandledInstance from "./functors/LessonHandled";
-import { BusinessAspect } from "./functors/model";
 import refundedAmountInstance from "./functors/RefundedAmount";
 import studentHandledInstance from "./functors/StudentHandled";
 import studentHappyInstance from "./functors/StudentHappy";
@@ -14,7 +13,12 @@ import studentInterestedInstance from "./functors/StudentInterested";
 import teacheredInstance from "./functors/Teachered";
 import teachersSalariedInstance from "./functors/TeachersSalaried";
 
-export const root = new CompositeFunctor<BusinessAspect>("root", [], []);
+class Root extends CompositeFunctor<any, any> {
+	name = "root";
+	from = [];
+	to = [];
+}
+export const root = new Root();
 root.addChildren([
 	administratoredInstance,
 	businessOperatingSuccessfullyInstance,
