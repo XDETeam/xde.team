@@ -23,6 +23,12 @@ f_POST([routed: routed.path === api/user && routed.method === POST], [rawUserPos
 Если достаточно долго спекулировать, то это сводится к тому, чтобы лямбда могла записывать в объект аспекты.
 
 ```
+extend ILambda with {optionalTo?: TAspect;}
+
+interface ILambdaError<TError, TAspect extends string> {aspect: TAspect;data: TError;}
+```
+
+```
 f_GET([supportedMethods && routed: routed.path === api/user && (routed.method === GET || obj.supportedMethods.push(GET)], [rawUserGetRequest])
 
 f_POST([supportedMethods && routed: routed.path === api/user && (routed.method === POST || obj.supportedMethods.push(POST)], [rawUserGetRequest])
