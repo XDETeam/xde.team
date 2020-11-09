@@ -1,12 +1,18 @@
-import { AspectType, Functor, IFunctor, IFunctorExplained, AspectsTyped } from "@xde/flow-manager";
+import {
+	AspectType,
+	Functor,
+	AnyFunctor,
+	IFunctorExplained,
+	AspectsTyped,
+} from "@xde/flow-manager";
 import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "./GraphData";
 
 export interface IGraphConverter {
-	toGraphData(functor: IFunctor): GraphData["data"];
+	toGraphData(functor: AnyFunctor): GraphData["data"];
 }
 
 export class GraphConverter implements IGraphConverter {
-	toGraphData(functor: IFunctor): GraphData["data"] {
+	toGraphData(functor: AnyFunctor): GraphData["data"] {
 		const explained = Functor.explain(functor);
 
 		const data = new GraphData();
@@ -20,7 +26,7 @@ export class GraphConverter implements IGraphConverter {
 	}
 
 	process(
-		explanation: IFunctorExplained,
+		explanation: IFunctorExplained<any, any>,
 		data: IGraphData,
 		parent?: GraphNode,
 		idx: number = 0
@@ -60,7 +66,7 @@ export class GraphConverter implements IGraphConverter {
 	}
 
 	private handleExplanation(
-		explanation: AspectsTyped,
+		explanation: AspectsTyped<any>,
 		data: IGraphData,
 		explanationNode: GraphNode,
 		i: string,
@@ -78,7 +84,7 @@ export class GraphConverter implements IGraphConverter {
 				target: inverse ? outerNode.id : explanationNode.id,
 				type: AspectType.Exists,
 			});
-			explanation.aspect.forEach((aspect, j) => {
+			explanation.aspect.forEach((aspect: any | any[], j: number) => {
 				if (Array.isArray(aspect)) {
 					const innerNode = data.addNode({
 						id: this.getName(`${inverse ? "To" : "From"}Group${i}.${j}`, parent?.id),
@@ -129,8 +135,8 @@ export class GraphConverter implements IGraphConverter {
 		}
 	}
 
-	private getName(name: string, namespace?: string): string {
-		return namespace ? `${namespace}.${name}` : name;
+	private getName(name: string | number | symbol, namespace?: string): string {
+		return namespace ? `${namespace}.${String(name)}` : String(name);
 	}
 }
 

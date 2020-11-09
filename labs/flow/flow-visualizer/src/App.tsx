@@ -6,7 +6,7 @@ import { root } from "@xde/webapp-express/dist/functors/app.js";
 import MeshComponent from "./components/MeshComponent";
 
 function App() {
-	return <MeshComponent functor={root} />;
+	return <MeshComponent functor={webapp} />;
 }
 
 export default App;

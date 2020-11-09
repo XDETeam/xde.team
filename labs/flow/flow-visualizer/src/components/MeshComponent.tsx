@@ -1,12 +1,12 @@
 import React, { FC, useMemo, useRef, useEffect } from "react";
 import { forceCollide } from "d3-force";
 import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
-import { IFunctor } from "@xde/flow-manager";
+import { AnyFunctor } from "@xde/flow-manager";
 import graphConverterInstance from "../models/GraphConverter";
 import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type MeshComponentProps = {
-	functor: IFunctor<any>;
+	functor: AnyFunctor;
 };
 
 // TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
