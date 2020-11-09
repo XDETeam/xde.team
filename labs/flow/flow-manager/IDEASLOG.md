@@ -1,3 +1,10 @@
+# [Rejected] 2020-11-09 - Aspect validation
+
+When describing aspects - provide also validation function.
+E.g., for percentage values - not more than 1.
+
+Could be achieved with Functor ValidAspect when required.
+
 # 2020-10-13 - Forbid same "to" functors
 
 Сейчас для объекта `obj` среди доступных функторов отбираются те, для которых `fromAllow` и `toAllow` разрешают работу. Происходит это итерационно. Отобрался пул функторов, которые могут работать с текущим объектом - и они параллельно выполняются.
@@ -25,7 +32,7 @@ f_POST([routed: routed.path === api/user && routed.method === POST], [rawUserPos
 ```
 extend ILambda with {optionalTo?: TAspect;}
 
-interface ILambdaError<TError, TAspect extends string> {aspect: TAspect;data: TError;}
+interface ILambdaError<TError, TAspect extends string> {aspect: TAspect; data: TError;}
 ```
 
 ```
