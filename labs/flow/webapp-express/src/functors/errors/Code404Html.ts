@@ -1,29 +1,34 @@
-import { Functor, PartialObject } from "@xde/flow-manager";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	TEndpointType,
+	EndpointType,
+	Endpoint,
+	TGeneratedHtml,
+	GeneratedHtml,
+} from "@xde/aspects";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-import { Aspect } from "../../models/aspects";
-import { EndpointType } from "../http/HttpEndpointTyped";
-
-export class Code404Html extends Functor<Aspect> {
+export class Code404Html extends PrimitiveFunctor<
+	THttpStatusCode<404> & TEndpointType,
+	TGeneratedHtml
+> {
 	name = "Code404Html";
 	from = [
 		{
-			aspect: Aspect.ResponseCode,
-			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
-				obj[Aspect.ResponseCode] === 404,
+			aspect: HttpStatusCode,
+			lambda: (obj: THttpStatusCode<404>) => obj[HttpStatusCode] === 404,
 		},
 		{
-			aspect: Aspect.EndpointType,
-			lambda: (
-				obj: PartialObject<Aspect.EndpointType, { [Aspect.EndpointType]?: EndpointType }>
-			) => obj[Aspect.EndpointType] === EndpointType.Html,
+			aspect: EndpointType,
+			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
 		},
 	];
-	to = [Aspect.GeneratedHtml];
+	to = [GeneratedHtml];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[Aspect.GeneratedHtml]: "<div>404 page</div>",
+			[GeneratedHtml]: "<div>404 page</div>",
 		};
 	}
 }

@@ -1,24 +1,43 @@
-import { TCommonApiResponse, Password } from "@xde/common";
-import { Functor, Optional } from "@xde/flow-manager";
+import { PrimitiveFunctor, Optional } from "@xde/flow-manager";
+import { Password } from "@xde/common";
+import {
+	GeneratedApiBody,
+	HttpStatusCode,
+	HttpHeaders,
+	TLocationHeader,
+	TGeneratedApiBody,
+	THttpStatusCode,
+	THttpHeaders,
+} from "@xde/aspects";
+import { EndpointErrorCode } from "@xde/endpoint-error-codes";
 
 import { connection } from "../../../../db";
-import { Aspect } from "../../../../models/aspects";
-import { TSignUpRequest } from "../../../../models/user/SignUpRequest";
 import { User } from "../../../../models/user/User";
+import { ApiValidSignUpRequest, TApiValidSignUpRequest } from "../../../../models/aspects";
 
-export class ApiProcessedSignUpRequested extends Functor<Aspect> {
+export class ApiProcessedSignUpRequested extends PrimitiveFunctor<
+	TApiValidSignUpRequest & Partial<THttpHeaders>,
+	TGeneratedApiBody & THttpStatusCode & Partial<THttpHeaders<TLocationHeader>>
+> {
 	name = "ApiProcessedSignUpRequested";
-	from = [Aspect.ApiValidSignUpRequest];
-	to = [
-		Aspect.GeneratedApiBody,
-		Aspect.ResponseCode,
+	from = [
+		ApiValidSignUpRequest,
 		{
-			aspect: [Aspect.LocationHeader],
+			aspect: [HttpHeaders],
 			lambda: Optional,
 		},
 	];
+	to = [
+		GeneratedApiBody,
+		HttpStatusCode,
+		{
+			aspect: [HttpHeaders],
+			lambda: Optional,
+			force: true,
+		},
+	];
 
-	async map(obj: { [Aspect.ApiValidSignUpRequest]: TSignUpRequest }): Promise<{}> {
+	async distinct(obj: TApiValidSignUpRequest & Partial<THttpHeaders<TLocationHeader>>) {
 		let error: string | undefined = undefined;
 
 		const createdId: number | undefined = await connection
@@ -28,10 +47,10 @@ export class ApiProcessedSignUpRequested extends Functor<Aspect> {
 					return undefined;
 				} else {
 					const user = new User();
-					user.name = obj[Aspect.ApiValidSignUpRequest].name;
-					user.email = obj[Aspect.ApiValidSignUpRequest].email;
+					user.name = obj[ApiValidSignUpRequest].name;
+					user.email = obj[ApiValidSignUpRequest].email;
 					user.password = Password.hash(
-						obj[Aspect.ApiValidSignUpRequest].password,
+						obj[ApiValidSignUpRequest].password,
 						process.env.SALT!
 					);
 
@@ -44,26 +63,25 @@ export class ApiProcessedSignUpRequested extends Functor<Aspect> {
 			});
 
 		if (createdId) {
-			const response: TCommonApiResponse<{ id: User["id"] }> = {
-				result: true,
-				data: { id: createdId },
-			};
 			return {
-				...obj,
-				[Aspect.ResponseCode]: 201,
-				[Aspect.LocationHeader]: "/",
-				[Aspect.GeneratedApiBody]: response,
+				[HttpStatusCode]: 201,
+				[HttpHeaders]: {
+					...obj[HttpHeaders],
+					Location: "/",
+				},
+				[GeneratedApiBody]: {
+					result: true,
+					data: { id: createdId },
+				},
 			};
 		} else {
-			const response: TCommonApiResponse = {
-				result: false,
-				code: "InternalServerError",
-				message: error,
-			};
 			return {
-				...obj,
-				[Aspect.ResponseCode]: 500,
-				[Aspect.GeneratedApiBody]: response,
+				[HttpStatusCode]: 500,
+				[GeneratedApiBody]: {
+					result: false,
+					code: EndpointErrorCode.InternalServerError,
+					message: error,
+				},
 			};
 		}
 	}

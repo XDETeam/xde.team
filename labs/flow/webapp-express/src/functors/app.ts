@@ -1,4 +1,35 @@
 import { CompositeFunctor, Some, Optional } from "@xde/flow-manager";
+import {
+	NodejsExpressRequest,
+	TNodejsExpressRequest,
+	NodejsExpressResponse,
+	TNodejsExpressResponse,
+	SentHtml,
+	HttpRedirected,
+	SentApiResponse,
+	TSentHtml,
+	THttpRedirected,
+	TSentApiResponse,
+	THttpEnded,
+	HttpEnded,
+	VisitorRoled,
+	TVisitorRoled,
+	HttpHeaders,
+	THttpHeaders,
+	THttpStatusCode,
+	HttpStatusCode,
+	GeneratedApiBody,
+	TGeneratedApiBody,
+	GeneratedHtml,
+	TGeneratedHtml,
+	TLocationHeader,
+	HttpRouted,
+	THttpRouted,
+	HttpSecured,
+	THttpSecured,
+	EndpointType,
+	TEndpointType,
+} from "@xde/aspects";
 
 import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
@@ -11,30 +42,41 @@ import code301RedirectedInstance from "./http/Code301Redirected";
 import htmlRendererInstance from "./http/HtmlSender";
 import httpRoutedInstance from "./http/HttpRouted";
 import httpSecuredInstance from "./http/HttpSecured";
-import httpUserRoledInstance from "./security/HttpUserRoled";
-import { Aspect } from "../models/aspects";
+import httpVisitorRoledInstance from "./security/HttpVisitorRoled";
 import httpEndedInstance from "./http/HttpEnded";
 import { api } from "./app/api/module";
 import httpEndpointTypedInstance from "./http/HttpEndpointTyped";
 import apiSenderInstance from "./http/ApiSender";
 
-const renderer = new CompositeFunctor<Aspect>(
-	"renderer",
-	[
-		Aspect.HttpResponse,
+export class Renderer extends CompositeFunctor<
+	TNodejsExpressResponse &
+		Partial<THttpHeaders> &
+		(
+			| THttpStatusCode
+			| TGeneratedApiBody
+			| TGeneratedHtml
+			| (THttpHeaders<TLocationHeader> & THttpStatusCode)
+		),
+	TSentHtml | THttpRedirected | TSentApiResponse
+> {
+	name = "renderer";
+	from = [
+		NodejsExpressResponse,
 		{
 			aspect: [
-				Aspect.ResponseCode,
-				Aspect.GeneratedApiBody,
-				[Aspect.ResponseCode, Aspect.LocationHeader],
-				Aspect.GeneratedHtml,
+				[HttpStatusCode],
+				[GeneratedApiBody],
+				// TODO: Http location header
+				[HttpStatusCode, HttpHeaders],
+				[GeneratedHtml],
 			],
 			lambda: Some,
 		},
-		{ aspect: Aspect.AdditionalHeaders, lambda: Optional },
-	],
-	[{ aspect: [Aspect.SentHtml, Aspect.Redirected, Aspect.SentApiResponse], lambda: Some }]
-);
+		{ aspect: HttpHeaders, lambda: Optional },
+	];
+	to = [{ aspect: [SentHtml, HttpRedirected, SentApiResponse], lambda: Some }];
+}
+const renderer = new Renderer();
 renderer.addChildren([
 	code404HtmlInstance,
 	code401HtmlInstance,
@@ -43,40 +85,54 @@ renderer.addChildren([
 	apiSenderInstance,
 ]);
 
-const basicApp = new CompositeFunctor<Aspect>(
-	"basicApp",
-	[Aspect.HttpRequest],
-	[
-		Aspect.HttpRouted,
-		Aspect.Secured,
-		Aspect.UserRoled,
-		Aspect.EndpointType,
+export class BasicApp extends CompositeFunctor<
+	TNodejsExpressRequest,
+	THttpRouted &
+		THttpSecured &
+		TVisitorRoled &
+		TEndpointType &
+		(THttpRouted | TGeneratedHtml | THttpStatusCode | (THttpStatusCode & THttpHeaders))
+> {
+	name = "BasicApp";
+	from = [NodejsExpressRequest];
+	to = [
+		HttpRouted,
+		HttpSecured,
+		VisitorRoled,
+		EndpointType,
 		{
 			aspect: [
-				Aspect.HttpRouted,
-				[Aspect.LocationHeader, Aspect.ResponseCode],
-				Aspect.ResponseCode,
-				Aspect.GeneratedHtml,
+				[HttpRouted],
+				// TODO: Http location header
+				[HttpStatusCode, HttpHeaders],
+				[HttpStatusCode],
+				[GeneratedHtml],
 			],
 			lambda: Some,
 		},
-	]
-);
+	];
+}
+const basicApp = new BasicApp();
+
 basicApp.addChildren([
 	admin401Instance,
 	adminPanelHtmlInstance,
 	appAdminRouteAllowedInstance,
 	appSecuredRouteRedirectedInstance,
-	httpUserRoledInstance,
+	httpVisitorRoledInstance,
 	httpRoutedInstance,
 	httpSecuredInstance,
 	httpEndpointTypedInstance,
 ]);
 
-export const root = new CompositeFunctor<Aspect>(
-	"root",
-	[Aspect.HttpRequest, Aspect.HttpResponse],
-	[Aspect.Ended]
-);
+export class Root extends CompositeFunctor<
+	TNodejsExpressRequest & TNodejsExpressResponse,
+	THttpEnded
+> {
+	name = "Root";
+	from = [NodejsExpressRequest, NodejsExpressResponse];
+	to = [HttpEnded];
+}
+export const root = new Root();
 // app404Instance
 root.addChildren([basicApp, renderer, httpEndedInstance, api]);

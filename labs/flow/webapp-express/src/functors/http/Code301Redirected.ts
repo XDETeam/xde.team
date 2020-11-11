@@ -1,31 +1,39 @@
-import { Functor, PartialObject } from "@xde/flow-manager";
-import { Response } from "express";
+import { PrimitiveFunctor, Functor } from "@xde/flow-manager";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	NodejsExpressResponse,
+	TNodejsExpressResponse,
+	THttpHeaders,
+	TLocationHeader,
+	HttpHeaders,
+	THttpRedirected,
+	HttpRedirected,
+} from "@xde/aspects";
 
-import { Aspect } from "../../models/aspects";
-
-export class Code301Redirected extends Functor<Aspect> {
+export class Code301Redirected extends PrimitiveFunctor<
+	TNodejsExpressResponse & THttpStatusCode<301> & THttpHeaders<TLocationHeader>,
+	THttpRedirected
+> {
 	name = "Code301Redirected";
 	from = [
-		Aspect.HttpResponse,
+		NodejsExpressResponse,
 		{
-			aspect: Aspect.ResponseCode,
-			lambda: (obj: PartialObject<Aspect.ResponseCode, { [Aspect.ResponseCode]?: number }>) =>
-				obj[Aspect.ResponseCode] === 301,
+			aspect: HttpStatusCode,
+			lambda: (obj: THttpStatusCode<301>) => obj[HttpStatusCode] === 301,
 		},
-		Aspect.LocationHeader,
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: THttpHeaders<TLocationHeader>) => !!obj[HttpHeaders].Location,
+		},
 	];
-	to = [Aspect.Redirected];
+	to = [HttpRedirected];
 
-	map(obj: {
-		[Aspect.HttpResponse]: Response;
-		[Aspect.LocationHeader]: string;
-		[Aspect.ResponseCode]: 301;
-	}): {} {
-		obj[Aspect.HttpResponse].redirect(obj[Aspect.ResponseCode], obj[Aspect.LocationHeader]);
-		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[Aspect.LocationHeader]}`);
+	distinct(obj: TNodejsExpressResponse & THttpStatusCode<301> & THttpHeaders<TLocationHeader>) {
+		obj[NodejsExpressResponse].redirect(obj[HttpStatusCode], obj[HttpHeaders].Location);
+		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[HttpHeaders].Location}`);
 		return {
-			...obj,
-			[Aspect.Redirected]: true,
+			[HttpRedirected]: true,
 		};
 	}
 }

@@ -1,22 +1,28 @@
-import { Functor, Some } from "@xde/flow-manager";
-import { Response } from "express";
+import { PrimitiveFunctor, Some } from "@xde/flow-manager";
+import {
+	NodejsExpressResponse,
+	TNodejsExpressResponse,
+	TSentHtml,
+	SentHtml,
+	SentApiResponse,
+	TSentApiResponse,
+	HttpEnded as HttpEndedAspect,
+	THttpEnded,
+} from "@xde/aspects";
 
-import { Aspect } from "../../models/aspects";
-
-export class HttpEnded extends Functor<Aspect> {
+export class HttpEnded extends PrimitiveFunctor<
+	TNodejsExpressResponse & (TSentHtml | TSentApiResponse),
+	THttpEnded
+> {
 	name = "HttpEnded";
-	from = [
-		{ aspect: [Aspect.SentHtml, Aspect.SentApiResponse], lambda: Some },
-		Aspect.HttpResponse,
-	];
-	to = [Aspect.Ended];
+	from = [{ aspect: [SentHtml, SentApiResponse], lambda: Some }, NodejsExpressResponse];
+	to = [HttpEndedAspect];
 
-	map(obj: { [Aspect.HttpResponse]: Response }) {
-		obj[Aspect.HttpResponse].end();
+	distinct(obj: TNodejsExpressResponse) {
+		obj[NodejsExpressResponse].end();
 
 		return {
-			...obj,
-			[Aspect.Ended]: true,
+			[HttpEndedAspect]: true,
 		};
 	}
 }

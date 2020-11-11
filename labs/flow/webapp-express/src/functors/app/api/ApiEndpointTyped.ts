@@ -1,34 +1,33 @@
-import { Functor, PartialObject } from "@xde/flow-manager";
+import { HttpRouted, THttpRouted, EndpointType, TEndpointType, Endpoint } from "@xde/aspects";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-import { Aspect } from "../../../models/aspects";
-import { IHttpRouted } from "../../http/HttpRouted";
-import { EndpointType } from "../../http/HttpEndpointTyped";
-
-export class ApiEndpointTyped extends Functor<Aspect> {
+export class ApiEndpointTyped extends PrimitiveFunctor<
+	THttpRouted & Partial<TEndpointType>,
+	TEndpointType
+> {
 	name = "ApiEndpointTyped";
 	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (
-				obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: IHttpRouted }>
-			) => !!obj[Aspect.HttpRouted]?.path.startsWith("/api/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/api/"),
+		},
+		{
+			aspect: EndpointType,
+			lambda: (obj: Partial<TEndpointType>) => obj[EndpointType] !== Endpoint.Json,
 		},
 	];
-	// TODO: lambda: () => true ?
 	to = [
 		{
-			aspect: Aspect.EndpointType,
-			lambda: (
-				obj: PartialObject<Aspect.EndpointType, { [Aspect.EndpointType]?: EndpointType }>
-			) => obj[Aspect.EndpointType] === EndpointType.Json,
+			aspect: EndpointType,
+			// TODO: allow force without lambda? or leave as additional protection from unwanted force effects? and to be sure that exits form the loop?
+			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Json,
 			force: true,
 		},
 	];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[Aspect.EndpointType]: EndpointType.Json,
+			[EndpointType]: Endpoint.Json,
 		};
 	}
 }

@@ -1,36 +1,40 @@
-import { TCommonApiResponse } from "@xde/common";
-import { Functor, PartialObject } from "@xde/flow-manager";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	HttpRouted,
+	THttpRouted,
+	THttpSecured,
+	HttpSecured,
+	TGeneratedApiBody,
+	GeneratedApiBody,
+} from "@xde/aspects";
+import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
-import { Aspect } from "../../../models/aspects";
-import { IHttpRouted } from "../../http/HttpRouted";
-
-export class ApiBadRequested extends Functor<Aspect> {
+export class ApiBadRequested extends PrimitiveFunctor<
+	THttpRouted & THttpSecured,
+	TGeneratedApiBody & THttpStatusCode
+> {
 	name = "ApiBadRequested";
 	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (
-				obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: IHttpRouted }>
-			) => !!obj[Aspect.HttpRouted]?.path.startsWith("/api/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/api/"),
 		},
 		{
-			aspect: Aspect.Secured,
-			lambda: (obj: PartialObject<Aspect.Secured, { [Aspect.Secured]?: boolean }>) =>
-				obj[Aspect.Secured] === false,
+			aspect: HttpSecured,
+			lambda: (obj: THttpSecured) => obj[HttpSecured] === false,
 		},
 	];
-	to = [Aspect.GeneratedApiBody, Aspect.ResponseCode];
+	to = [GeneratedApiBody, HttpStatusCode];
 
-	map(obj: {}): {} {
-		const response: TCommonApiResponse = {
-			result: false,
-			code: "InsecureApiRequest",
-		};
-
+	distinct() {
 		return {
-			...obj,
-			[Aspect.GeneratedApiBody]: response,
-			[Aspect.ResponseCode]: 400,
+			[GeneratedApiBody]: {
+				result: false,
+				code: EndpointErrorCode.InsecureApiRequest,
+			},
+			[HttpStatusCode]: 400,
 		};
 	}
 }

@@ -1,16 +1,15 @@
-import { Functor, PartialObject, Undefined } from "@xde/flow-manager";
-
-import { Aspect } from "../../models/aspects";
-import { EndpointType } from "../http/HttpEndpointTyped";
+import { THttpStatusCode, HttpStatusCode, HttpRouted, THttpRouted } from "@xde/aspects";
+// import { TUndefined } from "@xde/common";
+import { PrimitiveFunctor, Undefined } from "@xde/flow-manager";
 
 // TODO: separate 404 json response?
-export class App404 extends Functor<Aspect> {
+export class App404 extends PrimitiveFunctor<THttpRouted, THttpStatusCode<404>> {
 	name = "App404";
 	from = [
-		{
-			aspect: [Aspect.ResponseCode],
-			lambda: Undefined,
-		},
+		// {
+		// 	aspect: [HttpStatusCode],
+		// 	lambda: Undefined,
+		// },
 		// {
 		// 	aspect: Aspect.EndpointType,
 		// 	lambda: (
@@ -18,14 +17,13 @@ export class App404 extends Functor<Aspect> {
 		// 	) => obj[Aspect.EndpointType] === EndpointType.Html,
 		// },
 		// To ensure we are not adding 404 handling for something that doesn't need it.
-		Aspect.HttpRouted,
+		HttpRouted,
 	];
-	to = [Aspect.ResponseCode];
+	to = [HttpStatusCode];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
-			[Aspect.ResponseCode]: 404,
+			[HttpStatusCode]: 404 as const,
 		};
 	}
 }

@@ -1,17 +1,19 @@
-import { Functor } from "@xde/flow-manager";
-import { Request } from "express";
+import { PrimitiveFunctor } from "@xde/flow-manager";
+import {
+	NodejsExpressRequest,
+	TNodejsExpressRequest,
+	HttpSecured as HttpSecuredAspect,
+	THttpSecured,
+} from "@xde/aspects";
 
-import { Aspect } from "../../models/aspects";
-
-export class HttpSecured extends Functor<Aspect> {
+export class HttpSecured extends PrimitiveFunctor<TNodejsExpressRequest, THttpSecured> {
 	name = "HttpSecured";
-	from = [Aspect.HttpRequest];
-	to = [Aspect.Secured];
+	from = [NodejsExpressRequest];
+	to = [HttpSecuredAspect];
 
-	map(obj: { [Aspect.HttpRequest]: Request }): {} {
+	distinct(obj: TNodejsExpressRequest) {
 		return {
-			...obj,
-			[Aspect.Secured]: obj[Aspect.HttpRequest].secure,
+			[HttpSecuredAspect]: obj[NodejsExpressRequest].secure,
 		};
 	}
 }

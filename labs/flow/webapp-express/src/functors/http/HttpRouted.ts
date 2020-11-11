@@ -1,55 +1,34 @@
-import { Functor } from "@xde/flow-manager";
 import { THttpMethod } from "@xde/common";
-import { Request } from "express";
+import { PrimitiveFunctor } from "@xde/flow-manager";
+import {
+	NodejsExpressRequest,
+	TNodejsExpressRequest,
+	HttpRouted as HttpRoutedAspect,
+	THttpRouted,
+	IHttpRouted,
+} from "@xde/aspects";
 
 import { APP_HTTP_PORT, APP_TLS_PORT } from "../../config";
-import { Aspect } from "../../models/aspects";
 
-export interface IHttpRouted {
-	/**
-	 * "http" | "https"
-	 */
-	protocol: string;
-	/**
-	 * 'example.com'
-	 */
-	hostname: string;
-	/**
-	 * Undefined when one of 80, 443
-	 */
-	nonStandardPort?: number;
-	/**
-	 * /users
-	 */
-	path: string;
-	/**
-	 * /users?sort=desc
-	 */
-	originalUrl: string;
-
-	method: THttpMethod;
-}
-
-export class HttpRouted extends Functor<Aspect> {
+export class HttpRouted extends PrimitiveFunctor<TNodejsExpressRequest, THttpRouted> {
 	name = "HttpRouted";
-	from = [Aspect.HttpRequest];
-	to = [Aspect.HttpRouted];
+	from = [NodejsExpressRequest];
+	to = [HttpRoutedAspect];
 
-	map(obj: { [Aspect.HttpRequest]: Request }): {} {
-		const port = obj[Aspect.HttpRequest].secure
+	distinct(obj: TNodejsExpressRequest) {
+		const port = obj[NodejsExpressRequest].secure
 			? (APP_TLS_PORT as number)
 			: (APP_HTTP_PORT as number);
 		const routed: IHttpRouted = {
-			protocol: obj[Aspect.HttpRequest].protocol,
-			hostname: obj[Aspect.HttpRequest].hostname,
+			protocol: obj[NodejsExpressRequest].protocol,
+			hostname: obj[NodejsExpressRequest].hostname,
 			nonStandardPort: port === 80 || port === 443 ? undefined : port,
-			path: obj[Aspect.HttpRequest].path,
-			originalUrl: obj[Aspect.HttpRequest].originalUrl,
-			method: obj[Aspect.HttpRequest].method as any,
+			path: obj[NodejsExpressRequest].path,
+			originalUrl: obj[NodejsExpressRequest].originalUrl,
+			method: obj[NodejsExpressRequest].method as THttpMethod,
 		};
 		return {
-			...obj,
-			[Aspect.HttpRouted]: routed,
+			[HttpRoutedAspect]: routed,
 		};
 	}
 }

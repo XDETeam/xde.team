@@ -1,22 +1,15 @@
-import { Functor } from "@xde/flow-manager";
+import { PrimitiveFunctor } from "@xde/flow-manager";
+import { TEndpointType, EndpointType, Endpoint, HttpRouted, THttpRouted } from "@xde/aspects";
 
-import { Aspect } from "../../models/aspects";
-
-export enum EndpointType {
-	Html,
-	Json,
-}
-
-export class HttpEndpointTyped extends Functor<Aspect> {
+export class HttpEndpointTyped extends PrimitiveFunctor<THttpRouted, TEndpointType> {
 	name = "HttpEndpointTyped";
-	from = [Aspect.HttpRouted];
-	to = [Aspect.EndpointType];
+	from = [HttpRouted];
+	to = [EndpointType];
 
-	map(obj: {}): {} {
+	distinct() {
 		return {
-			...obj,
 			// By default - html. Override in case change is required
-			[Aspect.EndpointType]: EndpointType.Html,
+			[EndpointType]: Endpoint.Html,
 		};
 	}
 }

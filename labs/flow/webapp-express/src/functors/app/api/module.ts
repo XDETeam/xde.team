@@ -1,7 +1,5 @@
-import { CompositeFunctor, PartialObject, Optional } from "@xde/flow-manager";
+import { CompositeFunctor, Optional } from "@xde/flow-manager";
 
-import { Aspect } from "../../../models/aspects";
-import { EndpointType } from "../../http/HttpEndpointTyped";
 import apiBadRequestedInstance from "./ApiBadRequested";
 import apiEndpointTypedInstance from "./ApiEndpointTyped";
 import apiProcessedSignInRequestedInstance from "./signin/ApiProcessedSignInRequested";
@@ -10,33 +8,47 @@ import apiValidSignInRequestedInstance from "./signin/ApiValidSignInRequested";
 import apiRawSignUpRequestedInstance from "./signup/ApiRawSignUpRequested";
 import apiValidSignUpRequestedInstance from "./signup/ApiValidSignUpRequested";
 import apiProcessedSignUpRequestedInstance from "./signup/ApiProcessedSignUpRequested";
-import { IHttpRouted } from "../../http/HttpRouted";
+import {
+	HttpRouted,
+	THttpRouted,
+	THttpSecured,
+	HttpSecured,
+	TGeneratedApiBody,
+	GeneratedApiBody,
+	EndpointType,
+	TEndpointType,
+	Endpoint,
+	THttpStatusCode,
+	HttpStatusCode,
+	THttpHeaders,
+	HttpHeaders,
+} from "@xde/aspects";
 
-export const api = new CompositeFunctor<Aspect>(
-	"api",
-	[
+export class Api extends CompositeFunctor<
+	THttpRouted & THttpSecured,
+	TGeneratedApiBody & TEndpointType & Partial<THttpStatusCode> & Partial<THttpHeaders>
+> {
+	name = "Api";
+	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (
-				obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: IHttpRouted }>
-			) => !!obj[Aspect.HttpRouted]?.path.startsWith("/api/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/api/"),
 		},
-		Aspect.Secured,
-	],
-	[
-		Aspect.GeneratedApiBody,
+		HttpSecured,
+	];
+	to = [
+		GeneratedApiBody,
 		{
-			aspect: Aspect.EndpointType,
-			lambda: (
-				obj: PartialObject<Aspect.EndpointType, { [Aspect.EndpointType]?: EndpointType }>
-			) => obj[Aspect.EndpointType] === EndpointType.Json,
+			aspect: EndpointType,
+			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Json,
 			force: true,
 		},
-		{ aspect: Aspect.LocationHeader, lambda: Optional },
-		{ aspect: Aspect.ResponseCode, lambda: Optional },
-		{ aspect: Aspect.AdditionalHeaders, lambda: Optional },
-	]
-);
+		{ aspect: HttpHeaders, lambda: Optional },
+		{ aspect: HttpStatusCode, lambda: Optional },
+	];
+}
+
+export const api = new Api();
 
 api.addChildren([
 	apiBadRequestedInstance,

@@ -1,38 +1,44 @@
-import { TCommonApiResponse } from "@xde/common";
-import { Functor, Some } from "@xde/flow-manager";
+import { PrimitiveFunctor, Some } from "@xde/flow-manager";
+import { GeneratedApiBody, HttpStatusCode, TGeneratedApiBody, THttpStatusCode } from "@xde/aspects";
+import { EndpointErrorCode } from "@xde/endpoint-error-codes";
 
-import { Aspect } from "../../../../models/aspects";
-import { SingUpRequest, TSignUpRequest } from "../../../../models/user/SignUpRequest";
+import {
+	ApiRawSignUpRequest,
+	ApiValidSignUpRequest,
+	TApiValidSignUpRequest,
+	TApiRawSignUpRequest,
+} from "../../../../models/aspects";
+import { SingUpRequest } from "../../../../models/user/SignUpRequest";
 
-export class ApiValidSignUpRequested extends Functor<Aspect> {
+export class ApiValidSignUpRequested extends PrimitiveFunctor<
+	TApiRawSignUpRequest,
+	TApiValidSignUpRequest | (TGeneratedApiBody & THttpStatusCode<422>)
+> {
 	name = "ApiValidSignUpRequested";
-	from = [Aspect.ApiRawSignUpRequest];
+	from = [ApiRawSignUpRequest];
 	to = [
 		{
-			aspect: [Aspect.ApiValidSignUpRequest, [Aspect.GeneratedApiBody, Aspect.ResponseCode]],
+			aspect: [[ApiValidSignUpRequest], [GeneratedApiBody, HttpStatusCode]],
 			lambda: Some,
 		},
 	];
 
-	async map(obj: { [Aspect.ApiRawSignUpRequest]: TSignUpRequest }): Promise<{}> {
-		const request = new SingUpRequest(obj[Aspect.ApiRawSignUpRequest]);
+	async distinct(obj: TApiRawSignUpRequest) {
+		const request = new SingUpRequest(obj[ApiRawSignUpRequest] as any);
 		const validation = await request.validate();
 
 		if (!Array.isArray(validation)) {
 			return {
-				...obj,
-				[Aspect.ApiValidSignUpRequest]: validation,
+				[ApiValidSignUpRequest]: validation,
 			};
 		} else {
-			const response: TCommonApiResponse = {
-				result: false,
-				code: "UnprocessableEntity",
-				details: validation,
-			};
 			return {
-				...obj,
-				[Aspect.GeneratedApiBody]: response,
-				[Aspect.ResponseCode]: 422,
+				[GeneratedApiBody]: {
+					result: false,
+					code: EndpointErrorCode.UnprocessableEntity,
+					details: validation,
+				},
+				[HttpStatusCode]: 422 as const,
 			};
 		}
 	}

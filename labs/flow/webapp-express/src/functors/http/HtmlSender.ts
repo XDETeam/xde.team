@@ -1,29 +1,28 @@
-import { Functor, Optional } from "@xde/flow-manager";
-import { Response } from "express";
+import { PrimitiveFunctor } from "@xde/flow-manager";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	NodejsExpressResponse,
+	TNodejsExpressResponse,
+	TSentHtml,
+	SentHtml,
+	TGeneratedHtml,
+	GeneratedHtml,
+} from "@xde/aspects";
 
-import { Aspect } from "../../models/aspects";
-
-export class HtmlSender extends Functor<Aspect> {
+export class HtmlSender extends PrimitiveFunctor<
+	TNodejsExpressResponse & TGeneratedHtml & THttpStatusCode,
+	TSentHtml
+> {
 	name = "HtmlSender";
-	from = [
-		Aspect.HttpResponse,
-		Aspect.GeneratedHtml,
-		{ aspect: Aspect.ResponseCode, lambda: Optional },
-	];
-	to = [Aspect.SentHtml];
+	from = [NodejsExpressResponse, GeneratedHtml, HttpStatusCode];
+	to = [SentHtml];
 
-	map(obj: {
-		[Aspect.HttpResponse]: Response;
-		[Aspect.GeneratedHtml]: string;
-		[Aspect.ResponseCode]: number;
-	}) {
-		obj[Aspect.HttpResponse]
-			.status(obj[Aspect.ResponseCode])
-			.send(obj[Aspect.GeneratedHtml]);
+	distinct(obj: TNodejsExpressResponse & TGeneratedHtml & THttpStatusCode) {
+		obj[NodejsExpressResponse].status(obj[HttpStatusCode]).send(obj[GeneratedHtml]);
 
 		return {
-			...obj,
-			[Aspect.SentHtml]: true,
+			[SentHtml]: true,
 		};
 	}
 }

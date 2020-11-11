@@ -1,7 +1,7 @@
 import "./presets";
 
 import express from "express";
-import { Aspect } from "./models/aspects";
+import { NodejsExpressRequest, NodejsExpressResponse } from "@xde/aspects";
 import http from "http";
 import https from "https";
 import fs from "fs";
@@ -18,12 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.use((req, res, next) => {
-	const start = {
-		[Aspect.HttpRequest]: req,
-		[Aspect.HttpResponse]: res,
-	};
-
-	root.map(start);
+	root.map({
+		[NodejsExpressRequest]: req,
+		[NodejsExpressResponse]: res,
+	});
 });
 
 http.createServer(app).listen(APP_HTTP_PORT, () => {

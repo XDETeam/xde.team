@@ -1,33 +1,56 @@
-import { Functor, PartialObject } from "@xde/flow-manager";
+import {
+	THttpRouted,
+	HttpRouted,
+	THttpSecured,
+	HttpSecured,
+	HttpHeaders,
+	THttpHeaders,
+	THttpStatusCode,
+	HttpStatusCode,
+	TLocationHeader,
+} from "@xde/aspects";
+import { PrimitiveFunctor } from "@xde/flow-manager";
 
 import { APP_TLS_PORT } from "../../config";
-import { Aspect } from "../../models/aspects";
-import { IHttpRouted } from "../http/HttpRouted";
 
-export class AppSecuredRouteRedirected extends Functor<Aspect> {
+export class AppSecuredRouteRedirected extends PrimitiveFunctor<
+	THttpRouted & THttpSecured & Partial<THttpHeaders>,
+	THttpHeaders<TLocationHeader> & THttpStatusCode<301>
+> {
 	name = "AppSecuredRouteRedirected";
 	from = [
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (
-				obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: IHttpRouted }>
-			) => !!obj[Aspect.HttpRouted]?.path.startsWith("/security/"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
 		},
 		{
-			aspect: Aspect.Secured,
-			lambda: (obj: PartialObject<Aspect.Secured, { [Aspect.Secured]?: boolean }>) =>
-				obj[Aspect.Secured] === false,
+			aspect: HttpSecured,
+			lambda: (obj: THttpSecured) => obj[HttpSecured] === false,
+		},
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: Partial<THttpHeaders>) =>
+				obj[HttpHeaders] === undefined || !("Location" in obj[HttpHeaders]!),
 		},
 	];
-	to = [Aspect.LocationHeader, Aspect.ResponseCode];
+	to = [
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: THttpHeaders<TLocationHeader>) => !!obj[HttpHeaders].Location,
+			force: true,
+		},
+		HttpStatusCode,
+	];
 
-	map(obj: { [Aspect.HttpRouted]: IHttpRouted }): {} {
+	distinct(obj: THttpRouted & Partial<THttpHeaders>) {
 		return {
-			...obj,
-			[Aspect.LocationHeader]: `https://${obj[Aspect.HttpRouted].hostname}${
-				obj[Aspect.HttpRouted].nonStandardPort ? `:${APP_TLS_PORT}` : ""
-			}${obj[Aspect.HttpRouted].originalUrl}`,
-			[Aspect.ResponseCode]: 301,
+			[HttpHeaders]: {
+				...obj[HttpHeaders],
+				Location: `https://${obj[HttpRouted].hostname}${
+					obj[HttpRouted].nonStandardPort ? `:${APP_TLS_PORT}` : ""
+				}${obj[HttpRouted].originalUrl}`,
+			},
+			[HttpStatusCode]: 301 as const,
 		};
 	}
 }

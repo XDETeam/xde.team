@@ -1,48 +1,59 @@
-import { TCommonApiResponse, THttpMethod } from "@xde/common";
-import { Functor, PartialObject, Some } from "@xde/flow-manager";
-import { Request } from "express";
+import { PrimitiveFunctor, Some, Optional } from "@xde/flow-manager";
+import {
+	GeneratedApiBody,
+	HttpStatusCode,
+	HttpHeaders,
+	TGeneratedApiBody,
+	THttpStatusCode,
+	THttpHeaders,
+	NodejsExpressRequest,
+	TNodejsExpressRequest,
+	HttpRouted,
+	THttpRouted,
+} from "@xde/aspects";
+import { EndpointErrorCode } from "@xde/endpoint-error-codes";
 
-import { Aspect } from "../../../../models/aspects";
-import { IHttpRouted } from "../../../http/HttpRouted";
+import { TApiRawSignUpRequest, ApiRawSignUpRequest } from "../../../../models/aspects";
 
-export class ApiRawSignUpRequested extends Functor<Aspect> {
+export class ApiRawSignUpRequested extends PrimitiveFunctor<
+	TNodejsExpressRequest & THttpRouted & Partial<THttpHeaders>,
+	TApiRawSignUpRequest | (TGeneratedApiBody & THttpStatusCode<405> & THttpHeaders)
+> {
 	name = "ApiRawSignUpRequested";
 	from = [
-		Aspect.HttpRequest,
+		NodejsExpressRequest,
 		{
-			aspect: Aspect.HttpRouted,
-			lambda: (
-				obj: PartialObject<Aspect.HttpRouted, { [Aspect.HttpRouted]?: IHttpRouted }>
-			) => !!obj[Aspect.HttpRouted]?.path.startsWith("/api/sign-up"),
+			aspect: HttpRouted,
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/api/sign-up"),
+		},
+		{
+			aspect: [HttpHeaders],
+			lambda: Optional,
 		},
 	];
 	to = [
 		{
-			aspect: [
-				Aspect.ApiRawSignUpRequest,
-				[Aspect.GeneratedApiBody, Aspect.ResponseCode, Aspect.AdditionalHeaders],
-			],
+			aspect: [[ApiRawSignUpRequest], [GeneratedApiBody, HttpStatusCode, HttpHeaders]],
 			lambda: Some,
 		},
 	];
 
-	map(obj: { [Aspect.HttpRouted]: IHttpRouted; [Aspect.HttpRequest]: Request }): {} {
-		if (obj[Aspect.HttpRouted].method === "POST") {
+	distinct(obj: TNodejsExpressRequest & THttpRouted & Partial<THttpHeaders>) {
+		if (obj[HttpRouted].method === "POST") {
 			return {
-				...obj,
-				[Aspect.ApiRawSignUpRequest]: obj[Aspect.HttpRequest].body,
+				[ApiRawSignUpRequest]: obj[NodejsExpressRequest].body,
 			};
 		} else {
-			const response: TCommonApiResponse = {
-				result: false,
-				code: "MethodNotAllowed",
-			};
-			const additionalHeaders: { [key: string]: THttpMethod } = { Allow: "POST" };
 			return {
-				...obj,
-				[Aspect.GeneratedApiBody]: response,
-				[Aspect.AdditionalHeaders]: additionalHeaders,
-				[Aspect.ResponseCode]: 405,
+				[GeneratedApiBody]: {
+					result: false,
+					code: EndpointErrorCode.MethodNotAllowed,
+				},
+				[HttpHeaders]: {
+					...obj[HttpHeaders],
+					Allow: "POST",
+				},
+				[HttpStatusCode]: 405 as const,
 			};
 		}
 	}
