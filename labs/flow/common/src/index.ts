@@ -5,3 +5,4 @@ export * from "./types";
 export * from "./endpoint";
 export * from "./request";
 export * from "./object";
+export * from "./route";
