@@ -1,6 +1,6 @@
 export const HttpStatusCode = "HttpStatusCode" as const;
 
-export type THttpStatusCode = {
+export type THttpStatusCode<T extends number = number> = {
 	// TODO: list?
-	[HttpStatusCode]: number;
+	[HttpStatusCode]: T;
 };

@@ -15,7 +15,7 @@ import { Undefined } from "../../../helpers/lambdas";
 
 export class App404 extends PrimitiveFunctor<
 	TUndefined<TGeneratedHtml> & TUndefined<THttpRedirected> & THttpRouted,
-	THttpStatusCode
+	THttpStatusCode<404>
 > {
 	name = "App404";
 	from = [
@@ -27,7 +27,7 @@ export class App404 extends PrimitiveFunctor<
 
 	distinct() {
 		return {
-			[HttpStatusCode]: 404,
+			[HttpStatusCode]: 404 as const,
 		};
 	}
 }

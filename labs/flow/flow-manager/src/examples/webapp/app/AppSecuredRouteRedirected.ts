@@ -5,6 +5,7 @@ import {
 	HttpRouted,
 	HttpHeaders,
 	THttpHeaders,
+	TLocationHeader,
 	THttpStatusCode,
 	HttpStatusCode,
 } from "@xde/aspects";
@@ -12,8 +13,8 @@ import {
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 
 export class AppSecuredRouteRedirected extends PrimitiveFunctor<
-	THttpRouted & THttpSecured,
-	THttpHeaders & THttpStatusCode
+	THttpRouted & THttpSecured & Partial<THttpHeaders>,
+	THttpHeaders<TLocationHeader> & THttpStatusCode<301>
 > {
 	name = "AppSecuredRouteRedirected";
 	from = [
@@ -25,12 +26,27 @@ export class AppSecuredRouteRedirected extends PrimitiveFunctor<
 			aspect: HttpSecured,
 			lambda: (obj: THttpSecured) => obj[HttpSecured] === false,
 		},
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: Partial<THttpHeaders>) =>
+				obj[HttpHeaders] === undefined || !("Location" in obj[HttpHeaders]!),
+		},
 	];
-	to = [HttpHeaders, HttpStatusCode];
+	to = [
+		{
+			aspect: HttpHeaders,
+			lambda: (obj: THttpHeaders<TLocationHeader>) => !!obj[HttpHeaders].Location,
+			force: true,
+		},
+		HttpStatusCode,
+	];
 
-	distinct(obj: THttpRouted): THttpHeaders & THttpStatusCode {
+	distinct(
+		obj: THttpRouted & Partial<THttpHeaders>
+	): THttpHeaders<TLocationHeader> & THttpStatusCode<301> {
 		return {
 			[HttpHeaders]: {
+				...obj[HttpHeaders],
 				Location: `https://${obj[HttpRouted].hostname}${
 					obj[HttpRouted].nonStandardPort ? `:${obj[HttpRouted].nonStandardPort}` : ""
 				}${obj[HttpRouted].originalUrl}`,

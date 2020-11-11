@@ -2,6 +2,7 @@ import {
 	THttpStatusCode,
 	HttpStatusCode,
 	THttpHeaders,
+	TLocationHeader,
 	HttpHeaders,
 	THttpRedirected,
 	HttpRedirected,
@@ -11,23 +12,23 @@ import { Functor } from "../../../functor/Functor";
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 
 export class Code301Redirected extends PrimitiveFunctor<
-	THttpStatusCode & THttpHeaders,
+	THttpStatusCode<301> & THttpHeaders<TLocationHeader>,
 	THttpRedirected
 > {
 	name = "Code301Redirected";
 	from = [
 		{
 			aspect: HttpStatusCode,
-			lambda: (obj: THttpStatusCode) => obj[HttpStatusCode] === 301,
+			lambda: (obj: THttpStatusCode<301>) => obj[HttpStatusCode] === 301,
 		},
 		{
 			aspect: HttpHeaders,
-			lambda: (obj: THttpHeaders) => "Location" in obj[HttpHeaders],
+			lambda: (obj: THttpHeaders<TLocationHeader>) => !!obj[HttpHeaders].Location,
 		},
 	];
 	to = [HttpRedirected];
 
-	distinct(obj: THttpHeaders): THttpRedirected {
+	distinct(obj: THttpHeaders<TLocationHeader>): THttpRedirected {
 		Functor.debugger.extend("Code301Redirected")(`Redirected to ${obj[HttpHeaders].Location}`);
 		return {
 			[HttpRedirected]: true,

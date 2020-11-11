@@ -2,12 +2,12 @@ import { THttpStatusCode, HttpStatusCode, GeneratedHtml, TGeneratedHtml } from "
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 
-export class Code404Html extends PrimitiveFunctor<THttpStatusCode, TGeneratedHtml> {
+export class Code404Html extends PrimitiveFunctor<THttpStatusCode<404>, TGeneratedHtml> {
 	name = "Code404Html";
 	from = [
 		{
 			aspect: HttpStatusCode,
-			lambda: (obj: THttpStatusCode) => obj[HttpStatusCode] === 404,
+			lambda: (obj: THttpStatusCode<404>) => obj[HttpStatusCode] === 404,
 		},
 	];
 	to = [GeneratedHtml];

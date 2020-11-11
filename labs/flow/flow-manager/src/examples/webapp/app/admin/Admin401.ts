@@ -5,7 +5,7 @@ import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../../models/";
 
 export class Admin401 extends PrimitiveFunctor<
 	THttpRouted & TAppAdminRouteAllowed,
-	THttpStatusCode
+	THttpStatusCode<401>
 > {
 	name = "Admin401";
 	from = [
@@ -20,7 +20,7 @@ export class Admin401 extends PrimitiveFunctor<
 	];
 	to = [HttpStatusCode];
 
-	distinct(): THttpStatusCode {
+	distinct(): THttpStatusCode<401> {
 		return {
 			[HttpStatusCode]: 401,
 		};
