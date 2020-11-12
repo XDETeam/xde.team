@@ -9,7 +9,9 @@ export const curryRoute: ICurryRoute = (...routes: string[]) =>
 			routes.reduce(
 				(prev, curr, i) =>
 					`${prev}${
-						i === 0 && curr.includes(".") ? "" : curryRoute.separator ?? "/"
+						i === 0 && (curr.includes(".") || curr.includes("localhost"))
+							? ""
+							: curryRoute.separator ?? "/"
 					}${curr}`,
 				""
 			),

@@ -16,6 +16,11 @@ it("should not prepend first route with separator in case includes dot", () => {
 	expect(curryRoute("some.12") + "").toEqual("some.12");
 });
 
+it("should not prepend first route with separator in case includes localhost", () => {
+	expect(curryRoute("localhost") + "").toEqual("localhost");
+	expect(curryRoute("http://localhost:80") + "").toEqual("http://localhost:80");
+});
+
 it("should curry values", () => {
 	const root = curryRoute("www.example.com");
 	expect(root + "").toEqual("www.example.com");
