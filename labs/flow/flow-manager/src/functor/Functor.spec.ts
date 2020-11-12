@@ -1,5 +1,6 @@
 import { PrimitiveFunctor } from "./PrimitiveFunctor";
 import { CompositeFunctor } from "./CompositeFunctor";
+import { Optional } from "../helpers/lambdas";
 
 class testPrimitiveFunctor extends PrimitiveFunctor<{ HttpRequest: string }, { HasAuth: boolean }> {
 	name = "testPrimitiveFunctor";
@@ -93,4 +94,45 @@ it("should handle async map", async () => {
 	const obj = await compositeFunctor.map({ HttpRequest: true });
 
 	expect(obj.some).toEqual(1);
+});
+
+it("should produce an error for bad functors composition", async () => {
+	class testPrimitiveFunctor3 extends PrimitiveFunctor<
+		{ Some: string } & Partial<{ Other: any }>,
+		{ HasAuth: boolean }
+	> {
+		name = "testPrimitiveFunctor3";
+		from = [
+			"Some" as const,
+			{
+				aspect: "Other" as const,
+				lambda: Optional,
+			},
+		];
+		to = ["HasAuth" as const];
+		distinct = () => ({ HasAuth: true });
+	}
+
+	class testCompositeFunctor2 extends CompositeFunctor<
+		{ Some: string } & Partial<{ Other: any }> & { HttpRequest: string },
+		{ HasAuth: boolean }
+	> {
+		name = "testCompositeFunctor2";
+		from = [
+			"Some" as const,
+			"HttpRequest" as const,
+			{
+				aspect: "Other" as const,
+				lambda: Optional,
+			},
+		];
+		to = ["HasAuth" as const];
+	}
+
+	const compositeFunctor = new testCompositeFunctor2();
+	compositeFunctor.addChildren([new testPrimitiveFunctor(), new testPrimitiveFunctor3()]);
+
+	await expect(
+		async () => await compositeFunctor.map({ HttpRequest: "", Some: "" })
+	).rejects.toThrow(/Bad functors composition/i);
 });

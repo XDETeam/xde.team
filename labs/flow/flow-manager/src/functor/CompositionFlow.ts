@@ -111,7 +111,33 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			}
 		});
 
-		return ret;
+		const overlap = this.toOverlap(ret);
+		if (!overlap.length) {
+			return ret;
+		} else {
+			throw new Error(
+				`Bad functors composition: aspects ${JSON.stringify(
+					overlap,
+					null,
+					2
+				)} overlaps within functors composition ${JSON.stringify(
+					ret,
+					null,
+					2
+				)}. Current object is ${JSON.stringify(replaceCircular(this.object), null, 2)}`
+			);
+		}
+	}
+
+	private toOverlap(functors: AnyFunctor[]): Array<string | number | symbol> {
+		const aspects = functors.reduce((prev, curr) => {
+			prev = prev.concat(
+				curr.to.filter((x) => typeof x !== "object") as Array<string | number | symbol>
+			);
+			return prev;
+		}, [] as Array<string | number | symbol>);
+
+		return aspects.filter((item, i) => aspects.includes(item, i + 1));
 	}
 
 	private toAllow(functorTo: IFunctor<any, any>["to"], obj: IDictionary): boolean {
