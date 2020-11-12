@@ -1,4 +1,4 @@
-export enum EndpointErrorCodes {
+export enum EndpointErrorCode {
 	InsecureApiRequest,
 	WrongCredentials,
 	InternalServerError,
