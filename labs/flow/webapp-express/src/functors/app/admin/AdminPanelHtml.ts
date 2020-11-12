@@ -18,8 +18,7 @@ export class AdminPanelHtml extends PrimitiveFunctor<
 	from = [
 		{
 			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) =>
-				!!obj[HttpRouted]?.path.endsWith("/security/adminPanelRoute"),
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.endsWith("/security/dashboard"),
 		},
 		{
 			aspect: AppAdminRouteAllow,
