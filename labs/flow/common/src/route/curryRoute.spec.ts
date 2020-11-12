@@ -16,6 +16,15 @@ it("should not prepend first route with separator in case includes dot", () => {
 	expect(curryRoute("some.12") + "").toEqual("some.12");
 });
 
+it("should not repeat separators", () => {
+	expect(curryRoute("/www")("/fff")("/ddadd") + "").toEqual(
+		curryRoute("/www")("fff")("ddadd") + ""
+	);
+	expect(curryRoute("www/")("fff/")("ddadd/") + "").toEqual(
+		curryRoute("www")("fff")("ddadd/") + ""
+	);
+});
+
 it("should not prepend first route with separator in case includes localhost", () => {
 	expect(curryRoute("localhost") + "").toEqual("localhost");
 	expect(curryRoute("http://localhost:80") + "").toEqual("http://localhost:80");

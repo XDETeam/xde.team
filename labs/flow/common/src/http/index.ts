@@ -23,6 +23,9 @@ export abstract class RestApiEndpoint<TRequest, TResponse> {
 	constructor(public url: string, public method: THttpMethod) {}
 	abstract call(request: TRequest): Promise<TCommonApiResponse<TResponse>>;
 	// abstract handle(request: TRequest): Promise<TResponse>;
+
+	// 1. validation error
+	// 2. 
 }
 
 // export class AxiosRestApiEndpoint<TRequest, TResponse> extends RestApiEndpoint<
