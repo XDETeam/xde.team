@@ -40,6 +40,10 @@ it("should return 422 on secure api sign-in route with wrong model", async () =>
 	expect(res.data).toEqual({
 		result: false,
 		code: EndpointErrorCode.UnprocessableEntity,
+		details: [
+			expect.objectContaining({ property: "name" }),
+			expect.objectContaining({ property: "password" }),
+		],
 	});
 
 	const res2 = await appAxios
@@ -49,6 +53,10 @@ it("should return 422 on secure api sign-in route with wrong model", async () =>
 	expect(res2.data).toEqual({
 		result: false,
 		code: EndpointErrorCode.UnprocessableEntity,
+		details: [
+			expect.objectContaining({ property: "name" }),
+			expect.objectContaining({ property: "password" }),
+		],
 	});
 });
 
@@ -80,6 +88,10 @@ it("should sign in success with proper credentials", async () => {
 	expect(res.status).toEqual(200);
 	expect(res.data).toEqual({
 		result: true,
-		code: EndpointErrorCode.MethodNotAllowed,
 	});
+	expect(res.headers).toEqual(
+		expect.objectContaining({
+			location: "/",
+		})
+	);
 });

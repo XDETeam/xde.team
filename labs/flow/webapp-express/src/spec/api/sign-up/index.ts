@@ -6,7 +6,7 @@ export const secureSignUpRoute = secureApiRoute("sign-up");
 
 export const nonValidSignUpRequest: TSignUpRequest = { name: "aa", password: "aa", email: "aa" };
 export const validSignUpRequest: TSignUpRequest = {
-	name: "namename",
-	password: "some password password",
+	name: "namename2",
+	password: "some password password2",
 	email: "namename@namename.oops",
 };

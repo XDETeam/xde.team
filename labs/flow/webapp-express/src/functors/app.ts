@@ -134,5 +134,5 @@ export class Root extends CompositeFunctor<
 	to = [HttpEnded];
 }
 export const root = new Root();
-// app404Instance
-root.addChildren([basicApp, renderer, httpEndedInstance, api]);
+
+root.addChildren([basicApp, renderer, app404Instance, httpEndedInstance, api]);

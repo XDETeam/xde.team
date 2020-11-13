@@ -28,7 +28,7 @@ it("should return 405 on secure api sign-up route with wrong method", async () =
 	});
 });
 
-it("should return 422 on secure api sign-in route with wrong model", async () => {
+it("should return 422 on secure api sign-up route with wrong model", async () => {
 	const res = await appAxios
 		.post(secureSignUpRoute + "", { some: "value" })
 		.catch((err) => err.response);
@@ -36,6 +36,11 @@ it("should return 422 on secure api sign-in route with wrong model", async () =>
 	expect(res.data).toEqual({
 		result: false,
 		code: EndpointErrorCode.UnprocessableEntity,
+		details: [
+			expect.objectContaining({ property: "name" }),
+			expect.objectContaining({ property: "password" }),
+			expect.objectContaining({ property: "email" }),
+		],
 	});
 
 	const res2 = await appAxios
@@ -45,6 +50,11 @@ it("should return 422 on secure api sign-in route with wrong model", async () =>
 	expect(res2.data).toEqual({
 		result: false,
 		code: EndpointErrorCode.UnprocessableEntity,
+		details: [
+			expect.objectContaining({ property: "name" }),
+			expect.objectContaining({ property: "password" }),
+			expect.objectContaining({ property: "email" }),
+		],
 	});
 });
 

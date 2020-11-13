@@ -5,16 +5,20 @@ it("should return 301 for dashboard admin non-secure route for admin user", asyn
 	const res = await appAxios
 		.get(nonSecureAdminDashboardRoute + "", {
 			headers: getAdminHeaders(),
+			maxRedirects: 0,
 		})
 		.catch((err) => err.response);
 	expect(res.status).toEqual(301);
-	expect(res.headers).toBe({});
+	expect(res.headers).toEqual(
+		expect.objectContaining({ location: secureAdminDashboardRoute + "" })
+	);
 });
 
-it("should return 301 for dashboard admin non-secure route for non-admin user", async () => {
-	const res = await appAxios.get(secureAdminDashboardRoute + "").catch((err) => err.response);
-	expect(res.status).toEqual(301);
-	expect(res.headers).toBe({});
+it("should return 401 for dashboard admin non-secure route for non-admin user without redirects", async () => {
+	const res = await appAxios
+		.get(secureAdminDashboardRoute + "", { maxRedirects: 0 })
+		.catch((err) => err.response);
+	expect(res.status).toEqual(401);
 });
 
 it("should return 401 for dashboard admin secure route for non-admin user", async () => {
