@@ -1,4 +1,4 @@
-export declare const AppAdminRouteAllow: "AppAdminRouteAllow";
-export declare type TAppAdminRouteAllowed = {
-    [AppAdminRouteAllow]: boolean;
+export const AppAdminRouteAllow = "AppAdminRouteAllow" as const;
+export type TAppAdminRouteAllowed = {
+	[AppAdminRouteAllow]: boolean;
 };

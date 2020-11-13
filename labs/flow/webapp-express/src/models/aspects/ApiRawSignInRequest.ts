@@ -1,6 +1,6 @@
 import { IDictionary } from "@xde/common";
 
-export declare const ApiRawSignInRequest: "ApiRawSignInRequest";
-export declare type TApiRawSignInRequest = {
+export const ApiRawSignInRequest = "ApiRawSignInRequest" as const;
+export type TApiRawSignInRequest = {
 	[ApiRawSignInRequest]: IDictionary;
 };

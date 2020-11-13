@@ -1,6 +1,6 @@
 import { TSignUpRequest } from "../user/SignUpRequest";
 
-export declare const ApiValidSignUpRequest: "ApiValidSignUpRequest";
-export declare type TApiValidSignUpRequest = {
+export const ApiValidSignUpRequest = "ApiValidSignUpRequest" as const;
+export type TApiValidSignUpRequest = {
 	[ApiValidSignUpRequest]: TSignUpRequest;
 };
