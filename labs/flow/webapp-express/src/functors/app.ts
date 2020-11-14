@@ -33,7 +33,7 @@ import {
 
 import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
-import app404Instance from "./app/App404";
+import appHtml404Instance from "./app/AppHtml404";
 import appAdminRouteAllowedInstance from "./app/AppAdminRouteAllowed";
 import appSecuredRouteRedirectedInstance from "./app/AppSecuredRouteRedirected";
 import code401HtmlInstance from "./errors/Code401Html";
@@ -47,6 +47,7 @@ import httpEndedInstance from "./http/HttpEnded";
 import { api } from "./app/api/module";
 import httpEndpointTypedInstance from "./http/HttpEndpointTyped";
 import apiSenderInstance from "./http/ApiSender";
+import appJson404Instance from "./app/api/AppJson404";
 
 export class Renderer extends CompositeFunctor<
 	TNodejsExpressResponse &
@@ -135,4 +136,48 @@ export class Root extends CompositeFunctor<
 }
 export const root = new Root();
 
-root.addChildren([basicApp, renderer, app404Instance, httpEndedInstance, api]);
+export class BasicAppAndApi extends CompositeFunctor<
+	TNodejsExpressRequest & TNodejsExpressResponse,
+	TEndpointType &
+		THttpRouted &
+		THttpSecured &
+		TVisitorRoled &
+		Partial<THttpHeaders> &
+		(
+			| (TGeneratedApiBody & THttpStatusCode)
+			| TEndpointType
+			| TGeneratedHtml
+			| THttpStatusCode
+			| (THttpStatusCode & THttpHeaders)
+		)
+> {
+	name = "BasicAppAndApi";
+	from = [NodejsExpressRequest, NodejsExpressResponse];
+	to = [
+		EndpointType,
+		HttpRouted,
+		HttpSecured,
+		VisitorRoled,
+		{
+			aspect: [
+				[GeneratedApiBody, HttpStatusCode],
+				[HttpStatusCode, HttpHeaders],
+				[HttpStatusCode],
+				[GeneratedHtml],
+				[EndpointType],
+			],
+			lambda: Some,
+		},
+		{ aspect: HttpHeaders, lambda: Optional },
+	];
+}
+export const basicAppAndApi = new BasicAppAndApi();
+basicAppAndApi.addChildren([basicApp, api]);
+
+root.addChildren([
+	basicAppAndApi,
+	renderer,
+	appHtml404Instance,
+	appJson404Instance,
+	httpEndedInstance,
+]);

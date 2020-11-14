@@ -13,7 +13,7 @@ import { PrimitiveFunctor } from "@xde/flow-manager";
 
 export class ApiBadRequested extends PrimitiveFunctor<
 	THttpRouted & THttpSecured,
-	TGeneratedApiBody & THttpStatusCode
+	TGeneratedApiBody & THttpStatusCode<400>
 > {
 	name = "ApiBadRequested";
 	from = [
@@ -34,7 +34,7 @@ export class ApiBadRequested extends PrimitiveFunctor<
 				result: false,
 				code: EndpointErrorCode.InsecureApiRequest,
 			},
-			[HttpStatusCode]: 400,
+			[HttpStatusCode]: 400 as const,
 		};
 	}
 }
