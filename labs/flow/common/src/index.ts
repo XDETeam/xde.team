@@ -6,3 +6,4 @@ export * from "./endpoint";
 export * from "./request";
 export * from "./object";
 export * from "./route";
+export * from "./array";
