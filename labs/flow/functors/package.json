@@ -1,0 +1,16 @@
+{
+	"name": "@xde/functors",
+	"version": "0.0.1",
+	"main": ".build/index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch"
+	},
+	"dependencies": {
+		"typescript": "^4.0.2",
+		"@xde/aspects": "0.0.1",
+		"@xde/common": "0.0.1",
+		"@xde/flow-manager": "0.0.1"
+	}
+}
