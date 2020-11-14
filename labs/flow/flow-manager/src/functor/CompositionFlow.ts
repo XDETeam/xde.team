@@ -122,12 +122,12 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			return ret;
 		} else {
 			throw new Error(
-				`Bad functors composition: aspects ${JSON.stringify(
+				`Bad functors composition: to aspects ${JSON.stringify(
 					overlap,
 					null,
 					2
 				)} overlaps within functors composition ${JSON.stringify(
-					ret,
+					ret.map((x) => x.name),
 					null,
 					2
 				)}. Current object is ${JSON.stringify(replaceCircular(this.object), null, 2)}`
