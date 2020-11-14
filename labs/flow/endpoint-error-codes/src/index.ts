@@ -4,4 +4,5 @@ export enum EndpointErrorCode {
 	InternalServerError,
 	MethodNotAllowed,
 	UnprocessableEntity,
+	NotFound,
 }
