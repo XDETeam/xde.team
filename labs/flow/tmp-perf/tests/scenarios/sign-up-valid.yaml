@@ -1,0 +1,9 @@
+scenarios:
+    - name: Sign-up valid
+      flow:
+          - post:
+                url: "/api/sign-up"
+                json:
+                    name: namenamenamename
+                    password: namenamenamenamenamenamenamename
+                    email: namenamenamename@namenamenamename.name

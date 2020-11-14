@@ -1,0 +1,3523 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Artillery report</title>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.6.0/metricsgraphics.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metrics-graphics/2.6.0/metricsgraphics.min.js"></script>
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js" charset="utf-8"></script>
+
+  <style>
+  body, p, li {
+    font-family: sans-serif;
+    font-size: 10pt;
+  }
+
+  h1 {
+    font-size: 18pt;
+    font-weight: bold;
+  }
+
+  #errorsContainer > p {
+    color: #009900;
+  }
+
+  #footer {
+    padding: 1em;
+    font-size: 0.8em;
+    color: #999;
+    text-align: center;
+    margin-top: 1em;
+    background-color: #eee;
+  }
+  #editor {
+    font-size: 8pt;
+    height: 20em;
+  }
+  </style>
+
+  <script>
+  window.Report = {
+  "aggregate": {
+    "timestamp": "2020-11-14T18:52:42.830Z",
+    "scenariosCreated": 15106,
+    "scenariosCompleted": 2953,
+    "requestsCompleted": 2953,
+    "latency": {
+      "min": 84.9,
+      "max": 36573.6,
+      "median": 15642.9,
+      "p95": 29866.5,
+      "p99": 34284.9
+    },
+    "rps": {
+      "count": 15106,
+      "mean": 25
+    },
+    "scenarioDuration": {
+      "min": 87.4,
+      "max": 36575.5,
+      "median": 15645,
+      "p95": 29871.3,
+      "p99": 34287
+    },
+    "scenarioCounts": {
+      "Sign-in invalid": 15106
+    },
+    "errors": {
+      "ESOCKETTIMEDOUT": 3712,
+      "ETIMEDOUT": 7780,
+      "ECONNRESET": 479,
+      "ECONNREFUSED": 182
+    },
+    "codes": {
+      "422": 2953
+    },
+    "matches": 0,
+    "customStats": {
+      "/api/sign-in": {
+        "min": 87,
+        "max": 36576,
+        "median": 15645,
+        "p95": 29868.9,
+        "p99": 34298.1
+      }
+    },
+    "counters": {
+      "code 422 on /api/sign-in": 2953
+    },
+    "scenariosAvoided": 0,
+    "phases": [
+      {
+        "arrivalRate": 0,
+        "duration": 600,
+        "rampTo": 50
+      }
+    ]
+  },
+  "intermediate": [
+    {
+      "timestamp": "2020-11-14T18:42:48.317Z",
+      "scenariosCreated": 3,
+      "scenariosCompleted": 3,
+      "requestsCompleted": 3,
+      "latency": {
+        "min": 113,
+        "max": 159.4,
+        "median": 116.8,
+        "p95": 159.4,
+        "p99": 159.4
+      },
+      "rps": {
+        "count": 3,
+        "mean": 0.31
+      },
+      "scenarioDuration": {
+        "min": 117.8,
+        "max": 203,
+        "median": 122.8,
+        "p95": 203,
+        "p99": 203
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 3
+      },
+      "errors": {},
+      "codes": {
+        "422": 3
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 116,
+          "max": 200,
+          "median": 122,
+          "p95": 200,
+          "p99": 200
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 3
+      },
+      "concurrency": 0,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:42:58.319Z",
+      "scenariosCreated": 11,
+      "scenariosCompleted": 11,
+      "requestsCompleted": 11,
+      "latency": {
+        "min": 87.9,
+        "max": 190.7,
+        "median": 125.8,
+        "p95": 189.2,
+        "p99": 190.7
+      },
+      "rps": {
+        "count": 11,
+        "mean": 1.11
+      },
+      "scenarioDuration": {
+        "min": 92.2,
+        "max": 197.8,
+        "median": 129.6,
+        "p95": 196.1,
+        "p99": 197.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 11
+      },
+      "errors": {},
+      "codes": {
+        "422": 11
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 91,
+          "max": 196,
+          "median": 129,
+          "p95": 194.4,
+          "p99": 196
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 11
+      },
+      "concurrency": 0,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:08.318Z",
+      "scenariosCreated": 19,
+      "scenariosCompleted": 18,
+      "requestsCompleted": 18,
+      "latency": {
+        "min": 88,
+        "max": 651.5,
+        "median": 253.8,
+        "p95": 604,
+        "p99": 651.5
+      },
+      "rps": {
+        "count": 19,
+        "mean": 1.96
+      },
+      "scenarioDuration": {
+        "min": 91.8,
+        "max": 653.9,
+        "median": 257,
+        "p95": 606.8,
+        "p99": 653.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 19
+      },
+      "errors": {},
+      "codes": {
+        "422": 18
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 90,
+          "max": 653,
+          "median": 256.5,
+          "p95": 606.2,
+          "p99": 653
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 18
+      },
+      "concurrency": 1,
+      "pendingRequests": 1,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:18.321Z",
+      "scenariosCreated": 19,
+      "scenariosCompleted": 20,
+      "requestsCompleted": 20,
+      "latency": {
+        "min": 86.7,
+        "max": 549.7,
+        "median": 93.4,
+        "p95": 481,
+        "p99": 549.7
+      },
+      "rps": {
+        "count": 19,
+        "mean": 1.96
+      },
+      "scenarioDuration": {
+        "min": 90.8,
+        "max": 559.6,
+        "median": 97.1,
+        "p95": 487.3,
+        "p99": 559.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 19
+      },
+      "errors": {},
+      "codes": {
+        "422": 20
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 90,
+          "max": 559,
+          "median": 96,
+          "p95": 486.5,
+          "p99": 559
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 20
+      },
+      "concurrency": 0,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:28.319Z",
+      "scenariosCreated": 36,
+      "scenariosCompleted": 35,
+      "requestsCompleted": 35,
+      "latency": {
+        "min": 86.4,
+        "max": 345.5,
+        "median": 126.3,
+        "p95": 322.6,
+        "p99": 345.5
+      },
+      "rps": {
+        "count": 36,
+        "mean": 3.65
+      },
+      "scenarioDuration": {
+        "min": 88.9,
+        "max": 347.9,
+        "median": 128.5,
+        "p95": 326,
+        "p99": 347.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 36
+      },
+      "errors": {},
+      "codes": {
+        "422": 35
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 88,
+          "max": 347,
+          "median": 128,
+          "p95": 325.5,
+          "p99": 347
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 35
+      },
+      "concurrency": 1,
+      "pendingRequests": 1,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:38.322Z",
+      "scenariosCreated": 51,
+      "scenariosCompleted": 52,
+      "requestsCompleted": 52,
+      "latency": {
+        "min": 86.2,
+        "max": 375.2,
+        "median": 111.5,
+        "p95": 258.9,
+        "p99": 373.2
+      },
+      "rps": {
+        "count": 51,
+        "mean": 5.19
+      },
+      "scenarioDuration": {
+        "min": 89.5,
+        "max": 377.5,
+        "median": 114.7,
+        "p95": 262.5,
+        "p99": 375.5
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 51
+      },
+      "errors": {},
+      "codes": {
+        "422": 52
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 89,
+          "max": 377,
+          "median": 114.5,
+          "p95": 261.6,
+          "p99": 375
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 52
+      },
+      "concurrency": 0,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:48.322Z",
+      "scenariosCreated": 69,
+      "scenariosCompleted": 66,
+      "requestsCompleted": 66,
+      "latency": {
+        "min": 85.4,
+        "max": 485.3,
+        "median": 164,
+        "p95": 376.8,
+        "p99": 480.5
+      },
+      "rps": {
+        "count": 68,
+        "mean": 6.88
+      },
+      "scenarioDuration": {
+        "min": 87.6,
+        "max": 487.6,
+        "median": 166.1,
+        "p95": 379.1,
+        "p99": 484.1
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 69
+      },
+      "errors": {},
+      "codes": {
+        "422": 66
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 87,
+          "max": 487,
+          "median": 166,
+          "p95": 379,
+          "p99": 483
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 66
+      },
+      "concurrency": 3,
+      "pendingRequests": 2,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:43:58.323Z",
+      "scenariosCreated": 60,
+      "scenariosCompleted": 62,
+      "requestsCompleted": 62,
+      "latency": {
+        "min": 85.4,
+        "max": 411.7,
+        "median": 162.2,
+        "p95": 388,
+        "p99": 410.9
+      },
+      "rps": {
+        "count": 60,
+        "mean": 6
+      },
+      "scenarioDuration": {
+        "min": 88.9,
+        "max": 414.1,
+        "median": 164.6,
+        "p95": 390.9,
+        "p99": 413.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 60
+      },
+      "errors": {},
+      "codes": {
+        "422": 62
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 88,
+          "max": 414,
+          "median": 163.5,
+          "p95": 390.4,
+          "p99": 413
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 62
+      },
+      "concurrency": 1,
+      "pendingRequests": 0,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:08.324Z",
+      "scenariosCreated": 69,
+      "scenariosCompleted": 68,
+      "requestsCompleted": 68,
+      "latency": {
+        "min": 84.9,
+        "max": 397.3,
+        "median": 134.1,
+        "p95": 312.5,
+        "p99": 383.6
+      },
+      "rps": {
+        "count": 70,
+        "mean": 7
+      },
+      "scenarioDuration": {
+        "min": 87.4,
+        "max": 399.5,
+        "median": 137,
+        "p95": 315,
+        "p99": 385.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 69
+      },
+      "errors": {},
+      "codes": {
+        "422": 68
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 87,
+          "max": 399,
+          "median": 136.5,
+          "p95": 314.4,
+          "p99": 385.3
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 68
+      },
+      "concurrency": 2,
+      "pendingRequests": 2,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:18.324Z",
+      "scenariosCreated": 81,
+      "scenariosCompleted": 80,
+      "requestsCompleted": 80,
+      "latency": {
+        "min": 85,
+        "max": 1167.4,
+        "median": 296.2,
+        "p95": 1045.1,
+        "p99": 1158.7
+      },
+      "rps": {
+        "count": 81,
+        "mean": 8.32
+      },
+      "scenarioDuration": {
+        "min": 87.6,
+        "max": 1169.6,
+        "median": 298.4,
+        "p95": 1047.3,
+        "p99": 1160.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 81
+      },
+      "errors": {},
+      "codes": {
+        "422": 80
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 87,
+          "max": 1169,
+          "median": 298,
+          "p95": 1047,
+          "p99": 1160
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 80
+      },
+      "concurrency": 3,
+      "pendingRequests": 3,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:28.326Z",
+      "scenariosCreated": 84,
+      "scenariosCompleted": 77,
+      "requestsCompleted": 77,
+      "latency": {
+        "min": 85.7,
+        "max": 758.7,
+        "median": 178.5,
+        "p95": 606.8,
+        "p99": 733.6
+      },
+      "rps": {
+        "count": 84,
+        "mean": 8.56
+      },
+      "scenarioDuration": {
+        "min": 89.1,
+        "max": 765.6,
+        "median": 181.3,
+        "p95": 609.1,
+        "p99": 739.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 84
+      },
+      "errors": {},
+      "codes": {
+        "422": 77
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 89,
+          "max": 765,
+          "median": 181,
+          "p95": 608.2,
+          "p99": 738.5
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 77
+      },
+      "concurrency": 10,
+      "pendingRequests": 10,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:38.326Z",
+      "scenariosCreated": 95,
+      "scenariosCompleted": 92,
+      "requestsCompleted": 92,
+      "latency": {
+        "min": 643.1,
+        "max": 2499,
+        "median": 1323.5,
+        "p95": 1730.8,
+        "p99": 2377.6
+      },
+      "rps": {
+        "count": 95,
+        "mean": 9.54
+      },
+      "scenarioDuration": {
+        "min": 645.7,
+        "max": 2501.1,
+        "median": 1325.5,
+        "p95": 1733,
+        "p99": 2379.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 95
+      },
+      "errors": {},
+      "codes": {
+        "422": 92
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 645,
+          "max": 2501,
+          "median": 1325,
+          "p95": 1732.5,
+          "p99": 2379.6
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 92
+      },
+      "concurrency": 13,
+      "pendingRequests": 13,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:48.326Z",
+      "scenariosCreated": 89,
+      "scenariosCompleted": 91,
+      "requestsCompleted": 91,
+      "latency": {
+        "min": 1089.5,
+        "max": 2428.7,
+        "median": 1413.9,
+        "p95": 1921.3,
+        "p99": 2412.4
+      },
+      "rps": {
+        "count": 89,
+        "mean": 9.2
+      },
+      "scenarioDuration": {
+        "min": 1091.5,
+        "max": 2430.8,
+        "median": 1417.9,
+        "p95": 1923.6,
+        "p99": 2414.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 89
+      },
+      "errors": {},
+      "codes": {
+        "422": 91
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 1091,
+          "max": 2431,
+          "median": 1418,
+          "p95": 1922.7,
+          "p99": 2414.6
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 91
+      },
+      "concurrency": 11,
+      "pendingRequests": 11,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:44:58.328Z",
+      "scenariosCreated": 115,
+      "scenariosCompleted": 90,
+      "requestsCompleted": 90,
+      "latency": {
+        "min": 975.3,
+        "max": 3674.5,
+        "median": 2155.2,
+        "p95": 3458.4,
+        "p99": 3649.4
+      },
+      "rps": {
+        "count": 115,
+        "mean": 11.65
+      },
+      "scenarioDuration": {
+        "min": 977.4,
+        "max": 3677,
+        "median": 2160.3,
+        "p95": 3460.5,
+        "p99": 3651.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 115
+      },
+      "errors": {},
+      "codes": {
+        "422": 90
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 977,
+          "max": 3677,
+          "median": 2159.5,
+          "p95": 3461,
+          "p99": 3651.8
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 90
+      },
+      "concurrency": 36,
+      "pendingRequests": 36,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:08.329Z",
+      "scenariosCreated": 122,
+      "scenariosCompleted": 80,
+      "requestsCompleted": 80,
+      "latency": {
+        "min": 3748.1,
+        "max": 9077.9,
+        "median": 4712.5,
+        "p95": 8859,
+        "p99": 9051.8
+      },
+      "rps": {
+        "count": 122,
+        "mean": 12.44
+      },
+      "scenarioDuration": {
+        "min": 3751.4,
+        "max": 9080.2,
+        "median": 4715,
+        "p95": 8861.1,
+        "p99": 9054.1
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 122
+      },
+      "errors": {},
+      "codes": {
+        "422": 80
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 3751,
+          "max": 9080,
+          "median": 4714.5,
+          "p95": 8861,
+          "p99": 9053.9
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 80
+      },
+      "concurrency": 78,
+      "pendingRequests": 78,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:18.330Z",
+      "scenariosCreated": 126,
+      "scenariosCompleted": 92,
+      "requestsCompleted": 92,
+      "latency": {
+        "min": 6189.2,
+        "max": 8875.1,
+        "median": 7954.4,
+        "p95": 8743.8,
+        "p99": 8848.4
+      },
+      "rps": {
+        "count": 126,
+        "mean": 12.66
+      },
+      "scenarioDuration": {
+        "min": 6191.3,
+        "max": 8877.1,
+        "median": 7956.7,
+        "p95": 8745.8,
+        "p99": 8850.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 126
+      },
+      "errors": {},
+      "codes": {
+        "422": 92
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 6191,
+          "max": 8877,
+          "median": 7956.5,
+          "p95": 8745.6,
+          "p99": 8850.5
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 92
+      },
+      "concurrency": 112,
+      "pendingRequests": 112,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:28.331Z",
+      "scenariosCreated": 126,
+      "scenariosCompleted": 70,
+      "requestsCompleted": 70,
+      "latency": {
+        "min": 8608.3,
+        "max": 12989.3,
+        "median": 10307.9,
+        "p95": 12766.4,
+        "p99": 12973.3
+      },
+      "rps": {
+        "count": 126,
+        "mean": 12.82
+      },
+      "scenarioDuration": {
+        "min": 8610.4,
+        "max": 12991.7,
+        "median": 10309.9,
+        "p95": 12768.6,
+        "p99": 12975.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 126
+      },
+      "errors": {},
+      "codes": {
+        "422": 70
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 8610,
+          "max": 12991,
+          "median": 10309.5,
+          "p95": 12769,
+          "p99": 12975
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 70
+      },
+      "concurrency": 168,
+      "pendingRequests": 168,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:38.332Z",
+      "scenariosCreated": 165,
+      "scenariosCompleted": 44,
+      "requestsCompleted": 44,
+      "latency": {
+        "min": 13068.5,
+        "max": 18195.7,
+        "median": 16263.6,
+        "p95": 18179.8,
+        "p99": 18195.7
+      },
+      "rps": {
+        "count": 165,
+        "mean": 16.82
+      },
+      "scenarioDuration": {
+        "min": 13071.4,
+        "max": 18197.8,
+        "median": 16265.8,
+        "p95": 18183.4,
+        "p99": 18197.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 165
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 13
+      },
+      "codes": {
+        "422": 44
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 13070,
+          "max": 18197,
+          "median": 16265.5,
+          "p95": 18182.9,
+          "p99": 18197
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 44
+      },
+      "concurrency": 276,
+      "pendingRequests": 289,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:48.332Z",
+      "scenariosCreated": 145,
+      "scenariosCompleted": 19,
+      "requestsCompleted": 19,
+      "latency": {
+        "min": 18567.2,
+        "max": 25004.1,
+        "median": 22221.1,
+        "p95": 24886.2,
+        "p99": 25004.1
+      },
+      "rps": {
+        "count": 145,
+        "mean": 14.72
+      },
+      "scenarioDuration": {
+        "min": 18569.4,
+        "max": 25006.7,
+        "median": 22223.4,
+        "p95": 24888.7,
+        "p99": 25006.7
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 145
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 103
+      },
+      "codes": {
+        "422": 19
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 18569,
+          "max": 25007,
+          "median": 22224,
+          "p95": 24889.1,
+          "p99": 25007
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 19
+      },
+      "concurrency": 299,
+      "pendingRequests": 415,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:45:58.333Z",
+      "scenariosCreated": 150,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 0,
+      "latency": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "rps": {
+        "count": 150,
+        "mean": 15.11
+      },
+      "scenarioDuration": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 150
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 154,
+        "ETIMEDOUT": 39
+      },
+      "codes": {},
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 256,
+      "pendingRequests": 565,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:08.334Z",
+      "scenariosCreated": 162,
+      "scenariosCompleted": 55,
+      "requestsCompleted": 55,
+      "latency": {
+        "min": 20190.6,
+        "max": 22555.5,
+        "median": 21196.1,
+        "p95": 22387.7,
+        "p99": 22551.6
+      },
+      "rps": {
+        "count": 162,
+        "mean": 16.35
+      },
+      "scenarioDuration": {
+        "min": 20196.1,
+        "max": 22561.7,
+        "median": 21200.5,
+        "p95": 22392.5,
+        "p99": 22557.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 162
+      },
+      "errors": {
+        "ETIMEDOUT": 91,
+        "ESOCKETTIMEDOUT": 47
+      },
+      "codes": {
+        "422": 55
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 20196,
+          "max": 22561,
+          "median": 21199,
+          "p95": 22392,
+          "p99": 22557
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 55
+      },
+      "concurrency": 225,
+      "pendingRequests": 672,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:18.334Z",
+      "scenariosCreated": 188,
+      "scenariosCompleted": 64,
+      "requestsCompleted": 64,
+      "latency": {
+        "min": 7212.8,
+        "max": 22879.5,
+        "median": 14788.8,
+        "p95": 22721.4,
+        "p99": 22873.9
+      },
+      "rps": {
+        "count": 188,
+        "mean": 18.97
+      },
+      "scenarioDuration": {
+        "min": 7217.4,
+        "max": 22885.7,
+        "median": 14791.4,
+        "p95": 22724.1,
+        "p99": 22879.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 188
+      },
+      "errors": {},
+      "codes": {
+        "422": 64
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 7217,
+          "max": 22883,
+          "median": 14791.5,
+          "p95": 22724.2,
+          "p99": 22877.3
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 64
+      },
+      "concurrency": 349,
+      "pendingRequests": 796,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:28.335Z",
+      "scenariosCreated": 197,
+      "scenariosCompleted": 35,
+      "requestsCompleted": 35,
+      "latency": {
+        "min": 15947,
+        "max": 27749.9,
+        "median": 22845.9,
+        "p95": 27411.5,
+        "p99": 27749.9
+      },
+      "rps": {
+        "count": 197,
+        "mean": 19.72
+      },
+      "scenarioDuration": {
+        "min": 15949.5,
+        "max": 27752.5,
+        "median": 22849.5,
+        "p95": 27413.7,
+        "p99": 27752.5
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 197
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 66
+      },
+      "codes": {
+        "422": 35
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 15949,
+          "max": 27752,
+          "median": 22849,
+          "p95": 27414.3,
+          "p99": 27752
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 35
+      },
+      "concurrency": 445,
+      "pendingRequests": 958,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:38.339Z",
+      "scenariosCreated": 203,
+      "scenariosCompleted": 26,
+      "requestsCompleted": 26,
+      "latency": {
+        "min": 20152.5,
+        "max": 21833.2,
+        "median": 20858.7,
+        "p95": 21706.3,
+        "p99": 21833.2
+      },
+      "rps": {
+        "count": 203,
+        "mean": 20.51
+      },
+      "scenarioDuration": {
+        "min": 20155.3,
+        "max": 21838.8,
+        "median": 20862.4,
+        "p95": 21709,
+        "p99": 21838.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 203
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 184,
+        "ETIMEDOUT": 122
+      },
+      "codes": {
+        "422": 26
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 20155,
+          "max": 21838,
+          "median": 20861.5,
+          "p95": 21708.4,
+          "p99": 21838
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 26
+      },
+      "concurrency": 316,
+      "pendingRequests": 1135,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:48.335Z",
+      "scenariosCreated": 214,
+      "scenariosCompleted": 54,
+      "requestsCompleted": 54,
+      "latency": {
+        "min": 22141.4,
+        "max": 25706.9,
+        "median": 23666.6,
+        "p95": 25577.2,
+        "p99": 25703.3
+      },
+      "rps": {
+        "count": 214,
+        "mean": 21.46
+      },
+      "scenarioDuration": {
+        "min": 22143.9,
+        "max": 25708.9,
+        "median": 23668.9,
+        "p95": 25579.4,
+        "p99": 25705.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 214
+      },
+      "errors": {
+        "ETIMEDOUT": 63,
+        "ESOCKETTIMEDOUT": 36
+      },
+      "codes": {
+        "422": 54
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 22144,
+          "max": 25709,
+          "median": 23669,
+          "p95": 25580,
+          "p99": 25705.4
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 54
+      },
+      "concurrency": 377,
+      "pendingRequests": 1295,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:46:58.337Z",
+      "scenariosCreated": 213,
+      "scenariosCompleted": 59,
+      "requestsCompleted": 59,
+      "latency": {
+        "min": 15359.4,
+        "max": 30001.4,
+        "median": 22371.6,
+        "p95": 28430.2,
+        "p99": 29903.2
+      },
+      "rps": {
+        "count": 213,
+        "mean": 21.32
+      },
+      "scenarioDuration": {
+        "min": 15365.1,
+        "max": 30003.3,
+        "median": 22378.8,
+        "p95": 28432.2,
+        "p99": 29905.1
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 213
+      },
+      "errors": {
+        "ETIMEDOUT": 133,
+        "ESOCKETTIMEDOUT": 38
+      },
+      "codes": {
+        "422": 59
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 15365,
+          "max": 30004,
+          "median": 22379,
+          "p95": 28432.3,
+          "p99": 29905.7
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 59
+      },
+      "concurrency": 360,
+      "pendingRequests": 1449,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:08.338Z",
+      "scenariosCreated": 235,
+      "scenariosCompleted": 63,
+      "requestsCompleted": 63,
+      "latency": {
+        "min": 17771.1,
+        "max": 36114.6,
+        "median": 28841.5,
+        "p95": 35016.3,
+        "p99": 36062.3
+      },
+      "rps": {
+        "count": 235,
+        "mean": 23.57
+      },
+      "scenarioDuration": {
+        "min": 17773.2,
+        "max": 36117.8,
+        "median": 28843.8,
+        "p95": 35020.1,
+        "p99": 36065.4
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 235
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 12
+      },
+      "codes": {
+        "422": 63
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 17773,
+          "max": 36118,
+          "median": 28844,
+          "p95": 35020.1,
+          "p99": 36065.6
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 63
+      },
+      "concurrency": 520,
+      "pendingRequests": 1621,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:18.340Z",
+      "scenariosCreated": 213,
+      "scenariosCompleted": 63,
+      "requestsCompleted": 63,
+      "latency": {
+        "min": 19012.1,
+        "max": 34317.5,
+        "median": 24876.8,
+        "p95": 31020.1,
+        "p99": 34037.9
+      },
+      "rps": {
+        "count": 213,
+        "mean": 21.39
+      },
+      "scenarioDuration": {
+        "min": 19014.3,
+        "max": 34330.7,
+        "median": 24878.7,
+        "p95": 31022.3,
+        "p99": 34049.7
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 213
+      },
+      "errors": {
+        "ETIMEDOUT": 53,
+        "ESOCKETTIMEDOUT": 222
+      },
+      "codes": {
+        "422": 63
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 19014,
+          "max": 34323,
+          "median": 24879,
+          "p95": 31022.6,
+          "p99": 34043
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 63
+      },
+      "concurrency": 395,
+      "pendingRequests": 1771,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:28.341Z",
+      "scenariosCreated": 243,
+      "scenariosCompleted": 31,
+      "requestsCompleted": 31,
+      "latency": {
+        "min": 17850,
+        "max": 23802.9,
+        "median": 20567.2,
+        "p95": 23144.7,
+        "p99": 23802.9
+      },
+      "rps": {
+        "count": 243,
+        "mean": 24.3
+      },
+      "scenarioDuration": {
+        "min": 17852.7,
+        "max": 23805.5,
+        "median": 20569.3,
+        "p95": 23147.4,
+        "p99": 23805.5
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 243
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 67,
+        "ETIMEDOUT": 161
+      },
+      "codes": {
+        "422": 31
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 17853,
+          "max": 23805,
+          "median": 20569,
+          "p95": 23147.6,
+          "p99": 23805
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 31
+      },
+      "concurrency": 379,
+      "pendingRequests": 1983,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:38.343Z",
+      "scenariosCreated": 241,
+      "scenariosCompleted": 56,
+      "requestsCompleted": 56,
+      "latency": {
+        "min": 21851.8,
+        "max": 29781.9,
+        "median": 25584.9,
+        "p95": 29197.2,
+        "p99": 29757.9
+      },
+      "rps": {
+        "count": 241,
+        "mean": 24.1
+      },
+      "scenarioDuration": {
+        "min": 21853.8,
+        "max": 29784.7,
+        "median": 25586.9,
+        "p95": 29199.5,
+        "p99": 29760.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 241
+      },
+      "errors": {
+        "ETIMEDOUT": 109,
+        "ESOCKETTIMEDOUT": 41
+      },
+      "codes": {
+        "422": 56
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 21854,
+          "max": 29785,
+          "median": 25587,
+          "p95": 29199.1,
+          "p99": 29760.9
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 56
+      },
+      "concurrency": 414,
+      "pendingRequests": 2168,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:48.344Z",
+      "scenariosCreated": 240,
+      "scenariosCompleted": 73,
+      "requestsCompleted": 73,
+      "latency": {
+        "min": 14812.5,
+        "max": 30428.3,
+        "median": 21817.6,
+        "p95": 29401.6,
+        "p99": 30384.1
+      },
+      "rps": {
+        "count": 240,
+        "mean": 24.1
+      },
+      "scenarioDuration": {
+        "min": 14814.4,
+        "max": 30431.7,
+        "median": 21819.7,
+        "p95": 29403.9,
+        "p99": 30387.5
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 240
+      },
+      "errors": {
+        "ETIMEDOUT": 133,
+        "ESOCKETTIMEDOUT": 10
+      },
+      "codes": {
+        "422": 73
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 14814,
+          "max": 30432,
+          "median": 21819,
+          "p95": 29404.8,
+          "p99": 30387.8
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 73
+      },
+      "concurrency": 438,
+      "pendingRequests": 2335,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:47:58.343Z",
+      "scenariosCreated": 262,
+      "scenariosCompleted": 57,
+      "requestsCompleted": 57,
+      "latency": {
+        "min": 23262.3,
+        "max": 36573.6,
+        "median": 30486.6,
+        "p95": 36223.8,
+        "p99": 36558.4
+      },
+      "rps": {
+        "count": 262,
+        "mean": 26.2
+      },
+      "scenarioDuration": {
+        "min": 23264.2,
+        "max": 36575.5,
+        "median": 30488.4,
+        "p95": 36225.7,
+        "p99": 36560.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 262
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 33
+      },
+      "codes": {
+        "422": 57
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 23265,
+          "max": 36576,
+          "median": 30489,
+          "p95": 36226.4,
+          "p99": 36560.8
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 57
+      },
+      "concurrency": 610,
+      "pendingRequests": 2540,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:08.344Z",
+      "scenariosCreated": 246,
+      "scenariosCompleted": 83,
+      "requestsCompleted": 83,
+      "latency": {
+        "min": 20168.4,
+        "max": 35697.5,
+        "median": 27239.5,
+        "p95": 33678,
+        "p99": 35443.6
+      },
+      "rps": {
+        "count": 246,
+        "mean": 24.65
+      },
+      "scenarioDuration": {
+        "min": 20170.5,
+        "max": 35699.9,
+        "median": 27241.8,
+        "p95": 33681.3,
+        "p99": 35445.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 246
+      },
+      "errors": {
+        "ETIMEDOUT": 130,
+        "ESOCKETTIMEDOUT": 220
+      },
+      "codes": {
+        "422": 83
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 20170,
+          "max": 35701,
+          "median": 27242,
+          "p95": 33680.8,
+          "p99": 35446.9
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 83
+      },
+      "concurrency": 423,
+      "pendingRequests": 2703,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:18.345Z",
+      "scenariosCreated": 286,
+      "scenariosCompleted": 41,
+      "requestsCompleted": 41,
+      "latency": {
+        "min": 15368.7,
+        "max": 36495.3,
+        "median": 19072.3,
+        "p95": 32972,
+        "p99": 36495.3
+      },
+      "rps": {
+        "count": 286,
+        "mean": 28.6
+      },
+      "scenarioDuration": {
+        "min": 15372.1,
+        "max": 36497.3,
+        "median": 19074.3,
+        "p95": 32973.9,
+        "p99": 36497.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 286
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 77,
+        "ETIMEDOUT": 168
+      },
+      "codes": {
+        "422": 41
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 15371,
+          "max": 36498,
+          "median": 19075,
+          "p95": 32974.1,
+          "p99": 36498
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 41
+      },
+      "concurrency": 423,
+      "pendingRequests": 2948,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:28.346Z",
+      "scenariosCreated": 273,
+      "scenariosCompleted": 49,
+      "requestsCompleted": 49,
+      "latency": {
+        "min": 20167.1,
+        "max": 32108.9,
+        "median": 24417.9,
+        "p95": 31439.5,
+        "p99": 32108.9
+      },
+      "rps": {
+        "count": 273,
+        "mean": 27.3
+      },
+      "scenarioDuration": {
+        "min": 20169.9,
+        "max": 32110.9,
+        "median": 24419.7,
+        "p95": 31441.4,
+        "p99": 32110.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 273
+      },
+      "errors": {
+        "ETIMEDOUT": 127,
+        "ESOCKETTIMEDOUT": 42
+      },
+      "codes": {
+        "422": 49
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 20170,
+          "max": 32112,
+          "median": 24420,
+          "p95": 31441.5,
+          "p99": 32112
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 49
+      },
+      "concurrency": 478,
+      "pendingRequests": 3172,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:38.347Z",
+      "scenariosCreated": 302,
+      "scenariosCompleted": 50,
+      "requestsCompleted": 50,
+      "latency": {
+        "min": 16113.3,
+        "max": 31662,
+        "median": 21896.3,
+        "p95": 29618.3,
+        "p99": 31662
+      },
+      "rps": {
+        "count": 302,
+        "mean": 30.32
+      },
+      "scenarioDuration": {
+        "min": 16115,
+        "max": 31663.8,
+        "median": 21898.5,
+        "p95": 29620.1,
+        "p99": 31663.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 302
+      },
+      "errors": {
+        "ETIMEDOUT": 185,
+        "ESOCKETTIMEDOUT": 153
+      },
+      "codes": {
+        "422": 50
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 16115,
+          "max": 31664,
+          "median": 21898.5,
+          "p95": 29621,
+          "p99": 31664
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 50
+      },
+      "concurrency": 392,
+      "pendingRequests": 3424,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:48.347Z",
+      "scenariosCreated": 314,
+      "scenariosCompleted": 73,
+      "requestsCompleted": 73,
+      "latency": {
+        "min": 10715.4,
+        "max": 32690.4,
+        "median": 16828.4,
+        "p95": 25927.9,
+        "p99": 31794.4
+      },
+      "rps": {
+        "count": 314,
+        "mean": 31.4
+      },
+      "scenarioDuration": {
+        "min": 10717.4,
+        "max": 32693.2,
+        "median": 16830.2,
+        "p95": 25929.7,
+        "p99": 31797
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 314
+      },
+      "errors": {
+        "ETIMEDOUT": 118
+      },
+      "codes": {
+        "422": 73
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 10717,
+          "max": 32694,
+          "median": 16830,
+          "p95": 25929.5,
+          "p99": 31797.7
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 73
+      },
+      "concurrency": 515,
+      "pendingRequests": 3665,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:48:58.347Z",
+      "scenariosCreated": 312,
+      "scenariosCompleted": 28,
+      "requestsCompleted": 28,
+      "latency": {
+        "min": 17103.5,
+        "max": 27054.3,
+        "median": 19136.4,
+        "p95": 26497.6,
+        "p99": 27054.3
+      },
+      "rps": {
+        "count": 312,
+        "mean": 31.2
+      },
+      "scenarioDuration": {
+        "min": 17105.6,
+        "max": 27057,
+        "median": 19138.9,
+        "p95": 26500.2,
+        "p99": 27057
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 312
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 53,
+        "ETIMEDOUT": 239
+      },
+      "codes": {
+        "422": 28
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 17106,
+          "max": 27057,
+          "median": 19138.5,
+          "p95": 26499.9,
+          "p99": 27057
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 28
+      },
+      "concurrency": 507,
+      "pendingRequests": 3949,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:08.348Z",
+      "scenariosCreated": 314,
+      "scenariosCompleted": 75,
+      "requestsCompleted": 75,
+      "latency": {
+        "min": 6333.3,
+        "max": 28768.8,
+        "median": 11692.6,
+        "p95": 25001,
+        "p99": 28559.3
+      },
+      "rps": {
+        "count": 314,
+        "mean": 31.4
+      },
+      "scenarioDuration": {
+        "min": 6335,
+        "max": 28772.9,
+        "median": 11695,
+        "p95": 25005.1,
+        "p99": 28562.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 314
+      },
+      "errors": {
+        "ETIMEDOUT": 135,
+        "ESOCKETTIMEDOUT": 156
+      },
+      "codes": {
+        "422": 75
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 6335,
+          "max": 28772,
+          "median": 11694,
+          "p95": 25004.8,
+          "p99": 28562.3
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 75
+      },
+      "concurrency": 455,
+      "pendingRequests": 4188,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:18.347Z",
+      "scenariosCreated": 322,
+      "scenariosCompleted": 21,
+      "requestsCompleted": 21,
+      "latency": {
+        "min": 13166.2,
+        "max": 21662.7,
+        "median": 16185,
+        "p95": 21436.7,
+        "p99": 21662.7
+      },
+      "rps": {
+        "count": 322,
+        "mean": 32.26
+      },
+      "scenarioDuration": {
+        "min": 13168,
+        "max": 21665,
+        "median": 16189.4,
+        "p95": 21439,
+        "p99": 21665
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 322
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 51,
+        "ETIMEDOUT": 159
+      },
+      "codes": {
+        "422": 21
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 13168,
+          "max": 21665,
+          "median": 16189,
+          "p95": 21438.4,
+          "p99": 21665
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 21
+      },
+      "concurrency": 546,
+      "pendingRequests": 4489,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:28.349Z",
+      "scenariosCreated": 327,
+      "scenariosCompleted": 41,
+      "requestsCompleted": 41,
+      "latency": {
+        "min": 18960.4,
+        "max": 34430.9,
+        "median": 23003.5,
+        "p95": 30336.1,
+        "p99": 34430.9
+      },
+      "rps": {
+        "count": 327,
+        "mean": 32.7
+      },
+      "scenarioDuration": {
+        "min": 18966.8,
+        "max": 34432.7,
+        "median": 23005.6,
+        "p95": 30338.1,
+        "p99": 34432.7
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 327
+      },
+      "errors": {
+        "ETIMEDOUT": 231,
+        "ESOCKETTIMEDOUT": 147
+      },
+      "codes": {
+        "422": 41
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 18966,
+          "max": 34434,
+          "median": 23005,
+          "p95": 30338.9,
+          "p99": 34434
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 41
+      },
+      "concurrency": 454,
+      "pendingRequests": 4775,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:38.349Z",
+      "scenariosCreated": 353,
+      "scenariosCompleted": 1,
+      "requestsCompleted": 1,
+      "latency": {
+        "min": 28314,
+        "max": 28314,
+        "median": 28314,
+        "p95": 28314,
+        "p99": 28314
+      },
+      "rps": {
+        "count": 352,
+        "mean": 35.34
+      },
+      "scenarioDuration": {
+        "min": 28315.9,
+        "max": 28315.9,
+        "median": 28315.9,
+        "p95": 28315.9,
+        "p99": 28315.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 353
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 35,
+        "ETIMEDOUT": 290
+      },
+      "codes": {
+        "422": 1
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 28317,
+          "max": 28317,
+          "median": 28317,
+          "p95": 28317,
+          "p99": 28317
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 1
+      },
+      "concurrency": 481,
+      "pendingRequests": 5126,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:48.350Z",
+      "scenariosCreated": 375,
+      "scenariosCompleted": 54,
+      "requestsCompleted": 54,
+      "latency": {
+        "min": 905.3,
+        "max": 15615.6,
+        "median": 4864.9,
+        "p95": 12817.8,
+        "p99": 15533.1
+      },
+      "rps": {
+        "count": 375,
+        "mean": 37.5
+      },
+      "scenarioDuration": {
+        "min": 911.8,
+        "max": 15618.7,
+        "median": 4866.8,
+        "p95": 12824.8,
+        "p99": 15536.2
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 375
+      },
+      "errors": {
+        "ETIMEDOUT": 235,
+        "ESOCKETTIMEDOUT": 128
+      },
+      "codes": {
+        "422": 54
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 910,
+          "max": 15618,
+          "median": 4866.5,
+          "p95": 12824.2,
+          "p99": 15535.5
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 54
+      },
+      "concurrency": 439,
+      "pendingRequests": 5447,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:49:58.350Z",
+      "scenariosCreated": 359,
+      "scenariosCompleted": 33,
+      "requestsCompleted": 33,
+      "latency": {
+        "min": 8611.5,
+        "max": 24939.2,
+        "median": 16739.3,
+        "p95": 23388.7,
+        "p99": 24939.2
+      },
+      "rps": {
+        "count": 359,
+        "mean": 35.9
+      },
+      "scenarioDuration": {
+        "min": 8613.3,
+        "max": 24947.1,
+        "median": 16741.3,
+        "p95": 23391.6,
+        "p99": 24947.1
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 359
+      },
+      "errors": {
+        "ETIMEDOUT": 145
+      },
+      "codes": {
+        "422": 33
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 8613,
+          "max": 24943,
+          "median": 16742,
+          "p95": 23390.9,
+          "p99": 24943
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 33
+      },
+      "concurrency": 620,
+      "pendingRequests": 5773,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:08.351Z",
+      "scenariosCreated": 375,
+      "scenariosCompleted": 26,
+      "requestsCompleted": 26,
+      "latency": {
+        "min": 18954.2,
+        "max": 32958.6,
+        "median": 25737.6,
+        "p95": 32051.9,
+        "p99": 32958.6
+      },
+      "rps": {
+        "count": 376,
+        "mean": 37.6
+      },
+      "scenarioDuration": {
+        "min": 18956.1,
+        "max": 32960.3,
+        "median": 25742.7,
+        "p95": 32053.6,
+        "p99": 32960.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 375
+      },
+      "errors": {
+        "ETIMEDOUT": 112,
+        "ESOCKETTIMEDOUT": 225
+      },
+      "codes": {
+        "422": 26
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 18956,
+          "max": 32960,
+          "median": 25742.5,
+          "p95": 32053.6,
+          "p99": 32960
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 26
+      },
+      "concurrency": 632,
+      "pendingRequests": 6123,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:18.352Z",
+      "scenariosCreated": 404,
+      "scenariosCompleted": 0,
+      "requestsCompleted": 0,
+      "latency": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "rps": {
+        "count": 404,
+        "mean": 40.4
+      },
+      "scenarioDuration": {
+        "min": null,
+        "max": null,
+        "median": null,
+        "p95": null,
+        "p99": null
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 404
+      },
+      "errors": {
+        "ETIMEDOUT": 376,
+        "ESOCKETTIMEDOUT": 256
+      },
+      "codes": {},
+      "matches": 0,
+      "customStats": {},
+      "counters": {},
+      "concurrency": 404,
+      "pendingRequests": 6527,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:28.352Z",
+      "scenariosCreated": 399,
+      "scenariosCompleted": 28,
+      "requestsCompleted": 28,
+      "latency": {
+        "min": 884.9,
+        "max": 10838,
+        "median": 3232.5,
+        "p95": 10153.3,
+        "p99": 10838
+      },
+      "rps": {
+        "count": 399,
+        "mean": 39.98
+      },
+      "scenarioDuration": {
+        "min": 886.7,
+        "max": 10839.7,
+        "median": 3234.4,
+        "p95": 10155.5,
+        "p99": 10839.7
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 399
+      },
+      "errors": {
+        "ETIMEDOUT": 342
+      },
+      "codes": {
+        "422": 28
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 886,
+          "max": 10839,
+          "median": 3234.5,
+          "p95": 10155,
+          "p99": 10839
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 28
+      },
+      "concurrency": 433,
+      "pendingRequests": 6898,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:38.354Z",
+      "scenariosCreated": 411,
+      "scenariosCompleted": 78,
+      "requestsCompleted": 78,
+      "latency": {
+        "min": 4187.5,
+        "max": 21326.5,
+        "median": 10784.8,
+        "p95": 19268.4,
+        "p99": 21122
+      },
+      "rps": {
+        "count": 411,
+        "mean": 41.18
+      },
+      "scenarioDuration": {
+        "min": 4189.5,
+        "max": 21328.5,
+        "median": 10787,
+        "p95": 19272.9,
+        "p99": 21124.2
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 411
+      },
+      "errors": {
+        "ETIMEDOUT": 176
+      },
+      "codes": {
+        "422": 78
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 4189,
+          "max": 21329,
+          "median": 10787,
+          "p95": 19273,
+          "p99": 21124.6
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 78
+      },
+      "concurrency": 590,
+      "pendingRequests": 7231,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:48.354Z",
+      "scenariosCreated": 415,
+      "scenariosCompleted": 79,
+      "requestsCompleted": 79,
+      "latency": {
+        "min": 14082.8,
+        "max": 30783,
+        "median": 22262.1,
+        "p95": 29493.1,
+        "p99": 30725.5
+      },
+      "rps": {
+        "count": 415,
+        "mean": 41.58
+      },
+      "scenarioDuration": {
+        "min": 14089.7,
+        "max": 30784.9,
+        "median": 22263.9,
+        "p95": 29496.3,
+        "p99": 30727.4
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 415
+      },
+      "errors": {
+        "ETIMEDOUT": 222
+      },
+      "codes": {
+        "422": 79
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 14088,
+          "max": 30786,
+          "median": 22264,
+          "p95": 29496.8,
+          "p99": 30728.3
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 79
+      },
+      "concurrency": 704,
+      "pendingRequests": 7567,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:50:58.364Z",
+      "scenariosCreated": 419,
+      "scenariosCompleted": 32,
+      "requestsCompleted": 32,
+      "latency": {
+        "min": 23405.2,
+        "max": 34443.6,
+        "median": 28989.1,
+        "p95": 34217.3,
+        "p99": 34443.6
+      },
+      "rps": {
+        "count": 418,
+        "mean": 41.84
+      },
+      "scenarioDuration": {
+        "min": 23407.1,
+        "max": 34445.4,
+        "median": 28991.5,
+        "p95": 34219.1,
+        "p99": 34445.4
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 419
+      },
+      "errors": {
+        "ETIMEDOUT": 239,
+        "ESOCKETTIMEDOUT": 177
+      },
+      "codes": {
+        "422": 32
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 23407,
+          "max": 34445,
+          "median": 28991.5,
+          "p95": 34219.9,
+          "p99": 34445
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 32
+      },
+      "concurrency": 675,
+      "pendingRequests": 7953,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:08.375Z",
+      "scenariosCreated": 427,
+      "scenariosCompleted": 74,
+      "requestsCompleted": 74,
+      "latency": {
+        "min": 19601.7,
+        "max": 31986.1,
+        "median": 25001.2,
+        "p95": 30170.8,
+        "p99": 31762.3
+      },
+      "rps": {
+        "count": 428,
+        "mean": 42.76
+      },
+      "scenarioDuration": {
+        "min": 19604.2,
+        "max": 31987.8,
+        "median": 25003.4,
+        "p95": 30173.7,
+        "p99": 31764.1
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 427
+      },
+      "errors": {
+        "ETIMEDOUT": 262,
+        "ESOCKETTIMEDOUT": 128
+      },
+      "codes": {
+        "422": 74
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 19616,
+          "max": 32008,
+          "median": 25020.5,
+          "p95": 30194,
+          "p99": 31784.1
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 74
+      },
+      "concurrency": 638,
+      "pendingRequests": 8307,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:18.379Z",
+      "scenariosCreated": 428,
+      "scenariosCompleted": 30,
+      "requestsCompleted": 30,
+      "latency": {
+        "min": 17231.1,
+        "max": 32685.9,
+        "median": 19446.6,
+        "p95": 30559.4,
+        "p99": 32685.9
+      },
+      "rps": {
+        "count": 428,
+        "mean": 42.84
+      },
+      "scenarioDuration": {
+        "min": 17233.3,
+        "max": 32687.9,
+        "median": 19450.1,
+        "p95": 30562.1,
+        "p99": 32687.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 428
+      },
+      "errors": {
+        "ESOCKETTIMEDOUT": 50,
+        "ETIMEDOUT": 342
+      },
+      "codes": {
+        "422": 30
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 17247,
+          "max": 32708,
+          "median": 19464.5,
+          "p95": 30582,
+          "p99": 32708
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 30
+      },
+      "concurrency": 644,
+      "pendingRequests": 8705,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:28.383Z",
+      "scenariosCreated": 439,
+      "scenariosCompleted": 80,
+      "requestsCompleted": 80,
+      "latency": {
+        "min": 10367.4,
+        "max": 33404.8,
+        "median": 21863.2,
+        "p95": 31137.8,
+        "p99": 33178.2
+      },
+      "rps": {
+        "count": 439,
+        "mean": 43.94
+      },
+      "scenarioDuration": {
+        "min": 10369.4,
+        "max": 33406.5,
+        "median": 21865.5,
+        "p95": 31139.6,
+        "p99": 33180
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 439
+      },
+      "errors": {
+        "ETIMEDOUT": 246,
+        "ESOCKETTIMEDOUT": 128
+      },
+      "codes": {
+        "422": 80
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 10373,
+          "max": 33434,
+          "median": 21882,
+          "p95": 31166,
+          "p99": 33207.5
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 80
+      },
+      "concurrency": 629,
+      "pendingRequests": 9064,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:38.386Z",
+      "scenariosCreated": 453,
+      "scenariosCompleted": 69,
+      "requestsCompleted": 69,
+      "latency": {
+        "min": 13540.1,
+        "max": 31032.6,
+        "median": 20801.2,
+        "p95": 29342.9,
+        "p99": 30918.9
+      },
+      "rps": {
+        "count": 453,
+        "mean": 45.35
+      },
+      "scenarioDuration": {
+        "min": 13542.9,
+        "max": 31034.5,
+        "median": 20803.1,
+        "p95": 29345.1,
+        "p99": 30920.8
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 453
+      },
+      "errors": {
+        "ETIMEDOUT": 291,
+        "ECONNRESET": 1
+      },
+      "codes": {
+        "422": 69
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 13547,
+          "max": 31045,
+          "median": 20809,
+          "p95": 29354.8,
+          "p99": 30931.2
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 69
+      },
+      "concurrency": 721,
+      "pendingRequests": 9448,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:48.387Z",
+      "scenariosCreated": 465,
+      "scenariosCompleted": 36,
+      "requestsCompleted": 36,
+      "latency": {
+        "min": 23283,
+        "max": 35012.2,
+        "median": 27874.2,
+        "p95": 34530.1,
+        "p99": 35012.2
+      },
+      "rps": {
+        "count": 465,
+        "mean": 46.55
+      },
+      "scenarioDuration": {
+        "min": 23285.4,
+        "max": 35014,
+        "median": 27876.2,
+        "p95": 34532,
+        "p99": 35014
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 465
+      },
+      "errors": {
+        "ETIMEDOUT": 329,
+        "ESOCKETTIMEDOUT": 228
+      },
+      "codes": {
+        "422": 36
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 23291,
+          "max": 35025,
+          "median": 27884,
+          "p95": 34543.3,
+          "p99": 35025
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 36
+      },
+      "concurrency": 593,
+      "pendingRequests": 9877,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:51:58.388Z",
+      "scenariosCreated": 463,
+      "scenariosCompleted": 14,
+      "requestsCompleted": 14,
+      "latency": {
+        "min": 1680.7,
+        "max": 11117.3,
+        "median": 4029.8,
+        "p95": 10232.9,
+        "p99": 11117.3
+      },
+      "rps": {
+        "count": 463,
+        "mean": 46.35
+      },
+      "scenarioDuration": {
+        "min": 1687.7,
+        "max": 11119.3,
+        "median": 4039.5,
+        "p95": 10234.9,
+        "p99": 11119.3
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 463
+      },
+      "errors": {
+        "ETIMEDOUT": 403,
+        "ESOCKETTIMEDOUT": 128
+      },
+      "codes": {
+        "422": 14
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 1684,
+          "max": 11119,
+          "median": 4037.5,
+          "p95": 10234.6,
+          "p99": 11119
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 14
+      },
+      "concurrency": 511,
+      "pendingRequests": 10326,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:52:08.389Z",
+      "scenariosCreated": 470,
+      "scenariosCompleted": 11,
+      "requestsCompleted": 11,
+      "latency": {
+        "min": 5413.9,
+        "max": 15707.2,
+        "median": 9070.3,
+        "p95": 15598.6,
+        "p99": 15707.2
+      },
+      "rps": {
+        "count": 470,
+        "mean": 47.09
+      },
+      "scenarioDuration": {
+        "min": 5417.1,
+        "max": 15709.9,
+        "median": 9073.1,
+        "p95": 15601.2,
+        "p99": 15709.9
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 470
+      },
+      "errors": {
+        "ETIMEDOUT": 225,
+        "ESOCKETTIMEDOUT": 67
+      },
+      "codes": {
+        "422": 11
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 5417,
+          "max": 15711,
+          "median": 9073,
+          "p95": 15602.3,
+          "p99": 15711
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 11
+      },
+      "concurrency": 678,
+      "pendingRequests": 10785,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:52:18.390Z",
+      "scenariosCreated": 481,
+      "scenariosCompleted": 6,
+      "requestsCompleted": 6,
+      "latency": {
+        "min": 1052.1,
+        "max": 3232.3,
+        "median": 1913.9,
+        "p95": 3232.3,
+        "p99": 3232.3
+      },
+      "rps": {
+        "count": 481,
+        "mean": 48.15
+      },
+      "scenarioDuration": {
+        "min": 1054.4,
+        "max": 3234.2,
+        "median": 1915.9,
+        "p95": 3234.2,
+        "p99": 3234.2
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 481
+      },
+      "errors": {
+        "ETIMEDOUT": 470,
+        "ESOCKETTIMEDOUT": 208
+      },
+      "codes": {
+        "422": 6
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 1053,
+          "max": 3234,
+          "median": 1915.5,
+          "p95": 3234,
+          "p99": 3234
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 6
+      },
+      "concurrency": 475,
+      "pendingRequests": 11260,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:52:28.390Z",
+      "scenariosCreated": 491,
+      "scenariosCompleted": 82,
+      "requestsCompleted": 82,
+      "latency": {
+        "min": 1828.3,
+        "max": 18912.9,
+        "median": 7853.9,
+        "p95": 15311.7,
+        "p99": 18663
+      },
+      "rps": {
+        "count": 491,
+        "mean": 49.2
+      },
+      "scenarioDuration": {
+        "min": 1830.2,
+        "max": 18914.5,
+        "median": 7855.5,
+        "p95": 15315.2,
+        "p99": 18664.6
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 491
+      },
+      "errors": {
+        "ETIMEDOUT": 204
+      },
+      "codes": {
+        "422": 82
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 1829,
+          "max": 18915,
+          "median": 7855.5,
+          "p95": 15314.2,
+          "p99": 18665.1
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 82
+      },
+      "concurrency": 680,
+      "pendingRequests": 11669,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:52:38.391Z",
+      "scenariosCreated": 500,
+      "scenariosCompleted": 50,
+      "requestsCompleted": 50,
+      "latency": {
+        "min": 11890.7,
+        "max": 28752.6,
+        "median": 18918.2,
+        "p95": 26913.6,
+        "p99": 28752.6
+      },
+      "rps": {
+        "count": 500,
+        "mean": 50.05
+      },
+      "scenarioDuration": {
+        "min": 11893.6,
+        "max": 28757.2,
+        "median": 18920.3,
+        "p95": 26916.9,
+        "p99": 28757.2
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 500
+      },
+      "errors": {
+        "ETIMEDOUT": 376,
+        "ESOCKETTIMEDOUT": 29
+      },
+      "codes": {
+        "422": 50
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 11893,
+          "max": 28757,
+          "median": 18920.5,
+          "p95": 26917,
+          "p99": 28757
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 50
+      },
+      "concurrency": 725,
+      "pendingRequests": 12119,
+      "scenariosAvoided": 0
+    },
+    {
+      "timestamp": "2020-11-14T18:52:42.732Z",
+      "scenariosCreated": 37,
+      "scenariosCompleted": 3,
+      "requestsCompleted": 3,
+      "latency": {
+        "min": 23212.2,
+        "max": 29144.1,
+        "median": 23690.1,
+        "p95": 29144.1,
+        "p99": 29144.1
+      },
+      "rps": {
+        "count": 37,
+        "mean": 8.55
+      },
+      "scenarioDuration": {
+        "min": 23214,
+        "max": 29147.7,
+        "median": 23691.7,
+        "p95": 29147.7,
+        "p99": 29147.7
+      },
+      "scenarioCounts": {
+        "Sign-in invalid": 37
+      },
+      "errors": {
+        "ETIMEDOUT": 99,
+        "ECONNRESET": 478,
+        "ECONNREFUSED": 182
+      },
+      "codes": {
+        "422": 3
+      },
+      "matches": 0,
+      "customStats": {
+        "/api/sign-in": {
+          "min": 23215,
+          "max": 29148,
+          "median": 23692,
+          "p95": 29148,
+          "p99": 29148
+        }
+      },
+      "counters": {
+        "code 422 on /api/sign-in": 3
+      },
+      "concurrency": 0,
+      "pendingRequests": 12153,
+      "scenariosAvoided": 0
+    }
+  ]
+};
+  </script>
+
+  <style>
+      h1 {
+        line-height: 200%;
+      }
+
+      body {
+          background-color: #fcfcfc;
+      }
+
+      .container {
+          width: 100%;
+          min-width: 960px;
+      }
+  </style>
+
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="row" id="header">
+  <div class="col-lg-4 col-lg-offset-4">
+    <pre style="font-size: 5pt; background-color: #fcfcfc; border: none;">
+            _   _ _ _                                                _
+  __ _ _ __| |_(_) | | ___ _ __ _   _      _ __ ___ _ __   ___  _ __| |_
+ / _` | '__| __| | | |/ _ \ '__| | | |    | '__/ _ \ '_ \ / _ \| '__| __|
+| (_| | |  | |_| | | |  __/ |  | |_| |    | | |  __/ |_) | (_) | |  | |_
+ \__,_|_|   \__|_|_|_|\___|_|   \__, |    |_|  \___| .__/ \___/|_|   \__|
+                                |___/              |_|
+
+    </pre>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1 class="text-center" id="page-title">Test run on <span id="timestamp">date</span></h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-3">
+    <p><strong>Summary</strong></p>
+    <table class="table table-bordered table-hover table-condensed">
+      <tbody>
+        <tr>
+          <td>Test duration</td>
+          <td><span id="testDuration">0</span> sec</td>
+        </tr>
+        <tr>
+          <td>Scenarios created</td>
+          <td><span id="scenariosCreated">0</span></td>
+        </tr>
+
+        <tr>
+          <td>Scenarios completed</td>
+          <td><span id="scenariosCompleted">0</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-lg-5" id="scenarioCountsContainer">
+    <div>
+      <strong>Scenario counts:</strong>
+
+      <p></p>
+
+      <table class="table table-bordered table-hover table-condensed" id="scenarioCounts">
+      </table>
+    </div>
+  </div>
+
+  <div class="col-lg-1">
+    <div id="codesContainer">
+      <strong>Codes</strong>
+
+      <p></p>
+
+      <table class="table table-bordered table-hover table-condensed" id="codes">
+      </table>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div id="errorsContainer">
+      <strong>Errors</strong>
+
+      <p></p>
+
+      <table class="table table-bordered table-hover table-condensed" id="errors">
+      </table>
+    </div>
+  </div>
+</div> <!-- /.row -->
+
+<div class="row">
+  <div class="text-center col-lg-12">
+    <h2>Charts</h2>
+  </div>
+</div>
+
+<div class="row">
+  <div class="latency-histogram text-center col-lg-12"></div>
+</div>
+
+<div class="row">
+  <div class="latency text-center col-lg-12"></div>
+</div>
+
+<div class="latency-legend"></div>
+
+<div class="row">
+
+</div>
+
+<div class="row">
+  <div class="concurrency text-center col-lg-12"></div>
+</div>
+
+<div class="row">
+  <div class="rps-mean text-center col-lg-12"></div>
+</div>
+<div class="row">
+  <div class="rps-count text-center col-lg-12"></div>
+</div>
+
+<div class="row">
+  <div class="codes-line text-center col-lg-12"></div>
+</div>
+<div class="row">
+  <div class="errors-line text-center col-lg-12"></div>
+</div>
+
+
+  
+    
+    <div class="row">
+      <div class="id_459 text-center col-lg-12"></div>
+      <script>
+      var histogramData = _.map(Report.aggregate.customStats['/api/sign-in'], function(v, k) { return {bin: k, value: v} });
+      MG.data_graphic({
+        chart_type: 'bar',
+        x_label: 'Percentile',
+        y_label: '(ms)',
+        animate_on_load: true,
+        title: '/api/sign-in distribution',
+        description: 'Distribution of /api/sign-in',
+        target: '.id_459',
+        data: histogramData,
+        x_accessor: 'bin',
+        y_accessor: 'value',
+        binned: true,
+        height: 250,
+        interpolate: 'monotone',
+        padding_percentage: 0,
+        bar_orientation: 'vertical',
+        width: 450
+      });
+      </script>
+    </div>
+  
+
+
+</div>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h3 class="text-center">Raw report data</h3>
+    <p>This is the raw JSON stats output that the report was generated from.</p>
+    <div id="editor">
+    </div>
+  </div>
+</div>
+
+<script>
+var editor = ace.edit("editor");
+editor.getSession().setMode("ace/mode/javascript");
+editor.setValue(JSON.stringify(Report, null, 2));
+editor.gotoLine(1);editor.setHighlightActiveLine(false);
+
+var l = _;
+
+$('#timestamp').html(moment(Report.aggregate.timestamp).format('DD MMM YYYY HH:mm:SS'));
+$('#testDuration').html(l.size(Report.intermediate) * 10);
+$('#scenariosCompleted').html(Report.aggregate.scenariosCompleted);
+$('#scenariosCreated').html(Report.aggregate.scenariosCreated);
+
+var markers = [];
+if(l.size(Report.phases) > 0) {
+  markers = l.foldl(Report.phases, function(acc, phase, index) {
+    var label = phase.name || 'Phase ' + (index + 1);
+    var timestamp = (index === 0) ? 0 : Report.phases[index - 1].duration + acc[index - 1].timestamp;
+
+    acc.push({
+      timestamp: timestamp,
+      label: label
+    });
+
+    return acc;
+  }, []);
+}
+
+if (l.size(Report.aggregate.scenarioCounts) > 0) {
+  l.each(Report.aggregate.scenarioCounts, function(count, name) {
+    var $tdName = $('<td>' + name + '</td>');
+    var percentage = Math.round(count / Report.aggregate.scenariosCreated * 100 * 1000) / 1000;
+    var $tdCount = $('<td>' + count + ' (' + percentage + '%)' + '</td>');
+    var $el = $('<tr></tr>')
+      .append($tdName)
+      .append($tdCount)
+      .appendTo($('#scenarioCounts'));
+  });
+} else {
+  $('#scenarioCountsContainer').hide();
+}
+
+if (l.size(Report.aggregate.codes) > 0) {
+  l.each(Report.aggregate.codes, function(count, code) {
+    var anchor = '';
+    if (code >= 100 && code < 200) {
+      anchor = '#1xx_Informational';
+    } else if (code >= 200 && code < 300) {
+      anchor = '#2xx_Success';
+    } else if (code >= 300 && code < 400) {
+      anchor = '#3xx_Redirection';
+    } else if (code >= 400 && code < 500) {
+      anchor = '#4xx_Client_Error';
+    } else if (code >= 500 && code < 600) {
+      anchor = '#5xx_Server_Error';
+    }
+
+    var $a = $('<a>' + code + '</a>').attr('href', 'https://en.wikipedia.org/wiki/List_of_HTTP_status_codes' + anchor);
+    var $td = $('<td></td>').append($a);
+    var $el = $('<tr></tr>')
+      .append($td)
+      .append($('<td>' + count + '</td>'))
+      .appendTo($('#codes'));
+  });
+} else {
+  $('#codesContainer').hide();
+}
+
+if (l.size(Report.aggregate.errors) > 0) {
+  l.each(Report.aggregate.errors, function(count, code) {
+    var $el = $('<tr></tr>')
+      .append($('<td>' + code + '</td>'))
+      .append($('<td>' + count + '</td>'))
+      .appendTo($('#errors'));
+  });
+} else {
+  $('#errorsContainer > p').html('&#10004; Test completed without network or OS errors.');
+}
+
+var histogramData = l.map(Report.aggregate.latency, function(v, k) { return {bin: k, value: v} });
+
+MG.data_graphic({
+  chart_type: 'bar',
+  x_label: 'Percentile',
+  y_label: '(ms)',
+  animate_on_load: true,
+  title: 'Overall Latency Distribution',
+  description: 'Distribution of all observed response latencies',
+  target: '.latency-histogram',
+  data: histogramData,
+  x_accessor: 'bin',
+  y_accessor: 'value',
+  binned: true,
+  height: 250,
+  interpolate: 'monotone',
+  padding_percentage: 0,
+  bar_orientation: 'vertical',
+  width: 450
+});
+
+var chartData = l.map(
+  window.Report.intermediate,
+  function(o,i) {
+    return {
+      timestamp: i*10+10,
+
+      rpsMean: o.rps.mean,
+      rpsCount: o.rps.count,
+      concurrency: o.concurrency,
+      latencyMax: o.latency.max,
+      latencyp99: o.latency.p99,
+      latencyp95: o.latency.p95,
+      latencyMedian: o.latency.median,
+      latencyMin: o.latency.min
+    }
+  });
+
+//
+// Response codes
+//
+
+if (l.size(Report.aggregate.codes) > 0) {
+  var codesData = l.foldl(Report.intermediate, function(acc, o, i) {
+    var res = {};
+    res.timestamp = i*10+10;
+    l.each(o.codes, function(count, code) {
+      res[code] = count;
+    });
+    acc.push(res);
+    return acc;
+  }, []);
+  var uniqueCodes = l.foldl(Report.intermediate, function(acc, o) {
+    l.each(o.codes, function(count, code) {
+      if (l.indexOf(acc, code) === -1) {
+        acc.push(code);
+      }
+    });
+    return acc;
+  }, []);
+
+  MG.data_graphic({
+    x_label: 'Time',
+    y_label: 'Count',
+    title: 'HTTP codes',
+    description: 'Occurence of HTTP response codes',
+    target: '.codes-line',
+    data: codesData,
+    x_accessor: 'timestamp',
+    y_accessor: uniqueCodes,
+    legend: uniqueCodes,
+    right: 50,
+    chart_type: 'line',
+    area: false,
+    markers: markers,
+    width: 900
+  });
+}
+
+//
+// Errors
+//
+
+if (l.size(Report.aggregate.errors) > 0) {
+  var errorData = l.foldl(Report.intermediate, function(acc, o, i) {
+    var res = {};
+    res.timestamp = i*10+10;
+    l.each(o.errors, function(count, name) {
+      res[name] = count;
+    });
+    acc.push(res);
+    return acc;
+  }, []);
+  var uniqueErrors = l.foldl(Report.intermediate, function(acc, o) {
+    l.each(o.errors, function(count, name) {
+      if (l.indexOf(acc, name) === -1) {
+        acc.push(name);
+      }
+    });
+    return acc;
+  }, []);
+
+  MG.data_graphic({
+    title: 'Error Codes',
+    description: 'Occurence of error codes',
+    target: '.errors-line',
+    data: errorData,
+    x_accessor: 'timestamp',
+    y_accessor: uniqueErrors,
+    chart_type: 'line',
+    area: false,
+    markers: markers
+  });
+
+}
+
+//
+// Latency
+//
+MG.data_graphic({
+  chart_type: 'line',
+  x_label: 'Time',
+  y_label: '(ms)',
+  animate_on_load: true,
+  area: false,
+  title: "Latency At Intervals",
+  description: "Latency values at different points during the test run",
+  data: chartData,
+  target: '.latency',
+  width: 900,
+  x_accessor: 'timestamp',
+  y_accessor: ['latencyMin', 'latencyMedian', 'latencyp95', 'latencyMax'],
+  legend: ['min', 'p50', 'p95', 'max'],
+  //legend_target: '.latency-legend',
+  right: 50,
+  interpolate: 'monotone',
+  mouseover: function(d, i) {
+  },
+  markers: markers
+        });
+
+            MG.data_graphic({
+            animate_on_load: true,
+            area: false,
+            y_label: 'Count',
+            x_label: 'Time',
+            title: 'Concurrent users',
+            description: 'Concurrent users',
+            data: chartData,
+            target: '.concurrency',
+            x_accessor: 'timestamp',
+            y_accessor: ['concurrency'],
+            interpolate: 'monotone',
+            markers: markers,
+            width: 900
+            });
+
+MG.data_graphic({
+  animate_on_load: true,
+  area: false,
+  y_label: 'Count',
+  x_label: 'Time',
+  title: 'Mean RPS',
+  description: 'Mean requests per second',
+  data: chartData,
+  target: '.rps-mean',
+  x_accessor: 'timestamp',
+  y_accessor: ['rpsMean'],
+  interpolate: 'monotone',
+  markers: markers,
+  width: 900
+});
+
+MG.data_graphic({
+  animate_on_load: true,
+  area: false,
+  y_label: 'Count',
+  x_label: 'Time',
+  title: 'RPS Count',
+  description: 'Count of requests per second',
+  data: chartData,
+  target: '.rps-count',
+  x_accessor: 'timestamp',
+  y_accessor: ['rpsCount'],
+  interpolate: 'monotone',
+  markers: markers,
+  width: 900
+});
+</script>
+<div id="footer">
+  <footer>This report was created with <a href="https://artillery.io">Artillery</a> - free open-source load-testing for HTTP and WebSockets</footer>
+</div>
+</body>
+</html>

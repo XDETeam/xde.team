@@ -1,0 +1,18 @@
+{
+	"name": "@xde/tmp-perf",
+	"version": "0.0.1",
+	"main": ".build/index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"404": "artillery run -o ./report.json -e local-dev -c ./tests/config.yaml ./tests/scenarios/404.yaml",
+		"signup": "artillery run -o ./report.json -e local-dev-secure -c ./tests/config.yaml ./tests/scenarios/sign-up-valid.yaml",
+		"signin": "artillery run -o ./report.json -e local-dev-secure -c ./tests/config.yaml ./tests/scenarios/sign-in-invalid.yaml",
+		"report": "artillery report --output ./report.html ./report.json",
+		"COMMENT:0": "opens 20 connections and sends 100 GET requests",
+		"quick": "artillery quick --count 20 --num 100 --insecure https://service-foo.preprod.acmecorp.digital/items"
+	},
+	"devDependencies": {
+		"artillery": "^1.6.1",
+		"artillery-plugin-metrics-by-endpoint": "^0.1.1"
+	}
+}

@@ -1,0 +1,9 @@
+scenarios:
+    - name: Sign-in invalid
+      flow:
+          - post:
+                url: "/api/sign-in"
+                json:
+                    name: name
+                    password: name
+                    email: name

@@ -1,0 +1,36 @@
+config:
+    target: "https://service-foo.acmecorp.digital" # default target
+    phases:
+        # every second
+        - arrivalRate: 0
+          duration: 600
+          rampTo: 50
+    http:
+        timeout: 10
+    plugins:
+        metrics-by-endpoint: {}
+    # ensure:
+    # To check that the aggregate p95 latency is 200ms or less, and make Artillery exit with a non-zero exit code if it’s over 200
+    # min, max, median, p95, and p99 may be set.
+    #   p95: 200
+    environments:
+        local-dev-secure:
+            target: "https://localhost:8001"
+            tls:
+                rejectUnauthorized: false
+            phases:
+                - arrivalRate: 0
+                  duration: 600
+                  rampTo: 50
+        local-dev:
+            target: "http://localhost:8000"
+            tls:
+                rejectUnauthorized: false
+            phases:
+                # - arrivalRate: 10
+                # duration: 60
+                - arrivalRate: 0
+                  duration: 600
+                  rampTo: 50
+        preprod:
+            target: "https://service-foo.preprod.acmecorp.digital"

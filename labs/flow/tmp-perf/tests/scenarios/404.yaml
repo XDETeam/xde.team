@@ -1,0 +1,7 @@
+scenarios:
+    - name: Root 404
+      flow:
+          - get:
+                url: "/non-existing"
+                # TODO:
+                # gzip: true
