@@ -1,5 +1,11 @@
 import { diff } from "deep-object-diff";
-import { IDictionary, replaceCircular } from "@xde/common";
+import {
+	IDictionary,
+	replaceCircular,
+	arrayFlatDeep,
+	arrayUnique,
+	arrayDuplicates,
+} from "@xde/common";
 
 import { AspectType } from "../models";
 import { IFunctor, LambdaAspect, LambdaPrimitiveAspect, LambdaDeepAspect } from "./Functor";
@@ -129,15 +135,25 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 		}
 	}
 
+	// TODO: Can be disabled on production? to improve perf
 	private toOverlap(functors: AnyFunctor[]): Array<string | number | symbol> {
 		const aspects = functors.reduce((prev, curr) => {
-			prev = prev.concat(
-				curr.to.filter((x) => typeof x !== "object") as Array<string | number | symbol>
+			return prev.concat(
+				arrayUnique(
+					arrayFlatDeep(
+						curr.to.map((x) => {
+							if (typeof x === "object") {
+								return Array.isArray(x.aspect) ? x.aspect : [x.aspect];
+							} else {
+								return [x];
+							}
+						})
+					)
+				)
 			);
-			return prev;
 		}, [] as Array<string | number | symbol>);
 
-		return aspects.filter((item, i) => aspects.includes(item, i + 1));
+		return arrayDuplicates(aspects);
 	}
 
 	private toAllow(functorTo: IFunctor<any, any>["to"], obj: IDictionary): boolean {

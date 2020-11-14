@@ -1,6 +1,6 @@
 import { PrimitiveFunctor } from "./PrimitiveFunctor";
 import { CompositeFunctor } from "./CompositeFunctor";
-import { Optional } from "../helpers/lambdas";
+import { Optional, Some, Exists } from "../helpers/lambdas";
 
 class testPrimitiveFunctor extends PrimitiveFunctor<{ HttpRequest: string }, { HasAuth: boolean }> {
 	name = "testPrimitiveFunctor";
@@ -96,7 +96,7 @@ it("should handle async map", async () => {
 	expect(obj.some).toEqual(1);
 });
 
-it("should produce an error for bad functors composition", async () => {
+it("should produce an error for bad functors composition with simple to", async () => {
 	class testPrimitiveFunctor3 extends PrimitiveFunctor<
 		{ Some: string } & Partial<{ Other: any }>,
 		{ HasAuth: boolean }
@@ -135,4 +135,100 @@ it("should produce an error for bad functors composition", async () => {
 	await expect(
 		async () => await compositeFunctor.map({ HttpRequest: "", Some: "" })
 	).rejects.toThrow(/Bad functors composition/i);
+});
+
+it("should produce an error for bad functors composition with complex to", async () => {
+	class testPrimitiveFunctor3 extends PrimitiveFunctor<
+		{ Some: string } & Partial<{ Other: any }>,
+		Partial<{ HasAuth: boolean }>
+	> {
+		name = "testPrimitiveFunctor3";
+		from = [
+			"Some" as const,
+			{
+				aspect: "Other" as const,
+				lambda: Optional,
+			},
+		];
+		to = [
+			{
+				aspect: ["HasAuth" as const],
+				lambda: Optional,
+			},
+		];
+		distinct = () => ({ HasAuth: true });
+	}
+
+	class testCompositeFunctor2 extends CompositeFunctor<
+		{ Some: string } & Partial<{ Other: any }> & { HttpRequest: string },
+		{ HasAuth: boolean }
+	> {
+		name = "testCompositeFunctor2";
+		from = [
+			"Some" as const,
+			"HttpRequest" as const,
+			{
+				aspect: "Other" as const,
+				lambda: Optional,
+			},
+		];
+		to = ["HasAuth" as const];
+	}
+
+	const compositeFunctor = new testCompositeFunctor2();
+	compositeFunctor.addChildren([new testPrimitiveFunctor(), new testPrimitiveFunctor3()]);
+
+	await expect(
+		async () => await compositeFunctor.map({ HttpRequest: "", Some: "" })
+	).rejects.toThrow(/Bad functors composition/i);
+});
+
+it("should produce an error for functors composition with same to but different lambdas", async () => {
+	class testPrimitiveFunctor33 extends PrimitiveFunctor<
+		{ Some: boolean },
+		Partial<{ HasAuth: boolean }>
+	> {
+		name = "testPrimitiveFunctor33";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: ["HasAuth" as const],
+				lambda: Some,
+			},
+		];
+		distinct = () => ({ HasAuth: undefined });
+	}
+
+	class testPrimitiveFunctor44 extends PrimitiveFunctor<{ Some: boolean }, { HasAuth: boolean }> {
+		name = "testPrimitiveFunctor44";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: "HasAuth" as const,
+				lambda: Exists,
+			},
+		];
+		distinct = () => ({ HasAuth: true });
+	}
+
+	class testCompositeFunctor2 extends CompositeFunctor<
+		{ Some: boolean },
+		Partial<{ HasAuth: boolean }>
+	> {
+		name = "testCompositeFunctor2";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: ["HasAuth" as const],
+				lambda: Some,
+			},
+		];
+	}
+
+	const compositeFunctor = new testCompositeFunctor2();
+	compositeFunctor.addChildren([new testPrimitiveFunctor44(), new testPrimitiveFunctor33()]);
+
+	await expect(async () => await compositeFunctor.map({ Some: false })).rejects.toThrow(
+		/Bad functors composition/i
+	);
 });
