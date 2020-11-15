@@ -1,4 +1,3 @@
-import Debug from "debug";
 import {
 	THttpStatusCode,
 	HttpStatusCode,
@@ -97,10 +96,6 @@ export class Root extends CompositeFunctor<TTestHttpRequest, TSentHtml> {
 
 export const root = new Root();
 root.addChildren([appMain, app404Instance, renderer]);
-
-// Debug.enable("*");
-// Debug.enable("app:CompositionFlow:short*");
-Debug.enable("app:CompositionFlow:verbose*");
 
 root.map({
 	TestHttpRequest: {

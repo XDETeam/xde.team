@@ -1,9 +1,14 @@
 import Debug from "debug";
+import { isProduction } from "@xde/common";
 
 export * from "./functor";
 export * from "./helpers/lambdas";
 export * from "./models";
 
-// Debug.enable("*");
-Debug.enable("app:CompositionFlow:short*");
-// Debug.enable("app:CompositionFlow:verbose*");
+if (!process.env.DEBUG) {
+	Debug.enable("@xde/fm:functor*");
+
+	if (!isProduction()) {
+		Debug.enable("@xde/fm:functor*,@xde/fm:short*");
+	}
+}

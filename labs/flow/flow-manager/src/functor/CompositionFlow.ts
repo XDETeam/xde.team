@@ -5,6 +5,7 @@ import {
 	arrayFlatDeep,
 	arrayUnique,
 	arrayDuplicates,
+	isProduction,
 } from "@xde/common";
 
 import { AspectType } from "../models";
@@ -14,11 +15,10 @@ import { AnyFunctor } from "./models";
 import { ICompositeFunctor } from "./CompositeFunctor";
 import distinctionManagerInstance from "./DistinctionManager";
 
-const debug = appDebug.extend("CompositionFlow");
-const debugVerbose = debug.extend("verbose");
-const debugShort = debug.extend("short");
-const debugShortFunctor = debugShort.extend("functor");
-const debugShortObject = debugShort.extend("object");
+export const skipExpensiveDebug = () =>
+	isProduction() && !(process.env["XDE_FM_MANUAL_PRODUCTION_DEBUG"] && process.env.DEBUG);
+const debugVerbose = appDebug.extend("verbose");
+const debugShort = appDebug.extend("short");
 
 export interface ICompositionFlow<TTo extends IDictionary> {
 	process(
@@ -47,7 +47,8 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
-			debugVerbose("Object before iteration", replaceCircular(this.object));
+			!skipExpensiveDebug() &&
+				debugVerbose("Object before iteration", replaceCircular(this.object));
 
 			this.object = await Promise.all<TTo>(
 				functors.map((functor) =>
@@ -65,6 +66,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 								} with to ${JSON.stringify(
 									functor.to
 								)} and resulting object ${JSON.stringify(
+									// TODO: Production - leave or not? Useful info, should not be invoked by default.
 									replaceCircular(x),
 									null,
 									2
@@ -87,7 +89,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 				});
 
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
-			debugShortFunctor(
+			debugShort(
 				`[${functors
 					.map((functor) =>
 						"children" in functor
@@ -96,9 +98,12 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 					)
 					.join(", ")}]`
 			);
-			debugShortObject(diff(replaceCircular(prevObject), replaceCircular(this.object)));
+			!skipExpensiveDebug() &&
+				debugShort(diff(replaceCircular(prevObject), replaceCircular(this.object)));
+
 			prevObject = { ...this.object };
-			debugVerbose("Object after iteration", replaceCircular(this.object));
+			!skipExpensiveDebug() &&
+				debugVerbose("Object after iteration", replaceCircular(this.object));
 		}
 
 		return distinctionManagerInstance.merge(this.distinctions);
@@ -117,6 +122,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			}
 		});
 
+		// TODO: Production Can be disabled on production? to improve perf
 		const overlap = this.toOverlap(ret);
 		if (!overlap.length) {
 			return ret;
@@ -130,12 +136,12 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 					ret.map((x) => x.name),
 					null,
 					2
+					// TODO: Production - leave or not? Useful info, should not be invoked by default.
 				)}. Current object is ${JSON.stringify(replaceCircular(this.object), null, 2)}`
 			);
 		}
 	}
 
-	// TODO: Can be disabled on production? to improve perf
 	private toOverlap(functors: AnyFunctor[]): Array<string | number | symbol> {
 		const aspects = functors.reduce((prev, curr) => {
 			return prev.concat(

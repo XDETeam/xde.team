@@ -6,7 +6,7 @@ import { ILambdaPrimitive, ILambdaDeep } from "../helpers/lambdas";
 import { AspectType } from "../models";
 import { AnyFunctor } from "./models";
 
-const debug = appDebug.extend("Functor");
+const debug = appDebug.extend("functor");
 
 export type LambdaPrimitiveAspect<TPartial extends IDictionary> = {
 	aspect: TKeysOf<TPartial> | Array<TKeysOf<TPartial>>;
@@ -62,7 +62,7 @@ export interface IFunctorExplained<TFrom extends IDictionary, TTo extends IDicti
 
 export abstract class Functor<TFrom extends IDictionary, TTo extends IDictionary>
 	implements IFunctor<TFrom, TTo> {
-	// Allows to debug some info when overriding "map" method
+	// Allows to debug some info when overriding "distinct" method
 	public static debugger: Debugger = debug;
 
 	abstract from: IFunctor<TFrom, TTo>["from"];
