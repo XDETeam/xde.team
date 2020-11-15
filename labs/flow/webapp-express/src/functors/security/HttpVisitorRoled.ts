@@ -15,7 +15,9 @@ export class HttpVisitorRoled extends PrimitiveFunctor<TNodejsExpressRequest, TV
 	to = [VisitorRoled];
 
 	distinct(obj: TNodejsExpressRequest) {
-		Functor.debugger.extend("HttpHasAuth")(`Set ${VisitorRoledCookie} to be one of UserRole`);
+		Functor.debugger.extend("HttpHasAuth")(
+			`Set ${VisitorRoledCookie} to be one of VisitorRole`
+		);
 
 		return {
 			[VisitorRoled]:

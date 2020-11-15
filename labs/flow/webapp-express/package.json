@@ -12,7 +12,7 @@
 		"tsc": "tsc",
 		"clean": "rimraf dist",
 		"db:up": "cd devops && docker-compose --env-file ../.env up",
-		"webpack": "webpack"
+		"webpack": "cross-env NODE_ENV=production webpack"
 	},
 	"dependencies": {
 		"@xde/aspects": "^0.0.1",
