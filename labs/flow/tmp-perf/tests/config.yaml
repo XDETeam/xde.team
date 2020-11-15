@@ -3,7 +3,7 @@ config:
     phases:
         # every second
         - arrivalRate: 0
-          duration: 600
+          duration: 300
           rampTo: 50
     http:
         timeout: 10
@@ -19,18 +19,30 @@ config:
             tls:
                 rejectUnauthorized: false
             phases:
-                - arrivalRate: 0
-                  duration: 600
-                  rampTo: 50
+                - arrivalRate: 10
+                  duration: 60
+                - arrivalRate: 25
+                  duration: 60
+                - arrivalRate: 50
+                  duration: 60
+                - arrivalRate: 100
+                  duration: 60
+                - arrivalRate: 200
+                  duration: 60
         local-dev:
             target: "http://localhost:8000"
             tls:
                 rejectUnauthorized: false
             phases:
-                # - arrivalRate: 10
-                # duration: 60
-                - arrivalRate: 0
-                  duration: 600
-                  rampTo: 50
-        preprod:
+                - arrivalRate: 10
+                  duration: 60
+                - arrivalRate: 25
+                  duration: 60
+                - arrivalRate: 50
+                  duration: 60
+                - arrivalRate: 100
+                  duration: 60
+                - arrivalRate: 200
+                  duration: 60
+        staging:
             target: "https://service-foo.preprod.acmecorp.digital"

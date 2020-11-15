@@ -9,7 +9,7 @@
 		"signin": "artillery run -o ./report.json -e local-dev-secure -c ./tests/config.yaml ./tests/scenarios/sign-in-invalid.yaml",
 		"report": "artillery report --output ./report.html ./report.json",
 		"COMMENT:0": "opens 20 connections and sends 100 GET requests",
-		"quick": "artillery quick --count 20 --num 100 --insecure https://service-foo.preprod.acmecorp.digital/items"
+		"quick": "artillery quick --count 20 --num 100 --insecure https://localhost:8001/items"
 	},
 	"devDependencies": {
 		"artillery": "^1.6.1",
