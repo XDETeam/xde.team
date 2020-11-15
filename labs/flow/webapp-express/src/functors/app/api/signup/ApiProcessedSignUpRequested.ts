@@ -10,8 +10,8 @@ import {
 	THttpHeaders,
 } from "@xde/aspects";
 import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { getConnection } from "typeorm";
 
-import { connection } from "../../../../db";
 import { User } from "../../../../models/user/User";
 import { ApiValidSignUpRequest, TApiValidSignUpRequest } from "../../../../models/aspects";
 
@@ -39,27 +39,20 @@ export class ApiProcessedSignUpRequested extends PrimitiveFunctor<
 
 	async distinct(obj: TApiValidSignUpRequest & Partial<THttpHeaders<TLocationHeader>>) {
 		let error: string | undefined = undefined;
+		let createdId: number | undefined = undefined;
 
-		const createdId: number | undefined = await connection
-			.then(async (connection) => {
-				if ("error" in connection) {
-					error = connection.error;
-					return undefined;
-				} else {
-					const user = new User();
-					user.name = obj[ApiValidSignUpRequest].name;
-					user.email = obj[ApiValidSignUpRequest].email;
-					user.password = Password.hash(
-						obj[ApiValidSignUpRequest].password,
-						process.env.SALT!
-					);
+		const user = new User();
+		user.name = obj[ApiValidSignUpRequest].name;
+		user.email = obj[ApiValidSignUpRequest].email;
+		user.password = Password.hash(obj[ApiValidSignUpRequest].password, process.env.SALT!);
 
-					return connection.manager.save(user).then((user) => user.id);
-				}
+		await getConnection()
+			.manager.save(user)
+			.then((user) => {
+				createdId = user.id;
 			})
-			.catch((e: string) => {
+			.catch((e) => {
 				error = e;
-				return undefined;
 			});
 
 		if (createdId) {

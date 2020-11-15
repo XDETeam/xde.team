@@ -10,8 +10,8 @@ import {
 	THttpHeaders,
 } from "@xde/aspects";
 import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { getRepository } from "typeorm";
 
-import { connection } from "../../../../db";
 import { User } from "../../../../models/user/User";
 import { ApiValidSignInRequest, TApiValidSignInRequest } from "../../../../models/aspects";
 
@@ -39,34 +39,26 @@ export class ApiProcessedSignInRequested extends PrimitiveFunctor<
 
 	async distinct(obj: TApiValidSignInRequest & Partial<THttpHeaders>) {
 		let error: string | undefined = undefined;
+		let valid: boolean;
+		const userRepository = getRepository(User);
 
-		const valid: boolean = await connection
-			.then(async (connection) => {
-				if ("error" in connection) {
-					error = connection.error;
-					return false;
-				} else {
-					const userRepository = connection.getRepository(User);
-
-					const user = await userRepository.findOne({
-						name: obj[ApiValidSignInRequest].name,
-					});
-
-					if (user) {
-						return Password.validate(
-							obj[ApiValidSignInRequest].password,
-							process.env.SALT!,
-							user.password
-						);
-					} else {
-						return false;
-					}
-				}
+		const user = await userRepository
+			.findOne({
+				name: obj[ApiValidSignInRequest].name,
 			})
-			.catch((e: string) => {
+			.catch((e) => {
 				error = e;
-				return false;
 			});
+
+		if (user) {
+			valid = Password.validate(
+				obj[ApiValidSignInRequest].password,
+				process.env.SALT!,
+				user.password
+			);
+		} else {
+			valid = false;
+		}
 
 		if (valid) {
 			return {

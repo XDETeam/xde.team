@@ -20,23 +20,18 @@ export class HelperUserDeleted extends PrimitiveFunctor<
 	async distinct(obj: THelperUserDeletedAspect) {
 		let error: string | undefined = undefined;
 
-		const valid: boolean = await connection
+		const valid: boolean = await connection()
 			.then(async (connection) => {
-				if ("error" in connection) {
-					error = connection.error;
-					return false;
+				const userRepository = connection.getRepository(User);
+
+				const user = await userRepository.delete({
+					name: obj[HelperUserDeletedAspect].name,
+				});
+
+				if (user) {
+					return true;
 				} else {
-					const userRepository = connection.getRepository(User);
-
-					const user = await userRepository.delete({
-						name: obj[HelperUserDeletedAspect].name,
-					});
-
-					if (user) {
-						return true;
-					} else {
-						return false;
-					}
+					return false;
 				}
 			})
 			.catch((e: string) => {
