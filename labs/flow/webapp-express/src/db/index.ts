@@ -1,4 +1,6 @@
 import { createConnection } from "typeorm";
+
+import { isProduction } from "../config";
 import { User } from "../models/user/User";
 
 export const connection = () =>
@@ -11,6 +13,6 @@ export const connection = () =>
 		database: process.env.PG_DATABASE,
 		entities: [User],
 		// TODO: Be careful with this option and don't use this in production - otherwise you can lose production data
-		synchronize: true,
+		synchronize: !isProduction,
 		logging: false,
 	});
