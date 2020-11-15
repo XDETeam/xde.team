@@ -5,7 +5,6 @@ import {
 	arrayFlatDeep,
 	arrayUnique,
 	arrayDuplicates,
-	isProduction,
 } from "@xde/common";
 
 import { AspectType } from "../models";
@@ -15,8 +14,10 @@ import { AnyFunctor } from "./models";
 import { ICompositeFunctor } from "./CompositeFunctor";
 import distinctionManagerInstance from "./DistinctionManager";
 
-export const skipExpensiveDebug = () =>
-	isProduction() && !(process.env["XDE_FM_MANUAL_PRODUCTION_DEBUG"] && process.env.DEBUG);
+export const expensiveDebug =
+	!(process.env.NODE_ENV === "production") ||
+	(process.env["XDE_FM_MANUAL_PRODUCTION_DEBUG"] && process.env.DEBUG);
+
 const debugVerbose = appDebug.extend("verbose");
 const debugShort = appDebug.extend("short");
 
@@ -47,8 +48,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 
 		while ((functors = this.findFunctors(currentFunctorsPool)) && functors.length) {
 			debugVerbose("Found functors", functors);
-			!skipExpensiveDebug() &&
-				debugVerbose("Object before iteration", replaceCircular(this.object));
+			expensiveDebug && debugVerbose("Object before iteration", replaceCircular(this.object));
 
 			this.object = await Promise.all<TTo>(
 				functors.map((functor) =>
@@ -89,21 +89,22 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 				});
 
 			currentFunctorsPool = currentFunctorsPool.filter((f) => !functors.includes(f));
-			debugShort(
-				`[${functors
-					.map((functor) =>
-						"children" in functor
-							? `--- [${functor.children.map((f) => f.name).join(", ")}] ---`
-							: functor.name
-					)
-					.join(", ")}]`
-			);
-			!skipExpensiveDebug() &&
+
+			expensiveDebug &&
+				debugShort(
+					`[${functors
+						.map((functor) =>
+							"children" in functor
+								? `--- [${functor.children.map((f) => f.name).join(", ")}] ---`
+								: functor.name
+						)
+						.join(", ")}]`
+				);
+			expensiveDebug &&
 				debugShort(diff(replaceCircular(prevObject), replaceCircular(this.object)));
 
 			prevObject = { ...this.object };
-			!skipExpensiveDebug() &&
-				debugVerbose("Object after iteration", replaceCircular(this.object));
+			expensiveDebug && debugVerbose("Object after iteration", replaceCircular(this.object));
 		}
 
 		return distinctionManagerInstance.merge(this.distinctions);
@@ -122,23 +123,25 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			}
 		});
 
-		// TODO: Production Can be disabled on production? to improve perf
-		const overlap = this.toOverlap(ret);
-		if (!overlap.length) {
-			return ret;
+		if (process.env.NODE_ENV !== "production") {
+			const overlap = this.toOverlap(ret);
+			if (!overlap.length) {
+				return ret;
+			} else {
+				throw new Error(
+					`Bad functors composition: to aspects ${JSON.stringify(
+						overlap,
+						null,
+						2
+					)} overlaps within functors composition ${JSON.stringify(
+						ret.map((x) => x.name),
+						null,
+						2
+					)}. Current object is ${JSON.stringify(replaceCircular(this.object), null, 2)}`
+				);
+			}
 		} else {
-			throw new Error(
-				`Bad functors composition: to aspects ${JSON.stringify(
-					overlap,
-					null,
-					2
-				)} overlaps within functors composition ${JSON.stringify(
-					ret.map((x) => x.name),
-					null,
-					2
-					// TODO: Production - leave or not? Useful info, should not be invoked by default.
-				)}. Current object is ${JSON.stringify(replaceCircular(this.object), null, 2)}`
-			);
+			return ret;
 		}
 	}
 
