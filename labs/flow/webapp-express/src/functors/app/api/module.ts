@@ -1,5 +1,5 @@
 import { CompositeFunctor, Exists, Optional, Some } from "@xde/flow-manager";
-import { PrioritizedInitially } from "@xde/functors";
+import { PriorityInitialWrapper, RePrioritizedWrapper } from "@xde/functors";
 
 import apiBadRequestedInstance from "./ApiBadRequested";
 import apiEndpointTypedInstance from "./ApiEndpointTyped";
@@ -24,49 +24,39 @@ import {
 	HttpStatusCode,
 	THttpHeaders,
 	HttpHeaders,
-	TPriority,
-	Priority,
 } from "@xde/aspects";
 
-export class PriorityWrapper1 extends CompositeFunctor<
+export const priorityWrapper1 = new PriorityInitialWrapper<
 	THttpRouted & THttpSecured & Partial<TEndpointType>,
-	TPriority<1> & TEndpointType & Partial<TGeneratedApiBody> & Partial<THttpStatusCode<400>>
-> {
-	name = "PriorityWrapper1";
-	from = [HttpRouted, HttpSecured, { aspect: EndpointType, lambda: Optional }];
-	to = [
-		Priority,
+	TEndpointType & Partial<TGeneratedApiBody> & Partial<THttpStatusCode<400>>,
+	1
+>(
+	"PriorityWrapper1",
+	[HttpRouted, HttpSecured, { aspect: EndpointType, lambda: Optional }],
+	[
 		{ aspect: EndpointType, lambda: Exists, force: true },
 		{ aspect: GeneratedApiBody, lambda: Optional },
 		{ aspect: HttpStatusCode, lambda: Optional },
-	];
-}
+	],
+	1
+);
+priorityWrapper1.addChildren([apiBadRequestedInstance, apiEndpointTypedInstance]);
 
-export const priorityWrapper1 = new PriorityWrapper1();
-priorityWrapper1.addChildren([
-	new PrioritizedInitially(1),
-	apiBadRequestedInstance,
-	apiEndpointTypedInstance,
-]);
-
-export class PriorityWrapper2 extends CompositeFunctor<
-	THttpRouted & THttpSecured & TEndpointType & TPriority<1>,
-	TGeneratedApiBody & THttpStatusCode
-> {
-	name = "PriorityWrapper2";
-	from = [
-		HttpRouted,
-		HttpSecured,
-		EndpointType,
-		{ aspect: Priority, lambda: (obj: TPriority) => obj[Priority] === 1 },
-	];
-	to = [
+export const priorityWrapper2 = new RePrioritizedWrapper<
+	THttpRouted & THttpSecured & TEndpointType,
+	TGeneratedApiBody & THttpStatusCode,
+	1,
+	2
+>(
+	"PriorityWrapper2",
+	[HttpRouted, HttpSecured, EndpointType],
+	[
 		{ aspect: GeneratedApiBody, lambda: Optional },
 		{ aspect: HttpStatusCode, lambda: Optional },
-	];
-}
-
-export const priorityWrapper2 = new PriorityWrapper2();
+	],
+	2,
+	1
+);
 priorityWrapper2.addChildren([
 	apiRawSignInRequestedInstance,
 	apiValidSignInRequestedInstance,
