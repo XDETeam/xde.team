@@ -3,7 +3,8 @@ import { IsEmail, Length } from "class-validator";
 
 import { UserValidationGroup } from "../index";
 
-@Entity()
+// Name is provided in order not to depend on class name (minificated with webpack)
+@Entity({ name: "user" })
 export class User {
 	// TODO: not number - issues with JS bignumbers
 	@PrimaryGeneratedColumn()
