@@ -39,6 +39,7 @@ export class RePrioritized<
 		{
 			aspect: Priority,
 			lambda: (obj: TPriority<TToPriority>) => obj[Priority] === this.toPriority,
+			force: true,
 		},
 	];
 

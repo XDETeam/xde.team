@@ -1,1 +1,2 @@
-export * from "./Priority";
+export * from "./PrimitivePriority";
+export * from "./CompositePriority";
