@@ -26,6 +26,11 @@ it("should return 400 on non-secure api sign-in route", async () => {
 it("should return 405 on secure api sign-in route with wrong method", async () => {
 	const res = await appAxios.get(secureSignInRoute + "").catch((err) => err.response);
 	expect(res.status).toEqual(405);
+	expect(res.headers).toEqual(
+		expect.objectContaining({
+			allow: "POST",
+		})
+	);
 	expect(res.data).toEqual({
 		result: false,
 		code: EndpointErrorCode.MethodNotAllowed,

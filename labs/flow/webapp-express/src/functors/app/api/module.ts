@@ -4,11 +4,12 @@ import { PriorityInitialWrapper, RePrioritizedWrapper } from "@xde/functors";
 import apiBadRequestedInstance from "./ApiBadRequested";
 import apiEndpointTypedInstance from "./ApiEndpointTyped";
 import apiProcessedSignInRequestedInstance from "./signin/ApiProcessedSignInRequested";
-import apiRawSignInRequestedInstance from "./signin/ApiRawSignInRequested";
 import apiValidSignInRequestedInstance from "./signin/ApiValidSignInRequested";
-import apiRawSignUpRequestedInstance from "./signup/ApiRawSignUpRequested";
 import apiValidSignUpRequestedInstance from "./signup/ApiValidSignUpRequested";
 import apiProcessedSignUpRequestedInstance from "./signup/ApiProcessedSignUpRequested";
+import api405Instance from "./Api405";
+import apiSignInPostMethodAllowedInstance from "./signin/ApiSignInPostMethodAllowed";
+import apiSignUpPostMethodAllowedInstance from "./signup/ApiSignUpPostMethodAllowed";
 
 import {
 	HttpRouted,
@@ -58,12 +59,13 @@ export const priorityWrapper2 = new RePrioritizedWrapper<
 	1
 );
 priorityWrapper2.addChildren([
-	apiRawSignInRequestedInstance,
+	apiSignInPostMethodAllowedInstance,
 	apiValidSignInRequestedInstance,
 	apiProcessedSignInRequestedInstance,
-	apiRawSignUpRequestedInstance,
+	apiSignUpPostMethodAllowedInstance,
 	apiValidSignUpRequestedInstance,
 	apiProcessedSignUpRequestedInstance,
+	api405Instance,
 ]);
 
 export class Api extends CompositeFunctor<
