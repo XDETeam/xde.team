@@ -150,13 +150,15 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			return prev.concat(
 				arrayUnique(
 					arrayFlatDeep(
-						curr.to.map((x) => {
-							if (typeof x === "object") {
-								return Array.isArray(x.aspect) ? x.aspect : [x.aspect];
-							} else {
-								return [x];
-							}
-						})
+						curr.to
+							.filter((x) => !(typeof x === "object" && x.allowSimultaneous === true))
+							.map((x) => {
+								if (typeof x === "object") {
+									return Array.isArray(x.aspect) ? x.aspect : [x.aspect];
+								} else {
+									return [x];
+								}
+							})
 					)
 				)
 			);

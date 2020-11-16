@@ -232,3 +232,58 @@ it("should produce an error for functors composition with same to but different 
 		/Bad functors composition/i
 	);
 });
+
+it("should allow 'bad functors composition' using special flag", async () => {
+	class testPrimitiveFunctor53 extends PrimitiveFunctor<
+		{ Some: boolean },
+		Partial<{ Some2: boolean[] }>
+	> {
+		name = "testPrimitiveFunctor53";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: ["Some2" as const],
+				lambda: Some,
+				allowSimultaneous: true,
+			},
+		];
+		distinct = () => ({
+			Some2: [false],
+		});
+	}
+
+	class testPrimitiveFunctor54 extends PrimitiveFunctor<{ Some: boolean }, { Some2: boolean[] }> {
+		name = "testPrimitiveFunctor54";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: "Some2" as const,
+				lambda: Exists,
+				// allowSimultaneous: true,
+			},
+		];
+		distinct = () => ({
+			Some2: [true],
+		});
+	}
+
+	class testCompositeFunctor2 extends CompositeFunctor<{ Some: boolean }, { Some2: boolean[] }> {
+		name = "testCompositeFunctor2";
+		from = ["Some" as const];
+		to = [
+			{
+				aspect: ["Some2" as const],
+				lambda: Exists,
+			},
+		];
+	}
+
+	const compositeFunctor = new testCompositeFunctor2();
+	compositeFunctor.addChildren([new testPrimitiveFunctor53(), new testPrimitiveFunctor54()]);
+
+	expect(await compositeFunctor.map({ Some: false })).toEqual(
+		expect.objectContaining({
+			Some2: expect.arrayContaining([true, false]),
+		})
+	);
+});

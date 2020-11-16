@@ -33,6 +33,12 @@ export type IFunctorTo<TTo extends IDictionary> =
 			 * Run despite it's look like aspects producing already exists in the object
 			 */
 			force?: boolean;
+			/**
+			 * Allow functors composition that sets current aspect simultaneously
+			 * Supported way now - aspect should be an array. All array items will be concated after functors iteration for you by distinction manager.
+			 * Also you should not depend on items ordering in the array
+			 */
+			allowSimultaneous?: boolean;
 	  });
 
 export interface IFunctor<TFrom extends IDictionary, TTo extends IDictionary> {
