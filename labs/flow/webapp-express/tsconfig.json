@@ -6,6 +6,8 @@
 		"outDir": "./dist",
 		"esModuleInterop": true,
 		"strict": true,
+		// "lib": ["es2015", "dom"],
+		// "types": ["node"],
 		"skipLibCheck": true,
 		// "declaration": true,
 		"emitDecoratorMetadata": true,
