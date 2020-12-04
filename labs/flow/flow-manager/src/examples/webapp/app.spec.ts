@@ -13,7 +13,7 @@ import {
 	TSentHtml,
 	HttpRedirected,
 	THttpRedirected,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 import { AppAdminRouteAllow, TestHttpRequest, TTestHttpRequest } from "./models";
 import { Some } from "../../helpers/lambdas";

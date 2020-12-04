@@ -1,4 +1,4 @@
-import { TGeneratedHtml, GeneratedHtml, SentHtml, TSentHtml } from "@xde/aspects";
+import { TGeneratedHtml, GeneratedHtml, SentHtml, TSentHtml } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 

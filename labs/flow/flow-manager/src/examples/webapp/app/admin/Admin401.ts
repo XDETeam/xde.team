@@ -1,4 +1,4 @@
-import { THttpRouted, THttpStatusCode, HttpStatusCode, HttpRouted } from "@xde/aspects";
+import { THttpRouted, THttpStatusCode, HttpStatusCode, HttpRouted } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../../functor/PrimitiveFunctor";
 import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../../models/";

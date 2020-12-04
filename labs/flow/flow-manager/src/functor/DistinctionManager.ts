@@ -1,15 +1,16 @@
-import { IDictionary, replaceCircular } from "@xde/common";
+import { IDictionary, replaceCircular } from "@xde.labs/common";
 
+// TODO: https://stackoverflow.com/questions/49682569/typescript-merge-object-types
 export interface IDistinctionManager {
 	merge<TDistinctions extends IDictionary = IDictionary>(
 		distinctions: TDistinctions[]
-	): TDistinctions;
+	): IDictionary;
 }
 
 export class DistinctionManager implements IDistinctionManager {
 	merge<TDistinctions extends IDictionary = IDictionary>(
 		distinctions: TDistinctions[]
-	): TDistinctions {
+	): IDictionary {
 		return distinctions.reduce((all: TDistinctions, curr: TDistinctions) => {
 			const existingArrayKeys = Object.keys(curr)
 				.filter((x) => Array.isArray(curr[x]))

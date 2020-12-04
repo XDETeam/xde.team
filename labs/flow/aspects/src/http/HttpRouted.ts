@@ -1,4 +1,4 @@
-import { THttpMethod } from "@xde/common";
+import { THttpMethod } from "@xde.labs/endpoint";
 
 export interface IHttpRouted {
 	/**

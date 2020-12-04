@@ -1,4 +1,4 @@
-import { THttpStatusCode, HttpStatusCode, GeneratedHtml, TGeneratedHtml } from "@xde/aspects";
+import { THttpStatusCode, HttpStatusCode, GeneratedHtml, TGeneratedHtml } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 

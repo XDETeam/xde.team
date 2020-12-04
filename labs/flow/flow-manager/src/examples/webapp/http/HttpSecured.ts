@@ -1,4 +1,4 @@
-import { THttpSecured, HttpSecured as HttpSecuredAspect } from "@xde/aspects";
+import { THttpSecured, HttpSecured as HttpSecuredAspect } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { TestHttpRequest, TTestHttpRequest } from "../models/TestHttpRequest";

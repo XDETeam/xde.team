@@ -1,4 +1,4 @@
-import { THttpRouted, HttpRouted as HttpRoutedAspect } from "@xde/aspects";
+import { THttpRouted, HttpRouted as HttpRoutedAspect } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { TestHttpRequest, TTestHttpRequest } from "../models/TestHttpRequest";

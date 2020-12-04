@@ -1,4 +1,4 @@
-import { THttpRouted, THttpSecured, HttpSecured, HttpRouted } from "@xde/aspects";
+import { THttpRouted, THttpSecured, HttpSecured, HttpRouted } from "@xde.labs/aspects";
 
 import { Functor } from "../../../functor/Functor";
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";

@@ -1,5 +1,5 @@
 {
-	"name": "@xde.labs/functors",
+	"name": "@xde.labs/endpoint",
 	"version": "0.0.1",
 	"main": ".build/index.js",
 	"types": ".build/index.d.ts",
@@ -15,9 +15,8 @@
 		"prepublish": "npm run build"
 	},
 	"dependencies": {
-		"@xde.labs/aspects": "0.0.1",
-		"@xde.labs/common": "0.0.3",
-		"@xde.labs/flow-manager": "0.0.1"
+		"@xde.labs/common": "^0.0.3",
+		"class-validator": "^0.12.2"
 	},
 	"devDependencies": {
 		"npm-run-all": "^4.1.5",

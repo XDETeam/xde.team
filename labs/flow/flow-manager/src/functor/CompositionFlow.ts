@@ -5,7 +5,7 @@ import {
 	arrayFlatDeep,
 	arrayUnique,
 	arrayDuplicates,
-} from "@xde/common";
+} from "@xde.labs/common";
 
 import { AspectType } from "../models";
 import { IFunctor, LambdaAspect, LambdaPrimitiveAspect, LambdaDeepAspect } from "./Functor";
@@ -80,7 +80,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			)
 				.then((distinctions) => distinctionManagerInstance.merge(distinctions))
 				.then((mergedDistinctions) => {
-					this.distinctions.push(mergedDistinctions);
+					this.distinctions.push(mergedDistinctions as TTo);
 
 					return {
 						...this.object,
@@ -107,7 +107,7 @@ export class CompositionFlow<TFrom extends IDictionary, TTo extends IDictionary>
 			expensiveDebug && debugVerbose("Object after iteration", replaceCircular(this.object));
 		}
 
-		return distinctionManagerInstance.merge(this.distinctions);
+		return distinctionManagerInstance.merge(this.distinctions) as TTo;
 	}
 
 	findFunctors(functorsPool: AnyFunctor[]): AnyFunctor[] {

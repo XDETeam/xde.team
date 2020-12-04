@@ -6,7 +6,7 @@ import {
 	HttpHeaders,
 	THttpRedirected,
 	HttpRedirected,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 import { Functor } from "../../../functor/Functor";
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";

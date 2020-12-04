@@ -8,7 +8,7 @@ import {
 	TLocationHeader,
 	THttpStatusCode,
 	HttpStatusCode,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 

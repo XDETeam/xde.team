@@ -11,7 +11,7 @@ import {
 	TSentHtml,
 	HttpRedirected,
 	THttpRedirected,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 import { Some } from "../../helpers/lambdas";
 import code404HtmlInstance from "./errors/Code404Html";

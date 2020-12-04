@@ -1,6 +1,6 @@
-import { TUndefined } from "@xde/common";
-import { PrimitiveFunctor, Undefined } from "@xde/flow-manager";
-import { TPriority, Priority } from "@xde/aspects";
+import { TUndefined } from "@xde.labs/common";
+import { PrimitiveFunctor, Undefined } from "@xde.labs/flow-manager";
+import { TPriority, Priority } from "@xde.labs/aspects";
 
 export class PrioritizedInitially<T extends number> extends PrimitiveFunctor<
 	TUndefined<TPriority>,

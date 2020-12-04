@@ -1,4 +1,4 @@
-import { TAuthorized, Authorized } from "@xde/aspects";
+import { TAuthorized, Authorized } from "@xde.labs/aspects";
 
 import { Functor } from "../../../functor/Functor";
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";

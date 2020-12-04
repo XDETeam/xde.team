@@ -1,4 +1,4 @@
-import { IDictionary, TKeysOf } from "@xde/common";
+import { IDictionary, TKeysOf } from "@xde.labs/common";
 import { Debugger } from "debug";
 
 import { appDebug } from "../helpers/debug";

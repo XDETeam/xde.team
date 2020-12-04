@@ -7,8 +7,8 @@ import {
 	HttpRouted,
 	THttpStatusCode,
 	HttpStatusCode,
-} from "@xde/aspects";
-import { TUndefined } from "@xde/common";
+} from "@xde.labs/aspects";
+import { TUndefined } from "@xde.labs/common";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { Undefined } from "../../../helpers/lambdas";

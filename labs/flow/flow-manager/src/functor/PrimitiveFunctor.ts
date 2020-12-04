@@ -1,4 +1,4 @@
-import { IDictionary } from "@xde/common";
+import { IDictionary } from "@xde.labs/common";
 
 import { Functor, IFunctor } from "./Functor";
 

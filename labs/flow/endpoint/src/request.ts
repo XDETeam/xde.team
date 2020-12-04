@@ -1,6 +1,5 @@
+import { Constructable } from "@xde.labs/common";
 import { validate, ValidationError } from "class-validator";
-
-import { Constructable } from "./types";
 
 export interface IRequestBase<TRequest, TParentModel> {
 	allowedKeys: Array<keyof TRequest>;

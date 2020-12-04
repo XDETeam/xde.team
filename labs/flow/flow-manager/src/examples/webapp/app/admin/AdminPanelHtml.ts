@@ -1,4 +1,4 @@
-import { THttpRouted, TGeneratedHtml, GeneratedHtml, HttpRouted } from "@xde/aspects";
+import { THttpRouted, TGeneratedHtml, GeneratedHtml, HttpRouted } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../../functor/PrimitiveFunctor";
 import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../../models/";

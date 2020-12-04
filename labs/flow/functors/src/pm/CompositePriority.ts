@@ -1,6 +1,6 @@
-import { IDictionary, TUndefined } from "@xde/common";
-import { CompositeFunctor, IFunctorTo, IFunctorFrom, IFunctor } from "@xde/flow-manager";
-import { TPriority, Priority } from "@xde/aspects";
+import { IDictionary, TUndefined } from "@xde.labs/common";
+import { CompositeFunctor, IFunctorTo, IFunctorFrom, IFunctor } from "@xde.labs/flow-manager";
+import { TPriority, Priority } from "@xde.labs/aspects";
 
 import { PrioritizedInitially, RePrioritized } from "./PrimitivePriority";
 

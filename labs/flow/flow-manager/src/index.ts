@@ -1,5 +1,5 @@
 import Debug from "debug";
-import { isProduction } from "@xde/common";
+import { isProduction } from "@xde.labs/common";
 
 export * from "./functor";
 export * from "./helpers/lambdas";

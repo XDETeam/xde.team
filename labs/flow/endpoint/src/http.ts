@@ -1,5 +1,6 @@
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
 import { ValidationError } from "class-validator";
+
+import { EndpointErrorCode } from "./error-code";
 
 export type THttpMethod = "POST" | "GET" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
@@ -25,7 +26,7 @@ export abstract class RestApiEndpoint<TRequest, TResponse> {
 	// abstract handle(request: TRequest): Promise<TResponse>;
 
 	// 1. validation error
-	// 2. 
+	// 2.
 }
 
 // export class AxiosRestApiEndpoint<TRequest, TResponse> extends RestApiEndpoint<
