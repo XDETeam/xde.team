@@ -1,4 +1,4 @@
-import { PrimitiveFunctor, Optional } from "@xde/flow-manager";
+import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 
 import { connection } from "../../db";
 import { User } from "../../models/user/User";

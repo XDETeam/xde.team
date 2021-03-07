@@ -1,5 +1,5 @@
-import { PrimitiveFunctor, Exists } from "@xde/flow-manager";
-import { HttpRouted, THttpRouted } from "@xde/aspects";
+import { PrimitiveFunctor, Exists } from "@xde.labs/flow-manager";
+import { HttpRouted, THttpRouted } from "@xde.labs/aspects";
 
 import { TApi405AllowHeaders, Api405AllowHeaders } from "../../../../models/aspects";
 

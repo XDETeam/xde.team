@@ -3,16 +3,16 @@ import {
 	HttpStatusCode,
 	HttpRouted,
 	THttpRouted,
-	TGeneratedHtml,
-	GeneratedHtml,
-} from "@xde/aspects";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+	THtmlHtmlTagged,
+	HtmlHtmlTagged,
+} from "@xde.labs/aspects";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 import { AppAdminRouteAllow, TAppAdminRouteAllowed } from "../../../models/aspects";
 
 export class AdminPanelHtml extends PrimitiveFunctor<
 	THttpRouted & TAppAdminRouteAllowed,
-	THttpStatusCode & TGeneratedHtml
+	THttpStatusCode & THtmlHtmlTagged
 > {
 	name = "AdminPanelHtml";
 	from = [
@@ -25,11 +25,11 @@ export class AdminPanelHtml extends PrimitiveFunctor<
 			lambda: (obj: TAppAdminRouteAllowed) => obj[AppAdminRouteAllow] === true,
 		},
 	];
-	to = [GeneratedHtml, HttpStatusCode];
+	to = [HtmlHtmlTagged, HttpStatusCode];
 
 	distinct() {
 		return {
-			[GeneratedHtml]: "<div>secret dashboard</div>",
+			[HtmlHtmlTagged]: "<div>secret dashboard</div>",
 			[HttpStatusCode]: 200,
 		};
 	}

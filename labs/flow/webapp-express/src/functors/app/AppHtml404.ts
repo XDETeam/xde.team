@@ -6,8 +6,8 @@ import {
 	TEndpointType,
 	EndpointType,
 	Endpoint,
-} from "@xde/aspects";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 export class AppHtml404 extends PrimitiveFunctor<
 	THttpRouted & TEndpointType,

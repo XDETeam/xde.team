@@ -1,4 +1,4 @@
-import { PrimitiveFunctor, Optional } from "@xde/flow-manager";
+import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 import {
 	THttpStatusCode,
 	HttpStatusCode,
@@ -13,7 +13,7 @@ import {
 	TSentApiResponse,
 	THttpHeaders,
 	HttpHeaders,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 export class ApiSender extends PrimitiveFunctor<
 	TNodejsExpressResponse &

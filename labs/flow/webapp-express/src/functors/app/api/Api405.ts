@@ -5,9 +5,9 @@ import {
 	GeneratedApiBody,
 	HttpHeaders,
 	THttpHeaders,
-} from "@xde/aspects";
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
-import { PrimitiveFunctor, Optional } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
+import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 import { TApi405AllowHeaders, Api405AllowHeaders } from "../../../models/aspects";
 
 export class Api405 extends PrimitiveFunctor<

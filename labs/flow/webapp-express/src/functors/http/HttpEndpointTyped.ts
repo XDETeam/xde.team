@@ -1,5 +1,5 @@
-import { PrimitiveFunctor } from "@xde/flow-manager";
-import { TEndpointType, EndpointType, Endpoint, HttpRouted, THttpRouted } from "@xde/aspects";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
+import { TEndpointType, EndpointType, Endpoint, HttpRouted, THttpRouted } from "@xde.labs/aspects";
 
 export class HttpEndpointTyped extends PrimitiveFunctor<THttpRouted, TEndpointType> {
 	name = "HttpEndpointTyped";

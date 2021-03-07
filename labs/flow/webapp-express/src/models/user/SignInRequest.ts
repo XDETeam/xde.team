@@ -1,4 +1,4 @@
-import { RequestBase } from "@xde/common";
+import { RequestBase } from "@xde.labs/endpoint";
 
 import { User } from "./User";
 import { UserValidationGroup } from "../index";

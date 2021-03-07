@@ -1,12 +1,12 @@
-import { THttpMethod } from "@xde/common";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+import { THttpMethod } from "@xde.labs/endpoint";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 import {
 	NodejsExpressRequest,
 	TNodejsExpressRequest,
 	HttpRouted as HttpRoutedAspect,
 	THttpRouted,
 	IHttpRouted,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 import { APP_HTTP_PORT, APP_TLS_PORT } from "../../config";
 

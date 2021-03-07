@@ -1,5 +1,5 @@
-import { PrimitiveFunctor, Optional } from "@xde/flow-manager";
-import { Password } from "@xde/common";
+import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
+import { Password } from "@xde.labs/common";
 import {
 	GeneratedApiBody,
 	HttpStatusCode,
@@ -8,8 +8,8 @@ import {
 	TGeneratedApiBody,
 	THttpStatusCode,
 	THttpHeaders,
-} from "@xde/aspects";
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+} from "@xde.labs/aspects";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
 import { getRepository } from "typeorm";
 
 import { User } from "../../../../models/user/User";

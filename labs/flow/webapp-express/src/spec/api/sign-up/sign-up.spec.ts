@@ -1,4 +1,4 @@
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
 import helperUserDeletedInstance, {
 	HelperUserDeletedAspect,
 } from "../../../functors/_helpers/HelperUserDeleted";

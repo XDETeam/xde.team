@@ -1,10 +1,10 @@
-import { PrimitiveFunctor } from "@xde/flow-manager";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 import {
 	NodejsExpressRequest,
 	TNodejsExpressRequest,
 	HttpSecured as HttpSecuredAspect,
 	THttpSecured,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 export class HttpSecured extends PrimitiveFunctor<TNodejsExpressRequest, THttpSecured> {
 	name = "HttpSecured";

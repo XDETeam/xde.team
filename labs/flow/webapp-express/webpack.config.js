@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-
+webpack().newCompilation();
 module.exports = {
 	entry: "./src/app.ts",
 	mode: "production",

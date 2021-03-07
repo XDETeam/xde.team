@@ -1,5 +1,5 @@
-import { VisitorRole } from "@xde/aspects";
-import { curryRoute } from "@xde/common";
+import { VisitorRole } from "@xde.labs/aspects";
+import { curryRoute } from "@xde.labs/common";
 import https from "https";
 import fs from "fs";
 import path from "path";

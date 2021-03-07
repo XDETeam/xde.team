@@ -8,8 +8,8 @@ import {
 	THttpStatusCode,
 	HttpStatusCode,
 	TLocationHeader,
-} from "@xde/aspects";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 import { APP_TLS_PORT } from "../../config";
 

@@ -11,7 +11,8 @@
 		"skipLibCheck": true,
 		// "declaration": true,
 		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"jsx": "react-jsx"
 		// "strictPropertyInitialization": false
 	},
 	"exclude": ["src/**/*.spec.ts"]

@@ -1,4 +1,4 @@
-import { PrimitiveFunctor, Some } from "@xde/flow-manager";
+import { PrimitiveFunctor, Some } from "@xde.labs/flow-manager";
 import {
 	NodejsExpressResponse,
 	TNodejsExpressResponse,
@@ -8,7 +8,7 @@ import {
 	TSentApiResponse,
 	HttpEnded as HttpEndedAspect,
 	THttpEnded,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 export class HttpEnded extends PrimitiveFunctor<
 	TNodejsExpressResponse & (TSentHtml | TSentApiResponse),

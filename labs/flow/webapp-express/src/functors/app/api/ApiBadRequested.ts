@@ -7,9 +7,9 @@ import {
 	HttpSecured,
 	TGeneratedApiBody,
 	GeneratedApiBody,
-} from "@xde/aspects";
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 export class ApiBadRequested extends PrimitiveFunctor<
 	THttpRouted & THttpSecured,

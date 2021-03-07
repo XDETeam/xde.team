@@ -1,4 +1,4 @@
-import { PrimitiveFunctor, Some } from "@xde/flow-manager";
+import { PrimitiveFunctor, Some } from "@xde.labs/flow-manager";
 import {
 	GeneratedApiBody,
 	HttpStatusCode,
@@ -8,8 +8,8 @@ import {
 	TNodejsExpressRequest,
 	THttpRouted,
 	HttpRouted,
-} from "@xde/aspects";
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+} from "@xde.labs/aspects";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
 
 import { ApiValidSignInRequest, TApiValidSignInRequest } from "../../../../models/aspects";
 import { SingInRequest } from "../../../../models/user/SignInRequest";

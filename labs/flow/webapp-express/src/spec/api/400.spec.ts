@@ -1,4 +1,4 @@
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
 import { nonSecureApiRoute, nonExisting, appAxios } from "../common";
 
 it("should return 400 on non-secure api route", async () => {

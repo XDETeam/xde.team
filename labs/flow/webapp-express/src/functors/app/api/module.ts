@@ -1,5 +1,5 @@
-import { CompositeFunctor, Exists, Optional, Some } from "@xde/flow-manager";
-import { PriorityInitialWrapper, RePrioritizedWrapper } from "@xde/functors";
+import { CompositeFunctor, Exists, Optional, Some } from "@xde.labs/flow-manager";
+import { PriorityInitialWrapper, RePrioritizedWrapper } from "@xde.labs/functors";
 
 import apiBadRequestedInstance from "./ApiBadRequested";
 import apiEndpointTypedInstance from "./ApiEndpointTyped";
@@ -25,7 +25,7 @@ import {
 	HttpStatusCode,
 	THttpHeaders,
 	HttpHeaders,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 export const priorityWrapper1 = new PriorityInitialWrapper<
 	THttpRouted & THttpSecured & Partial<TEndpointType>,

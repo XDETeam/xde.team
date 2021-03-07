@@ -4,8 +4,8 @@ import {
 	TVisitorRoled,
 	VisitorRoled,
 	VisitorRole,
-} from "@xde/aspects";
-import { Functor, PrimitiveFunctor } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { Functor, PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 export const VisitorRoledCookie = "auth";
 

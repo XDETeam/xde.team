@@ -1,4 +1,4 @@
-import { PrimitiveFunctor } from "@xde/flow-manager";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 import {
 	THttpStatusCode,
 	HttpStatusCode,
@@ -6,20 +6,20 @@ import {
 	TNodejsExpressResponse,
 	TSentHtml,
 	SentHtml,
-	TGeneratedHtml,
-	GeneratedHtml,
-} from "@xde/aspects";
+	THtmlHtmlTagged,
+	HtmlHtmlTagged,
+} from "@xde.labs/aspects";
 
 export class HtmlSender extends PrimitiveFunctor<
-	TNodejsExpressResponse & TGeneratedHtml & THttpStatusCode,
+	TNodejsExpressResponse & THtmlHtmlTagged & THttpStatusCode,
 	TSentHtml
 > {
 	name = "HtmlSender";
-	from = [NodejsExpressResponse, GeneratedHtml, HttpStatusCode];
+	from = [NodejsExpressResponse, HtmlHtmlTagged, HttpStatusCode];
 	to = [SentHtml];
 
-	distinct(obj: TNodejsExpressResponse & TGeneratedHtml & THttpStatusCode) {
-		obj[NodejsExpressResponse].status(obj[HttpStatusCode]).send(obj[GeneratedHtml]);
+	distinct(obj: TNodejsExpressResponse & THtmlHtmlTagged & THttpStatusCode) {
+		obj[NodejsExpressResponse].status(obj[HttpStatusCode]).send(obj[HtmlHtmlTagged]);
 
 		return {
 			[SentHtml]: true,

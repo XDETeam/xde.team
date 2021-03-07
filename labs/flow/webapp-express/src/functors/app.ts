@@ -1,4 +1,4 @@
-import { CompositeFunctor, Some, Optional } from "@xde/flow-manager";
+import { CompositeFunctor, Some, Optional } from "@xde.labs/flow-manager";
 import {
 	NodejsExpressRequest,
 	TNodejsExpressRequest,
@@ -20,8 +20,8 @@ import {
 	HttpStatusCode,
 	GeneratedApiBody,
 	TGeneratedApiBody,
-	GeneratedHtml,
-	TGeneratedHtml,
+	HtmlHtmlTagged,
+	THtmlHtmlTagged,
 	TLocationHeader,
 	HttpRouted,
 	THttpRouted,
@@ -29,7 +29,8 @@ import {
 	THttpSecured,
 	EndpointType,
 	TEndpointType,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
+import { htmlGenerator } from "@xde.labs/html-generator";
 
 import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
@@ -55,7 +56,7 @@ export class Renderer extends CompositeFunctor<
 		(
 			| THttpStatusCode
 			| TGeneratedApiBody
-			| TGeneratedHtml
+			| THtmlHtmlTagged
 			| (THttpHeaders<TLocationHeader> & THttpStatusCode)
 		),
 	TSentHtml | THttpRedirected | TSentApiResponse
@@ -69,7 +70,7 @@ export class Renderer extends CompositeFunctor<
 				[GeneratedApiBody],
 				// TODO: Http location header
 				[HttpStatusCode, HttpHeaders],
-				[GeneratedHtml],
+				[HtmlHtmlTagged],
 			],
 			lambda: Some,
 		},
@@ -84,6 +85,7 @@ renderer.addChildren([
 	code301RedirectedInstance,
 	htmlRendererInstance,
 	apiSenderInstance,
+	htmlGenerator,
 ]);
 
 export class BasicApp extends CompositeFunctor<
@@ -92,7 +94,7 @@ export class BasicApp extends CompositeFunctor<
 		THttpSecured &
 		TVisitorRoled &
 		TEndpointType &
-		(THttpRouted | TGeneratedHtml | THttpStatusCode | (THttpStatusCode & THttpHeaders))
+		(THttpRouted | THtmlHtmlTagged | THttpStatusCode | (THttpStatusCode & THttpHeaders))
 > {
 	name = "BasicApp";
 	from = [NodejsExpressRequest];
@@ -107,7 +109,7 @@ export class BasicApp extends CompositeFunctor<
 				// TODO: Http location header
 				[HttpStatusCode, HttpHeaders],
 				[HttpStatusCode],
-				[GeneratedHtml],
+				[HtmlHtmlTagged],
 			],
 			lambda: Some,
 		},
@@ -146,7 +148,7 @@ export class BasicAppAndApi extends CompositeFunctor<
 		(
 			| (TGeneratedApiBody & THttpStatusCode)
 			| TEndpointType
-			| TGeneratedHtml
+			| THtmlHtmlTagged
 			| THttpStatusCode
 			| (THttpStatusCode & THttpHeaders)
 		)
@@ -163,7 +165,7 @@ export class BasicAppAndApi extends CompositeFunctor<
 				[GeneratedApiBody, HttpStatusCode],
 				[HttpStatusCode, HttpHeaders],
 				[HttpStatusCode],
-				[GeneratedHtml],
+				[HtmlHtmlTagged],
 				[EndpointType],
 			],
 			lambda: Some,

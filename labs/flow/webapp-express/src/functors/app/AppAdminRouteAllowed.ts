@@ -6,8 +6,8 @@ import {
 	HttpRouted,
 	THttpSecured,
 	HttpSecured,
-} from "@xde/aspects";
-import { Functor, PrimitiveFunctor } from "@xde/flow-manager";
+} from "@xde.labs/aspects";
+import { Functor, PrimitiveFunctor } from "@xde.labs/flow-manager";
 import { AppAdminRouteAllow, TAppAdminRouteAllowed } from "../../models/aspects";
 import { VisitorRoledCookie } from "../security/HttpVisitorRoled";
 

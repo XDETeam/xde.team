@@ -1,5 +1,5 @@
-import { HttpStatusCode } from "@xde/aspects";
-import { EndpointErrorCode } from "@xde/endpoint-error-codes";
+import { HttpStatusCode } from "@xde.labs/aspects";
+import { EndpointErrorCode } from "@xde.labs/endpoint";
 import apiProcessedSignUpRequestedInstance from "../../../functors/app/api/signup/ApiProcessedSignUpRequested";
 import helperUserDeletedInstance, {
 	HelperUserDeletedAspect,

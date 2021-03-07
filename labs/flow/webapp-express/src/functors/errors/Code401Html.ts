@@ -4,14 +4,14 @@ import {
 	TEndpointType,
 	EndpointType,
 	Endpoint,
-	TGeneratedHtml,
-	GeneratedHtml,
-} from "@xde/aspects";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+	THtmlHtmlTagged,
+	HtmlHtmlTagged,
+} from "@xde.labs/aspects";
+import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 export class Code401Html extends PrimitiveFunctor<
 	THttpStatusCode<401> & TEndpointType,
-	TGeneratedHtml
+	THtmlHtmlTagged
 > {
 	name = "Code401Html";
 	from = [
@@ -24,11 +24,11 @@ export class Code401Html extends PrimitiveFunctor<
 			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
 		},
 	];
-	to = [GeneratedHtml];
+	to = [HtmlHtmlTagged];
 
 	distinct() {
 		return {
-			[GeneratedHtml]: "<div>401 page</div>",
+			[HtmlHtmlTagged]: "<div>401 page</div>",
 		};
 	}
 }

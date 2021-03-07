@@ -1,4 +1,4 @@
-import { PrimitiveFunctor, Functor } from "@xde/flow-manager";
+import { PrimitiveFunctor, Functor } from "@xde.labs/flow-manager";
 import {
 	THttpStatusCode,
 	HttpStatusCode,
@@ -9,7 +9,7 @@ import {
 	HttpHeaders,
 	THttpRedirected,
 	HttpRedirected,
-} from "@xde/aspects";
+} from "@xde.labs/aspects";
 
 export class Code301Redirected extends PrimitiveFunctor<
 	TNodejsExpressResponse & THttpStatusCode<301> & THttpHeaders<TLocationHeader>,
