@@ -1,8 +1,13 @@
-import { THttpStatusCode, HttpStatusCode, GeneratedHtml, TGeneratedHtml } from "@xde.labs/aspects";
+import {
+	THttpStatusCode,
+	HttpStatusCode,
+	HtmlHtmlTagged,
+	THtmlHtmlTagged,
+} from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 
-export class Code404Html extends PrimitiveFunctor<THttpStatusCode<404>, TGeneratedHtml> {
+export class Code404Html extends PrimitiveFunctor<THttpStatusCode<404>, THtmlHtmlTagged> {
 	name = "Code404Html";
 	from = [
 		{
@@ -10,11 +15,11 @@ export class Code404Html extends PrimitiveFunctor<THttpStatusCode<404>, TGenerat
 			lambda: (obj: THttpStatusCode<404>) => obj[HttpStatusCode] === 404,
 		},
 	];
-	to = [GeneratedHtml];
+	to = [HtmlHtmlTagged];
 
-	distinct(): TGeneratedHtml {
+	distinct(): THtmlHtmlTagged {
 		return {
-			[GeneratedHtml]: "<div>404 page</div>",
+			[HtmlHtmlTagged]: "<div>404 page</div>",
 		};
 	}
 }

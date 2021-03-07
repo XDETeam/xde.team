@@ -1,6 +1,6 @@
 import {
-	TGeneratedHtml,
-	GeneratedHtml,
+	THtmlHtmlTagged,
+	HtmlHtmlTagged,
 	THttpRedirected,
 	HttpRedirected,
 	THttpRouted,
@@ -14,12 +14,12 @@ import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { Undefined } from "../../../helpers/lambdas";
 
 export class App404 extends PrimitiveFunctor<
-	TUndefined<TGeneratedHtml> & TUndefined<THttpRedirected> & THttpRouted,
+	TUndefined<THtmlHtmlTagged> & TUndefined<THttpRedirected> & THttpRouted,
 	THttpStatusCode<404>
 > {
 	name = "App404";
 	from = [
-		{ aspect: [GeneratedHtml, HttpRedirected], lambda: Undefined },
+		{ aspect: [HtmlHtmlTagged, HttpRedirected], lambda: Undefined },
 		// To ensure we are not adding 404 handling for something that doesn't need it.
 		HttpRouted,
 	];

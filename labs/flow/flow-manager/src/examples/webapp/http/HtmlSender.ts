@@ -1,10 +1,10 @@
-import { TGeneratedHtml, GeneratedHtml, SentHtml, TSentHtml } from "@xde.labs/aspects";
+import { THtmlHtmlTagged, HtmlHtmlTagged, SentHtml, TSentHtml } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 
-export class HtmlSender extends PrimitiveFunctor<TGeneratedHtml, TSentHtml> {
+export class HtmlSender extends PrimitiveFunctor<THtmlHtmlTagged, TSentHtml> {
 	name = "HtmlSender";
-	from = [GeneratedHtml];
+	from = [HtmlHtmlTagged];
 	to = [SentHtml];
 
 	distinct(): TSentHtml {

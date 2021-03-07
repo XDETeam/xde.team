@@ -1,11 +1,11 @@
-import { THttpRouted, TGeneratedHtml, GeneratedHtml, HttpRouted } from "@xde.labs/aspects";
+import { THttpRouted, THtmlHtmlTagged, HtmlHtmlTagged, HttpRouted } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../../functor/PrimitiveFunctor";
 import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../../models/";
 
 export class AdminPanelHtml extends PrimitiveFunctor<
 	THttpRouted & TAppAdminRouteAllowed,
-	TGeneratedHtml
+	THtmlHtmlTagged
 > {
 	name = "AdminPanelHtml";
 	from = [
@@ -19,11 +19,11 @@ export class AdminPanelHtml extends PrimitiveFunctor<
 			lambda: (obj: TAppAdminRouteAllowed) => obj[AppAdminRouteAllow] === true,
 		},
 	];
-	to = [GeneratedHtml];
+	to = [HtmlHtmlTagged];
 
 	distinct() {
 		return {
-			[GeneratedHtml]: "<div>secret dashboard</div>",
+			[HtmlHtmlTagged]: "<div>secret dashboard</div>",
 		};
 	}
 }

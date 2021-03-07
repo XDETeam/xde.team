@@ -5,8 +5,8 @@ import {
 	HttpRouted,
 	THttpRouted,
 	HttpHeaders,
-	GeneratedHtml,
-	TGeneratedHtml,
+	HtmlHtmlTagged,
+	THtmlHtmlTagged,
 	SentHtml,
 	TSentHtml,
 	HttpRedirected,
@@ -30,13 +30,13 @@ import { CompositeFunctor } from "../../functor/CompositeFunctor";
 import { TestHttpRequest, TTestHttpRequest } from "./models/TestHttpRequest";
 
 export class AppRenderer extends CompositeFunctor<
-	THttpStatusCode | (THttpHeaders & THttpStatusCode) | TGeneratedHtml,
+	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlHtmlTagged,
 	TSentHtml | THttpRedirected
 > {
 	name = "AppRenderer";
 	from = [
 		{
-			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [GeneratedHtml]],
+			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlHtmlTagged]],
 			lambda: Some,
 		},
 	];
@@ -59,7 +59,7 @@ renderer.addChildren([
 
 export class AppMain extends CompositeFunctor<
 	TTestHttpRequest,
-	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | TGeneratedHtml
+	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlHtmlTagged
 > {
 	name = "AppMain";
 	from = [TestHttpRequest];
@@ -69,7 +69,7 @@ export class AppMain extends CompositeFunctor<
 				[HttpRouted],
 				[HttpHeaders, HttpStatusCode],
 				[HttpStatusCode],
-				[GeneratedHtml],
+				[HtmlHtmlTagged],
 			],
 			lambda: Some,
 		},

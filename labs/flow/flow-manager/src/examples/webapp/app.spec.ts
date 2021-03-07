@@ -7,8 +7,8 @@ import {
 	HttpRouted,
 	THttpRouted,
 	HttpHeaders,
-	GeneratedHtml,
-	TGeneratedHtml,
+	HtmlHtmlTagged,
+	THtmlHtmlTagged,
 	SentHtml,
 	TSentHtml,
 	HttpRedirected,
@@ -33,13 +33,13 @@ import { CompositeFunctor } from "../../functor/CompositeFunctor";
 import { deepCloneUnsafe } from "../../../../common/src/object/clone";
 
 export class AppRenderer extends CompositeFunctor<
-	THttpStatusCode | (THttpHeaders & THttpStatusCode) | TGeneratedHtml,
+	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlHtmlTagged,
 	TSentHtml | THttpRedirected
 > {
 	name = "AppRenderer";
 	from = [
 		{
-			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [GeneratedHtml]],
+			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlHtmlTagged]],
 			lambda: Some,
 		},
 	];
@@ -62,7 +62,7 @@ renderer.addChildren([
 
 export class AppMain extends CompositeFunctor<
 	TTestHttpRequest,
-	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | TGeneratedHtml
+	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlHtmlTagged
 > {
 	name = "AppMain";
 	from = [TestHttpRequest];
@@ -72,7 +72,7 @@ export class AppMain extends CompositeFunctor<
 				[HttpRouted],
 				[HttpHeaders, HttpStatusCode],
 				[HttpStatusCode],
-				[GeneratedHtml],
+				[HtmlHtmlTagged],
 			],
 			lambda: Some,
 		},
@@ -124,7 +124,7 @@ it("should return 401 on admin route for non-admin", async () => {
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: false,
 			[HttpStatusCode]: 401,
-			[GeneratedHtml]: expect.any(String),
+			[HtmlHtmlTagged]: expect.any(String),
 			[SentHtml]: true,
 		})
 	);
@@ -148,7 +148,7 @@ it("should return 401 on non-existing security route for non-admin", async () =>
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: false,
 			[HttpStatusCode]: 401,
-			[GeneratedHtml]: expect.any(String),
+			[HtmlHtmlTagged]: expect.any(String),
 			[SentHtml]: true,
 		})
 	);
@@ -176,7 +176,7 @@ it("should return 301 on security route without tls for non-admin", async () => 
 		})
 	);
 	expect(res).not.toHaveProperty(AppAdminRouteAllow);
-	expect(res).not.toHaveProperty(GeneratedHtml);
+	expect(res).not.toHaveProperty(HtmlHtmlTagged);
 	expect(res).not.toHaveProperty(SentHtml);
 });
 
@@ -205,7 +205,7 @@ it("should return 301 on security route without tls for admin", async () => {
 		})
 	);
 	expect(res).not.toHaveProperty(AppAdminRouteAllow);
-	expect(res).not.toHaveProperty(GeneratedHtml);
+	expect(res).not.toHaveProperty(HtmlHtmlTagged);
 	expect(res).not.toHaveProperty(SentHtml);
 });
 
@@ -227,7 +227,7 @@ it("should show admin panel for valid admin request", async () => {
 			},
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: true,
-			[GeneratedHtml]: "<div>secret dashboard</div>",
+			[HtmlHtmlTagged]: "<div>secret dashboard</div>",
 			[SentHtml]: true,
 		})
 	);
@@ -254,7 +254,7 @@ it("should return 404 for non-existing admin route for admin user", async () => 
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: true,
 			[HttpStatusCode]: 404,
-			[GeneratedHtml]: expect.any(String),
+			[HtmlHtmlTagged]: expect.any(String),
 			[SentHtml]: true,
 		})
 	);
@@ -279,7 +279,7 @@ it("should return 404 on any non-existing route for any user", async () => {
 			},
 			[HttpSecured]: true,
 			[HttpStatusCode]: 404,
-			[GeneratedHtml]: "<div>404 page</div>",
+			[HtmlHtmlTagged]: "<div>404 page</div>",
 			[SentHtml]: true,
 		})
 	);
