@@ -6,14 +6,6 @@ import {
 	Endpoint,
 	THtmlHtmlTagged,
 	HtmlHtmlTagged,
-	Languaged,
-	TLanguaged,
-	TProjectNamed,
-	ProjectNamed,
-	TAuthored,
-	Authored,
-	TDescribed,
-	Described,
 	TTitled,
 	Titled,
 } from "@xde.labs/aspects";
@@ -24,7 +16,7 @@ import Ooops from "./Ooops";
 
 export class Code404Html extends PrimitiveFunctor<
 	THttpStatusCode<404> & TEndpointType,
-	TTitled & TDescribed & TAuthored & TProjectNamed & TLanguaged
+	THtmlHtmlTagged
 > {
 	name = "Code404Html";
 	from = [
@@ -37,15 +29,21 @@ export class Code404Html extends PrimitiveFunctor<
 			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
 		},
 	];
-	to = [Titled, Described, Authored, ProjectNamed, Languaged];
+	to = [HtmlHtmlTagged];
 
-	distinct() {
+	async distinct() {
+		const mybuilder = new EsBuilder(__dirname, process.cwd());
+		const renderer = new Renderer(mybuilder);
+		// Functor.debugger.extend("Code404Html")(`${rendererInstance.forStatusCode(404)}`);
 		return {
-			[Titled]: "My page",
-			[Described]: "some description",
-			[Authored]: "author name",
-			[ProjectNamed]: "Project name",
-			[Languaged]: "en-US",
+			// [HtmlHtmlTagged]: await rendererInstance.forStatusCode(404),
+			[HtmlHtmlTagged]: await renderer.getHtml(
+				`import React from "react"; import Ooops from "./Ooops"; ${EsBuilder.INSERT_REACT_ELEMENT}`,
+				{
+					element: <Ooops />,
+					ttl: ICacheTTL.None,
+				}
+			),
 		};
 	}
 }

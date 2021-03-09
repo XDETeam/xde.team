@@ -13,7 +13,7 @@ import { EndpointErrorCode } from "@xde.labs/endpoint";
 import { getConnection } from "typeorm";
 
 import { User } from "../../../../models/user/User";
-import { ApiValidSignUpRequest, TApiValidSignUpRequest } from "../../../../models/aspects";
+import { ApiValidSignUpRequest, TApiValidSignUpRequest } from "./ApiValidSignUpRequested";
 
 export class ApiProcessedSignUpRequested extends PrimitiveFunctor<
 	TApiValidSignUpRequest & Partial<THttpHeaders>,

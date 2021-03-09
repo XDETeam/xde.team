@@ -11,8 +11,12 @@ import {
 } from "@xde.labs/aspects";
 import { EndpointErrorCode } from "@xde.labs/endpoint";
 
-import { ApiValidSignInRequest, TApiValidSignInRequest } from "../../../../models/aspects";
-import { SingInRequest } from "../../../../models/user/SignInRequest";
+import { SingInRequest, TSignInRequest } from "../../../../models/user/SignInRequest";
+
+export const ApiValidSignInRequest = "ApiValidSignInRequest" as const;
+export type TApiValidSignInRequest = {
+	[ApiValidSignInRequest]: TSignInRequest;
+};
 
 export class ApiValidSignInRequested extends PrimitiveFunctor<
 	TNodejsExpressRequest & THttpRouted,

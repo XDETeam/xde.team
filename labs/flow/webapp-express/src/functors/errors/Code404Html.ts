@@ -4,14 +4,27 @@ import {
 	TEndpointType,
 	EndpointType,
 	Endpoint,
-	TGeneratedHtml,
-	GeneratedHtml,
-} from "@xde/aspects";
-import { PrimitiveFunctor } from "@xde/flow-manager";
+	THtmlHtmlTagged,
+	HtmlHtmlTagged,
+	Languaged,
+	TLanguaged,
+	TProjectNamed,
+	ProjectNamed,
+	TAuthored,
+	Authored,
+	TDescribed,
+	Described,
+	TTitled,
+	Titled,
+} from "@xde.labs/aspects";
+import { PrimitiveFunctor, Functor } from "@xde.labs/flow-manager";
+import { rendererInstance, EsBuilder, Renderer, ICacheTTL } from "@xde/html-generator-react";
+
+// import {  } from '../../../../flow-manager/src/functor/Functor';
 
 export class Code404Html extends PrimitiveFunctor<
 	THttpStatusCode<404> & TEndpointType,
-	TGeneratedHtml
+	TTitled & TDescribed & TAuthored & TProjectNamed & TLanguaged
 > {
 	name = "Code404Html";
 	from = [
@@ -24,11 +37,15 @@ export class Code404Html extends PrimitiveFunctor<
 			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
 		},
 	];
-	to = [GeneratedHtml];
+	to = [Titled, Described, Authored, ProjectNamed, Languaged];
 
 	distinct() {
 		return {
-			[GeneratedHtml]: "<div>404 page</div>",
+			[Titled]: "My page",
+			[Described]: "some description",
+			[Authored]: "author name",
+			[ProjectNamed]: "Project name",
+			[Languaged]: "en-US",
 		};
 	}
 }

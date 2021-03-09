@@ -8,7 +8,11 @@ import {
 } from "@xde.labs/aspects";
 import { EndpointErrorCode } from "@xde.labs/endpoint";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
-import { TApi405AllowHeaders, Api405AllowHeaders } from "../../../models/aspects";
+
+export const Api405AllowHeaders = "Api405AllowHeaders" as const;
+export type TApi405AllowHeaders = {
+	[Api405AllowHeaders]: string[];
+};
 
 export class Api405 extends PrimitiveFunctor<
 	TApi405AllowHeaders & Partial<THttpHeaders>,

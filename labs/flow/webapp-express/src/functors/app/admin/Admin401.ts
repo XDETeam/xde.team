@@ -1,18 +1,11 @@
-import { THttpStatusCode, HttpStatusCode, HttpRouted, THttpRouted } from "@xde.labs/aspects";
+import { THttpStatusCode, HttpStatusCode } from "@xde.labs/aspects";
 import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
-import { AppAdminRouteAllow, TAppAdminRouteAllowed } from "../../../models/aspects";
+import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../AppAdminRouteAllowed";
 
-export class Admin401 extends PrimitiveFunctor<
-	THttpRouted & TAppAdminRouteAllowed,
-	THttpStatusCode
-> {
+export class Admin401 extends PrimitiveFunctor<TAppAdminRouteAllowed, THttpStatusCode> {
 	name = "Admin401";
 	from = [
-		{
-			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
-		},
 		{
 			aspect: AppAdminRouteAllow,
 			lambda: (obj: TAppAdminRouteAllowed) => obj[AppAdminRouteAllow] === false,

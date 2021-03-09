@@ -23,6 +23,7 @@
 		"@xde.labs/html-generator": "^0.0.1",
 		"@xde/html-generator-react": "^0.0.1",
 		"class-validator": "^0.12.2",
+		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.5",
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
@@ -31,6 +32,7 @@
 		"typeorm": "^0.2.28"
 	},
 	"devDependencies": {
+		"@types/compression": "^1.7.0",
 		"@types/cookie-parser": "^1.4.2",
 		"@types/express": "^4.17.11",
 		"@types/jest": "^26.0.15",

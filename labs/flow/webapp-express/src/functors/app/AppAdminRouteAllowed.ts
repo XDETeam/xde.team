@@ -2,26 +2,28 @@ import {
 	TVisitorRoled,
 	VisitorRole,
 	VisitorRoled,
-	THttpRouted,
-	HttpRouted,
 	THttpSecured,
 	HttpSecured,
 } from "@xde.labs/aspects";
 import { Functor, PrimitiveFunctor } from "@xde.labs/flow-manager";
-import { AppAdminRouteAllow, TAppAdminRouteAllowed } from "../../models/aspects";
 import { VisitorRoledCookie } from "../security/HttpVisitorRoled";
+import { TAppAdminRoute, AppAdminRoute } from "./AppAdminRouted";
 
+/**
+ * Creating aspect for this functor
+ */
+export const AppAdminRouteAllow = "AppAdminRouteAllow" as const;
+export type TAppAdminRouteAllowed = {
+	[AppAdminRouteAllow]: boolean;
+};
 export class AppAdminRouteAllowed extends PrimitiveFunctor<
-	TVisitorRoled & THttpRouted & THttpSecured,
+	TAppAdminRoute & TVisitorRoled & THttpSecured,
 	TAppAdminRouteAllowed
 > {
 	name = "AppAdminRouteAllowed";
 	from = [
 		VisitorRoled,
-		{
-			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
-		},
+		AppAdminRoute,
 		{
 			aspect: HttpSecured,
 			lambda: (obj: THttpSecured) => obj[HttpSecured] === true,

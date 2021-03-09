@@ -1,4 +1,4 @@
-import { PrimitiveFunctor } from "@xde.labs/flow-manager";
+import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 import {
 	THttpStatusCode,
 	HttpStatusCode,
@@ -8,18 +8,41 @@ import {
 	SentHtml,
 	THtmlHtmlTagged,
 	HtmlHtmlTagged,
+	EndpointType,
+	Endpoint,
+	TEndpointType,
+	THttpHeaders,
+	HttpHeaders,
 } from "@xde.labs/aspects";
 
-export class HtmlSender extends PrimitiveFunctor<
-	TNodejsExpressResponse & THtmlHtmlTagged & THttpStatusCode,
-	TSentHtml
-> {
+type THtmlSenderFrom = TNodejsExpressResponse &
+	THtmlHtmlTagged &
+	THttpStatusCode &
+	TEndpointType &
+	Partial<THttpHeaders>;
+
+export class HtmlSender extends PrimitiveFunctor<THtmlSenderFrom, TSentHtml> {
 	name = "HtmlSender";
-	from = [NodejsExpressResponse, HtmlHtmlTagged, HttpStatusCode];
+	from = [
+		{
+			aspect: EndpointType,
+			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
+		},
+		NodejsExpressResponse,
+		HtmlHtmlTagged,
+		HttpStatusCode,
+		{ aspect: HttpHeaders, lambda: Optional },
+	];
 	to = [SentHtml];
 
-	distinct(obj: TNodejsExpressResponse & THtmlHtmlTagged & THttpStatusCode) {
-		obj[NodejsExpressResponse].status(obj[HttpStatusCode]).send(obj[HtmlHtmlTagged]);
+	distinct(obj: THtmlSenderFrom) {
+		obj[NodejsExpressResponse].status(obj[HttpStatusCode]);
+
+		if (obj[HttpHeaders]) {
+			obj[NodejsExpressResponse].header(obj[HttpHeaders]);
+		}
+
+		obj[NodejsExpressResponse].send(obj[HtmlHtmlTagged]);
 
 		return {
 			[SentHtml]: true,

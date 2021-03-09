@@ -12,17 +12,16 @@ import {
 import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
 import { APP_TLS_PORT } from "../../config";
+import { AppAdminRoute, TAppAdminRoute } from "./AppAdminRouted";
 
 export class AppSecuredRouteRedirected extends PrimitiveFunctor<
-	THttpRouted & THttpSecured & Partial<THttpHeaders>,
+	TAppAdminRoute & THttpRouted & THttpSecured & Partial<THttpHeaders>,
 	THttpHeaders<TLocationHeader> & THttpStatusCode<301>
 > {
 	name = "AppSecuredRouteRedirected";
 	from = [
-		{
-			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
-		},
+		AppAdminRoute,
+		HttpRouted,
 		{
 			aspect: HttpSecured,
 			lambda: (obj: THttpSecured) => obj[HttpSecured] === false,

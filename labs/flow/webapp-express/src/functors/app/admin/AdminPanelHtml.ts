@@ -8,7 +8,7 @@ import {
 } from "@xde.labs/aspects";
 import { PrimitiveFunctor } from "@xde.labs/flow-manager";
 
-import { AppAdminRouteAllow, TAppAdminRouteAllowed } from "../../../models/aspects";
+import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../AppAdminRouteAllowed";
 
 export class AdminPanelHtml extends PrimitiveFunctor<
 	THttpRouted & TAppAdminRouteAllowed,
@@ -18,7 +18,7 @@ export class AdminPanelHtml extends PrimitiveFunctor<
 	from = [
 		{
 			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.endsWith("/security/dashboard"),
+			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.endsWith("/dashboard"),
 		},
 		{
 			aspect: AppAdminRouteAllow,

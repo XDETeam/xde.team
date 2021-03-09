@@ -1,7 +1,7 @@
 import { PrimitiveFunctor, Exists } from "@xde.labs/flow-manager";
 import { HttpRouted, THttpRouted } from "@xde.labs/aspects";
 
-import { TApi405AllowHeaders, Api405AllowHeaders } from "../../../../models/aspects";
+import { TApi405AllowHeaders, Api405AllowHeaders } from "../Api405";
 
 export class ApiSignInPostMethodAllowed extends PrimitiveFunctor<THttpRouted, TApi405AllowHeaders> {
 	name = "ApiSignInPostMethodAllowed";

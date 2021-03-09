@@ -36,6 +36,8 @@ import admin401Instance from "./app/admin/Admin401";
 import adminPanelHtmlInstance from "./app/admin/AdminPanelHtml";
 import appHtml404Instance from "./app/AppHtml404";
 import appAdminRouteAllowedInstance from "./app/AppAdminRouteAllowed";
+import appAdminRoutedInstance from "./app/AppAdminRouted";
+import appAdminRouteCachedInstance from "./app/AppAdminRouteCached";
 import appSecuredRouteRedirectedInstance from "./app/AppSecuredRouteRedirected";
 import code401HtmlInstance from "./errors/Code401Html";
 import code404HtmlInstance from "./errors/Code404Html";
@@ -49,6 +51,7 @@ import { api } from "./app/api/module";
 import httpEndpointTypedInstance from "./http/HttpEndpointTyped";
 import apiSenderInstance from "./http/ApiSender";
 import appJson404Instance from "./app/api/AppJson404";
+import httpCachedToHeadersInstance from "./http/HttpCachedToHeaders";
 
 export class Renderer extends CompositeFunctor<
 	TNodejsExpressResponse &
@@ -120,12 +123,15 @@ const basicApp = new BasicApp();
 basicApp.addChildren([
 	admin401Instance,
 	adminPanelHtmlInstance,
+	appAdminRoutedInstance,
 	appAdminRouteAllowedInstance,
+	appAdminRouteCachedInstance,
 	appSecuredRouteRedirectedInstance,
 	httpVisitorRoledInstance,
 	httpRoutedInstance,
 	httpSecuredInstance,
 	httpEndpointTypedInstance,
+	httpCachedToHeadersInstance,
 ]);
 
 export class Root extends CompositeFunctor<
