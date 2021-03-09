@@ -11,11 +11,14 @@ import {
 	ProjectNamed,
 	THtmlHeadTagged,
 	HtmlHeadTagged,
+	THtmlHeadTagInjected,
+	HtmlHeadTagInjected,
 } from "@xde.labs/aspects";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 const pkg = require("../../package.json");
 
-type THtmlHeadTaggerFrom = TTitled & Partial<TAuthored & TDescribed & TCharSetted & TProjectNamed>;
+type THtmlHeadTaggerFrom = TTitled &
+	Partial<TAuthored & TDescribed & TCharSetted & TProjectNamed & THtmlHeadTagInjected>;
 
 export class HtmlHeadTagger extends PrimitiveFunctor<THtmlHeadTaggerFrom, THtmlHeadTagged> {
 	name = "HtmlHeadTagger";
@@ -25,6 +28,7 @@ export class HtmlHeadTagger extends PrimitiveFunctor<THtmlHeadTaggerFrom, THtmlH
 		{ aspect: Described, lambda: Optional },
 		{ aspect: CharSetted, lambda: Optional },
 		{ aspect: ProjectNamed, lambda: Optional },
+		{ aspect: HtmlHeadTagInjected, lambda: Optional },
 	];
 	to = [HtmlHeadTagged];
 
@@ -58,7 +62,9 @@ ${titleTag}
 ${charsetMetaTag}
 ${viewportMetaTag}
 ${generatorMetaTag}
-${webAuthorMetaTag}${creatorMetaTag ?? ""}${descriptionMetaTag ?? ""}
+${webAuthorMetaTag}${creatorMetaTag ?? ""}${descriptionMetaTag ?? ""}${
+				obj[HtmlHeadTagInjected] ?? ""
+			}
 </head>`,
 		};
 	}

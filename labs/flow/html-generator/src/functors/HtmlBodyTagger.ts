@@ -11,11 +11,19 @@ import {
 	HtmlMainTagged,
 	THtmlNavTagged,
 	HtmlNavTagged,
+	THtmlBodyTagInjected,
+	HtmlBodyTagInjected,
 } from "@xde.labs/aspects";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 
 type THtmlBodyTaggerFrom = THtmlMainTagged &
-	Partial<THtmlAsideTagged & THtmlFooterTagged & THtmlHeaderTagged & THtmlNavTagged>;
+	Partial<
+		THtmlAsideTagged &
+			THtmlFooterTagged &
+			THtmlHeaderTagged &
+			THtmlNavTagged &
+			THtmlBodyTagInjected
+	>;
 
 export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlBodyTagged> {
 	name = "HtmlBodyTagger";
@@ -25,6 +33,7 @@ export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlB
 		{ aspect: HtmlFooterTagged, lambda: Optional },
 		{ aspect: HtmlHeaderTagged, lambda: Optional },
 		{ aspect: HtmlNavTagged, lambda: Optional },
+		{ aspect: HtmlBodyTagInjected, lambda: Optional },
 	];
 	to = [HtmlBodyTagged];
 
@@ -39,7 +48,9 @@ export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlB
 		return {
 			[HtmlBodyTagged]: `<body>${obj[HtmlHeaderTagged] ?? ""}${obj[HtmlNavTagged] ?? ""}${
 				obj[HtmlAsideTagged] ?? ""
-			}${obj[HtmlMainTagged]}${obj[HtmlFooterTagged] ?? ""}</body>`,
+			}${obj[HtmlMainTagged]}${obj[HtmlFooterTagged] ?? ""}${
+				obj[HtmlBodyTagInjected] ?? ""
+			}</body>`,
 		};
 	}
 }
