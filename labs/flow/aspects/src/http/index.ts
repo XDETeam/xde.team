@@ -1,3 +1,4 @@
+export * from "./HttpCached";
 export * from "./HttpEnded";
 export * from "./HttpHeaders";
 export * from "./HttpRedirected";
