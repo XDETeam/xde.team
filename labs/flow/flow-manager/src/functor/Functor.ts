@@ -35,7 +35,7 @@ export type IFunctorTo<TTo extends IDictionary> =
 			force?: boolean;
 			/**
 			 * Allow functors composition that sets current aspect simultaneously
-			 * Supported way now - aspect should be an array. All array items will be concated after functors iteration for you by distinction manager.
+			 * Supported way now - aspect should be an array. All array items will be concatenated after functors iteration for you by distinction manager.
 			 * Also you should not depend on items ordering in the array
 			 */
 			allowSimultaneous?: boolean;

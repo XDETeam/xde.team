@@ -1,3 +1,12 @@
+# 2021-03-10 Strict mode
+
+In strict mode any undeclared "to" (of composite functor) will raise an error?
+
+-   Might force to free unused aspects early.
+-   Might be costly in term of performance.
+-   You never know, what aspect you might require later.
+-   Verbally encourage 3d party functor modules maintainers to clean internal intermediate aspects?
+
 # [Rejected] 2020-11-09 - Aspect validation
 
 When describing aspects - provide also validation function.

@@ -2,6 +2,9 @@ import { TUndefined } from "@xde.labs/common";
 import { PrimitiveFunctor, Undefined } from "@xde.labs/flow-manager";
 import { TPriority, Priority } from "@xde.labs/aspects";
 
+/**
+ * From undefined priority to this.priority
+ */
 export class PrioritizedInitially<T extends number> extends PrimitiveFunctor<
 	TUndefined<TPriority>,
 	TPriority<T>
@@ -21,6 +24,9 @@ export class PrioritizedInitially<T extends number> extends PrimitiveFunctor<
 	}
 }
 
+/**
+ * From (this.fromPriority ?? any priority) priority to this.toPriority
+ */
 export class RePrioritized<
 	TToPriority extends number,
 	TFromPriority extends number = number

@@ -1,0 +1,28 @@
+{
+	"name": "@xde/html-generator-react",
+	"version": "0.0.1",
+	"main": ".build/index.js",
+	"license": "UNLICENSED",
+	"scripts": {
+		"build": "tsc",
+		"build:watch": "tsc --watch"
+	},
+	"dependencies": {
+		"@types/react": "^16.9.56",
+		"@types/react-dom": "^16.9.9",
+		"@types/serialize-javascript": "^5.0.0",
+		"@xde.labs/aspects": "^0.0.1",
+		"@xde.labs/common": "^0.0.3",
+		"@xde.labs/functors": "^0.0.1",
+		"@xde.labs/html-generator": "^0.0.1",
+		"esbuild": "^0.8.56",
+		"node-cache": "^5.1.2",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"react-element-to-jsx-string": "^14.3.2",
+		"serialize-javascript": "^5.0.1"
+	},
+	"devDependencies": {
+		"typescript": "^4.0.2"
+	}
+}

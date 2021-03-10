@@ -41,27 +41,26 @@ import {
 	Titled,
 } from "@xde.labs/aspects";
 
-export class HtmlGenerator extends CompositeFunctor<
-	TEndpointType &
-		TTitled &
-		Partial<
-			THtmlAsideTagged &
-				THtmlBodyTagged &
-				THtmlFooterTagged &
-				THtmlHeaderTagged &
-				THtmlHeadTagged &
-				THtmlMainTagged &
-				THtmlNavTagged &
-				TAuthored &
-				TDescribed &
-				TCharSetted &
-				TLanguaged &
-				TProjectNamed &
-				THtmlHeadTagInjected &
-				THtmlBodyTagInjected
-		>,
-	THtmlHtmlTagged
-> {
+export type THtmlGeneratorFrom = TEndpointType &
+	TTitled &
+	Partial<
+		THtmlAsideTagged &
+			THtmlBodyTagged &
+			THtmlFooterTagged &
+			THtmlHeaderTagged &
+			THtmlHeadTagged &
+			THtmlMainTagged &
+			THtmlNavTagged &
+			TAuthored &
+			TDescribed &
+			TCharSetted &
+			TLanguaged &
+			TProjectNamed &
+			THtmlHeadTagInjected &
+			THtmlBodyTagInjected
+	>;
+
+export class HtmlGenerator extends CompositeFunctor<THtmlGeneratorFrom, THtmlHtmlTagged> {
 	name = "HtmlGenerator";
 	from = [
 		Titled,
