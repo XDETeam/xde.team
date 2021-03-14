@@ -1,24 +1,4 @@
-import { ValidationError } from "class-validator";
-
-import { EndpointErrorCode } from "./error-code";
-
-export type THttpMethod = "POST" | "GET" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
-
-export type TFail = {
-	code?: EndpointErrorCode;
-	// TODO: To error codes only
-	message?: string;
-	details?: ValidationError[];
-};
-
-export type TCommonApiResponse<TSuccess = {}> =
-	| {
-			result: true;
-			data?: TSuccess;
-	  }
-	| ({
-			result: false;
-	  } & TFail);
+import { TCommonApiResponse, THttpMethod } from "@xde.labs/aspects";
 
 export abstract class RestApiEndpoint<TRequest, TResponse> {
 	constructor(public url: string, public method: THttpMethod) {}

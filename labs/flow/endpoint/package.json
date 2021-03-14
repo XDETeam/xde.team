@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@xde.labs/common": "^0.0.3",
+		"@xde.labs/aspects": "^0.0.1",
 		"class-validator": "^0.12.2"
 	},
 	"devDependencies": {
