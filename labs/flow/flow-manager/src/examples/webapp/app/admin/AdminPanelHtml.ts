@@ -1,29 +1,29 @@
-import { THttpRouted, THtmlHtmlTagged, HtmlHtmlTagged, HttpRouted } from "@xde.labs/aspects";
+import { THttpRoute, THtmlTagHtml, HtmlTagHtml, HttpRoute } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../../functor/PrimitiveFunctor";
 import { TAppAdminRouteAllowed, AppAdminRouteAllow } from "../../models/";
 
 export class AdminPanelHtml extends PrimitiveFunctor<
-	THttpRouted & TAppAdminRouteAllowed,
-	THtmlHtmlTagged
+	THttpRoute & TAppAdminRouteAllowed,
+	THtmlTagHtml
 > {
 	name = "AdminPanelHtml";
 	from = [
 		{
-			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) =>
-				!!obj[HttpRouted]?.path.endsWith("/security/adminPanelRoute"),
+			aspect: HttpRoute,
+			lambda: (obj: THttpRoute) =>
+				!!obj[HttpRoute]?.path.endsWith("/security/adminPanelRoute"),
 		},
 		{
 			aspect: AppAdminRouteAllow,
 			lambda: (obj: TAppAdminRouteAllowed) => obj[AppAdminRouteAllow] === true,
 		},
 	];
-	to = [HtmlHtmlTagged];
+	to = [HtmlTagHtml];
 
 	distinct() {
 		return {
-			[HtmlHtmlTagged]: "<div>secret dashboard</div>",
+			[HtmlTagHtml]: "<div>secret dashboard</div>",
 		};
 	}
 }

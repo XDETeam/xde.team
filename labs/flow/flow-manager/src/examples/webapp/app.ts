@@ -2,13 +2,13 @@ import {
 	THttpStatusCode,
 	HttpStatusCode,
 	THttpHeaders,
-	HttpRouted,
-	THttpRouted,
+	HttpRoute,
+	THttpRoute,
 	HttpHeaders,
-	HtmlHtmlTagged,
-	THtmlHtmlTagged,
-	SentHtml,
-	TSentHtml,
+	HtmlTagHtml,
+	THtmlTagHtml,
+	Sent,
+	TSent,
 	HttpRedirected,
 	THttpRedirected,
 } from "@xde.labs/aspects";
@@ -30,19 +30,19 @@ import { CompositeFunctor } from "../../functor/CompositeFunctor";
 import { TestHttpRequest, TTestHttpRequest } from "./models/TestHttpRequest";
 
 export class AppRenderer extends CompositeFunctor<
-	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlHtmlTagged,
-	TSentHtml | THttpRedirected
+	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlTagHtml,
+	TSent | THttpRedirected
 > {
 	name = "AppRenderer";
 	from = [
 		{
-			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlHtmlTagged]],
+			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlTagHtml]],
 			lambda: Some,
 		},
 	];
 	to = [
 		{
-			aspect: [SentHtml, HttpRedirected],
+			aspect: [Sent, HttpRedirected],
 			lambda: Some,
 		},
 	];
@@ -59,18 +59,13 @@ renderer.addChildren([
 
 export class AppMain extends CompositeFunctor<
 	TTestHttpRequest,
-	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlHtmlTagged
+	THttpRoute | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlTagHtml
 > {
 	name = "AppMain";
 	from = [TestHttpRequest];
 	to = [
 		{
-			aspect: [
-				[HttpRouted],
-				[HttpHeaders, HttpStatusCode],
-				[HttpStatusCode],
-				[HtmlHtmlTagged],
-			],
+			aspect: [[HttpRoute], [HttpHeaders, HttpStatusCode], [HttpStatusCode], [HtmlTagHtml]],
 			lambda: Some,
 		},
 	];
@@ -88,10 +83,10 @@ appMain.addChildren([
 	httpSecuredInstance,
 ]);
 
-export class Root extends CompositeFunctor<TTestHttpRequest, TSentHtml> {
+export class Root extends CompositeFunctor<TTestHttpRequest, TSent> {
 	name = "Root";
 	from = [TestHttpRequest];
-	to = [SentHtml];
+	to = [Sent];
 }
 
 export const root = new Root();

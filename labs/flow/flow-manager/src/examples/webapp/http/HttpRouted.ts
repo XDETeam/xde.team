@@ -1,21 +1,20 @@
-import { THttpRouted, HttpRouted as HttpRoutedAspect } from "@xde.labs/aspects";
+import { THttpRoute, HttpRoute } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { TestHttpRequest, TTestHttpRequest } from "../models/TestHttpRequest";
 
-export class HttpRouted extends PrimitiveFunctor<TTestHttpRequest, THttpRouted> {
+export class HttpRouted extends PrimitiveFunctor<TTestHttpRequest, THttpRoute> {
 	name = "HttpRouted";
 	from = [TestHttpRequest];
-	to = [HttpRoutedAspect];
+	to = [HttpRoute];
 
-	distinct(obj: TTestHttpRequest): THttpRouted {
+	distinct(obj: TTestHttpRequest): THttpRoute {
 		return {
-			[HttpRoutedAspect]: {
+			[HttpRoute]: {
 				protocol: obj[TestHttpRequest].isTLS ? "https" : "http",
 				hostname: obj[TestHttpRequest].host,
 				path: obj[TestHttpRequest].path,
 				originalUrl: obj[TestHttpRequest].path,
-				method: "GET",
 			},
 		};
 	}

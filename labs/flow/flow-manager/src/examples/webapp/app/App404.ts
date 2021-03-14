@@ -1,10 +1,10 @@
 import {
-	THtmlHtmlTagged,
-	HtmlHtmlTagged,
+	THtmlTagHtml,
+	HtmlTagHtml,
 	THttpRedirected,
 	HttpRedirected,
-	THttpRouted,
-	HttpRouted,
+	THttpRoute,
+	HttpRoute,
 	THttpStatusCode,
 	HttpStatusCode,
 } from "@xde.labs/aspects";
@@ -14,14 +14,14 @@ import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
 import { Undefined } from "../../../helpers/lambdas";
 
 export class App404 extends PrimitiveFunctor<
-	TUndefined<THtmlHtmlTagged> & TUndefined<THttpRedirected> & THttpRouted,
+	TUndefined<THtmlTagHtml> & TUndefined<THttpRedirected> & THttpRoute,
 	THttpStatusCode<404>
 > {
 	name = "App404";
 	from = [
-		{ aspect: [HtmlHtmlTagged, HttpRedirected], lambda: Undefined },
+		{ aspect: [HtmlTagHtml, HttpRedirected], lambda: Undefined },
 		// To ensure we are not adding 404 handling for something that doesn't need it.
-		HttpRouted,
+		HttpRoute,
 	];
 	to = [HttpStatusCode];
 

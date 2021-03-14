@@ -1,26 +1,31 @@
 import {
-	THttpRouted,
+	THttpRoute,
 	THttpSecured,
 	HttpSecured,
-	HttpRouted,
+	HttpRoute,
 	HttpHeaders,
 	THttpHeaders,
 	TLocationHeader,
 	THttpStatusCode,
 	HttpStatusCode,
+	TcpHttpsPort,
+	TTcpHttpsPort,
 } from "@xde.labs/aspects";
 
 import { PrimitiveFunctor } from "../../../functor/PrimitiveFunctor";
+import { Optional } from "../../../helpers/lambdas";
+
+type TAppSecuredRouteRedirected = THttpRoute & THttpSecured & Partial<THttpHeaders & TTcpHttpsPort>;
 
 export class AppSecuredRouteRedirected extends PrimitiveFunctor<
-	THttpRouted & THttpSecured & Partial<THttpHeaders>,
+	TAppSecuredRouteRedirected,
 	THttpHeaders<TLocationHeader> & THttpStatusCode<301>
 > {
 	name = "AppSecuredRouteRedirected";
 	from = [
 		{
-			aspect: HttpRouted,
-			lambda: (obj: THttpRouted) => !!obj[HttpRouted]?.path.startsWith("/security/"),
+			aspect: HttpRoute,
+			lambda: (obj: THttpRoute) => !!obj[HttpRoute]?.path.startsWith("/security/"),
 		},
 		{
 			aspect: HttpSecured,
@@ -30,6 +35,10 @@ export class AppSecuredRouteRedirected extends PrimitiveFunctor<
 			aspect: HttpHeaders,
 			lambda: (obj: Partial<THttpHeaders>) =>
 				obj[HttpHeaders] === undefined || !("Location" in obj[HttpHeaders]!),
+		},
+		{
+			aspect: TcpHttpsPort,
+			lambda: Optional,
 		},
 	];
 	to = [
@@ -41,17 +50,15 @@ export class AppSecuredRouteRedirected extends PrimitiveFunctor<
 		HttpStatusCode,
 	];
 
-	distinct(
-		obj: THttpRouted & Partial<THttpHeaders>
-	): THttpHeaders<TLocationHeader> & THttpStatusCode<301> {
+	distinct(obj: TAppSecuredRouteRedirected) {
 		return {
 			[HttpHeaders]: {
 				...obj[HttpHeaders],
-				Location: `https://${obj[HttpRouted].hostname}${
-					obj[HttpRouted].nonStandardPort ? `:${obj[HttpRouted].nonStandardPort}` : ""
-				}${obj[HttpRouted].originalUrl}`,
+				Location: `https://${obj[HttpRoute].hostname}${
+					obj[TcpHttpsPort] ? `:${obj[TcpHttpsPort]}` : ""
+				}${obj[HttpRoute].originalUrl}`,
 			},
-			[HttpStatusCode]: 301,
+			[HttpStatusCode]: 301 as const,
 		};
 	}
 }

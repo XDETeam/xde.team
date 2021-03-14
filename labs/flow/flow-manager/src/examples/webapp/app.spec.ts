@@ -4,13 +4,13 @@ import {
 	THttpStatusCode,
 	HttpStatusCode,
 	THttpHeaders,
-	HttpRouted,
-	THttpRouted,
+	HttpRoute,
+	THttpRoute,
 	HttpHeaders,
-	HtmlHtmlTagged,
-	THtmlHtmlTagged,
-	SentHtml,
-	TSentHtml,
+	HtmlTagHtml,
+	THtmlTagHtml,
+	Sent,
+	TSent,
 	HttpRedirected,
 	THttpRedirected,
 } from "@xde.labs/aspects";
@@ -33,19 +33,19 @@ import { CompositeFunctor } from "../../functor/CompositeFunctor";
 import { deepCloneUnsafe } from "../../../../common/src/object/clone";
 
 export class AppRenderer extends CompositeFunctor<
-	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlHtmlTagged,
-	TSentHtml | THttpRedirected
+	THttpStatusCode | (THttpHeaders & THttpStatusCode) | THtmlTagHtml,
+	TSent | THttpRedirected
 > {
 	name = "AppRenderer";
 	from = [
 		{
-			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlHtmlTagged]],
+			aspect: [[HttpStatusCode], [HttpStatusCode, HttpHeaders], [HtmlTagHtml]],
 			lambda: Some,
 		},
 	];
 	to = [
 		{
-			aspect: [SentHtml, HttpRedirected],
+			aspect: [Sent, HttpRedirected],
 			lambda: Some,
 		},
 	];
@@ -62,18 +62,13 @@ renderer.addChildren([
 
 export class AppMain extends CompositeFunctor<
 	TTestHttpRequest,
-	THttpRouted | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlHtmlTagged
+	THttpRoute | (THttpStatusCode & THttpHeaders) | THttpStatusCode | THtmlTagHtml
 > {
 	name = "AppMain";
 	from = [TestHttpRequest];
 	to = [
 		{
-			aspect: [
-				[HttpRouted],
-				[HttpHeaders, HttpStatusCode],
-				[HttpStatusCode],
-				[HtmlHtmlTagged],
-			],
+			aspect: [[HttpRoute], [HttpHeaders, HttpStatusCode], [HttpStatusCode], [HtmlTagHtml]],
 			lambda: Some,
 		},
 	];
@@ -91,10 +86,10 @@ appMain.addChildren([
 	httpSecuredInstance,
 ]);
 
-export class Root extends CompositeFunctor<TTestHttpRequest, TSentHtml> {
+export class Root extends CompositeFunctor<TTestHttpRequest, TSent> {
 	name = "Root";
 	from = [TestHttpRequest];
-	to = [SentHtml];
+	to = [Sent];
 }
 
 export const root = new Root();
@@ -114,9 +109,8 @@ it("should return 401 on admin route for non-admin", async () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: httpRequest[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: httpRequest[TestHttpRequest].path,
 				path: httpRequest[TestHttpRequest].path,
 				protocol: "https",
@@ -124,8 +118,8 @@ it("should return 401 on admin route for non-admin", async () => {
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: false,
 			[HttpStatusCode]: 401,
-			[HtmlHtmlTagged]: expect.any(String),
-			[SentHtml]: true,
+			[HtmlTagHtml]: expect.any(String),
+			[Sent]: true,
 		})
 	);
 	expect(res).not.toHaveProperty(HttpHeaders);
@@ -138,9 +132,8 @@ it("should return 401 on non-existing security route for non-admin", async () =>
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "https",
@@ -148,8 +141,8 @@ it("should return 401 on non-existing security route for non-admin", async () =>
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: false,
 			[HttpStatusCode]: 401,
-			[HtmlHtmlTagged]: expect.any(String),
-			[SentHtml]: true,
+			[HtmlTagHtml]: expect.any(String),
+			[Sent]: true,
 		})
 	);
 	expect(res).not.toHaveProperty(HttpHeaders);
@@ -162,9 +155,8 @@ it("should return 301 on security route without tls for non-admin", async () => 
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "http",
@@ -176,8 +168,8 @@ it("should return 301 on security route without tls for non-admin", async () => 
 		})
 	);
 	expect(res).not.toHaveProperty(AppAdminRouteAllow);
-	expect(res).not.toHaveProperty(HtmlHtmlTagged);
-	expect(res).not.toHaveProperty(SentHtml);
+	expect(res).not.toHaveProperty(HtmlTagHtml);
+	expect(res).not.toHaveProperty(Sent);
 });
 
 it("should return 301 on security route without tls for admin", async () => {
@@ -191,9 +183,8 @@ it("should return 301 on security route without tls for admin", async () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "http",
@@ -205,8 +196,8 @@ it("should return 301 on security route without tls for admin", async () => {
 		})
 	);
 	expect(res).not.toHaveProperty(AppAdminRouteAllow);
-	expect(res).not.toHaveProperty(HtmlHtmlTagged);
-	expect(res).not.toHaveProperty(SentHtml);
+	expect(res).not.toHaveProperty(HtmlTagHtml);
+	expect(res).not.toHaveProperty(Sent);
 });
 
 it("should show admin panel for valid admin request", async () => {
@@ -218,17 +209,16 @@ it("should show admin panel for valid admin request", async () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "https",
 			},
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: true,
-			[HtmlHtmlTagged]: "<div>secret dashboard</div>",
-			[SentHtml]: true,
+			[HtmlTagHtml]: "<div>secret dashboard</div>",
+			[Sent]: true,
 		})
 	);
 	expect(res).not.toHaveProperty(HttpRedirected);
@@ -244,9 +234,8 @@ it("should return 404 for non-existing admin route for admin user", async () => 
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: true,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "https",
@@ -254,8 +243,8 @@ it("should return 404 for non-existing admin route for admin user", async () => 
 			[HttpSecured]: true,
 			[AppAdminRouteAllow]: true,
 			[HttpStatusCode]: 404,
-			[HtmlHtmlTagged]: expect.any(String),
-			[SentHtml]: true,
+			[HtmlTagHtml]: expect.any(String),
+			[Sent]: true,
 		})
 	);
 	expect(res).not.toHaveProperty(HttpRedirected);
@@ -270,17 +259,16 @@ it("should return 404 on any non-existing route for any user", async () => {
 	expect(res).toEqual(
 		expect.objectContaining({
 			[Authorized]: false,
-			[HttpRouted]: {
+			[HttpRoute]: {
 				hostname: req[TestHttpRequest].host,
-				method: "GET",
 				originalUrl: req[TestHttpRequest].path,
 				path: req[TestHttpRequest].path,
 				protocol: "https",
 			},
 			[HttpSecured]: true,
 			[HttpStatusCode]: 404,
-			[HtmlHtmlTagged]: "<div>404 page</div>",
-			[SentHtml]: true,
+			[HtmlTagHtml]: "<div>404 page</div>",
+			[Sent]: true,
 		})
 	);
 	expect(res).not.toHaveProperty(AppAdminRouteAllow);
