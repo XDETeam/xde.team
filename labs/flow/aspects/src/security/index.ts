@@ -1,2 +1,4 @@
+export * from "./AccessGranted";
 export * from "./Authorized";
-export * from "./VisitorRoled";
+export * from "./HasPermissions";
+export * from "./VisitorRoles";

@@ -1,3 +1,3 @@
-export * from "./Authored";
-export * from "./Described";
-export * from "./Titled";
+export * from "./Author";
+export * from "./Description";
+export * from "./Title";

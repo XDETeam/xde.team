@@ -1,5 +1,4 @@
 import { TimePeriodSeconds } from "@xde.labs/common";
-export const HttpCached = "HttpCached" as const;
 
 export enum HttpCacheCacheAbility {
 	Public = "public",
@@ -14,14 +13,16 @@ export enum HttpCacheRevalidation {
 	Immutable = "immutable",
 }
 
-export interface IHttpCached {
+export interface IHttpCache {
 	cacheAbility?: HttpCacheCacheAbility;
 	maxAge?: TimePeriodSeconds;
 	revalidation?: HttpCacheRevalidation;
 }
 
-export type THttpCached = {
-	[HttpCached]: IHttpCached;
+export const HttpCache = "HttpCache" as const;
+
+export type THttpCache = {
+	[HttpCache]: IHttpCache;
 };
 
 // TODO: // csswizardry.com/2019/03/cache-control-for-civilians/
