@@ -1,44 +1,44 @@
 import {
-	TAuthored,
-	Authored,
-	TDescribed,
-	Described,
-	TTitled,
-	Titled,
-	TCharSetted,
-	CharSetted,
-	TProjectNamed,
-	ProjectNamed,
-	THtmlHeadTagged,
-	HtmlHeadTagged,
-	THtmlHeadTagInjected,
-	HtmlHeadTagInjected,
+	TAuthor,
+	Author,
+	TDescription,
+	Description,
+	TTitle,
+	Title,
+	TCharset,
+	Charset,
+	TProjectName,
+	ProjectName,
+	THtmlTagHead,
+	HtmlTagHead,
+	THtmlTagInjectionHead,
+	HtmlTagInjectionHead,
 } from "@xde.labs/aspects";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 const pkg = require("../../package.json");
 
-type THtmlHeadTaggerFrom = TTitled &
-	Partial<TAuthored & TDescribed & TCharSetted & TProjectNamed & THtmlHeadTagInjected>;
+type THtmlHeadTaggerFrom = TTitle &
+	Partial<TAuthor & TDescription & TCharset & TProjectName & THtmlTagInjectionHead>;
 
-export class HtmlHeadTagger extends PrimitiveFunctor<THtmlHeadTaggerFrom, THtmlHeadTagged> {
+export class HtmlHeadTagger extends PrimitiveFunctor<THtmlHeadTaggerFrom, THtmlTagHead> {
 	name = "HtmlHeadTagger";
 	from = [
-		Titled,
-		{ aspect: Authored, lambda: Optional },
-		{ aspect: Described, lambda: Optional },
-		{ aspect: CharSetted, lambda: Optional },
-		{ aspect: ProjectNamed, lambda: Optional },
-		{ aspect: HtmlHeadTagInjected, lambda: Optional },
+		Title,
+		{ aspect: Author, lambda: Optional },
+		{ aspect: Description, lambda: Optional },
+		{ aspect: Charset, lambda: Optional },
+		{ aspect: ProjectName, lambda: Optional },
+		{ aspect: HtmlTagInjectionHead, lambda: Optional },
 	];
-	to = [HtmlHeadTagged];
+	to = [HtmlTagHead];
 
 	distinct(obj: THtmlHeadTaggerFrom) {
-		const titleTag: string = `<title>${obj[Titled]}${
-			!!obj[ProjectNamed] ? ` - ${obj[ProjectNamed]}` : ""
+		const titleTag: string = `<title>${obj[Title]}${
+			!!obj[ProjectName] ? ` - ${obj[ProjectName]}` : ""
 		}</title>`;
 
 		// https://wiki.whatwg.org/wiki/MetaExtensions
-		const charsetMetaTag: string = `<meta charset="${obj[CharSetted] ?? "utf-8"}" />`;
+		const charsetMetaTag: string = `<meta charset="${obj[Charset] ?? "utf-8"}" />`;
 
 		const viewportMetaTag = `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />`;
 
@@ -47,23 +47,23 @@ export class HtmlHeadTagger extends PrimitiveFunctor<THtmlHeadTaggerFrom, THtmlH
 		const webAuthorMetaTag = `<meta name="web_author" content="XDE Team" />`;
 
 		let creatorMetaTag: string | undefined = undefined;
-		if (!!obj[Authored]) {
-			creatorMetaTag = `<meta name="creator" content="${obj[Authored]}" />`;
+		if (!!obj[Author]) {
+			creatorMetaTag = `<meta name="creator" content="${obj[Author]}" />`;
 		}
 
 		let descriptionMetaTag: string | undefined = undefined;
-		if (!!obj[Described]) {
-			descriptionMetaTag = `<meta name="description" content="${obj[Described]}" />`;
+		if (!!obj[Description]) {
+			descriptionMetaTag = `<meta name="description" content="${obj[Description]}" />`;
 		}
 
 		return {
-			[HtmlHeadTagged]: `<head>
+			[HtmlTagHead]: `<head>
 ${titleTag}
 ${charsetMetaTag}
 ${viewportMetaTag}
 ${generatorMetaTag}
 ${webAuthorMetaTag}${creatorMetaTag ?? ""}${descriptionMetaTag ?? ""}${
-				obj[HtmlHeadTagInjected] ?? ""
+				obj[HtmlTagInjectionHead] ?? ""
 			}
 </head>`,
 		};

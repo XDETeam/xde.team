@@ -1,41 +1,35 @@
 import {
-	THtmlAsideTagged,
-	HtmlAsideTagged,
-	THtmlBodyTagged,
-	HtmlBodyTagged,
-	THtmlFooterTagged,
-	HtmlFooterTagged,
-	THtmlHeaderTagged,
-	HtmlHeaderTagged,
-	THtmlMainTagged,
-	HtmlMainTagged,
-	THtmlNavTagged,
-	HtmlNavTagged,
-	THtmlBodyTagInjected,
-	HtmlBodyTagInjected,
+	THtmlTagAside,
+	HtmlTagAside,
+	THtmlTagBody,
+	HtmlTagBody,
+	THtmlTagFooter,
+	HtmlTagFooter,
+	THtmlTagHeader,
+	HtmlTagHeader,
+	THtmlTagMain,
+	HtmlTagMain,
+	THtmlTagNav,
+	HtmlTagNav,
+	THtmlTagInjectionBody,
+	HtmlTagInjectionBody,
 } from "@xde.labs/aspects";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 
-type THtmlBodyTaggerFrom = THtmlMainTagged &
-	Partial<
-		THtmlAsideTagged &
-			THtmlFooterTagged &
-			THtmlHeaderTagged &
-			THtmlNavTagged &
-			THtmlBodyTagInjected
-	>;
+type THtmlBodyTaggerFrom = THtmlTagMain &
+	Partial<THtmlTagAside & THtmlTagFooter & THtmlTagHeader & THtmlTagNav & THtmlTagInjectionBody>;
 
-export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlBodyTagged> {
+export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlTagBody> {
 	name = "HtmlBodyTagger";
 	from = [
-		HtmlMainTagged,
-		{ aspect: HtmlAsideTagged, lambda: Optional },
-		{ aspect: HtmlFooterTagged, lambda: Optional },
-		{ aspect: HtmlHeaderTagged, lambda: Optional },
-		{ aspect: HtmlNavTagged, lambda: Optional },
-		{ aspect: HtmlBodyTagInjected, lambda: Optional },
+		HtmlTagMain,
+		{ aspect: HtmlTagAside, lambda: Optional },
+		{ aspect: HtmlTagFooter, lambda: Optional },
+		{ aspect: HtmlTagHeader, lambda: Optional },
+		{ aspect: HtmlTagNav, lambda: Optional },
+		{ aspect: HtmlTagInjectionBody, lambda: Optional },
 	];
-	to = [HtmlBodyTagged];
+	to = [HtmlTagBody];
 
 	distinct(obj: THtmlBodyTaggerFrom) {
 		/**
@@ -46,10 +40,10 @@ export class HtmlBodyTagger extends PrimitiveFunctor<THtmlBodyTaggerFrom, THtmlB
 		 * <footer/>
 		 */
 		return {
-			[HtmlBodyTagged]: `<body>${obj[HtmlHeaderTagged] ?? ""}${obj[HtmlNavTagged] ?? ""}${
-				obj[HtmlAsideTagged] ?? ""
-			}${obj[HtmlMainTagged]}${obj[HtmlFooterTagged] ?? ""}${
-				obj[HtmlBodyTagInjected] ?? ""
+			[HtmlTagBody]: `<body>${obj[HtmlTagHeader] ?? ""}${obj[HtmlTagNav] ?? ""}${
+				obj[HtmlTagAside] ?? ""
+			}${obj[HtmlTagMain]}${obj[HtmlTagFooter] ?? ""}${
+				obj[HtmlTagInjectionBody] ?? ""
 			}</body>`,
 		};
 	}

@@ -3,8 +3,8 @@ import { TUndefined } from "@xde.labs/common";
 import {
 	ReactInitialState,
 	TReactInitialState,
-	THtmlHeadTagInjected,
-	HtmlHeadTagInjected,
+	THtmlTagInjectionHead,
+	HtmlTagInjectionHead,
 	SerializedJson,
 	TSerializedJson,
 	Json,
@@ -13,12 +13,12 @@ import {
 
 export class ReactInitialStateHeadInjecter extends PrimitiveFunctor<
 	TReactInitialState & TSerializedJson,
-	THtmlHeadTagInjected & TUndefined<TJson> & TUndefined<TSerializedJson>
+	THtmlTagInjectionHead & TUndefined<TJson> & TUndefined<TSerializedJson>
 > {
 	name = "ReactInitialStateHeadInjecter";
 	from = [ReactInitialState, SerializedJson];
 	to = [
-		HtmlHeadTagInjected,
+		HtmlTagInjectionHead,
 		{
 			aspect: Json,
 			lambda: Undefined,
@@ -31,7 +31,7 @@ export class ReactInitialStateHeadInjecter extends PrimitiveFunctor<
 
 	async distinct(obj: TSerializedJson) {
 		return {
-			[HtmlHeadTagInjected]: `<script>window.__INITIAL__DATA__ = ${obj[SerializedJson]}</script>`,
+			[HtmlTagInjectionHead]: `<script>window.__INITIAL__DATA__ = ${obj[SerializedJson]}</script>`,
 			[Json]: undefined,
 			[SerializedJson]: undefined,
 		};

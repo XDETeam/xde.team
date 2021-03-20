@@ -4,86 +4,86 @@ import htmlHeadTaggerInstance from "./functors/HtmlHeadTagger";
 import htmlHtmlTaggerInstance from "./functors/HtmlHtmlTagger";
 import htmlMainTaggerInstance from "./functors/HtmlMainTagger";
 import {
-	Authored,
-	CharSetted,
-	Described,
+	Author,
+	Charset,
+	Description,
 	Endpoint,
 	EndpointType,
-	HtmlAsideTagged,
-	HtmlBodyTagInjected,
-	HtmlBodyTagged,
-	HtmlFooterTagged,
-	HtmlHeadTagInjected,
-	HtmlHeadTagged,
-	HtmlHeaderTagged,
-	HtmlHtmlTagged,
-	HtmlMainTagged,
-	HtmlNavTagged,
-	Languaged,
-	ProjectNamed,
-	TAuthored,
-	TCharSetted,
-	TDescribed,
+	HtmlTagAside,
+	HtmlTagInjectionBody,
+	HtmlTagBody,
+	HtmlTagFooter,
+	HtmlTagInjectionHead,
+	HtmlTagHead,
+	HtmlTagHeader,
+	HtmlTagHtml,
+	HtmlTagMain,
+	HtmlTagNav,
+	Language,
+	ProjectName,
+	TAuthor,
+	TCharset,
+	TDescription,
 	TEndpointType,
-	THtmlAsideTagged,
-	THtmlBodyTagInjected,
-	THtmlBodyTagged,
-	THtmlFooterTagged,
-	THtmlHeadTagInjected,
-	THtmlHeadTagged,
-	THtmlHeaderTagged,
-	THtmlHtmlTagged,
-	THtmlMainTagged,
-	THtmlNavTagged,
-	TLanguaged,
-	TProjectNamed,
-	TTitled,
-	Titled,
+	THtmlTagAside,
+	THtmlTagInjectionBody,
+	THtmlTagBody,
+	THtmlTagFooter,
+	THtmlTagInjectionHead,
+	THtmlTagHead,
+	THtmlTagHeader,
+	THtmlTagHtml,
+	THtmlTagMain,
+	THtmlTagNav,
+	TLanguage,
+	TProjectName,
+	TTitle,
+	Title,
 } from "@xde.labs/aspects";
 
-export type THtmlGeneratorFrom = TEndpointType &
-	TTitled &
+export type THtmlGeneratorFrom = TEndpointType<Endpoint.Html> &
+	TTitle &
 	Partial<
-		THtmlAsideTagged &
-			THtmlBodyTagged &
-			THtmlFooterTagged &
-			THtmlHeaderTagged &
-			THtmlHeadTagged &
-			THtmlMainTagged &
-			THtmlNavTagged &
-			TAuthored &
-			TDescribed &
-			TCharSetted &
-			TLanguaged &
-			TProjectNamed &
-			THtmlHeadTagInjected &
-			THtmlBodyTagInjected
+		THtmlTagAside &
+			THtmlTagBody &
+			THtmlTagFooter &
+			THtmlTagHeader &
+			THtmlTagHead &
+			THtmlTagMain &
+			THtmlTagNav &
+			TAuthor &
+			TDescription &
+			TCharset &
+			TLanguage &
+			TProjectName &
+			THtmlTagInjectionHead &
+			THtmlTagInjectionBody
 	>;
 
-export class HtmlGenerator extends CompositeFunctor<THtmlGeneratorFrom, THtmlHtmlTagged> {
+export class HtmlGenerator extends CompositeFunctor<THtmlGeneratorFrom, THtmlTagHtml> {
 	name = "HtmlGenerator";
 	from = [
-		Titled,
+		Title,
 		{
 			aspect: EndpointType,
-			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
+			lambda: (obj: TEndpointType<Endpoint.Html>) => obj[EndpointType] === Endpoint.Html,
 		},
-		{ aspect: Authored, lambda: Optional },
-		{ aspect: CharSetted, lambda: Optional },
-		{ aspect: Described, lambda: Optional },
-		{ aspect: HtmlAsideTagged, lambda: Optional },
-		{ aspect: HtmlBodyTagInjected, lambda: Optional },
-		{ aspect: HtmlBodyTagged, lambda: Optional },
-		{ aspect: HtmlFooterTagged, lambda: Optional },
-		{ aspect: HtmlHeadTagInjected, lambda: Optional },
-		{ aspect: HtmlHeadTagged, lambda: Optional },
-		{ aspect: HtmlHeaderTagged, lambda: Optional },
-		{ aspect: HtmlMainTagged, lambda: Optional },
-		{ aspect: HtmlNavTagged, lambda: Optional },
-		{ aspect: Languaged, lambda: Optional },
-		{ aspect: ProjectNamed, lambda: Optional },
+		{ aspect: Author, lambda: Optional },
+		{ aspect: Charset, lambda: Optional },
+		{ aspect: Description, lambda: Optional },
+		{ aspect: HtmlTagAside, lambda: Optional },
+		{ aspect: HtmlTagInjectionBody, lambda: Optional },
+		{ aspect: HtmlTagBody, lambda: Optional },
+		{ aspect: HtmlTagFooter, lambda: Optional },
+		{ aspect: HtmlTagInjectionHead, lambda: Optional },
+		{ aspect: HtmlTagHead, lambda: Optional },
+		{ aspect: HtmlTagHeader, lambda: Optional },
+		{ aspect: HtmlTagMain, lambda: Optional },
+		{ aspect: HtmlTagNav, lambda: Optional },
+		{ aspect: Language, lambda: Optional },
+		{ aspect: ProjectName, lambda: Optional },
 	];
-	to = [HtmlHtmlTagged];
+	to = [HtmlTagHtml];
 }
 export const htmlGenerator = new HtmlGenerator();
 htmlGenerator.addChildren([

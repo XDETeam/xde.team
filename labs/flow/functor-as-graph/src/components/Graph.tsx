@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useRef, useEffect } from "react";
+import React, { FC, useMemo, useRef, useEffect, CSSProperties } from "react";
 import { forceCollide } from "d3-force";
 import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
 import { AnyFunctor } from "@xde.labs/flow-manager";
@@ -8,10 +8,12 @@ import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type GraphProps = {
 	functor: AnyFunctor;
+	style?: CSSProperties;
+	className?: string;
 };
 
 // TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
-export const Graph: FC<GraphProps> = ({ functor }) => {
+export const Graph: FC<GraphProps> = ({ functor, style, className }) => {
 	const data = useMemo(() => graphConverterInstance.toGraphData(functor), [functor]);
 	const ref = useRef<ForceGraphMethods>();
 
@@ -24,7 +26,7 @@ export const Graph: FC<GraphProps> = ({ functor }) => {
 		(ref.current?.d3Force("charge") as any).strength(-150);
 	}, [ref]);
 	return (
-		<div>
+		<div className={className} style={style}>
 			<details>
 				<summary>Nodes</summary>
 				<pre>{JSON.stringify(data.nodes, null, 2)}</pre>

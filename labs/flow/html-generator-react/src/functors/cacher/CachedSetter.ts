@@ -2,24 +2,24 @@ import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 import {
 	CacheValid,
 	TCacheValid,
-	HtmlHtmlTagged,
-	THtmlHtmlTagged,
-	HttpCached,
-	THttpCached,
+	HtmlTagHtml,
+	THtmlTagHtml,
+	HttpCache,
+	THttpCache,
 } from "@xde.labs/aspects";
 
 import { RequestHash, TRequestHash } from "../RequestHasher";
 import { appCache } from "./node-cache";
 import { TimePeriodSeconds } from "@xde.labs/common";
 
-type TCachedSetterFrom = TRequestHash & THtmlHtmlTagged & TCacheValid<false> & Partial<THttpCached>;
+type TCachedSetterFrom = TRequestHash & THtmlTagHtml & TCacheValid<false> & Partial<THttpCache>;
 
 export class CachedSetter extends PrimitiveFunctor<TCachedSetterFrom, TCacheValid<true>> {
 	name = "CachedSetter";
 	from = [
 		RequestHash,
-		HtmlHtmlTagged,
-		{ aspect: HttpCached, lambda: Optional },
+		HtmlTagHtml,
+		{ aspect: HttpCache, lambda: Optional },
 		{ aspect: CacheValid, lambda: (obj: TCacheValid<false>) => obj[CacheValid] === false },
 	];
 	to = [
@@ -32,9 +32,9 @@ export class CachedSetter extends PrimitiveFunctor<TCachedSetterFrom, TCacheVali
 
 	distinct(obj: TCachedSetterFrom) {
 		// TODO:
-		const ttl = obj[HttpCached]?.maxAge ?? TimePeriodSeconds.Minute * 10;
+		const ttl = obj[HttpCache]?.maxAge ?? TimePeriodSeconds.Minute * 10;
 
-		const cached = appCache.set<string>(obj[RequestHash], obj[HtmlHtmlTagged], ttl);
+		const cached = appCache.set<string>(obj[RequestHash], obj[HtmlTagHtml], ttl);
 
 		return {
 			[CacheValid]: true as const,

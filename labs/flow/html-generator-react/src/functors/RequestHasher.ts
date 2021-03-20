@@ -1,4 +1,4 @@
-import { THttpRouted, HttpRouted } from "@xde.labs/aspects";
+import { THttpRoute, HttpRoute } from "@xde.labs/aspects";
 import { PrimitiveFunctor, Optional } from "@xde.labs/flow-manager";
 import { IDictionary, sha256 } from "@xde.labs/common";
 
@@ -25,21 +25,21 @@ export type TRequestForceHash = {
 	[RequestForceHash]: string;
 };
 
-type TRequestHasherFrom = THttpRouted &
+type TRequestHasherFrom = THttpRoute &
 	Partial<TRequestHashAdditionalToRouteParameters> &
 	Partial<TRequestForceHash>;
 
 export class RequestHasher extends PrimitiveFunctor<TRequestHasherFrom, TRequestHash> {
 	name = "RequestHasher";
 	from = [
-		HttpRouted,
+		HttpRoute,
 		{ aspect: RequestHashAdditionalToRouteParameters, lambda: Optional },
 		{ aspect: RequestForceHash, lambda: Optional },
 	];
 	to = [RequestHash];
 
 	distinct(obj: TRequestHasherFrom) {
-		let hashMe: string = obj[HttpRouted].path;
+		let hashMe: string = obj[HttpRoute].path;
 
 		const forceHash = obj[RequestForceHash];
 		if (forceHash !== undefined) {

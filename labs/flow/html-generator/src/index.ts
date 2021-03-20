@@ -1,5 +1,5 @@
 import { curryRoute, THtmlInputType, IDictionary } from "@xde.labs/common";
-import { THttpMethod } from "@xde.labs/endpoint";
+import { THttpMethod, HttpMethod } from "@xde.labs/aspects";
 export * from "./app";
 
 export interface IComplexComponent<TNodeType> {
@@ -18,7 +18,7 @@ export interface IHtmlEndpoint<TNodeType> extends ICommonEndpoint {
 }
 
 export interface IApiEndpoint<TRequest extends IDictionary, TResponse> extends ICommonEndpoint {
-	method: THttpMethod;
+	method: THttpMethod[typeof HttpMethod];
 	request: TRequest;
 	response: TResponse;
 	html: {

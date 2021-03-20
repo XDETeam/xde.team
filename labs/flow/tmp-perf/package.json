@@ -12,7 +12,7 @@
 		"quick": "artillery quick --count 20 --num 100 --insecure https://localhost:8001/items"
 	},
 	"devDependencies": {
-		"artillery": "^1.6.1",
+		"artillery": "^1.6.2",
 		"artillery-plugin-metrics-by-endpoint": "^0.1.1"
 	}
 }

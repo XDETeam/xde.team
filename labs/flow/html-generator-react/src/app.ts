@@ -1,37 +1,37 @@
 import {
 	TReactInitialState,
 	ReactInitialState,
-	HtmlHeadTagInjected,
-	THtmlHeadTagInjected,
-	THtmlBodyTagged,
+	HtmlTagInjectionHead,
+	THtmlTagInjectionHead,
+	THtmlTagBody,
 	TReactRootElement,
 	TReactRootElementImport,
-	HtmlBodyTagged,
+	HtmlTagBody,
 	ReactRootElement,
 	ReactRootElementImport,
-	THttpRouted,
-	TAuthored,
-	TCharSetted,
-	TDescribed,
+	THttpRoute,
+	TAuthor,
+	TCharset,
+	TDescription,
 	TEndpointType,
-	THtmlHtmlTagged,
-	TLanguaged,
-	TProjectNamed,
-	TTitled,
-	Titled,
+	THtmlTagHtml,
+	TLanguage,
+	TProjectName,
+	TTitle,
+	Title,
 	EndpointType,
 	Endpoint,
-	Authored,
-	CharSetted,
-	Described,
-	Languaged,
-	ProjectNamed,
-	HttpRouted,
-	HtmlHtmlTagged,
+	Author,
+	Charset,
+	Description,
+	Language,
+	ProjectName,
+	HttpRoute,
+	HtmlTagHtml,
 	TCacheValid,
 	CacheValid,
-	THttpCached,
-	HttpCached,
+	THttpCache,
+	HttpCache,
 } from "@xde.labs/aspects";
 import { CompositeFunctor, Some, Optional } from "@xde.labs/flow-manager";
 import hydrateWithReactElementPlaceholderInstance from "./functors/body/HydrateWithReactElementPlaceholder";
@@ -59,10 +59,13 @@ import {
 	TRequestHashAdditionalToRouteParameters,
 } from "./functors/RequestHasher";
 
-export class ReactInitialStater extends CompositeFunctor<TReactInitialState, THtmlHeadTagInjected> {
+export class ReactInitialStater extends CompositeFunctor<
+	TReactInitialState,
+	THtmlTagInjectionHead
+> {
 	name = "ReactInitialStater";
 	from = [ReactInitialState];
-	to = [HtmlHeadTagInjected];
+	to = [HtmlTagInjectionHead];
 }
 const reactInitialStater = new ReactInitialStater();
 reactInitialStater.addChildren([
@@ -76,7 +79,7 @@ export class ReactBodier extends CompositeFunctor<
 		TReactRootElement &
 		TRequestHash &
 		Partial<TTypeScriptReactCodeBundlerConfig>,
-	THtmlBodyTagged
+	THtmlTagBody
 > {
 	name = "ReactBodier";
 	from = [
@@ -85,7 +88,7 @@ export class ReactBodier extends CompositeFunctor<
 		RequestHash,
 		{ aspect: TypeScriptReactCodeBundlerConfig, lambda: Optional },
 	];
-	to = [HtmlBodyTagged];
+	to = [HtmlTagBody];
 }
 const reactBodier = new ReactBodier();
 reactBodier.addChildren([
@@ -102,7 +105,7 @@ export const reactHtmlGeneratorWrapper = new PriorityInitialWrapper<
 		Partial<TTypeScriptReactCodeBundlerConfig> &
 		Partial<TReactInitialState> &
 		TCacheValid<false>,
-	THtmlBodyTagged & Partial<THtmlHeadTagInjected>,
+	THtmlTagBody & Partial<THtmlTagInjectionHead>,
 	1
 >(
 	"reactHtmlGeneratorWrapper",
@@ -114,54 +117,54 @@ export const reactHtmlGeneratorWrapper = new PriorityInitialWrapper<
 		{ aspect: CacheValid, lambda: (obj: TCacheValid<false>) => obj[CacheValid] === false },
 		{ aspect: ReactInitialState, lambda: Optional },
 	],
-	[HtmlBodyTagged, { aspect: HtmlHeadTagInjected, lambda: Optional }],
+	[HtmlTagBody, { aspect: HtmlTagInjectionHead, lambda: Optional }],
 	1
 );
 reactHtmlGeneratorWrapper.addChildren([reactBodier, reactInitialStater]);
 
 export const htmlGeneratorWrapper = new RePrioritizedWrapper<
 	THtmlGeneratorFrom,
-	THtmlHtmlTagged,
+	THtmlTagHtml,
 	1,
 	2
 >("htmlGeneratorWrapper", htmlGenerator.from, htmlGenerator.to, 2, 1);
 htmlGeneratorWrapper.addChildren(htmlGenerator);
 
 export class HtmlGeneratorReact extends CompositeFunctor<
-	TEndpointType &
-		THttpRouted &
-		TTitled &
+	TEndpointType<Endpoint.Html> &
+		THttpRoute &
+		TTitle &
 		TReactRootElementImport &
 		TReactRootElement &
 		Partial<TRequestForceHash & TRequestHashAdditionalToRouteParameters> &
 		Partial<TTypeScriptReactCodeBundlerConfig> &
 		Partial<TReactInitialState> &
-		Partial<TAuthored & TDescribed & TCharSetted & TLanguaged & TProjectNamed> &
-		Partial<THttpCached>,
-	THtmlHtmlTagged
+		Partial<TAuthor & TDescription & TCharset & TLanguage & TProjectName> &
+		Partial<THttpCache>,
+	THtmlTagHtml
 > {
 	name = "HtmlGeneratorReact";
 	from = [
 		{
 			aspect: EndpointType,
-			lambda: (obj: TEndpointType) => obj[EndpointType] === Endpoint.Html,
+			lambda: (obj: TEndpointType<Endpoint.Html>) => obj[EndpointType] === Endpoint.Html,
 		},
-		HttpRouted,
-		Titled,
+		HttpRoute,
+		Title,
 		ReactRootElementImport,
 		ReactRootElement,
 		{ aspect: RequestForceHash, lambda: Optional },
 		{ aspect: RequestHashAdditionalToRouteParameters, lambda: Optional },
 		{ aspect: TypeScriptReactCodeBundlerConfig, lambda: Optional },
 		{ aspect: ReactInitialState, lambda: Optional },
-		{ aspect: Authored, lambda: Optional },
-		{ aspect: Described, lambda: Optional },
-		{ aspect: CharSetted, lambda: Optional },
-		{ aspect: Languaged, lambda: Optional },
-		{ aspect: ProjectNamed, lambda: Optional },
-		{ aspect: HttpCached, lambda: Optional },
+		{ aspect: Author, lambda: Optional },
+		{ aspect: Description, lambda: Optional },
+		{ aspect: Charset, lambda: Optional },
+		{ aspect: Language, lambda: Optional },
+		{ aspect: ProjectName, lambda: Optional },
+		{ aspect: HttpCache, lambda: Optional },
 	];
-	to = [HtmlHtmlTagged];
+	to = [HtmlTagHtml];
 }
 export const htmlGeneratorReact = new HtmlGeneratorReact();
 htmlGeneratorReact.addChildren([

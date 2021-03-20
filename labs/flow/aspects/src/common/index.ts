@@ -1,6 +1,6 @@
 export * from "./Error";
 export * from "./LoggedToFile";
-export * from "./Path";
+export * from "./FilePath";
 export * from "./Placeholder";
 export * from "./Result";
 export * from "./Sent";

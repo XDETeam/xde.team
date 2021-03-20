@@ -18,12 +18,13 @@
 		"@xde.labs/flow-manager": "^0.0.1",
 		"d3-force": "^2.1.1",
 		"react": "^17.0.1",
-		"react-force-graph-2d": "^1.18.1"
+		"react-force-graph-2d": "^1.22.1"
 	},
 	"devDependencies": {
-		"@types/d3-force": "^2.1.0",
+		"@types/d3-force": "^2.1.1",
+		"@types/react": "^17.0.3",
 		"npm-run-all": "^4.1.5",
 		"rimraf": "^3.0.2",
-		"typescript": "^4.1.2"
+		"typescript": "^4.2.3"
 	}
 }

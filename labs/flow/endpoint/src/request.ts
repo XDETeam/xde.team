@@ -9,7 +9,7 @@ export interface IRequestBase<TRequest, TParentModel> {
 	validationGroups: string[];
 }
 
-export abstract class RequestBase<TRequest extends {}, TParentModel>
+export abstract class RequestBase<TRequest extends {}, TParentModel extends {}>
 	implements IRequestBase<TRequest, TParentModel> {
 	abstract allowedKeys: IRequestBase<TRequest, TParentModel>["allowedKeys"];
 	abstract request: IRequestBase<TRequest, TParentModel>["request"];
