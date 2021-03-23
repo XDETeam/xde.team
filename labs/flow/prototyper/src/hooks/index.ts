@@ -1,15 +1,5 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // TODO: shared library
-
-export const usePrevious = <T>(value: T): T | undefined => {
-	const ref = useRef<T>();
-
-	useEffect(() => {
-		ref.current = value;
-	}, [value]);
-
-	return ref.current;
-};
 
 /**
  * @returns whether the component did mount

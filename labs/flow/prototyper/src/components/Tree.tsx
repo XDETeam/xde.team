@@ -1,19 +1,20 @@
-import React, { FC, useContext } from "react";
+import IconButton from "@material-ui/core/IconButton";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import React, { FC } from "react";
 import SortableTree from "react-sortable-tree";
+import { describeFromAndTo } from "../_common";
+import { useDispatch, useSelector } from "react-redux";
 import {
-	FunctorDispatch,
 	functorEditingAddChild,
 	functorEditingRemove,
 	functorEditingSetCurrentPath,
 	functorEditingSetFunctor,
+	IFunctorExplainedWithIdAndTree,
 } from "../store";
-import { IFunctorExplainedWithIdAndTree } from "../store/reducers/functor.reducer";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { describeFromAndTo } from "../_common";
+import { selectFunctors } from "../store/selectors";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -39,13 +40,12 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-type TreeProps = {
-	functors: IFunctorExplainedWithIdAndTree[];
-};
+type TreeProps = {};
 
-const Tree: FC<TreeProps> = ({ functors }) => {
+const Tree: FC<TreeProps> = (props) => {
 	const classes = useStyles();
-	const dispatch = useContext(FunctorDispatch);
+	const dispatch = useDispatch();
+	const functors = useSelector(selectFunctors);
 
 	return (
 		<SortableTree

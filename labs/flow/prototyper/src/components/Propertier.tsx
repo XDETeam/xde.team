@@ -1,10 +1,10 @@
-import React, { FC, useContext } from "react";
-import { AspectsTyped } from "@xde.labs/flow-manager";
-import { FunctorProperty } from "../store/reducers/functor.reducer";
-import AddIcon from "@material-ui/icons/Add";
 import IconButton from "@material-ui/core/IconButton";
-import { FunctorDispatch, functorEditingAddCurrentAspect } from "../store";
+import AddIcon from "@material-ui/icons/Add";
+import { AspectsTyped } from "@xde.labs/flow-manager";
+import React, { FC } from "react";
 import Aspecter from "./Aspecter";
+import { functorEditingAddCurrentAspect, FunctorProperty } from "../store";
+import { useDispatch } from "react-redux";
 
 type PropertierProps = {
 	properties: AspectsTyped<any>[];
@@ -13,7 +13,7 @@ type PropertierProps = {
 };
 
 const Propertier: FC<PropertierProps> = ({ properties, property, functorName }) => {
-	const dispatch = useContext(FunctorDispatch);
+	const dispatch = useDispatch();
 	return (
 		<>
 			{properties.map((x, i) => (

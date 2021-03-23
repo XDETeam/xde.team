@@ -1,26 +1,40 @@
-import React, { FC, useReducer, useContext, useState, useEffect } from "react";
-import { reducer, initialState } from "../store/reducers/aspect.reducer";
+import React, { FC, useState, useEffect, useMemo } from "react";
 import {
-	AspectState,
-	FunctorDispatch,
 	functorEditingRenameCurrent,
 	functorEditingSetCurrentPath,
+	FunctorProperty,
+	IFunctorExplainedWithIdAndTree,
 } from "../store";
-import { FunctorProperty, IFunctorExplainedWithIdAndTree } from "../store/reducers/functor.reducer";
 import TextField from "@material-ui/core/TextField";
 import { useDidMount } from "../hooks/index";
 import Propertier from "./Propertier";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { selectFunctors } from "../store/selectors";
+import { selectCurrentPath } from "../store/selectors/functor.selector";
+import { getNodeAtPath } from "react-sortable-tree";
 
-type EditorProps = {
-	currentFunctor?: IFunctorExplainedWithIdAndTree | null;
-};
+type EditorProps = {};
 
-const Editor: FC<EditorProps> = ({ currentFunctor }) => {
-	const [aspectState, aspectDispatch] = useReducer(reducer, initialState);
-	const dispatch = useContext(FunctorDispatch);
+const Editor: FC<EditorProps> = () => {
+	const functorDispatch = useDispatch();
 	const didMount = useDidMount();
+
+	const functors = useSelector(selectFunctors);
+	const currentPath = useSelector(selectCurrentPath);
+
+	const currentFunctor = useMemo(
+		() =>
+			currentPath
+				? (getNodeAtPath({
+						treeData: functors,
+						path: currentPath,
+						getNodeKey: ({ node }) => node.id,
+				  })?.node as IFunctorExplainedWithIdAndTree | undefined)
+				: null,
+		[functors, currentPath]
+	);
 
 	const [functorName, setFunctorName] = useState<string>("");
 
@@ -31,8 +45,8 @@ const Editor: FC<EditorProps> = ({ currentFunctor }) => {
 	}, [didMount, currentFunctor]);
 
 	return (
-		<AspectState.Provider value={aspectState}>
-			{currentFunctor && (
+		<>
+			{!!currentPath && (
 				<Grid container spacing={2}>
 					<Grid item xs={12} style={{ textAlign: "center" }}>
 						<TextField
@@ -41,7 +55,8 @@ const Editor: FC<EditorProps> = ({ currentFunctor }) => {
 							value={functorName}
 							onBlur={() => {
 								if (functorName) {
-									dispatch && dispatch(functorEditingRenameCurrent(functorName));
+									functorDispatch &&
+										functorDispatch(functorEditingRenameCurrent(functorName));
 								}
 							}}
 							onChange={(e) => {
@@ -51,29 +66,32 @@ const Editor: FC<EditorProps> = ({ currentFunctor }) => {
 					</Grid>
 					<Grid item xs={6}>
 						<Propertier
-							functorName={currentFunctor.functorName}
-							properties={currentFunctor.from}
+							functorName={currentFunctor?.functorName ?? ""}
+							properties={currentFunctor?.from ?? []}
 							property={FunctorProperty.From}
 						/>
 					</Grid>
 					<Grid item xs={6}>
 						<Propertier
-							functorName={currentFunctor.functorName}
-							properties={currentFunctor.to}
+							functorName={currentFunctor?.functorName ?? ""}
+							properties={currentFunctor?.to ?? []}
 							property={FunctorProperty.To}
 						/>
 					</Grid>
 					<Grid item xs={12} style={{ textAlign: "center" }}>
 						<Button
 							variant="contained"
-							onClick={() => dispatch && dispatch(functorEditingSetCurrentPath(null))}
+							onClick={() =>
+								functorDispatch &&
+								functorDispatch(functorEditingSetCurrentPath(null))
+							}
 						>
 							Finish editing
 						</Button>
 					</Grid>
 				</Grid>
 			)}
-		</AspectState.Provider>
+		</>
 	);
 };
 

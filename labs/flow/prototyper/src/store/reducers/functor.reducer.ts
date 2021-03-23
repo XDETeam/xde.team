@@ -108,8 +108,8 @@ export const initialState: IFunctorEditingState = {
 	currentPath: null,
 };
 
-export function reducer(
-	state: IFunctorEditingState,
+export default function reducer(
+	state: IFunctorEditingState = initialState,
 	action: FunctorEditingActions
 ): IFunctorEditingState {
 	switch (action.type) {
@@ -324,3 +324,10 @@ export function reducer(
 			return state;
 	}
 }
+
+export const reducerSelectors = {
+	selectCurrentPath: (state: IFunctorEditingState) => state.currentPath,
+	selectFunctors: (state: IFunctorEditingState) => state.functors,
+};
+
+// TODO: https://stackoverflow.com/questions/55684856/how-to-set-up-multiple-providers-with-different-stores

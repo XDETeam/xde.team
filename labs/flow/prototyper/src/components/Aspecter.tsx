@@ -1,69 +1,68 @@
-import React, { FC, useState, useEffect, useContext } from "react";
-import { AspectType, AspectsTyped } from "@xde.labs/flow-manager";
-import { useForm } from "react-hook-form";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
 import Box from "@material-ui/core/Box";
-
-import AutocompleteController from "../_common/AutocompleteController";
-
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { AspectsTyped, AspectType } from "@xde.labs/flow-manager";
+import React, { FC, useEffect, useState } from "react";
+import AutocompleteController from "./AutocompleteController";
+import { useDidMount } from "../hooks/index";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	functorEditingChangeCurrentAspect,
 	functorEditingRemoveCurrentAspect,
-} from "../store/actions";
-import { useDidMount, usePrevious } from "../hooks/index";
-import { FunctorDispatch } from "../store";
-import { IAspectChangeRequest } from "../store/reducers/functor.reducer";
-import { AspectState } from "../store/contexts/aspect.context";
+	IAspectChangeRequest,
+} from "../store";
+import { selectAspects } from "../store/selectors";
 
 type AspecterProps = IAspectChangeRequest & {
 	canBeDeleted?: boolean;
 };
 
 const Aspecter: FC<AspecterProps> = ({ aspect, property, propertyIndex, canBeDeleted }) => {
-	const dispatch = useContext(FunctorDispatch);
-	const state = useContext(AspectState);
+	const dispatch = useDispatch();
+	const aspects = useSelector(selectAspects);
 	const didMount = useDidMount();
-
-	const { register, watch, control } = useForm<AspectsTyped<any>>({
-		mode: "onChange",
-	});
-
-	const watchFields = watch();
-	const prevWatchFields = usePrevious(watchFields);
 
 	const [allFields, setAllAllFields] = useState<null | AspectsTyped<any>>(null);
 
+	const [aspectTypeValue, setAspectTypeValue] = useState<null | AspectsTyped<any>["type"]>(
+		aspect.type
+	);
+	const [aspectValue, setAspectValue] = useState<null | AspectsTyped<any>["aspect"]>(
+		aspect.aspect
+	);
+
 	useEffect(() => {
-		if (
-			didMount &&
-			!!watchFields.aspect &&
-			!!watchFields.type &&
-			JSON.stringify(prevWatchFields) !== JSON.stringify(watchFields)
-		) {
-			setAllAllFields(watchFields);
+		setAspectTypeValue(aspect.type);
+		setAspectValue(aspect.aspect);
+	}, [didMount]);
+
+	useEffect(() => {
+		if (didMount && !!aspectTypeValue && !!aspectValue) {
+			setAllAllFields({
+				aspect: aspectValue,
+				type: aspectTypeValue,
+			});
 		}
-	}, [watchFields, prevWatchFields, setAllAllFields, didMount]);
+	}, [aspectTypeValue, setAllAllFields, didMount, aspectValue]);
 
 	useEffect(() => {
 		if (allFields) {
-			dispatch &&
-				dispatch(
-					functorEditingChangeCurrentAspect({
-						property,
-						propertyIndex,
-						aspect: allFields,
-					})
-				);
+			dispatch(
+				functorEditingChangeCurrentAspect({
+					property,
+					propertyIndex,
+					aspect: allFields,
+				})
+			);
 		}
 	}, [allFields, dispatch, property, propertyIndex]);
 
 	return (
 		<Box style={{ marginBottom: "2rem" }}>
 			<AutocompleteController
+				setOnBlur={setAspectTypeValue}
 				name="type"
 				defaultValue={aspect.type}
-				control={control}
 				options={[
 					AspectType.Exists,
 					AspectType.Optional,
@@ -71,39 +70,37 @@ const Aspecter: FC<AspecterProps> = ({ aspect, property, propertyIndex, canBeDel
 					AspectType.SpecificValue,
 					AspectType.Undefined,
 				]}
-				register={register}
 				label="Aspect type"
 				style={{
 					marginBottom: "0.5rem",
 				}}
 			/>
 
-			{aspect.type === AspectType.Some ||
-			(!!watchFields && watchFields.type === AspectType.Some) ? (
+			{aspect.type === AspectType.Some || aspectTypeValue === AspectType.Some ? (
 				<AutocompleteController
+					allowCustomOption={true}
 					key={1}
+					setOnBlur={setAspectValue}
 					style={{
 						marginBottom: "0.5rem",
 					}}
 					name="aspect"
-					defaultValue={Array.isArray(aspect.aspect) ? aspect.aspect : [aspect.aspect]}
-					control={control}
+					defaultValue={aspect.aspect}
 					multiple={true}
-					options={state?.aspects ?? []}
-					register={register}
+					options={aspects}
 					label="Aspect"
 				/>
 			) : (
 				<AutocompleteController
+					allowCustomOption={true}
 					key={2}
+					setOnBlur={setAspectValue}
 					style={{
 						marginBottom: "0.5rem",
 					}}
 					name="aspect"
-					defaultValue={Array.isArray(aspect.aspect) ? aspect.aspect[0] : aspect.aspect}
-					control={control}
-					options={state?.aspects ?? []}
-					register={register}
+					defaultValue={aspect.aspect}
+					options={aspects}
 					label="Aspect"
 				/>
 			)}
