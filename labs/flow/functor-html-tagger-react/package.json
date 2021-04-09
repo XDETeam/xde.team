@@ -1,5 +1,5 @@
 {
-	"name": "@xde/html-generator-react",
+	"name": "@xde.labs/functor-html-tagger-react",
 	"version": "0.0.1",
 	"main": ".build/index.js",
 	"license": "UNLICENSED",
@@ -11,7 +11,7 @@
 		"@xde.labs/aspects": "^0.0.1",
 		"@xde.labs/common": "^0.0.3",
 		"@xde.labs/functors": "^0.0.1",
-		"@xde.labs/html-generator": "^0.0.1",
+		"@xde.labs/functor-html-tagger": "^0.0.1",
 		"esbuild": "^0.9.5",
 		"node-cache": "^5.1.2",
 		"react": "^17.0.1",

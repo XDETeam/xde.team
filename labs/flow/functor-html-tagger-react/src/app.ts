@@ -47,7 +47,7 @@ import jsonSerializerInstance from "./functors/initial-state/JsonSerializer";
 import reactInitialStateAsJsonInstance from "./functors/initial-state/ReactInitialStateAsJson";
 import reactInitialStateHeadInjecterInstance from "./functors/initial-state/ReactInitialStateHeadInjecter";
 import { PriorityInitialWrapper, RePrioritizedWrapper } from "@xde.labs/functors";
-import { htmlGenerator, THtmlGeneratorFrom } from "@xde.labs/html-generator";
+import { htmlGenerator, THtmlTaggerFrom } from "@xde.labs/functor-html-tagger";
 import requestHasherInstance, {
 	RequestForceHash,
 	RequestHashAdditionalToRouteParameters,
@@ -98,7 +98,7 @@ reactBodier.addChildren([
 	typeScriptReactCodeBundlerInstance,
 ]);
 
-export const reactHtmlGeneratorWrapper = new PriorityInitialWrapper<
+export const reactHtmlTaggerWrapper = new PriorityInitialWrapper<
 	TReactRootElementImport &
 		TReactRootElement &
 		TRequestHash &
@@ -108,7 +108,7 @@ export const reactHtmlGeneratorWrapper = new PriorityInitialWrapper<
 	THtmlTagBody & Partial<THtmlTagInjectionHead>,
 	1
 >(
-	"reactHtmlGeneratorWrapper",
+	"reactHtmlTaggerWrapper",
 	[
 		ReactRootElementImport,
 		ReactRootElement,
@@ -120,17 +120,18 @@ export const reactHtmlGeneratorWrapper = new PriorityInitialWrapper<
 	[HtmlTagBody, { aspect: HtmlTagInjectionHead, lambda: Optional }],
 	1
 );
-reactHtmlGeneratorWrapper.addChildren([reactBodier, reactInitialStater]);
+reactHtmlTaggerWrapper.addChildren([reactBodier, reactInitialStater]);
 
-export const htmlGeneratorWrapper = new RePrioritizedWrapper<
-	THtmlGeneratorFrom,
-	THtmlTagHtml,
-	1,
-	2
->("htmlGeneratorWrapper", htmlGenerator.from, htmlGenerator.to, 2, 1);
+export const htmlGeneratorWrapper = new RePrioritizedWrapper<THtmlTaggerFrom, THtmlTagHtml, 1, 2>(
+	"htmlGeneratorWrapper",
+	htmlGenerator.from,
+	htmlGenerator.to,
+	2,
+	1
+);
 htmlGeneratorWrapper.addChildren(htmlGenerator);
 
-export class HtmlGeneratorReact extends CompositeFunctor<
+export class HtmlTaggerReact extends CompositeFunctor<
 	TEndpointType<Endpoint.Html> &
 		THttpRoute &
 		TTitle &
@@ -143,7 +144,7 @@ export class HtmlGeneratorReact extends CompositeFunctor<
 		Partial<THttpCache>,
 	THtmlTagHtml
 > {
-	name = "HtmlGeneratorReact";
+	name = "HtmlTaggerReact";
 	from = [
 		{
 			aspect: EndpointType,
@@ -166,12 +167,12 @@ export class HtmlGeneratorReact extends CompositeFunctor<
 	];
 	to = [HtmlTagHtml];
 }
-export const htmlGeneratorReact = new HtmlGeneratorReact();
+export const htmlGeneratorReact = new HtmlTaggerReact();
 htmlGeneratorReact.addChildren([
 	requestHasherInstance,
 	cachedValidInstance,
 	cachedSetterInstance,
-	reactHtmlGeneratorWrapper,
+	reactHtmlTaggerWrapper,
 	htmlGeneratorWrapper,
 ]);
 
