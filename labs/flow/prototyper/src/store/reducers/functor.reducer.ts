@@ -206,7 +206,7 @@ export default function reducer(
 							...newNode.from,
 							{
 								aspect: "",
-								type: AspectType.Optional,
+								type: "" as AspectType,
 							},
 						];
 					} else {
@@ -214,7 +214,7 @@ export default function reducer(
 							...newNode.to,
 							{
 								aspect: "",
-								type: AspectType.Optional,
+								type: "" as AspectType,
 							},
 						];
 					}
