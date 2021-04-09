@@ -27,7 +27,7 @@ export interface IApiEndpoint<TRequest extends IDictionary, TResponse> extends I
 	};
 }
 
-// export interface IHtmlGenerator {
+// export interface IHtmlTagger {
 // 	header(): string;
 // 	footer(): string;
 // 	forStatusCode(): string;

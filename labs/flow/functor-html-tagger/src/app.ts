@@ -1,8 +1,4 @@
 import { CompositeFunctor, Optional } from "@xde.labs/flow-manager";
-import htmlBodyTaggerInstance from "./functors/HtmlBodyTagger";
-import htmlHeadTaggerInstance from "./functors/HtmlHeadTagger";
-import htmlHtmlTaggerInstance from "./functors/HtmlHtmlTagger";
-import htmlMainTaggerInstance from "./functors/HtmlMainTagger";
 import {
 	Author,
 	Charset,
@@ -41,7 +37,12 @@ import {
 	Title,
 } from "@xde.labs/aspects";
 
-export type THtmlGeneratorFrom = TEndpointType<Endpoint.Html> &
+import htmlBodyTaggerInstance from "./functors/HtmlBodyTagger";
+import htmlHeadTaggerInstance from "./functors/HtmlHeadTagger";
+import htmlHtmlTaggerInstance from "./functors/HtmlHtmlTagger";
+import htmlMainTaggerInstance from "./functors/HtmlMainTagger";
+
+export type THtmlTaggerFrom = TEndpointType<Endpoint.Html> &
 	TTitle &
 	Partial<
 		THtmlTagAside &
@@ -60,8 +61,8 @@ export type THtmlGeneratorFrom = TEndpointType<Endpoint.Html> &
 			THtmlTagInjectionBody
 	>;
 
-export class HtmlGenerator extends CompositeFunctor<THtmlGeneratorFrom, THtmlTagHtml> {
-	name = "HtmlGenerator";
+export class HtmlTagger extends CompositeFunctor<THtmlTaggerFrom, THtmlTagHtml> {
+	name = "HtmlTagger";
 	from = [
 		Title,
 		{
@@ -85,8 +86,8 @@ export class HtmlGenerator extends CompositeFunctor<THtmlGeneratorFrom, THtmlTag
 	];
 	to = [HtmlTagHtml];
 }
-export const htmlGenerator = new HtmlGenerator();
-htmlGenerator.addChildren([
+export const htmlTagger = new HtmlTagger();
+htmlTagger.addChildren([
 	htmlBodyTaggerInstance,
 	htmlHeadTaggerInstance,
 	htmlHtmlTaggerInstance,
