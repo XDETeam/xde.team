@@ -1,5 +1,5 @@
 {
-	"name": "@xde.labs/html-generator",
+	"name": "@xde.labs/functor-html-tagger",
 	"version": "0.0.1",
 	"main": ".build/index.js",
 	"license": "UNLICENSED",
