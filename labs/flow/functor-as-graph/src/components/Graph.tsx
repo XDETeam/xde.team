@@ -1,20 +1,32 @@
 import React, { FC, useMemo, useRef, useEffect, CSSProperties } from "react";
 import { forceCollide } from "d3-force";
 import ForceGraph2D, { ForceGraphMethods } from "react-force-graph-2d";
-import { AnyFunctor } from "@xde.labs/flow-manager";
+import { AnyFunctor, IFunctorExplained } from "@xde.labs/flow-manager";
 
 import graphConverterInstance from "../models/GraphConverter";
 import { GraphNode, GraphNodeType } from "../models/GraphData";
 
 type GraphProps = {
-	functor: AnyFunctor;
 	style?: CSSProperties;
 	className?: string;
-};
+	showDetails?: boolean;
+} & (
+	| {
+			functor: AnyFunctor;
+			explained?: never;
+	  }
+	| { explained: IFunctorExplained<any, any>; functor?: never }
+);
 
 // TODO: https://github.com/vasturiano/force-graph/blob/master/example/expandable-nodes/index.html
-export const Graph: FC<GraphProps> = ({ functor, style, className }) => {
-	const data = useMemo(() => graphConverterInstance.toGraphData(functor), [functor]);
+export const Graph: FC<GraphProps> = ({ functor, explained, style, className, showDetails }) => {
+	const data = useMemo(() => {
+		if (functor !== undefined) {
+			return graphConverterInstance.toGraphData(functor);
+		} else {
+			return graphConverterInstance.explainedToGraphData(explained!);
+		}
+	}, [functor, explained]);
 	const ref = useRef<ForceGraphMethods>();
 
 	useEffect(() => {
@@ -27,14 +39,19 @@ export const Graph: FC<GraphProps> = ({ functor, style, className }) => {
 	}, [ref]);
 	return (
 		<div className={className} style={style}>
-			<details>
-				<summary>Nodes</summary>
-				<pre>{JSON.stringify(data.nodes, null, 2)}</pre>
-			</details>
-			<details>
-				<summary>Edges</summary>
-				<pre>{JSON.stringify(data.links, null, 2)}</pre>
-			</details>
+			{!!showDetails && (
+				<>
+					<details>
+						<summary>Nodes</summary>
+						<pre>{JSON.stringify(data.nodes, null, 2)}</pre>
+					</details>
+					<details>
+						<summary>Edges</summary>
+						<pre>{JSON.stringify(data.links, null, 2)}</pre>
+					</details>
+				</>
+			)}
+
 			<ForceGraph2D
 				ref={ref}
 				graphData={data}

@@ -9,19 +9,18 @@ import { GraphData, GraphLinkType, GraphNode, GraphNodeType, IGraphData } from "
 
 export interface IGraphConverter {
 	toGraphData(functor: AnyFunctor): GraphData["data"];
+	explainedToGraphData(functor: IFunctorExplained<any, any>): GraphData["data"];
 }
 
 export class GraphConverter implements IGraphConverter {
 	toGraphData(functor: AnyFunctor): GraphData["data"] {
 		const explained = Functor.explain(functor);
+		return this.explainedToGraphData(explained);
+	}
 
+	explainedToGraphData(explained: IFunctorExplained<any, any>): GraphData["data"] {
 		const data = new GraphData();
-		let namespace = "";
-
-		console.log(explained);
-
 		this.process(explained, data);
-
 		return data.data;
 	}
 
