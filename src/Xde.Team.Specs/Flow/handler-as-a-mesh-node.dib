@@ -1,0 +1,47 @@
+#!markdown
+
+An idea is to implement processing node as a hypergraph node. So it can have multiple inputs and multiple outputs.
+
+TODO:
+- Potentially same workitem can go through the whole pipeline and collect all parts in request/response properties. Requests can trigger processing and generated response responsible for triggering other request.
+- Develop better naming: Request|Input|Resource && Response|Output|Product.
+
+#!csharp
+
+public interface IRequest<T>
+{
+	IRequest<T> Request { set; }
+}
+
+public interface IResponse<T>
+{
+	IResponse<T> Response { get; }
+}
+
+#!csharp
+
+public class SignIn
+    : IRequest<SignIn.Request>
+    , IResponse<SignIn.Response>
+    , IResponse<SignIn.Notification>
+{
+    public class Request
+    {
+	    public string Login { get; set; }
+	    public string Password { get; set; }
+    }
+
+    public class Response
+    {
+	    public string Token { get; set; }
+    }
+
+    public class Notification
+    {
+        
+    }
+
+    IRequest<Request> IRequest<Request>.Request { set => throw new NotImplementedException(); }
+    IResponse<Response> IResponse<Response>.Response { get => throw new NotImplementedException(); }
+    IResponse<Notification> IResponse<Notification>.Response { get => throw new NotImplementedException(); }
+}
