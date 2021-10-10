@@ -4,18 +4,29 @@
 // simply shared file is linked).
 // TODO:Choose versioning model
 using Microsoft.Extensions.Configuration;
-using static System.Console;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Xde.Host;
 
-var appName = typeof(Xde.Team.Specs.NamespaceDoc).Assembly.GetName();
-WriteLine($"Team Server {appName.Version}");
+// TODO:Does it make sense to avoid host creation and get service directly
+// from IoC when we need a simple tool call, e.g. generate/convert/etc.
+// So host will be create in case of "xts host ...args..." execution.
 
-var builder = new ConfigurationBuilder();
-builder.AddCommandLine(args);
-var config = builder.Build();
-
-WriteLine(config);
-config
-    .AsEnumerable()
-    .ToList()
-    .ForEach(setting => WriteLine($"{setting.Key} = {setting.Value}"))
+var builder = Host
+    .CreateDefaultBuilder(args)
+    .UseEnvironment(Environments.Development) // TODO:
+    .ConfigureServices(services => services
+        .AddHostedService<CliHostedService>()
+    )
 ;
+
+if (args is { Length: > 0 })
+{
+    builder = builder.ConfigureAppConfiguration(configuration
+        => configuration.AddCommandLine(args)
+    );
+}
+
+var host = builder.Build();
+
+host.Run();
