@@ -22,3 +22,8 @@ packages/*/types/
 *.tsbuildinfo
 
 # --- TypeScript end ---
+
+# --- .NET/Visual Studio start ---
+src/**/bin/
+src/**/obj/
+# --- .NET/Visual Studio end ---
