@@ -1,0 +1,54 @@
+#!markdown
+
+## Application composition
+
+Almost any step in the application requires to be provided by IoC container. Even very basic steps like parsing command-line arguments, file I/O operations or loading configuration settings would be much better if provided by service providers.
+
+So this is the first step in the app, when we compose services. We'd say that such composition is an application. How it is hosted and executed can be provided by common utilities.
+
+#!markdown
+
+### Self-dependent/multi-step/multi-layer composition
+
+Sometimes services to be composed could depend on configuration/database or other means which theirselves should be provided by services.
+
+Sometimes we can overcome this challenge by using factories. But what if third-party tools do not provide such capability. For example, there is no factory IHostedService in .NET and when host is running it simply resolves `IEnumerable<IHostedService>`. And theoretically we can register such enumerable as a factory. But this might be dangerous as shown below.
+
+#!csharp
+
+#r "nuget: Microsoft.Extensions.Hosting"
+
+using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+public class CustomHostedService1 : BackgroundService
+{
+    protected override Task ExecuteAsync(CancellationToken cancel) => Task.CompletedTask;
+}
+
+public class CustomHostedService2 : CustomHostedService1 {}
+
+public class CustomHostedService3 : CustomHostedService1 {}
+
+var customServices = new [] {
+    new CustomHostedService1(),
+    new CustomHostedService2()
+};
+
+var host = Host
+    .CreateDefaultBuilder()
+    .ConfigureServices(services => services
+        .AddSingleton<IEnumerable<IHostedService>>(customServices)
+        .AddHostedService<CustomHostedService3>()
+    )
+    .Build()
+;
+
+var services = host
+    .Services
+    .GetRequiredService<IEnumerable<IHostedService>>()
+;
+
+// We get 2 services here, so CustomHostedService3 registered in a regular way is missing
+Console.WriteLine(services.Count() == 2);
