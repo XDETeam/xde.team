@@ -5,7 +5,6 @@
 // TODO:Choose versioning model
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,32 +28,6 @@ if (args is { Length: > 0 })
         => configuration.AddCommandLine(args)
     );
 }
-
-// TODO: Multiple web host do not work simultaneously
-// TODO:Dashboard and any other webapp can be optional, so WebApplication.CreateBuilder
-// looks not good
-// TODO:Settings (like endpoints should be also configurable)
-builder
-    .ConfigureWebHostDefaults(dashboard => dashboard
-        .UseUrls("https://localhost:4001")
-        .Configure(application => application
-            .UseRouting()
-            .UseEndpoints(endpoints => endpoints
-                .MapGet("/", () => "Team server dashboard")
-            )
-        )
-    )
-
-    .ConfigureWebHostDefaults(proxy => proxy
-        .UseUrls("https://localhost:4002")
-        .Configure(application => application
-            .UseRouting()
-            .UseEndpoints(endpoints => endpoints
-                .MapGet("/", () => "Team server proxy service")
-            )
-        )
-    )
-;
 
 var host = builder.Build();
 

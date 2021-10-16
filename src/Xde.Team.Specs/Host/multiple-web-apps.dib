@@ -1,0 +1,52 @@
+#!markdown
+
+Team server may have different behaviours. Sometime it can be executed without web services inside, sometimes only dashboard web module, but sometimes we might have proxy web module additionally to dashboard. So it is pretty interesting to check if we can easily add to web apps to the same existing host.
+
+By design it is ok, each web app is a IHostedService. But its default implementation (GenericWebHostedService) is forbidden to be used outside of ASP.NET.
+
+#!csharp
+
+#r "nuget: Microsoft.Extensions.Hosting"
+#r "Microsoft.AspNetCore"
+
+#!csharp
+
+using Microsoft.Extensions.Hosting;
+
+var builder = Host
+    .CreateDefaultBuilder()
+;
+
+#!markdown
+
+Simultaneously two instances below are not working. Only the latest one responds.
+
+#!csharp
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+
+builder
+   .ConfigureWebHostDefaults(dashboard => dashboard
+       .UseUrls("https://localhost:4001")
+       .Configure(application => application
+           .UseRouting()
+           .UseEndpoints(endpoints => endpoints
+               .MapGet("/", () => "Team server dashboard")
+           )
+       )
+   )
+
+   .ConfigureWebHostDefaults(proxy => proxy
+       .UseUrls("https://localhost:4002")
+       .Configure(application => application
+           .UseRouting()
+           .UseEndpoints(endpoints => endpoints
+               .MapGet("/", () => "Team server proxy service")
+           )
+       )
+   )
+;
+
+var host = builder.Build();
+host.Run();
