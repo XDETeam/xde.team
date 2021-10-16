@@ -1,0 +1,141 @@
+#!markdown
+
+There are many situations when host configuration (IHostBuilder and company) can depend on injected services. For example, web applications may have UseUrls calls with URLs taken from IConfiguration. Included hosted services (IHostedService, services.AddHostedService<T>) can be taken from DB, etc.
+
+So we should explore, can we initialize DI first and then reuse it for the host.
+
+#!csharp
+
+#r "nuget: Microsoft.Extensions.Hosting"
+#r "nuget: Microsoft.Extensions.Logging"
+
+#!markdown
+
+This is a simple IHostedService we want to call as a hosted and also manually.
+
+#!csharp
+
+using System.Threading;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+public class SimpleService : BackgroundService
+{
+    private readonly ILogger _log;
+
+    public SimpleService(ILogger<SimpleService> log)
+    {
+        _log = log;
+    }
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _log.LogInformation("Simple service started");
+
+        return Task.CompletedTask;
+    }
+}
+
+#!markdown
+
+By default Host.CreateDefaultBuilder() call instantiates HostBuilder and invokes extension method ConfigureDefaults on it. This method creates DefaultServiceProviderFactory and apply it using UseServiceProviderFactory.
+
+When resulting IHostBuilder is builder.Build(), it creates ServiceCollection and fill it with some basic stuff. This collection is a local variable so we can't provide our existing collection as an input.
+
+After being filled this services are processed by containerBuilder = _serviceProviderFactory.CreateBuilder(services) that simply returns the same services.
+
+And then the same _serviceProviderFactory.CreateServiceProvider(containerBuilder) produces internal IServiceProvider instance. This service provider is then used to create Host. So potentially, if we replace service provider, we can replace services.
+
+Neither Build() nor CreateServiceProvider() methods are overrideable. So looks like provider factory is an only option (except rewriting HostBuilder comletely).
+
+#!csharp
+
+using Microsoft.Extensions.DependencyInjection;
+
+public class CustomServiceProviderFactory
+    : IServiceProviderFactory<IServiceCollection>
+{
+    private readonly IServiceCollection _services;
+    private readonly ServiceProviderOptions _options;
+
+    public CustomServiceProviderFactory(IServiceCollection services)
+    {
+        _services = services;
+        _options = new ServiceProviderOptions();
+    }
+
+    public IServiceCollection CreateBuilder(IServiceCollection services)
+    {
+        // Concatenate services created by HostBuilder and provided by us
+        foreach (var service in services)
+        {
+            _services.Add(service);
+        }
+
+        return _services;
+    }
+
+    public IServiceProvider CreateServiceProvider(IServiceCollection containerBuilder)
+        => containerBuilder.BuildServiceProvider(_options)
+    ;
+}
+
+#!markdown
+
+As we see below, such provider is working and both services registsred in HostBuilder.CreateServiceProvider() and also created by us manually are working.
+
+#!csharp
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+var services = new ServiceCollection();
+services.AddHostedService<SimpleService>();
+var factory = new CustomServiceProviderFactory(services);
+
+var builder = Host
+    .CreateDefaultBuilder()
+    .UseServiceProviderFactory(factory)
+;
+
+var host = builder.Build();
+
+var service = host.Services.GetRequiredService<IHostedService>();
+Console.WriteLine(service);
+
+var env = host.Services.GetRequiredService<IHostEnvironment>();
+Console.WriteLine(env);
+
+#!markdown
+
+But we anyway build a Host to access services so there is no big advantage to create the provider.
+
+#!csharp
+
+using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+var builder = Host
+    .CreateDefaultBuilder()
+    .ConfigureServices(services => services
+        .AddHostedService<SimpleService>()
+    )
+;
+
+var host = builder.Build();
+
+ var service = host.Services.GetRequiredService<IHostedService>();
+// This sample hangs in .NET Interactive
+// var cts = new CancellationTokenSource();
+// service.StartAsync(cts.Token).Wait();
+
+#!markdown
+
+There are a bunch of other IHostBuilder implementations:
+- BootstrapHostBuilder in AspNetCore. In its case services can be provided right in the constructor. Used by WebApplicationBuilder and it hides possibility to provide services. BootstrapHostBuilder itself is internal and sealed, so not a good option to use.
+- ConfigureHostBuilder also in AspNetCore, used by WebApplicationBuilder and sealed.
+
+#!markdown
+
+TODO:I think it would be good to ask question in GitHub.

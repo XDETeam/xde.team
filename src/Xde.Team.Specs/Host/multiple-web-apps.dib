@@ -6,8 +6,8 @@ By design it is ok, each web app is a IHostedService. But its default implementa
 
 #!csharp
 
-#r "nuget: Microsoft.Extensions.Hosting"
 #r "Microsoft.AspNetCore"
+#r "nuget: Microsoft.Extensions.Hosting"
 
 #!csharp
 
