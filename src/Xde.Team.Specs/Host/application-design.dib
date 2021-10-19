@@ -14,6 +14,8 @@ Sometimes services to be composed could depend on configuration/database or othe
 
 Sometimes we can overcome this challenge by using factories. But what if third-party tools do not provide such capability. For example, there is no factory IHostedService in .NET and when host is running it simply resolves `IEnumerable<IHostedService>`. And theoretically we can register such enumerable as a factory. But this might be dangerous as shown below.
 
+TODO:Probably implement as a test code below.
+
 #!csharp
 
 #r "nuget: Microsoft.Extensions.Hosting"

@@ -1,5 +1,7 @@
 #!markdown
 
+TODO:Consider situation when some portion of services is created in a shared library and used simultaneously inside web application and mobile application.
+
 There are many situations when host configuration (IHostBuilder and company) can depend on injected services. For example, web applications may have UseUrls calls with URLs taken from IConfiguration. Included hosted services (IHostedService, services.AddHostedService<T>) can be taken from DB, etc.
 
 So we should explore, can we initialize DI first and then reuse it for the host.
