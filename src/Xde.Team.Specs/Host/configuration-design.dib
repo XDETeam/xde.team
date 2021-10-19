@@ -1,0 +1,78 @@
+#!markdown
+
+## Strong-typed settings
+
+#!markdown
+
+For example we have some service and its settings.
+
+#!csharp
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+
+public record SimpleSettings
+{
+    public string Address { get; set; }
+
+    public int Port { get; set; } = 80;
+
+    public const string Section = "Simple";
+}
+
+public class SimpleService
+{
+    private readonly IConfiguration _config;
+    
+    public IOptions<SimpleSettings> Options { get; init; }
+
+    public SimpleService(
+        IConfiguration config,
+        IOptions<SimpleSettings> options
+    )
+    {
+        _config = config;
+        Options = options;
+
+        var section = _config.GetSection(SimpleSettings.Section);
+        var sections = _config.GetChildren().ToArray();
+    }
+}
+
+#!csharp
+
+#r "nuget: Microsoft.Extensions.Hosting"
+
+using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+var config = new Dictionary<string, string>
+{
+    {$"{SimpleSettings.Section}:{nameof(SimpleSettings.Address)}", "Test.Address"},
+    {$"{SimpleSettings.Section}:{nameof(SimpleSettings.Port)}", "8054"}
+};
+
+var builder = Host
+    .CreateDefaultBuilder()
+    .ConfigureAppConfiguration((context, builder) => {
+        builder.Sources.Clear();
+        builder.AddInMemoryCollection(config);
+    })
+    .ConfigureServices((context, services) => services
+        .Configure<SimpleSettings>(context.Configuration.GetSection(SimpleSettings.Section))
+        .AddTransient<SimpleService>()
+    )
+;
+
+var host = builder.Build();
+
+var service = host.Services.GetRequiredService<SimpleService>();
+Console.WriteLine(service.Options.Value);
+
+#!markdown
+
+## TODO:
+
+Is a layered (providers sequence) .NET IConfiguration based on hierarchical string keys better than our idea of type-based configuration where I can particularly set, how some specific setting will be stored? Probably our solution can get benefits from compositions in [Application design](application-design.dib).
