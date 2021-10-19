@@ -15,6 +15,7 @@
     <PackageReference Include="FluentAssertions" Version="6.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="6.0.0-rc.1.21451.13" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.1.21451.13" />
+    <PackageReference Include="Microsoft.FASTER.Core" Version="1.9.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="NSubstitute" Version="4.2.2" />
     <PackageReference Include="SpecFlow" Version="3.9.22" />
