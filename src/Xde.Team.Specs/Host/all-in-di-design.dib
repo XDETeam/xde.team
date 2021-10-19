@@ -1,0 +1,44 @@
+#!markdown
+
+TODO:Put last notes from xde.team.server here
+
+#!markdown
+
+## Experimental syntax #1
+
+#!csharp
+
+//TODO:global using static Xde.SomeNamespace.DI;
+var request = new SignInRequest("Mike", "!qa2Ws3eD");
+var response = DI.For(request).Get<SignInResponse>();
+var response2 = DI
+    .For<SignInRequest>(new("Mike", "!qa2Ws3eD"))
+    .Get<SignInResponse>()
+;
+
+public class DI
+{
+    private static readonly DI _instance = new();
+    private DI()
+    {
+
+    }
+
+    public class Request<T>
+    {
+        public T Value { get; init; }
+        public Request(T value) { Value = value; }
+        public Response<U> Get<U>() => new(default);
+    }
+
+    public class Response<T>
+    {
+        public T Value { get; init; }
+        public Response(T value) { Value = value; }
+    }
+
+    public static Request<T> For<T>(T request) => new(request);
+}
+
+public record SignInRequest(string Login, string Password);
+public record SignInResponse(string Token);
