@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -24,6 +25,21 @@ namespace Xde.Host
             _lifetime = lifetime;
             _env = env;
             _config = config;
+        }
+
+        //TODO: hostingContext.HostingEnvironment.ApplicationName = AssemblyInformation.Current.Product;
+        public record AssemblyInformation(string Product, string Description, string Version)
+        {
+            public static readonly AssemblyInformation Current = new(typeof(AssemblyInformation).Assembly);
+
+            public AssemblyInformation(Assembly assembly)
+                : this(
+                    assembly.GetCustomAttribute<AssemblyProductAttribute>()!.Product,
+                    assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()!.Description,
+                    assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version)
+            {
+
+            }
         }
 
         private void OnApplicationStarted()
