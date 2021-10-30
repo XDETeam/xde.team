@@ -4,6 +4,26 @@ using Microsoft.Windows.ProjFS;
 
 namespace Xde.Lab.MeshFs;
 
+/// <summary>
+/// TODO:
+/// </summary>
+/// <remarks>
+/// WebDAV
+/// + Access from Linux/Macos/iOS/Android devices
+/// + XML-based protocol
+/// 
+/// Currently experiments with:
+/// https://github.com/microsoft/ProjFS-Managed-API
+/// - FileNotFound error
+/// - Optional Windows feature should be installed
+/// 
+/// https://github.com/billziss-gh/winfsp
+/// - WinFSP should be installed
+/// 
+/// Dokany
+/// 
+/// S3
+/// </remarks>
 public class MeshFsProvider
     : IHostedService
 {
