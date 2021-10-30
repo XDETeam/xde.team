@@ -6,11 +6,15 @@ var builder = WebApplication.CreateBuilder();
 
 builder
     .Services
-    .AddHostedService<MeshFsProvider>()
+    .AddMesh()
 ;
 
 var host = builder
     .Build()
+;
+
+host
+    .UseMesh()
 ;
 
 host.Run();
