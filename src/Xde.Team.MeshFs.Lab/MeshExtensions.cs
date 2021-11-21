@@ -11,6 +11,7 @@ public static class MeshExtensions
         .AddTransient<MeshFsMiddleware>()
         .AddTransient<IWebDavCommand, WebDavPropFindCommand>()
         .AddTransient<IWebDavCommand, WebDavGetCommand>()
+        .AddTransient<IWebDavCommand, WebDavPutCommand>()
     ;
 
     public static IApplicationBuilder UseMesh(this IApplicationBuilder application)

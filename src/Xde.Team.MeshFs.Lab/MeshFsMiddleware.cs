@@ -8,7 +8,7 @@ namespace Xde.Lab.MeshFs;
 /// <remarks>
 /// .\rclone.exe lsd :webdav: --webdav-url=http://localhost:5000
 /// .\rclone.exe ls :webdav: --webdav-url=http://localhost:5000
-/// .\rclone.exe mount :webdav: --webdav-url=http://localhost:5000 e:\Mount\Mess
+/// .\rclone.exe mount :webdav: --webdav-url=http://localhost:5000 --vfs-cache-mode=full e:\Mount\Mess
 /// </remarks>
 public class MeshFsMiddleware
     : IMiddleware
