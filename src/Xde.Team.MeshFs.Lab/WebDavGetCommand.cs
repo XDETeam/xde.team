@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Xde.Lab.MeshFs
 {
@@ -30,9 +31,9 @@ namespace Xde.Lab.MeshFs
                 return;
             }
 
-            var flow = _db
+            var flow = await _db
                 .Flow
-                .FirstOrDefault(item => item.Id == id)
+                .FirstOrDefaultAsync(item => item.Id == id)
             ;
 
             if (flow == null)

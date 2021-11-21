@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Xde.Lab.MeshFs
 {
@@ -36,9 +37,10 @@ namespace Xde.Lab.MeshFs
 				new XElement(
 					ns.GetName("multistatus"),
 
-					_db
+					await _db
 						.Flow
 						.Select(flow => flow.ToWebDavFile())
+						.ToListAsync()
 				)
 			);
 
