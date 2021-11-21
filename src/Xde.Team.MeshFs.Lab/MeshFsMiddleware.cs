@@ -9,54 +9,35 @@ namespace Xde.Lab.MeshFs;
 /// TODO:
 /// </summary>
 /// <remarks>
-/// - .\rclone.exe lsd :webdav: --webdav-url=http://localhost:5000
-/// - .\rclone.exe ls :webdav: --webdav-url=http://localhost:5000
+/// .\rclone.exe lsd :webdav: --webdav-url=http://localhost:5000
+/// .\rclone.exe ls :webdav: --webdav-url=http://localhost:5000
+/// .\rclone.exe mount :webdav: --webdav-url=http://localhost:5000 e:\Mount\Mess
 /// </remarks>
 public class MeshFsMiddleware
     : IMiddleware
 {
-    private readonly ILogger<MeshFsMiddleware> _log;
-    private readonly IOptions<MeshFsOptions> _options;
-    private readonly MeshContext _db;
+    private readonly IEnumerable<IWebDavCommand> _commands;
 
     public MeshFsMiddleware(
-        ILogger<MeshFsMiddleware> log,
-        IOptions<MeshFsOptions> options,
-		MeshContext db
+        IEnumerable<IWebDavCommand> commands
     )
     {
-        _log = log;
-        _options = options;
-		_db = db;
+        _commands = commands;
     }
 
     async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
     {
-		var request = context.Request;
-		request.Headers.TryGetValue("Depth", out var depth);
+        var actualCommand = _commands
+            .FirstOrDefault(command => command.Method == context.Request.Method)
+        ;
 
-		var response = context.Response;
-		response.StatusCode = 200;
-		response.ContentType = "text/xml; charset=\"utf-8\"";
-
-		var ns = WebDavDataExtensions.Ns;
-
-		//var xml = new XDocument(
-		//	new XDeclaration(version: "1.0", encoding: "utf-8", standalone: "no"),
-		//	new XElement(ns.GetName("propfind"))
-		//);
-
-		var xml = new XDocument(
-			new XDeclaration(version: "1.0", encoding: "utf-8", standalone: "no"),
-			new XElement(
-				ns.GetName("multistatus"),
-
-				_db
-					.Flow
-					.Select(flow => flow.ToWebDavFile())
-			)
-		); ;
-
-		await response.WriteAsync(xml.ToString());
+        if (actualCommand != null)
+        {
+            await actualCommand.Process(context);
+        }
+        else
+        {
+            await next(context);
+        }
     }
 }
