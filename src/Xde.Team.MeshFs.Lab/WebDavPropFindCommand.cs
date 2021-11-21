@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace Xde.Lab.MeshFs
 {
-    public class PropFindCommand
+    public class WebDavPropFindCommand
         : IWebDavCommand
     {
         private readonly MeshContext _db;
 
-        public PropFindCommand(MeshContext db)
+        public WebDavPropFindCommand(MeshContext db)
         {
             _db = db;
         }
