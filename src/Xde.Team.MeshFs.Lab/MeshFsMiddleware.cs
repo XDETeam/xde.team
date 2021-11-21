@@ -10,20 +10,24 @@ namespace Xde.Lab.MeshFs;
 /// </summary>
 /// <remarks>
 /// - .\rclone.exe lsd :webdav: --webdav-url=http://localhost:5000
+/// - .\rclone.exe ls :webdav: --webdav-url=http://localhost:5000
 /// </remarks>
 public class MeshFsMiddleware
     : IMiddleware
 {
     private readonly ILogger<MeshFsMiddleware> _log;
     private readonly IOptions<MeshFsOptions> _options;
+    private readonly MeshContext _db;
 
     public MeshFsMiddleware(
         ILogger<MeshFsMiddleware> log,
-        IOptions<MeshFsOptions> options
+        IOptions<MeshFsOptions> options,
+		MeshContext db
     )
     {
         _log = log;
         _options = options;
+		_db = db;
     }
 
     async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
@@ -33,9 +37,9 @@ public class MeshFsMiddleware
 
 		var response = context.Response;
 		response.StatusCode = 200;
-		response.ContentType = "application/xml; charset=\"utf-8\"";
+		response.ContentType = "text/xml; charset=\"utf-8\"";
 
-		var ns = XNamespace.Get("DAV:");
+		var ns = WebDavDataExtensions.Ns;
 
 		//var xml = new XDocument(
 		//	new XDeclaration(version: "1.0", encoding: "utf-8", standalone: "no"),
@@ -46,98 +50,10 @@ public class MeshFsMiddleware
 			new XDeclaration(version: "1.0", encoding: "utf-8", standalone: "no"),
 			new XElement(
 				ns.GetName("multistatus"),
-				new XElement(
-					ns.GetName("response"),
-					new XElement(
-						ns.GetName("href"),
-						//"http://localhost:5000/test1.html"
-						"/folder1/"
-					),
-					new XElement(
-						ns.GetName("propstat"),
-						new XElement(
-							ns.GetName("prop"),
-							new XElement(
-								ns.GetName("displayname"),
-								"Example collection"
-							),
-							new XElement(
-								ns.GetName("resourcetype"),
-								new XElement(ns.GetName("collection"))
-							),
-							new XElement(
-								ns.GetName("creationdate"),
-								"1997-12-01T17:42:21-08:00"
-							),
-							new XElement(
-								ns.GetName("getcontentlength"),
-								4568
-							),
-							new XElement(
-								ns.GetName("getcontenttype"),
-								"text/html"
-							),
-							new XElement(
-								ns.GetName("getetag"),
-								"tag1,tag2"
-							),
-							new XElement(
-								ns.GetName("getlastmodified"),
-								"Mon, 12 Jan 1998 09:25:56 GMT"
-							)
-						)
-					),
-					new XElement(
-						ns.GetName("status"),
-						"HTTP/1.1 200 OK"
-					)
-				),
 
-				new XElement(
-					ns.GetName("response"),
-					new XElement(
-						ns.GetName("href"),
-						"/file1.txt"
-					),
-					new XElement(
-						ns.GetName("propstat"),
-						new XElement(
-							ns.GetName("prop"),
-							new XElement(
-								ns.GetName("displayname"),
-								"Example file"
-							),
-							new XElement(
-								ns.GetName("resourcetype")
-							//new XElement(ns.GetName("collection"))
-							),
-							new XElement(
-								ns.GetName("creationdate"),
-								"1997-12-01T17:42:21-08:00"
-							),
-							new XElement(
-								ns.GetName("getcontentlength"),
-								4568
-							),
-							new XElement(
-								ns.GetName("getcontenttype"),
-								"text/html"
-							),
-							new XElement(
-								ns.GetName("getetag"),
-								"tag1,tag2"
-							),
-							new XElement(
-								ns.GetName("getlastmodified"),
-								"Mon, 12 Jan 1998 09:25:56 GMT"
-							)
-						)
-					),
-					new XElement(
-						ns.GetName("status"),
-						"HTTP/1.1 200 OK"
-					)
-				)
+				_db
+					.Flow
+					.Select(flow => flow.ToWebDavFile())
 			)
 		); ;
 

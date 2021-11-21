@@ -43,6 +43,8 @@ public class MeshContext : DbContext
             entity.Property(entity => entity.Id).HasColumnName("id");
             entity.Property(entity => entity.Topic).HasColumnName("topic");
             entity.Property(entity => entity.Created).HasColumnName("created");
+            entity.Property(entity => entity.Tags).HasColumnName("tags");
+            entity.Property(entity => entity.Value).HasColumnName("value");
         });
     }
 }
