@@ -10,6 +10,8 @@ public record MeshFsOptions
 
     public string WebDavRoute { get; set; } = DefaultWebDavRoute;
 
+    public string Postgres { get; set; }
+
     internal class Setup
         : IConfigureOptions<MeshFsOptions>
     {
