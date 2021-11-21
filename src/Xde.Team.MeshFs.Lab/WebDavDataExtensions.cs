@@ -1,10 +1,17 @@
-﻿using System.Xml.Linq;
+﻿using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace Xde.Lab.MeshFs
 {
     internal static class WebDavDataExtensions
     {
         internal static readonly XNamespace Ns = XNamespace.Get("DAV:");
+
+        private static readonly Regex FilePattern = new(
+            @".*\[(\d+)\]\.xml$",
+            RegexOptions.Compiled | RegexOptions.Singleline
+        );
 
         private static readonly XElement XmlResourceType = new(
             Ns.GetName("getcontenttype"),
@@ -14,6 +21,22 @@ namespace Xde.Lab.MeshFs
             Ns.GetName("status"),
             "HTTP/1.1 200 OK"
         );
+
+        internal static long? GetFlowId(this HttpRequest request)
+        {
+            if (request.Path.Value == null)
+            {
+                return null;
+            }
+
+            var match = FilePattern.Match(request.Path.Value);
+            if (!match.Success)
+            {
+                return null;
+            }
+
+            return long.Parse(match.Groups[1].Value);
+        }
 
         //TODO:
         internal static XElement ToWebDavFile(this Flow flow)

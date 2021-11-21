@@ -21,24 +21,15 @@ namespace Xde.Lab.MeshFs
             var request = context.Request;
             var response = context.Response;
 
-            if (request?.Path.Value == null)
+            var id = request.GetFlowId();
+            if (id == null)
             {
-                context.Response.StatusCode = 500;
-                await response.WriteAsync("Path is missing");
+                context.Response.StatusCode = 400;
+                await response.WriteAsync("Flow id not found or incorrect");
 
                 return;
             }
 
-            var match = _rxId.Match(request.Path.Value);
-            if (!match.Success)
-            {
-                context.Response.StatusCode = 500;
-                await response.WriteAsync("Id not found or incorrect");
-
-                return;
-            }
-
-            var id = long.Parse(match.Groups[1].Value);
             var flow = _db
                 .Flow
                 .FirstOrDefault(item => item.Id == id)
