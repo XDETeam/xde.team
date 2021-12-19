@@ -2,7 +2,7 @@
 using System.Reflection;
 using Xunit;
 
-namespace Xde.Host
+namespace Xde.Labs.Inbox
 {
     //TODO:
     public class FasterSpecs : IDisposable
