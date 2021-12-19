@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Xde.Lab.MeshFs;
+﻿using Xde.Lab.MeshFs;
 
 var builder = WebApplication
     .CreateBuilder()

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Xde.Lab.MeshFs
+﻿namespace Xde.Lab.MeshFs
 {
     public interface IWebDavCommand
     {
