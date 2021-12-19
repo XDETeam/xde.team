@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace Xde.Lab.MeshFs;
 
@@ -13,19 +14,33 @@ namespace Xde.Lab.MeshFs;
 public class MeshFsMiddleware
     : IMiddleware
 {
+    private readonly IOptions<MeshFsOptions> _options;
     private readonly IEnumerable<IWebDavCommand> _commands;
+    private readonly PathString _prefix;
 
     public MeshFsMiddleware(
+        IOptions<MeshFsOptions> options,
         IEnumerable<IWebDavCommand> commands
     )
     {
+        _options = options;
         _commands = commands;
+
+        _prefix = new PathString(options.Value.WebDavRoute);
     }
 
     async Task IMiddleware.InvokeAsync(HttpContext context, RequestDelegate next)
     {
+        var request = context.Request;
+        if (!request.Path.StartsWithSegments(_prefix))
+        {
+            await next(context);
+
+            return;
+        }
+
         var actualCommand = _commands
-            .FirstOrDefault(command => command.Method == context.Request.Method)
+            .FirstOrDefault(command => command.Method == request.Method)
         ;
 
         if (actualCommand != null)
