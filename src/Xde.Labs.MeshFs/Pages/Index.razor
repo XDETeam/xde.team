@@ -1,3 +1,15 @@
 ﻿@page "/"
+@inject IJSRuntime JS
 
 <h1>Hello, world!</h1>
+
+<div id="editor"></div>
+
+<button @onclick="SetupEditor">SetupEditor</button>
+
+@code {
+    private async Task SetupEditor()
+    {
+        await JS.InvokeAsync<string>("setupEditor", "#editor");
+    }
+}
