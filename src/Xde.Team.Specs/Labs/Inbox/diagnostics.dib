@@ -1,0 +1,7 @@
+#!markdown
+
+TODO: Event/SourceContext specific logging is a good solution. Sometimes logs can be structured (and this means structured storing, not a JSON serialized). Maybe columnar-style organization when multiple event are bound by the same work item it, but separate aspects are stored in a different objects.
+
+#!markdown
+
+TODO: No need for exceptions messages (requires resources, translations, etc). Better to encode message as an exception/error type.
