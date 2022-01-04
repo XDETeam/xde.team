@@ -1,0 +1,44 @@
+#!markdown
+
+Specs root (or simply Specs) is a practial idea how solutions development can be organized and managed.
+
+Typically software solution is a combination of multiple modules. We call it solution and projects in .NET, workspaced and crates in Rust, workspaces and packages in NodeJS and so on.
+
+We will use .NET vocabulary below, but this idea can be transferred to other development environments as well. For example, for what we called solution/project in .NET can be workspace/package in NodeJS or workspace/crate in Rust, etc.
+
+Software solution growth from the Specs project like a tree from its root. From the start you try to put almost everything into it. Any initial requirements, ideas, samples, etc. Because this is a software module you can try to employ progamming languagers into description to give more value to the artifacts mentioned.
+
+This project is the sandbox, lab, root, control pane, dashboard, toolbox for all other decisions.
+
+Sample responsibilities:
+- DevOps (provision, setup, deploy).
+- Documentation and collaboration host.
+- Tests, benchmarks.
+- Generate artifacts (SQL code, AVRO schemas, Protofub declarations, etc)
+
+CLI to control almost every aspect
+"rule them all"
+all-as-a-code
+
+TODO: Split application into layers (~assemblies, but not mandatory, many of them can be in specs) and namespaces. Each namespace will have a name (by default c# namespace can be used) to be employed in CLI, routing, etc. Layers can be core, generators (SQL generator, TS generator etc). All can be temporary in specs.
+    - To support this idea we can create simple named compositions (spaces?), then also simple handling in CLI to address composition and its tools. For example, if I want to generate tables or stored procedures for a particular namespace.
+        - Maybe try to address a command by a simple name.
+
+В спексах сделать поддержку CLI и неймспейсов. Чтобы можно было запустить генераторы в определённых модулях.
+
+TODO: Specs can generate proj files with meta-information. Then no need to have a shared Meta assembly.
+
+TODO: Specs can be responsible for the most of DevOps operations. Internal (build artifacts like SQL, TypeScript, etc. Maybe even better than source generators) and external (deployment, CI/CD, utilities). Like it was in our run.ps1 implementations.
+
+TODO: Based on specs projects items can be generated. For example host builder call could be implemented implicitly.
+
+- Specs аккумулирует всё. И мы хотим именно приложение, поскольку у нас All-as-a-Code. Не только IaaC, DevOps, executable specifications … Code - это более удобная и формализованная форма описания чего угодно.
+- Docs
+    ○ Сборка specs может хостить документацию. И може частью станут .NET Interactive
+	○ https://www.codemag.com/article/1811071/Marking-up-the-Web-with-ASP.NET-Core-and-Markdown - интеграция Markdown
+- Principles
+	○ Разработка ведётся от TDD. Это упрощает и тесты для сложных приложений. Чтобы не надо было запускать всю контейнерную инфраструктуру. Тесты должны быть как можно более атомарней (unit-test). Интересно только, как бы это сработало для UI (e2e).
+
+- Может описывать и инфраструктурный тесты
+    - Given Deployed Kafka 2.11
+    - And Deployed ...

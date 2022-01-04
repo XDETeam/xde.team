@@ -1,0 +1,3 @@
+#!markdown
+
+Infrastructure-as-a-code, HTML/Markdown documentations, executable specifications in Gherkin. Code as a formal language is a very good way to describe things. And it can be used for any artifacts of the sofwtare solution, not only for applications. It is very strange that it penetrates into our development environment so slowly. That DevOps appears in our vocabulary 
