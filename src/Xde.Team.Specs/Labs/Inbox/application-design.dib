@@ -4,6 +4,7 @@ TODO:Apply idea with mesh flows, where each flow is combination of 0..N `IReques
 - Make a research (or continue existing) with a sample of the elaborated example.
 - How the memoization test will work for such design.
 - How we can dynamically construct handlers. For example, we have 10 separate options flows, thouse are bound to the single configuration file (one flow). How file flow will detect options and provide relevant responses.
+TODO:Request/response vs event-driven that also implies CQRS. So instead `IRequest<T>` and `IResponse<T>` we may have some `ISubscribe<T>` and `IProduct<T>`. More details about this "vs" competition would be good to collect. As the first note Request/Response is more rigid and straighforward. Sample with configuration loaded at runtime would be interesting. Components can be also automatically distributed (scaled).
 
 #!markdown
 
