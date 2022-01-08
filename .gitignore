@@ -26,4 +26,6 @@ packages/*/types/
 # --- .NET/Visual Studio start ---
 src/**/bin/
 src/**/obj/
+labs/**/bin/
+labs/**/obj/
 # --- .NET/Visual Studio end ---
