@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "watch",
+            "label": "Watch XDE.Team",
             "command": "dotnet",
             "type": "process",
             "options": {
@@ -17,6 +17,24 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            }
+        },
+        {
+            "label": "Publish XDE.Team",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "args": [
+                "publish",
+                "Xde.Team",
+                "--output",
+                "e:/WWW/xde.team"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build"
             }
         }
     ]
