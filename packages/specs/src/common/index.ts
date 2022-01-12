@@ -1,1 +1,0 @@
-export { Named } from "./Named";
