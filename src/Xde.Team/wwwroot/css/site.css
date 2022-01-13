@@ -1,26 +1,138 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&display=swap");
 
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+body {
+	padding: 0;
+	line-height: 1.62;
+	font-family: Inter, Arial, sans-serif;
+	font-size: 1rem;
+	color: #333;
 }
 
-h1:focus {
-    outline: none;
+h1,
+h2,
+h3 {
+	font-feature-settings: "kern";
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	color: #000;
 }
 
-a, .btn-link {
-    color: #0071c1;
+h2 {
+	border-bottom: solid 1pt #999;
+	text-align: right;
+	padding-right: 0.5rem;
+    font-weight: 900;
+    font-size: 1.6rem;
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+main {
+	margin-right: 48px;
+	/*TODO: aside width, calculation required*/
+	padding: 2rem;
 }
 
-.content {
-    padding-top: 1.1rem;
+@media only screen and (max-width: 480px) {
+	main {
+		padding: 1.5rem;
+	}
 }
+
+@media print {
+	main {
+		margin-right: 0;
+		padding: 0;
+	}
+}
+
+/* TODO: In common layout is tricky. When horizontally stretched and width close to the max-width, there would be good to have a horizontal paddings especially on the sidebar side, but this won't work for full-size colored sections. May be make sidebar as a flex part as well */
+main>section,
+main>header {
+	max-width: 980px;
+	width: 100%;
+}
+
+main>header {
+	padding-top: 4rem;
+	padding-bottom: 0;
+}
+
+h1 {
+	font-size: 3.6rem;
+	padding: 0;
+	margin: 0;
+    font-weight: 900;
+
+	/*TODO:Colorized headers (white on red/black/...).
+	color: #fff;
+	background-color: #c00;
+    padding: 8px 32px;
+    */
+}
+
+@media only screen and (max-width: 480px) {
+	h1 {
+		font-size: 2.6rem;
+		word-wrap: break-word;
+	}
+}
+
+code {
+	font-family: Consolas, "Lucida Console", "DejaVu Sans Mono", "Courier New", Courier, monospace;
+	background-color: #f4f4f4;
+	padding: 0 2rem;
+	white-space: pre;
+	display: block;
+}
+
+section.code {
+	background-color: #f4f4f4;
+	padding: 0.5rem 2rem;
+	overflow-x: auto;
+}
+
+a {
+	color: #69c;
+	text-decoration: none;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd {
+	margin-inline-start: 0;
+}
+
+dd+dt {
+	margin-top: 1rem;
+}
+
+em {
+	font-style: normal;
+	color: #d00;
+	font-weight: bold;
+}
+
+table.simple {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+table.simple thead tr {
+	border-bottom: solid 2pt #000;
+}
+
+table.simple td,
+table.simple th {
+	padding: 0.2rem;
+	text-align: left;
+}
+
+table.simple td.highlight {
+	background-color: #cfc;
+}
+
 
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
