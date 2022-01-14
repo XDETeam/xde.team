@@ -18,6 +18,10 @@ h3 {
 	color: #000;
 }
 
+h1,h2,h3:focus {
+	outline: none;
+}
+
 h2 {
 	border-bottom: solid 1pt #999;
 	text-align: right;
