@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xde.Team.MeshFs.Lab", "Xde.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xde.Labs.MeshFs", "Xde.Labs.MeshFs\Xde.Labs.MeshFs.csproj", "{D4FBFA80-CA2E-45CA-8352-E7E957DF93AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xde.Team.MeshFs.Specs", "Xde.Team.MeshFs.Specs\Xde.Team.MeshFs.Specs.csproj", "{B7E7128B-18CA-4A3D-B6AF-C81E53E8C043}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{D4FBFA80-CA2E-45CA-8352-E7E957DF93AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4FBFA80-CA2E-45CA-8352-E7E957DF93AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4FBFA80-CA2E-45CA-8352-E7E957DF93AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7E7128B-18CA-4A3D-B6AF-C81E53E8C043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7E7128B-18CA-4A3D-B6AF-C81E53E8C043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7E7128B-18CA-4A3D-B6AF-C81E53E8C043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7E7128B-18CA-4A3D-B6AF-C81E53E8C043}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
