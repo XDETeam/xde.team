@@ -22,7 +22,29 @@ h1,h2,h3:focus {
 	outline: none;
 }
 
+h1 {
+	font-size: 3.6rem;
+	padding: 0;
+	margin: 0;
+    font-weight: 900;
+	text-align: right;
+
+	/*TODO:Colorized headers (white on red/black/...).
+	color: #fff;
+	background-color: #c00;
+    padding: 8px 32px;
+    */
+}
+
+h1 span {
+	display: block;
+	font-size: 2rem;
+	margin-top: 0.5rem;
+	text-align: right;
+}
+
 h2 {
+	margin-top: 5rem;
 	border-bottom: solid 1pt #999;
 	text-align: right;
 	padding-right: 0.5rem;
@@ -59,19 +81,6 @@ main>header {
 main>header {
 	padding-top: 4rem;
 	padding-bottom: 0;
-}
-
-h1 {
-	font-size: 3.6rem;
-	padding: 0;
-	margin: 0;
-    font-weight: 900;
-
-	/*TODO:Colorized headers (white on red/black/...).
-	color: #fff;
-	background-color: #c00;
-    padding: 8px 32px;
-    */
 }
 
 @media only screen and (max-width: 480px) {
