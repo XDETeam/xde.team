@@ -1,4 +1,5 @@
-﻿using TechTalk.SpecFlow;
+﻿using System.Xml.Linq;
+using TechTalk.SpecFlow;
 
 namespace Xde.MessFs
 {
@@ -22,12 +23,20 @@ namespace Xde.MessFs
         {
             if (_context.ShouldDeploy)
             {
-                if (_context.Head == null)
+                var head = _context.Head;
+                
+                if (head == null)
                 {
                     throw new Exception("TODO:Missing data object");
                 }
 
-                _mess.Put("/todo", _context.Head);
+                var url = head.Attribute(XName.Get("url"));
+                if (url == null)
+                {
+                    throw new Exception("TODO:Missing URL");
+                }
+
+                _mess.Put(url.Value, head);
             }
         }
     }

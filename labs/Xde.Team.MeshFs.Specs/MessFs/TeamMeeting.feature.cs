@@ -40,7 +40,9 @@ namespace Xde.MessFs
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MessFs", "TeamMeeting", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MessFs", "TeamMeeting", "\tTODO:\r\n\t- Meeting itself has a schedule. But this schedule is shared. So everybo" +
+                    "dy in the meeting\r\n\tshould have it in personal notifications.\r\n\t- Meeting can be" +
+                    " an event, or just a node? What makes it a meeting?", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,13 +86,15 @@ namespace Xde.MessFs
         [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
         [Xunit.TraitAttribute("Description", "Shared calendars for the meeting participants")]
         [Xunit.TraitAttribute("Category", "Calendar")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
         public void SharedCalendarsForTheMeetingParticipants()
         {
             string[] tagsOfScenario = new string[] {
-                    "Calendar"};
+                    "Calendar",
+                    "ToDo"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Shared calendars for the meeting participants", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -100,15 +104,197 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("Meeting \"Some c00l meeting\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 10
+ testRunner.Given("Meeting of //xde.team", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
- testRunner.And("Scheduled weekly at 09:30+01", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+ testRunner.And("Scheduled weekly on Wed at 09:30+01", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 9
+#line 12
  testRunner.When("Stan look at calendar on 2022-01-10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Fluctuating members")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Fluctuating members")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void FluctuatingMembers()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluctuating members", @"	Meeting may have fluctuating members. Some of them are a part of it regularly.
+	Some others join occasionally. So probably they should subscribe to be notified
+	and simply write a meeting outcome even if they don't. Subscription can allow to
+	be notified with different channels and notification timeframe.
+	However there is an issue related to authorization. Not everyone are allowed to
+	subscribe to the meeting.", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Multiple schedules for the meeting")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Multiple schedules for the meeting")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void MultipleSchedulesForTheMeeting()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple schedules for the meeting", @"	The same meeting can have different schedules. For example before 2022-01-01
+	it can be on Tue and Thu at 10:00+01, after that it can be on Wed at 09:30+01.
+	Especially interesting case is when timeframes intersects. For example the first
+	timeframe ends on 2022-02-01 and the second one starts on 2021-12-01.", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 25
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Multiple source of timeframes")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Multiple source of timeframes")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void MultipleSourceOfTimeframes()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Multiple source of timeframes", "\tMeeting can define timeframe and participant can define its own timeframe.\r\n\tSub" +
+                    "scription should be notified only when they both intersects or any of them\r\n\tare" +
+                    " missing.", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 32
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Meeting duration")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Meeting duration")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void MeetingDuration()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Meeting duration", "\tMeeting may have an estimated duration to be shown in the calendar. There can be" +
+                    "\r\n\talso multiple durations for different timeframes.", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 38
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Subscribers")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Subscribers")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void Subscribers()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Subscribers", "\tParticipant subscribes to the meeting or meeting contains subscribers?", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 43
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Outcomes")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Outcomes")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void Outcomes()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Outcomes", "\tThere are multiple participands of the meeting. Each one has its own outcomes\r\n\t" +
+                    "from the meeting.", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 47
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Naming")]
+        [Xunit.TraitAttribute("FeatureTitle", "TeamMeeting")]
+        [Xunit.TraitAttribute("Description", "Naming")]
+        [Xunit.TraitAttribute("Category", "ToDo")]
+        public void Naming()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ToDo"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Naming", "\tNames can be localized and in common multiple names may exist. Besides such tric" +
+                    "ky\r\n\tscenarions, a simple named meeting in calendar should be also tested. And m" +
+                    "issing\r\n\tname as well (or it will be well-tested in oother scenations).", tagsOfScenario, argumentsOfScenario, featureTags);
+#line 52
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
             }
             this.ScenarioCleanup();
         }

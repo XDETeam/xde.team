@@ -13,10 +13,10 @@ namespace Xde.MessFs
             _context = context;
         }
 
-        [Given(@"Scheduled (.+) at (.+)")]
-        public void GivenScheduledWeeklyAt(string repeat, string at)
+        [Given(@"Scheduled (.+) on (.+) at (.+)")]
+        public void GivenScheduledWeeklyAt(string repeat, string on, string at)
         {
-            _context.Aspect("schedule", ("at", at));
+            _context.Aspect("schedule", ("on", on), ("at", at));
         }
     }
 }

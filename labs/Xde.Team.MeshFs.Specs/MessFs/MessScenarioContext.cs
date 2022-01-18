@@ -64,6 +64,10 @@ namespace Xde.MessFs
             _head = xml;
         }
 
+        public void Push(string tagName)
+            => Push(new XElement(XName.Get(tagName)))
+        ;
+
         public void Push(string tagName, params XAttribute[] attributes)
             => Push(new XElement(XName.Get(tagName), attributes))
         ;

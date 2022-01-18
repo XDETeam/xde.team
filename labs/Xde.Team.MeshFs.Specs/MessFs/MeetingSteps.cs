@@ -13,10 +13,10 @@ namespace Xde.MessFs
             _context = context;
         }
 
-        [Given(@"Meeting ""(.*)""")]
-        public void GivenMeeting(string meetingName)
+        [Given(@"Meeting of (.+)")]
+        public void GivenMeetingBy(string url)
         {
-            _context.Push("meeting", ("name", meetingName));
+            _context.Push("meeting", ("url", url));
         }
     }
 }
