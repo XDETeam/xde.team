@@ -10,7 +10,7 @@ const Page: NextPage = () => {
 
             <main>
                 <h1>
-                    HR
+                    Team management
                 </h1>
 
                 <p>
@@ -49,6 +49,10 @@ const Page: NextPage = () => {
 
                 <p>
                     TODO:В тесном сотрудничестве с <a href="https://xde.academy">XDE.Academy</a>.
+                </p>
+                <p>
+                    TODO:HR в основном рассматривает кандидатов изолированно, мы же можем ещё заренее
+                    выстраивать коммуникационные связи между ними. Такой Dating-сайт для инженеров))
                 </p>
             </main>
         </div>
