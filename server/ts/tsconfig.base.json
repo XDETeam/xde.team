@@ -16,7 +16,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@xde/sample-db": ["packages/sample-db/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
