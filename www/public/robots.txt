@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://xde.team
+
+# Sitemaps
+Sitemap: https://xde.team/sitemap.xml
