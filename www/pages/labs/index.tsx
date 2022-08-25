@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link';
 
 export const ShortName = "Labs";
 export const FullName = "XDE Team Labs";
@@ -17,6 +18,9 @@ const Page: NextPage = () => {
                 </h1>
 
                 <ul>
+                    <li>
+                        <Link href="/labs/cx-language">Язык Cx</Link>.
+                    </li>
                     <li>
                         Потоко/событийно-ориентированное программирование. Flow.
                     </li>
