@@ -19,6 +19,9 @@ const Page: NextPage = () => {
 
                 <ul>
                     <li>
+                        <Link href="/labs/executable-specifications">Executable specifications</Link>.
+                    </li>
+                    <li>
                         <Link href="/labs/cx-language">Язык Cx</Link>.
                     </li>
                     <li>
