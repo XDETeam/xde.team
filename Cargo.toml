@@ -1,0 +1,5 @@
+[workspace]
+members = ["specs"]
+
+[build]
+target-dir = "./.cargo/target"
