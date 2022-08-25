@@ -12,6 +12,13 @@
   align-items: center;
 }
 
+.main a {
+  display: inline;
+  margin: 0 0.5rem;
+  font-size: 1.6rem;
+}
+
+
 .footer {
   display: flex;
   flex: 1;
