@@ -41,6 +41,9 @@ const Page: NextPage = () => {
                     <li>
                         SOLID в базах данных. Хранимые процедуры и представления.
                     </li>
+                    <li>
+                        Web development formula (одна из, Nx+Next.js+Expo+...).
+                    </li>
                 </ul>
             </main>
         </div>
