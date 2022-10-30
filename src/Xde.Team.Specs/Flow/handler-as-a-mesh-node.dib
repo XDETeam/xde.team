@@ -5,6 +5,7 @@ An idea is to implement processing node as a hypergraph node. So it can have mul
 TODO:
 - Potentially same workitem can go through the whole pipeline and collect all parts in request/response properties. Requests can trigger processing and generated response responsible for triggering other request.
 - Develop better naming: Request|Input|Resource && Response|Output|Product.
+- There can be many specific IRequest/IResponse interfaces implementations. For example IOptionsRequest that will be triggered when options loaded and updated. Instead of props we may have methods with default implementations.
 
 #!csharp
 

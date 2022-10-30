@@ -1,5 +1,12 @@
 #!markdown
 
+TODO:Apply idea with mesh flows, where each flow is combination of 0..N `IRequest<T>` and 0..M `IResponse<T>`. Something like IoC container assemblies such flows, ensure that all requests have corresponding inputs. Use and idea that options is also such part of flow, so we can build an example with (watcher->config+http->message)->(successfull response+HttpException).
+- Make a research (or continue existing) with a sample of the elaborated example.
+- How the memoization test will work for such design.
+- How we can dynamically construct handlers. For example, we have 10 separate options flows, thouse are bound to the single configuration file (one flow). How file flow will detect options and provide relevant responses.
+
+#!markdown
+
 ## Application composition
 
 Almost any step in the application requires to be provided by IoC container. Even very basic steps like parsing command-line arguments, file I/O operations or loading configuration settings would be much better if provided by service providers.

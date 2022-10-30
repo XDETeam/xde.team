@@ -76,3 +76,5 @@ Console.WriteLine(service.Options.Value);
 ## TODO:
 
 Is a layered (providers sequence) .NET IConfiguration based on hierarchical string keys better than our idea of type-based configuration where I can particularly set, how some specific setting will be stored? Probably our solution can get benefits from compositions in [Application design](application-design.dib).
+
+Another point is that configuration can be considered as an organic part of the application's flow. Settings does not significantly differ from another incoming streams. If we have some `IRequest<T>` or event its descendat `IOptionsRequest<T>` as part of a node, why can't we simply deliver this setting to all consumers when it is changed. They can interpret such changes on their own, depends on complexity. I think it many situations this can be rather simple compare to the reload of the one big config file.
