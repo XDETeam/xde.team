@@ -1,0 +1,3 @@
+[submodule "packages/xde"]
+	path = packages/xde
+	url = https://github.com/XDETeam/typescript
