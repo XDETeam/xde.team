@@ -1,19 +1,28 @@
-import { FC, PropsWithChildren } from "react";
-import "#/styles/global.css";
+import { FC, PropsWithChildren } from "react"
+import { Inter } from "@next/font/google"
+import "#/styles/global.css"
+
+//TODO: Move to /ui/styles.tsx?
+const inter = Inter({
+    subsets: ["latin", "cyrillic"],
+    weight: "variable",
+    variable: "--font-inter"
+})
 
 const Layout: FC<PropsWithChildren> = ({ children }) => (
-    <html lang="en">
+    // TODO:lang
+    <html lang="en" className={inter.variable}>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>XDE.Team</title>
-            <meta
-                name="description"
-                content="Next.js App Directory Playground"
-                key="desc"
-            />
+            {/* <style jsx global>{`
+                html {
+                    font-family: ${inter.style.fontFamily};
+                }
+            `}</style> */}
         </head>
-        <body className="overflow-y-scroll bg-gray-900">
-            <main className="grid grid-cols-[1fr,minmax(auto,240px),min(800px,100%),1fr] gap-x-8 py-8">
+        <body>
+            <main>
                 {children}
             </main>
         </body>

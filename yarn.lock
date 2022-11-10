@@ -794,6 +794,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@next/font@npm:^13.0.2":
+  version: 13.0.2
+  resolution: "@next/font@npm:13.0.2"
+  checksum: 3ca6b8668f77673fe6c9c1887651e149ffcc5f50212df64c0dddfd43a9485919aae6ca4d9f203e149b36fcacba6bba5e558091a53e389d037399860b097b7ddd
+  languageName: node
+  linkType: hard
+
 "@next/swc-android-arm-eabi@npm:13.0.2":
   version: 13.0.2
   resolution: "@next/swc-android-arm-eabi@npm:13.0.2"
@@ -1224,6 +1231,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@xde/team@workspace:www"
   dependencies:
+    "@next/font": ^13.0.2
     "@types/node": 18.11.9
     "@types/react": 18.0.25
     "@types/react-dom": 18.0.8
