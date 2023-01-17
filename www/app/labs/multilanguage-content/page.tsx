@@ -1,17 +1,4 @@
-export const SomeHeader = () => (
-    <h1>SomeHeader</h1>
-)
-
-export const SomeAbstract = () => (
-    <h1>SomeAbstract</h1>
-)
-
-export const SomeContent = () => (
-    <>
-        <SomeHeader />
-        <SomeAbstract />
-    </>
-)
+import { ComponentType } from "react";
 
 const Page = () => (
     <>
@@ -51,7 +38,7 @@ const Page = () => (
             В идеале обеспечить удобство работы как в рамках одного языка, так и кросс-язычные.
         </p>
 
-        <h2>TODO: Экспериментальные решения для TSX/React</h2>
+        <h2>TODO: Экспериментальные решение 1 для TSX/React</h2>
         <p>
             Предположим, у нас есть решение layout-компонент, описывающий структуру. Она, с высокой
             степенью вероятности, не будет подвергаться переводу. Хотя и такое не исключено.
@@ -69,10 +56,15 @@ const Page = () => (
             )
         `}</pre>
 
-        <p>
-            TODO: Динамический импорт компонент.
-        </p>
+        <h2>TODO: Экспериментальное решение 2 для Next.js/React/TSX</h2>
     </>
 )
 
+const translate = (lang: string, Content: ComponentType) => {
+    return () => (
+        <Content />
+    )
+}
+
+//export default translate("ru", Page);
 export default Page;
