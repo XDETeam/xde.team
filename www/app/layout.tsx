@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren } from "react"
-import { Inter } from "@next/font/google"
-import "#/styles/global.css"
+import { Inter, Roboto_Mono } from "@next/font/google"
+import clsx from "clsx";
+import "@/styles/global.css"
 
 //TODO: Move to /ui/styles.tsx?
 const inter = Inter({
@@ -9,17 +10,18 @@ const inter = Inter({
     variable: "--font-inter"
 })
 
+const roboto_mono = Roboto_Mono({
+    subsets: ["latin"],
+    variable: "--font-roboto-mono",
+    display: "optional"
+  });
+
 const Layout: FC<PropsWithChildren> = ({ children }) => (
     // TODO:lang
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={ clsx(inter.variable, roboto_mono.variable) }>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>XDE.Team</title>
-            {/* <style jsx global>{`
-                html {
-                    font-family: ${inter.style.fontFamily};
-                }
-            `}</style> */}
         </head>
         <body>
             <main>
