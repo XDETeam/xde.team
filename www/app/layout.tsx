@@ -16,9 +16,14 @@ const roboto_mono = Roboto_Mono({
     display: "optional"
   });
 
-const Layout: FC<PropsWithChildren> = ({ children }) => (
-    // TODO:lang
-    <html lang="en" className={ clsx(inter.variable, roboto_mono.variable) }>
+  export type PageWithParams = {
+    params: {
+        lang: string;
+    }
+  }
+
+const Layout: FC<PropsWithChildren<PageWithParams>> = ({ children, params }) => (
+    <html lang={ params.lang } className={ clsx(inter.variable, roboto_mono.variable) }>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>XDE.Team</title>
