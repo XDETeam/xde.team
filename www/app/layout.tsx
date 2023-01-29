@@ -10,25 +10,13 @@ const inter = Inter({
     variable: "--font-inter"
 })
 
-const roboto_mono = Roboto_Mono({
-    subsets: ["latin"],
-    variable: "--font-roboto-mono",
-    display: "optional"
-  });
-
-  export type PageWithParams = {
-    params: {
-        lang: string;
-    }
-  }
-
-const Layout: FC<PropsWithChildren<PageWithParams>> = ({ children, params }) => (
-    <html lang={ params.lang } className={ clsx(inter.variable, roboto_mono.variable) }>
+const Layout: FC<PropsWithChildren> = ({ children }) => (
+    <html className={ clsx("h-full bg-gray-50 antialiased", inter.variable) }>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>XDE.Team</title>
         </head>
-        <body>
+        <body className="flex h-full flex-col">
             <main>
                 {children}
             </main>

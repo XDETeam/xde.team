@@ -1,15 +1,18 @@
 import { FC } from "react";
-import Link from "next/link";
 import { Languages } from "@/settings";
-import { PageWithParams } from "../layout";
+import { PageWithParams } from "./layout";
+import { Container } from "@/components/Container";
 
 const Page: FC<PageWithParams> = ({ params }) => (
     <>
-        <h1 className="text-6xl font-black">XDE.Team</h1>
+        <Container>
+            <h1 className="text-8xl font-black">XDE.Team</h1>
 
-        <ul>
-            <li><Link href="/ru/labs">Labs</Link></li>
-        </ul>
+
+            <ul>
+                <li><a href="/ru/labs">Labs</a></li>
+            </ul>
+        </Container>
     </>
 )
 
