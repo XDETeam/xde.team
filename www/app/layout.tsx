@@ -1,25 +1,24 @@
 import { FC, PropsWithChildren } from "react"
-import { Inter, Roboto_Mono } from "@next/font/google"
 import clsx from "clsx";
 import "@/styles/global.css"
-
-//TODO: Move to /ui/styles.tsx?
-const inter = Inter({
-    subsets: ["latin", "cyrillic"],
-    weight: "variable",
-    variable: "--font-inter"
-})
+import { sans, mono } from "./styles"
+import Header from "./Header";
+import Footer from "./Footer";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => (
-    <html className={ clsx("h-full bg-gray-50 antialiased", inter.variable) }>
+    <html className={clsx("h-full", sans.variable, mono.variable)}>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <title>XDE.Team</title>
         </head>
-        <body className="flex h-full flex-col">
+        <body className="antialiased flex flex-col min-h-screen bg-gray-50">
+            <Header/>
+
             <main>
                 {children}
             </main>
+
+            <Footer/>
         </body>
     </html>
 )

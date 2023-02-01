@@ -1,15 +1,10 @@
-import Link from "next/link";
+import { Container } from "@/components/Container";
 
 const Page = () => (
     <>
-        <h1 className="text-6xl font-black">XDE.Team</h1>
-
-        <ul>
-            <li><Link href="/ru">Russian</Link></li>
-            <li><Link href="/en">English</Link></li>
-            <li><Link href="/bg">Bulgarian</Link></li>
-            {/* TODO:Language detector */}
-        </ul>
+        <Container>
+            <h1 className="text-6xl font-black">XDE.Team</h1>
+        </Container>
     </>
 )
 
