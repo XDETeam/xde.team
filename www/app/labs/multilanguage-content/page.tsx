@@ -1,8 +1,9 @@
 //TODO:
+import { Article } from "@/components/Article";
 import { ComponentType } from "react";
 
 const Page = () => (
-    <>
+    <Article>
         <h1>Multi-language content</h1>
 
         <h2>TODO: Предварительный набросок проблематики</h2>
@@ -58,7 +59,7 @@ const Page = () => (
         `}</pre>
 
         <h2>TODO: Экспериментальное решение 2 для Next.js/React/TSX</h2>
-    </>
+    </Article>
 )
 
 const translate = (lang: string, Content: ComponentType) => {

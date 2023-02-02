@@ -4,7 +4,7 @@ import MainMenu from "./MainMenu";
 export const Header = () => (
     <header>
  		<Container className="bg-red-600 p-4 text-white rounded-lg mt-2">
- 			Сайт находится в разработке. Возможны ошибки и неточности...
+ 			Сайт находится в разработке. Возможна неполнота, ошибки и неточности...
  		</Container>
 
  		<nav>

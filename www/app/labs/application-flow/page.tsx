@@ -1,16 +1,13 @@
-import { Container } from "@/components/Container";
+import { Article } from "@/components/Article";
 import Link from "next/link";
 
 export const Page = () => (
-    <>
-        <Container>
-            <h1 className="text-6xl font-black my-12">Application flow</h1>
-        </Container>
+    <Article>
+            <h1>Application flow</h1>
 
-        <Container>
-            <p className="mt-4">
+            <p>
                 Рассмотрение концепции "Application flow" можно рассмотреть, объединив с
-                лабораторией <Link href="/labs/xde-academy" className="text-red-600">XDE.Academy</Link>.
+                лабораторией <Link href="/labs/xde-academy">XDE.Academy</Link>.
                 За основу можно взять натуральную человеческую деятельность. Он может работать "по программе",
                 но в реальности у нас так не получается. Программные продукты в этом плане отличаются не
                 сильно. Привычные императивные пошаговые конструкции хороши только для синтетических
@@ -20,13 +17,12 @@ export const Page = () => (
                 развивать "Code" и "Coder" (Code Engineer).
             </p>
 
-            <p className="mt-4">
+            <p>
                 В данной области можно найти множество интересных параллелей. Например, асинхронный процессы.
                 "Вы позвонили, не дозвонились. Значит нужно перезвонить через какое-то время. Или человек сам
                 перезвонит и таким образом прервет вашу программу".
             </p>
-        </Container>
-    </>
+    </Article>
 );
 
 export default Page;

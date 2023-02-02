@@ -1,22 +1,25 @@
-import { Container } from "@/components/Container";
+import { Article } from "@/components/Article";
 import Link from "next/link";
 
 export const Page = () => (
-    <>
-        <Container>
-            <h1 className="text-6xl font-black my-12">XDE.Academy</h1>
-        </Container>
+    <Article>
+        <h1>XDE.Academy</h1>
 
-        <Container>
-            <p className="mt-4">
-                Образовательный фундамент строится с упором на
-                идею <Link href="/labs/informatics" className="text-red-600">Информатики</Link>.
-                А интересным практическим кандидатом для исследования является идея рассматривать
-                человеческую деятельность на примере
-                лаборатории <Link href="/labs/application-flow" className="text-red-600">Application flow</Link>.
-            </p>
-        </Container>
-    </>
+        <p>
+            Образовательный фундамент строится с упором на
+            идею <Link href="/labs/informatics">Информатики</Link>.
+            А интересным практическим кандидатом для исследования является идея рассматривать
+            человеческую деятельность на примере
+            лаборатории <Link href="/labs/application-flow">Application flow</Link>.
+        </p>
+
+        <p>
+            К образовательным технологиям можно добавить технику "Spaced repetition", которая могла бы
+            реализовываться в
+            рамках <Link href="/labs/xde-app">XDE.App</Link>. И само
+            приложение может разрабатываться в рамках образовательного процесса.
+        </p>
+    </Article>
 );
 
 export default Page;
