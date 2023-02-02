@@ -11,7 +11,7 @@ const Page = () => (
             <h2 className="text-4xl font-extrabold mt-12 mb-4 border-b-2 border-black">Знания</h2>
 
             <p>
-                Инжиниринг знаний &mdash; фундаментальный инструмент, как навык чтения и письма,
+                Инженерия знаний &mdash; фундаментальный инструмент, как навык чтения и письма,
                 который будет полезен во всех областях.
             </p>
 
@@ -33,13 +33,16 @@ const Page = () => (
             </p>
 
             <h2 className="text-4xl font-extrabold mt-12 mb-4 border-b-2 border-black">Программное обеспечение</h2>
+
+            <p className="mt-4">TODO: Code engineering</p>
             
             <ul className="list-disc my-4 mx-8">
                 <li><Link href="/labs/all-as-a-code-paradigm" className="text-red-600">Парадигма All-as-a-Code</Link></li>
                 <li><Link href="/labs/specs-concept" className="text-red-600">Концепция Specs</Link></li>
+                <li><Link href="/labs/application-flow" className="text-red-600">Application flow</Link></li>
+                <li><Link href="/labs/rust-ecosystem" className="text-red-600">Экосистема/формула Rust</Link></li>
+                <li><Link href="/labs/dotnet-ecosystem" className="text-red-600">Экосистема/формула .NET</Link></li>
                 <li><Link href="/labs/cx-language" className="text-red-600">Язык Cx</Link></li>
-                <li><Link href="/labs/rust-ecosystem" className="text-red-600">Экосистема Rust</Link></li>
-                <li><Link href="/labs/dotnet-ecosystem" className="text-red-600">Экосистема .NET</Link></li>
                 <li><Link href="/labs/xde-app" className="text-red-600">XDE App</Link></li>
                 <li><Link href="/labs/data-storage-systems" className="text-red-600">Системы хранения данных</Link></li>
             </ul>
