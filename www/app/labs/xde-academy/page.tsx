@@ -1,7 +1,7 @@
 import { Article } from "@/components/Article";
 import Link from "next/link";
 
-export const Page = () => (
+const Page = () => (
     <Article>
         <h1>XDE.Academy</h1>
 

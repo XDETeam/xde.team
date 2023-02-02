@@ -1,7 +1,7 @@
 import { Article } from "@/components/Article";
 
-export const ShortName = "Язык Cx";
-export const FullName = ShortName;
+const ShortName = "Язык Cx";
+const FullName = ShortName;
 
 const Page = () => (
     <Article>
