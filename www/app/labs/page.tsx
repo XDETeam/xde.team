@@ -1,10 +1,10 @@
 import { Article } from "@/components/Article";
 import Link from "next/link";
+import { Labs } from "@/labs";
 
 const Page = () => (
     <Article>
         <h1>Labs</h1>
-
 
         <h2>Знания</h2>
 
@@ -35,13 +35,20 @@ const Page = () => (
         <p className="mt-4">TODO: Code engineering</p>
 
         <ul>
+            <li>
+                <Link href="/labs/xde-app">XDE App</Link>
+                <ul>
+                    <li><Link href="/labs/xde-app/self-engineering">Self engineering</Link></li>
+                    <li><Link href="/labs/xde-app/team-engineering">Team engineering</Link></li>
+                    <li><Link href="/labs/xde-app/building-information-modeling">BIM (Building Information Model)</Link></li>
+                </ul>
+            </li>
             <li><Link href="/labs/all-as-a-code-paradigm">Парадигма All-as-a-Code</Link></li>
             <li><Link href="/labs/specs-concept">Концепция Specs</Link></li>
             <li><Link href="/labs/application-flow">Application flow</Link></li>
             <li><Link href="/labs/rust-ecosystem">Экосистема/формула Rust</Link></li>
             <li><Link href="/labs/dotnet-ecosystem">Экосистема/формула .NET</Link></li>
             <li><Link href="/labs/cx-language">Язык Cx</Link></li>
-            <li><Link href="/labs/xde-app">XDE App</Link></li>
             <li><Link href="/labs/data-storage-systems">Системы хранения данных</Link></li>
         </ul>
 

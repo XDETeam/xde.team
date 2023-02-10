@@ -1,6 +1,7 @@
-- Better containers/article styling (typography plugin - https://tailwindcss.com/docs/typography-plugin)
 - Links.
-
+    - Add tags to the labs and then a component to output labs, that can be reused on different pages.
+    - Move to the labs folder with a proper components?
+    - Maybe create a component for labs list with recursive possibility.
 - XDE.Team lab itself. Путь ошибок, отличия от учёных.
 - Title tags
 - Basic laboratory template (structured through export things like "abstracts")
