@@ -11,25 +11,25 @@
     "wrangle": "next build && next export"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.8",
-    "@heroicons/react": "^2.0.14",
-    "@next/font": "^13.1.5",
+    "@headlessui/react": "^1.7.10",
+    "@heroicons/react": "^2.0.15",
+    "@next/font": "^13.1.6",
     "@tailwindcss/typography": "^0.5.9",
     "clsx": "^1.2.1",
-    "framer-motion": "^8.5.3",
-    "next": "^13.1.5",
+    "framer-motion": "^9.0.2",
+    "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "autoprefixer": "^10.4.13",
-    "eslint": "^8.32.0",
-    "eslint-config-next": "^13.1.5",
+    "eslint": "^8.33.0",
+    "eslint-config-next": "^13.1.6",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.9.4"
+    "tailwindcss": "^3.2.6",
+    "typescript": "^4.9.5"
   }
 }
