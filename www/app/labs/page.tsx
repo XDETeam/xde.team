@@ -6,19 +6,50 @@ const Page = () => (
     <Article>
         <h1>Labs</h1>
 
-        <h2>Знания</h2>
+        <ul>
+            <li><Labs.XdeTeam.Link/></li>
+        </ul>
 
+        <p>TODO:Дальнейшее расположено через призму наших приоритетов</p>
+
+        <h2>Mind/Knowledge/... Engineering</h2>
+
+        <p>
+            TODO:Раздел может объединиться с Self/Ego-engineering. "Я" в этом мире и этот мир во мне.
+        </p>
+        <p>
+            TODO: https://www.quora.com/What-is-the-difference-between-ego-self-and-the-mind
+        </p>
         <p>
             Инженерия знаний &mdash; фундаментальный инструмент, как навык чтения и письма,
             который будет полезен во всех областях.
         </p>
+        <p>
+            Должным образом сформированные знания могут предопределить успех во всех
+            остальных областях.
+        </p>
 
         <ul>
+            <li>
+                <Link href="/labs/xde-academy">XDE Academy</Link> &ndash; быть достаточно
+                образованным, чтобы понимать.
+            </li>
+            <li><Link href="/labs/technology">Технология</Link></li>
             <li><Link href="/labs/informatics">Информатика</Link></li>
-            <li><Link href="/labs/xde-academy">XDE Academy</Link></li>
+            <li>TODO:Language engineering как часть информатики</li>
         </ul>
 
+        <h2>TODO: Ego/self engineering</h2>
+        <p>
+            Каждый из нас лично - это инженерный проект максимальной важности. Качество самой большой
+            конструкции может стать заложником качества отдельных её элементов.
+            Успехи общества &ndash; это успех каждого.
+        </p>
+
         <h2>Социальная среда</h2>
+        
+        <p>TODO: Social engineering</p>
+        <p>TODO: Не исключено, что story telling может попасть сюда как способ коммуникаций</p>
 
         <ul>
             <li><Link href="/labs/egopolis">Egopolis</Link></li>
@@ -32,7 +63,7 @@ const Page = () => (
 
         <h2>Программное обеспечение</h2>
 
-        <p className="mt-4">TODO: Code engineering</p>
+        <p className="mt-4">TODO: Code/Software engineering</p>
 
         <ul>
             <li>
@@ -63,7 +94,14 @@ const Page = () => (
         <h2>TODO:Building</h2>
         <ul>
             <li>
-                TODO: <Link href="/labs/rust-ecosystem">BIM</Link> &ndash; В том числе как потенциальный компонент <Link href="/labs/xde-academy">XDE.Academy</Link>
+                <Link href="/labs/rust-ecosystem">BIM</Link> &ndash; В том числе как потенциальный компонент <Link href="/labs/xde-academy">XDE.Academy</Link>
+            </li>
+        </ul>
+
+        <h2>TODO:Mechanical/Eletrical</h2>
+        <ul>
+            <li>
+                CNC
             </li>
         </ul>
     </Article>

@@ -1,4 +1,14 @@
 export const Route = "build-information-modeling";
 export const Caption = "BIM";
 
-// TODO:К идеям информатики, как строительство трансФОРМировалось в Building inFORMation modeling.
+export const ToDos = () => (
+    <ul>
+        <li>
+            К идеям информатики, как строительство трансФОРМировалось в Building inFORMation modeling.
+        </li>
+        <li>
+            В рамках развития мобильной версии XDE App &ndash; сканирование помещения камерой, WiFi/BT
+            (может для них понадобятся небольшие устройства вроде nRF/ESP32).
+        </li>
+    </ul>
+)
