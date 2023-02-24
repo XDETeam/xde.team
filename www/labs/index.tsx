@@ -1,8 +1,10 @@
-import XdeTeam from "./xde-team";
-import * as XdeApp from "./xde-app";
+import Xde from "./xde";
+import Software from "./software";
 
 // TODO:Build parental links
 export const Labs = {
-    XdeTeam,
-    XdeApp
+    Xde,
+    Software
 };
+
+export default Labs;

@@ -7,7 +7,7 @@ const Page = () => (
         <h1>Labs</h1>
 
         <ul>
-            <li><Labs.XdeTeam.Link/></li>
+            <li><Labs.Xde.Team.Link/></li>
         </ul>
 
         <p>TODO:Дальнейшее расположено через призму наших приоритетов</p>
@@ -15,7 +15,8 @@ const Page = () => (
         <h2>Mind/Knowledge/... Engineering</h2>
 
         <p>
-            TODO:Раздел может объединиться с Self/Ego-engineering. "Я" в этом мире и этот мир во мне.
+            TODO:Раздел может объединиться с Self/Ego-engineering. &quot;Я&quot; в этом мире и
+            этот мир во мне.
         </p>
         <p>
             TODO: https://www.quora.com/What-is-the-difference-between-ego-self-and-the-mind
@@ -75,7 +76,7 @@ const Page = () => (
                 </ul>
             </li>
             <li><Link href="/labs/all-as-a-code-paradigm">Парадигма All-as-a-Code</Link></li>
-            <li><Link href="/labs/specs-concept">Концепция Specs</Link></li>
+            <li><Labs.Software.Specs.Link/></li>
             <li><Link href="/labs/application-flow">Application flow</Link></li>
             <li><Link href="/labs/rust-ecosystem">Экосистема/формула Rust</Link></li>
             <li><Link href="/labs/dotnet-ecosystem">Экосистема/формула .NET</Link></li>

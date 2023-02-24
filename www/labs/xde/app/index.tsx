@@ -1,4 +1,4 @@
-import { ILab, LabLink } from "../contracts";
+import { ILab, LabLink } from "@/labs/contracts";
 import * as BIM from "./building-information-modeling"
 
 export const Route = "xde-app";

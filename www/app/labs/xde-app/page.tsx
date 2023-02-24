@@ -1,7 +1,7 @@
 import { Article } from "@/components/Article";
 import Link from "next/link";
 
-import { Route, Labs } from "@/labs/xde-app";
+import { Route, Labs } from "@/labs/xde/app";
 import CxLang from "@/labs/software/cx-language";
 
 const Page = () => (
