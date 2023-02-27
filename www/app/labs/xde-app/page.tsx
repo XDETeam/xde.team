@@ -35,7 +35,7 @@ const Page = () => (
 
         <h2>Labs</h2>
         <ul>
-            {Labs.map(lab => <li>
+            {Labs.map(lab => <li key={lab.Route}>
                 <Link href={ `/labs/${Route}/${lab.Route}` }>{ lab.Caption }</Link>
             </li>)}
         </ul>

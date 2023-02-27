@@ -165,7 +165,7 @@ const Page = () => (
                 x = Магия, x-factor, ген (в том числе и визуально).
             </p>
             <p>
-                TODO: Слоган &quot;Let's start our engines&quot; по аналогии с классическим
+                TODO: Слоган &quot;Let&apos;s start our engines&quot; по аналогии с классическим
                 &quot;Gentlemen. Start your engines&quot;.
             </p>
         </section>
