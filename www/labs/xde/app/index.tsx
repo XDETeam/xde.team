@@ -4,10 +4,12 @@ import * as BIM from "./building-information-modeling"
 export const Route = "xde-app";
 export const Caption = "XDE App";
 
-export const Lab = createLab({
+export const Props = {
     Route,
     Caption
-})
+}
+
+export const Lab = createLab(Props, {})
 
 export const Labs = [
     BIM

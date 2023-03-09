@@ -6,50 +6,54 @@ const Page = () => (
     <Article>
         <h1>Labs</h1>
 
+        <Labs.Xde.Team.FullLink/>
+
+        <p>
+            TODO:Дальнейшее расположено через призму приоритетов, описанных в <Labs.Xde.Team.Link/>?
+        </p>
+
+        <h2>Self-engineering</h2>
+        <p>
+            { Labs.Self.Description }
+        </p>
+
         <ul>
-            <li><Labs.Xde.Team.FullLink/></li>
+            <li><Link href="/labs/xde/academy">XDE Academy</Link></li>
+            <li><Labs.Self.Informatics.FullLink/></li>
+            <li><Link href="/labs/technology">Технология</Link></li>
+            <li>TODO:Language engineering как часть информатики</li>
+            <li>TODO:Bio-engineering (здоровье)</li>
         </ul>
 
-        <p>TODO:Дальнейшее расположено через призму наших приоритетов</p>
-
-        <h2>Mind/Knowledge/... Engineering</h2>
-
         <p>
-            TODO:Раздел может объединиться с Self/Ego-engineering. &quot;Я&quot; в этом мире и
-            этот мир во мне.
+            TODO:Заметки
         </p>
-        <p>
-            TODO: https://www.quora.com/What-is-the-difference-between-ego-self-and-the-mind
-        </p>
-        <p>
-            Инженерия знаний &mdash; фундаментальный инструмент, как навык чтения и письма,
-            который будет полезен во всех областях.
-        </p>
-        <p>
-            Должным образом сформированные знания могут предопределить успех во всех
-            остальных областях.
-        </p>
-
         <ul>
             <li>
-                <Link href="/labs/xde-academy">XDE Academy</Link> &ndash; быть достаточно
-                образованным, чтобы понимать.
+                (vs Social) Каждый из нас лично - это инженерный проект максимальной важности.
+                Качество самой большой конструкции может стать заложником качества отдельных её
+                элементов. Успехи общества &ndash; это успех каждого.
             </li>
-            <li><Link href="/labs/technology">Технология</Link></li>
-            <li><Link href="/labs/informatics">Информатика</Link></li>
-            <li>TODO:Language engineering как часть информатики</li>
+            <li>
+                Self vs Ego-engineering, бессознательное+сознательное vs сознательное
+            </li>
+            <li>
+                Mind/Knowledge enginnering. Инженерия знаний &mdash; фундаментальный инструмент,
+                как навык чтения и письма, который будет полезен во всех областях.
+            </li>
+            <li>
+                Должным образом сформированные знания могут предопределить успех во всех
+                остальных областях.
+            </li>
         </ul>
 
-        <h2>TODO: Ego/self engineering</h2>
+        <h2>Eco engineering</h2>
         <p>
-            Каждый из нас лично - это инженерный проект максимальной важности. Качество самой большой
-            конструкции может стать заложником качества отдельных её элементов.
-            Успехи общества &ndash; это успех каждого.
+            TODO:Приоритезация eco vs social?
         </p>
 
-        <h2>Социальная среда</h2>
+        <h2>Socio/Social engineering</h2>
         
-        <p>TODO: Social engineering</p>
         <p>TODO: Не исключено, что story telling может попасть сюда как способ коммуникаций</p>
 
         <ul>

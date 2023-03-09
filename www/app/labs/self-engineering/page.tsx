@@ -1,5 +1,5 @@
 import { Article } from "@/components/Article";
-import SelfEngineering from "@/labs/self";
+import SelfEngineering from "@/labs/self-engineering";
 
 const Page = () => (
     <Article>
