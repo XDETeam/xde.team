@@ -24,7 +24,7 @@ export interface ILab extends ILabProps {
     FullLink: () => JSX.Element;
 }
 
-export const lab = (props: ILabProps): ILab => ({
+export const createLab = (props: ILabProps): ILab => ({
     ...props,
     ...{
         Link: () => <Link href={`/labs/${props.Route}`}>{props.Caption}</Link>,

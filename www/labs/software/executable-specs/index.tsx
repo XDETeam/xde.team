@@ -1,14 +1,11 @@
-import { ILab, LabLink } from "@/labs/contracts";
+import { createLab } from "@/labs/contracts";
 
 export const Route = "executable-specs";
 export const Caption = "Executable Specifications/Specs";
 
-export const Link = () => <LabLink href={ Route }>{ Caption }</LabLink>
-
-export const Lab: ILab = {
+export const Lab = createLab({
     Route,
-    Caption,
-    Link
-}
+    Caption
+})
 
 export default Lab;

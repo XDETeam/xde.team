@@ -1,4 +1,4 @@
-import { lab as createLab } from "@/labs/contracts";
+import { createLab } from "@/labs/contracts";
 
 export const Route = "xde/team";
 export const Caption = "XDE Team";

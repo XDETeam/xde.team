@@ -1,16 +1,13 @@
-import { ILab, LabLink } from "@/labs/contracts";
+import { createLab } from "@/labs/contracts";
 import * as BIM from "./building-information-modeling"
 
 export const Route = "xde-app";
 export const Caption = "XDE App";
 
-export const Link = () => <LabLink href={ Route }>{ Caption }</LabLink>
-
-export const Lab: ILab = {
+export const Lab = createLab({
     Route,
-    Caption,
-    Link
-}
+    Caption
+})
 
 export const Labs = [
     BIM
