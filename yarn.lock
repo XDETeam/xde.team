@@ -910,13 +910,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/font@npm:^13.2.3":
-  version: 13.2.3
-  resolution: "@next/font@npm:13.2.3"
-  checksum: 241baec8c441448df2d7e7755eca4876e018a874555ddd22816585b50f03eac357f15576762ad1011b4a4c245e7dba9675ae7ec4289196943a51bc25fa203863
-  languageName: node
-  linkType: hard
-
 "@next/swc-android-arm-eabi@npm:13.1.6":
   version: 13.1.6
   resolution: "@next/swc-android-arm-eabi@npm:13.1.6"
@@ -1541,7 +1534,6 @@ __metadata:
   dependencies:
     "@headlessui/react": ^1.7.13
     "@heroicons/react": ^2.0.16
-    "@next/font": ^13.2.3
     "@tailwindcss/typography": ^0.5.9
     "@types/node": ^18.14.6
     "@types/react": ^18.0.28
