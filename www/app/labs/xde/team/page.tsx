@@ -1,4 +1,5 @@
 import { Article } from "@/components/Article";
+import Labs from "@/labs";
 import { LabsLink } from "@/labs/contracts";
 import XdeTeam from "@/labs/xde/team";
 
@@ -10,7 +11,7 @@ const Page = () => (
             <h2>Идея</h2>
 
             <p>
-                Предварительные тезисы для предстоящего констуирования истории:
+                Предварительные тезисы для предстоящего конструирования истории:
             </p>
 
             <ul>
@@ -114,6 +115,13 @@ const Page = () => (
             <p>
                 То, что интересно нам, описано в наших <LabsLink>лабораториях</LabsLink>.
             </p>
+            <p>
+                Приоритеты, которыми мы руководствуемся:
+            </p>
+            <ol>
+                <li><Labs.Self.FullLink/></li>
+            </ol>
+
         </section>
 
         <section>

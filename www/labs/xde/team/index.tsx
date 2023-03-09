@@ -1,14 +1,13 @@
-import { ILab, LabLink } from "@/labs/contracts";
+import { lab as createLab } from "@/labs/contracts";
 
 export const Route = "xde/team";
 export const Caption = "XDE Team";
+export const Description = "Рекурсивное исследование самих себя";
 
-export const Link = () => <LabLink href={ Route }>{ Caption }</LabLink>
-
-export const Lab: ILab = {
+export const Lab = createLab({
     Route,
     Caption,
-    Link
-}
+    Description
+})
 
 export default Lab;

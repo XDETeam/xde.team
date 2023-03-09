@@ -7,7 +7,7 @@ const Page = () => (
         <h1>Labs</h1>
 
         <ul>
-            <li><Labs.Xde.Team.Link/></li>
+            <li><Labs.Xde.Team.FullLink/></li>
         </ul>
 
         <p>TODO:Дальнейшее расположено через призму наших приоритетов</p>
