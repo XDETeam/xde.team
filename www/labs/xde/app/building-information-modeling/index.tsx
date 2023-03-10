@@ -1,3 +1,5 @@
+import { createLab } from "@/labs/contracts";
+
 export const Route = "build-information-modeling";
 export const Caption = "BIM";
 
@@ -12,3 +14,12 @@ export const ToDos = () => (
         </li>
     </ul>
 )
+
+export const Props = {
+    Route,
+    Caption
+}
+
+export const Lab = createLab(Props, {});
+
+export default Lab;

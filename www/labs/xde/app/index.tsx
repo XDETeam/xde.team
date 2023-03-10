@@ -1,7 +1,7 @@
 import { createLab } from "@/labs/contracts";
-import * as BIM from "./building-information-modeling"
+import BIM from "./building-information-modeling"
 
-export const Route = "xde-app";
+export const Route = "xde/app";
 export const Caption = "XDE App";
 
 export const Props = {
@@ -9,11 +9,11 @@ export const Props = {
     Caption
 }
 
-export const Lab = createLab(Props, {})
-
-export const Labs = [
+export const Labs = {
     BIM
-];
+};
+
+export const Lab = createLab(Props, Labs)
 
 export const ToDos = () => (
     <ul>

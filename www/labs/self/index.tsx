@@ -1,5 +1,7 @@
 import { createLab } from "@/labs/contracts";
 import Informatics from "./informatics";
+import Technology from "./technology";
+import Bio from "./bio";
 
 export const Route = "self-engineering";
 export const Caption = "Self engineering";
@@ -15,7 +17,9 @@ export const Props = {
 }
 
 export const Labs = {
-    Informatics
+    Informatics,
+    Technology,
+    Bio
 }
 
 export const Lab = createLab(Props, Labs)

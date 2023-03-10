@@ -22,7 +22,7 @@ const Page = () => (
             <li><Labs.Self.Informatics.FullLink/></li>
             <li><Link href="/labs/technology">Технология</Link></li>
             <li>TODO:Language engineering как часть информатики</li>
-            <li>TODO:Bio-engineering (здоровье)</li>
+            <li><Labs.Self.Bio.FullLink/></li>
         </ul>
 
         <p>
@@ -59,6 +59,7 @@ const Page = () => (
         <ul>
             <li><Link href="/labs/egopolis">Egopolis</Link></li>
             <li><Link href="/labs/theory-of-organization">Теория управления/организации</Link></li>
+            <li><Link href="/labs/social-engineering/politics">Политика</Link></li>
         </ul>
 
         <h2>Политика</h2>
@@ -72,7 +73,7 @@ const Page = () => (
 
         <ul>
             <li>
-                <Link href="/labs/xde-app">XDE App</Link>
+                <Labs.Xde.App.FullLink />
                 <ul>
                     <li><Link href="/labs/xde-app/self-engineering">Self engineering</Link></li>
                     <li><Link href="/labs/xde-app/team-engineering">Team engineering</Link></li>
