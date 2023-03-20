@@ -14,11 +14,16 @@
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/glob": "^8.1.0",
+    "@types/xmldom": "^0.1.31",
     "clsx": "^1.2.1",
     "framer-motion": "^10.2.3",
+    "glob": "^9.2.1",
     "next": "^13.2.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xmldom": "^0.6.0",
+    "xpath": "^0.0.32"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",

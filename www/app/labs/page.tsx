@@ -1,6 +1,16 @@
-import { Article } from "@/components/Article";
-import Link from "next/link";
-import { Labs } from "@/labs";
+import { Article } from "@/components/Article"
+import Link from "next/link"
+import { Labs, Db } from "@/labs"
+
+//TODO:Experimental work with XML database
+// const TestFetch = () => {
+
+//     return (
+//         <p>
+//             TODO: [{ Db.xml.toString() }]
+//         </p>
+//     )
+// }
 
 const Page = () => (
     <Article>
