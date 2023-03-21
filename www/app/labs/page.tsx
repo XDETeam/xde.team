@@ -16,23 +16,22 @@ const Page = () => (
     <Article>
         <h1>Labs</h1>
 
-        <Labs.Xde.Team.FullLink/>
-
-        <p>
-            TODO:Дальнейшее расположено через призму приоритетов, описанных в <Labs.Xde.Team.Link/>?
-        </p>
-
         <h2>Self-engineering</h2>
         <p>
-            { Labs.Self.Description }
+            {Labs.Self.Description}
         </p>
 
         <ul>
-            <li><Link href="/labs/xde/academy">XDE Academy</Link></li>
-            <li><Labs.Self.Informatics.FullLink/></li>
+            <li><Labs.Xde.Academy.FullLink /></li>
+            <li>
+                <Labs.Self.Knowledge.FullLink />
+                <ul>
+                    <li><Labs.Self.Informatics.FullLink /></li>
+                    <li>Language engineering как часть информатики</li>
+                </ul>
+            </li>
             <li><Link href="/labs/technology">Технология</Link></li>
-            <li>TODO:Language engineering как часть информатики</li>
-            <li><Labs.Self.Bio.FullLink/></li>
+            <li><Labs.Self.Bio.FullLink /></li>
         </ul>
 
         <p>
@@ -45,9 +44,6 @@ const Page = () => (
                 элементов. Успехи общества &ndash; это успех каждого.
             </li>
             <li>
-                Self vs Ego-engineering, бессознательное+сознательное vs сознательное
-            </li>
-            <li>
                 Mind/Knowledge enginnering. Инженерия знаний &mdash; фундаментальный инструмент,
                 как навык чтения и письма, который будет полезен во всех областях.
             </li>
@@ -57,29 +53,25 @@ const Page = () => (
             </li>
         </ul>
 
+        <section id="social-engineering">
+            <h2>Social engineering</h2>
+
+            <p>TODO: Не исключено, что story telling может попасть сюда как способ коммуникаций</p>
+
+            <ul>
+                <li><Labs.Xde.Team.FullLink /></li>
+                <li><Link href="/labs/egopolis">Egopolis</Link></li>
+                <li><Link href="/labs/theory-of-organization">Теория управления/организации</Link></li>
+                <li><Link href="/labs/social-engineering/politics">Политика</Link></li>
+            </ul>
+        </section>
+
         <h2>Eco engineering</h2>
         <p>
             TODO:Приоритезация eco vs social?
         </p>
 
-        <h2>Socio/Social engineering</h2>
-        
-        <p>TODO: Не исключено, что story telling может попасть сюда как способ коммуникаций</p>
-
-        <ul>
-            <li><Link href="/labs/egopolis">Egopolis</Link></li>
-            <li><Link href="/labs/theory-of-organization">Теория управления/организации</Link></li>
-            <li><Link href="/labs/social-engineering/politics">Политика</Link></li>
-        </ul>
-
-        <h2>Политика</h2>
-        <p>
-            TODO:Как компоненты социальной среды
-        </p>
-
-        <h2>Программное обеспечение</h2>
-
-        <p className="mt-4">TODO: Code/Software engineering</p>
+        <h2>Code/Software engineering</h2>
 
         <ul>
             <li>
@@ -91,7 +83,7 @@ const Page = () => (
                 </ul>
             </li>
             <li><Link href="/labs/all-as-a-code-paradigm">Парадигма All-as-a-Code</Link></li>
-            <li><Labs.Software.Specs.Link/></li>
+            <li><Labs.Software.Specs.Link /></li>
             <li><Link href="/labs/application-flow">Application flow</Link></li>
             <li><Link href="/labs/rust-ecosystem">Экосистема/формула Rust</Link></li>
             <li><Link href="/labs/dotnet-ecosystem">Экосистема/формула .NET</Link></li>

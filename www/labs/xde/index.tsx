@@ -1,4 +1,5 @@
 import Team from "./team";
+import Academy from "./academy";
 import App from "./app";
 import { createLab } from "../contracts";
 
@@ -12,6 +13,7 @@ export const Props = {
 
 export const Labs = {
     Team,
+    Academy,
     App
 }
 

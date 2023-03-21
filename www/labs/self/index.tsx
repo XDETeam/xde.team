@@ -1,4 +1,5 @@
 import { createLab } from "@/labs/contracts";
+import Knowledge from "./knowledge";
 import Informatics from "./informatics";
 import Technology from "./technology";
 import Bio from "./bio";
@@ -17,6 +18,7 @@ export const Props = {
 }
 
 export const Labs = {
+    Knowledge,
     Informatics,
     Technology,
     Bio
