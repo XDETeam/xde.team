@@ -56,13 +56,16 @@ const Page = () => (
         <section id="social-engineering">
             <h2>Social engineering</h2>
 
-            <p>TODO: Не исключено, что story telling может попасть сюда как способ коммуникаций</p>
-
             <ul>
                 <li><Labs.Xde.Team.FullLink /></li>
                 <li><Link href="/labs/egopolis">Egopolis</Link></li>
                 <li><Link href="/labs/theory-of-organization">Теория управления/организации</Link></li>
                 <li><Link href="/labs/social-engineering/politics">Политика</Link></li>
+                <li>
+                    Не исключено, что &laquo;Story telling&raquo;, нарратив может попасть сюда
+                    как способ коммуникаций.
+                    И распространиться, в свою очередь, на <Labs.Xde.Academy.Link />.
+                </li>
             </ul>
         </section>
 
@@ -89,13 +92,10 @@ const Page = () => (
             <li><Link href="/labs/dotnet-ecosystem">Экосистема/формула .NET</Link></li>
             <li><Link href="/labs/cx-language">Язык Cx</Link></li>
             <li><Link href="/labs/data-storage-systems">Системы хранения данных</Link></li>
+            <li><Link href="/labs/multilanguage-content">Multi-language content</Link></li>
         </ul>
 
         <h2>TODO:Story engineering</h2>
-
-        <p>
-            TODO:Сторителлинг, нарратив.
-        </p>
 
         <h2>TODO:Civil engineering</h2>
 
